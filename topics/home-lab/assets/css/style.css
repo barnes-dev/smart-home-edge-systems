@@ -1,26 +1,65 @@
-:root {
-  --bg: #0b111e;
-  --text: #e2e8f0;
-  --accent: #38bdf8;
-  --card: #1e293b;
+/* --- Cleaned Up Header & Title Layout using Your Theme --- */
+.title-block {
+    display: flex;
+    align-items: center;     /* Vertically centers the icon with the text block */
+    justify-content: center; /* Horizontally centers the text block in the header */
+    position: relative;
+    width: 100%;
+    min-height: 60px;        /* Vertical breathing room */
+    margin-bottom: 1.5rem;
 }
 
-body {
-  background: var(--bg);
-  color: var(--text);
+.title-block .icon-left {
+    color: var(--accent);    /* Uses your custom light-blue accent */
+    position: absolute;      /* Keeps the icon pinned to the left side */
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%); 
 }
 
-a {
-  color: var(--accent);
+.title-block h1 {
+    display: flex;
+    flex-direction: column;  /* FORCES the span underneath the main text */
+    align-items: center;     /* Centers both lines of text relative to each other */
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text);      /* Uses your main light text color */
+    letter-spacing: 0.05em;
+    line-height: 1.3;        /* Controls spacing inside the main title */
+    padding: 0 45px;         /* Prevents long text from running into the icon */
+    width: 100%;
 }
 
-.card, .panel, .box, .content {
-  background: var(--card);
-  color: var(--text);
+.title-block .tagline {
+    display: block;          /* Forces it to break onto a brand new line */
+    font-size: 1rem;         /* Smaller tagline font size */
+    color: var(--accent);    /* Uses your accent color to make the subtitle pop, or change to var(--text) if you want it white */
+    font-weight: 400;        /* Un-bolds the subtitle */
+    letter-spacing: 0.02em;
+    margin-top: 0.4rem;      /* The exact spacing gap between line 1 and line 2 */
 }
 
-button, .button, .btn {
-  background: var(--accent);
-  color: #0b111e;
-  border-color: var(--accent);
+/* --- Mobile Specific Fix --- */
+@media (max-width: 768px) {
+    .title-block {
+        flex-direction: column;
+        align-items: flex-start; /* Aligns left on mobile for mobile drop-down layouts */
+        justify-content: flex-start;
+        padding-right: 50px;
+    }
+    .title-block .icon-left {
+        position: static;        /* Drops absolute positioning on small screens */
+        transform: none;
+        margin-bottom: 0.5rem;
+    }
+    .title-block h1 {
+        align-items: flex-start; /* Left-aligns the stack on mobile viewports */
+        text-align: left;
+        padding: 0;
+        font-size: 1.4rem;
+    }
+    .title-block .tagline {
+        font-size: 0.9rem;
+    }
 }

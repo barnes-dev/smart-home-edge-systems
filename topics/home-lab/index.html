@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Layout with Mobile Dropdown</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* --- Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #132f57;
+            color: #e2e8f0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- Header Section --- */
+        header {
+            background-color: #10284f;
+            border-bottom: 1px solid #ffffff;
+            padding: 1.5rem 2rem;
+            position: relative;
+        }
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .title-block {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 40px;
+        }
+        .title-block .icon-left {
+            color: #93c5fd;
+            position: absolute;
+            left: 0;
+        }
+        .title-block h1 {
+            font-size: 1.75rem;
+            color: #1e293b;
+            text-align: center;
+            padding: 0 40px;
+        }
+
+        /* --- Hamburger Menu Button (Hidden on Desktop) --- */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #e2e8f0;
+            cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0.5rem;
+        }
+        
+        /* --- Menu Bar (Desktop Styling) --- */
+        .menu-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1.5rem;
+            transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out;
+        }
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #64748b;
+            transition: color 0.2s;
+            text-align: center;
+        }
+        .menu-item:hover {
+            color: #2563eb;
+        }
+        .menu-item i {
+            margin-bottom: 0.35rem;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* --- Main Content --- */
+        main {
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+        .main-title-block {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .main-title-block h2 {
+            font-size: 1.75rem;
+            color: #0f172a;
+        }
+        .main-title-block .page-icon {
+            color: #3b82f6;
+            flex-shrink: 0;
+        }
+
+        .horizontal-containers {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .horizontal-box {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .horizontal-box h3 {
+            margin-bottom: 0.75rem;
+            color: #1e293b;
+        }
+        .horizontal-box p {
+            color: #475569;
+        }
+        .horizontal-box ul {
+            margin: 1rem 0 0;
+            padding-left: 1.5rem;
+            list-style-position: outside;
+            color: #475569;
+        }
+        .horizontal-box ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        /* --- 4 Topic Blocks --- */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 4rem;
+            justify-content: center;
+        }
+        .topic-box {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .topic-box h3 {
+            margin-bottom: 0.75rem;
+            color: #1e293b;
+            font-size: 1.1rem;
+            line-height: 1.3;
+        }
+        .topic-box p {
+            color: #475569;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* --- Footer (50% / 25% / 25%) --- */
+        footer {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 3rem 2rem;
+            width: 100%;
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 2rem;
+            padding-top: 2rem;
+        }
+        .footer-left { flex: 2; }
+        .footer-center { flex: 1; }
+        .footer-right { flex: 1; }
+        .footer-column h4, .footer-column h5 {
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 0.5rem; }
+        .footer-column ul li a:hover { color: #ffffff; }
+
+        /* --- Media Query for Mobile (768px and below) --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+            }
+            
+            /* Show the hamburger icon button */
+            .menu-toggle {
+                display: block;
+            }
+
+            .title-block {
+                justify-content: flex-start;
+                padding-right: 50px; /* Leave space for hamburger */
+            }
+            .title-block .icon-left {
+                position: static;
+                margin-right: 0.75rem;
+            }
+            .title-block h1 {
+                padding: 0;
+                font-size: 1.4rem;
+                text-align: left;
+            }
+
+            /* Turn menu into a collapsed pull-down stack */
+            .menu-bar {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                gap: 0;
+                width: 100%;
+                max-height: 0; /* Hidden initially */
+                opacity: 0;
+                overflow: hidden;
+                background-color: #ffffff;
+            }
+
+            /* When JavaScript injects the .active class, show it */
+            .menu-bar.active {
+                max-height: 400px; /* High enough to contain all items */
+                opacity: 1;
+                padding-top: 1rem;
+                border-top: 1px solid #f1f5f9;
+            }
+
+            /* Style links as full-width row bars for clean mobile tapping */
+            .menu-item {
+                flex-direction: row;
+                padding: 0.85rem 0.5rem;
+                font-size: 1rem;
+                border-bottom: 1px solid #f1f5f9;
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .menu-item i {
+                margin-bottom: 0;
+                margin-right: 1rem;
+            }
+            .menu-item:last-child {
+                border-bottom: none;
+            }
+
+            .main-title-block {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="title-block">
+                <i data-lucide="globe" class="icon-left" size="32"></i>
+                
+                <h1 style="display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; width: 100%;">
+                    <span><span style="color: #1d4ed8; font-weight: 700;">SMART HOME</span> <span style="color: #60a5fa; font-weight: 700;">EDGE SYSTEMS</span></span>
+                    <span class="tagline" style="display: block !important; margin-top: 0.5rem !important; font-size: 1rem; font-weight: 400; color: #c7d2fe;">
+                        Your Data Stays Home
+                    </span>
+                </h1>
+            </div>
+                <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Menu">
+                    <i data-lucide="menu" size="28"></i>
+                </button>
+            </div>
+            
+            <nav class="menu-bar" id="nav-menu">
+                <a href="#topic1" class="menu-item"><i data-lucide="layers"></i>Topic 1</a>
+                <a href="#topic2" class="menu-item"><i data-lucide="compass"></i>Topic 2</a>
+                <a href="#topic3" class="menu-item"><i data-lucide="cpu"></i>Topic 3</a>
+                <a href="#topic4" class="menu-item"><i data-lucide="database"></i>Topic 4</a>
+                <a href="#about" class="menu-item"><i data-lucide="info"></i>About</a>
+                <a href="#contact" class="menu-item"><i data-lucide="mail"></i>Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="main-title-block">
+            <i data-lucide="sparkles" class="page-icon" size="40"></i>
+            <h2>Hello and Welcome</h2>
+        </div>
+
+        <section class="horizontal-containers">
+            <div class="horizontal-box">
+                <h3>Enterprise Capability. Consumer Independence. User Friendly.</h3>
+                <p>	We are bridging the gap between enterprise-grade networking and cost-effective home automation. The tech industry has pushed a costly, cloud-dependent architecture that forces consumers into endless subscriptions and locks their data in third-party servers. We are here to change that.</p>
+            </div>
+            <div class="horizontal-box">
+                <p>Our mission is to help the industry pivot toward true consumer independence by giving everyday DIYer's the tools, knowledge, and blueprints to bring their data back home.  Our goal is to simplify installations so that DIYer's can have their systems up and running error free in just a short time.  If they do not want a full up test lab and just want to remove the cloud from their home we want to help.</p>
+            </div>
+            <div class="horizontal-box">
+                <h3>What We Do:</h3>
+                <ul>
+                        <li>Free Installation Blueprints: We demystify the modern edge by providing completely free, step-by-step guides to help you deploy, configure, and maintain robust, privacy-first home labs and smart home systems without breaking the bank.</li>
+                        <li>The Hardware Proving Ground: Our dedicated home lab serves as a real-world testing environment, evaluating equipment performance under actual daily workloads to ensure absolute stability and speed.</li>
+                        <li>Deep-Dive Vendor Showcases: We provide comprehensive performance comparisons within a manufacturer's own product ecosystem. Instead of generic cross-brand matchups, we help you understand exactly which tier of a vendor's lineup delivers the right power and value for your specific build.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="topics-grid">
+            <div class="topic-box">
+                <h3>Resources</h3>
+                <p>The Tools to Build Your Edge Access our curated repository of network architecture maps, hardware configuration files, and deployment manifests. We provide the essential underlying data and infrastructure templates you need to optimize your home lab, eliminate cloud dependencies, and maximize local hardware performance on a budget.</p>
+            </div>
+            <div class="topic-box">
+                <h3>Guides</h3>
+                <p>View our collection of Step-by-Step, Fluff-Free publications.  Our installation guides are written for the practical DIYer. Completely free and built from real-world testing, these step-by-step blueprints walk you through containerized deployments, local voice assistant integration, and network security configurations—no cloud subscriptions required. </p>
+            </div>
+            <div class="topic-box">
+                <h3>Our Team</h3>
+                <p>Engineered for Independence Backed by decades of enterprise network engineering and high-reliability systems experience, our team brings aerospace-grade precision to the residential edge. We are passionate hobbyists and tech veterans dedicated to empowering consumers, proving that you can build a powerful, sovereign data ecosystem right inside your own walls. </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-left footer-column">
+                <h4>About Our Mission</h4>
+                <p>We prove that you don't need a massive enterprise budget to break free from the cloud. Our hands-on validation allows us to deliver completely free, field-tested deployment blueprints that empower everyone to achieve absolute data privacy, total independence, and robust reliability—while permanently lowering their technology expenses.</p>
+            </div>
+            <div class="footer-center footer-column">
+                <h5>Quick Links</h5>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-right footer-column">
+                <h5>Site Owner</h5>
+                <ul>
+                    <li><a href="#">o	🌐 Website: www.smart-home-edge-sysyems.us</a></li>
+                    <li><a href="#">o	✉️ Email: info@smart-home-edge-systems.us</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Dropdown Menu Toggle Script
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Optional: Close menu automatically when a link is clicked
+        const menuLinks = document.querySelectorAll('.menu-item');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
