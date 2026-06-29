@@ -1,0 +1,13 @@
+# Logs and system dumps
+*.log
+.DS_Store
+Thumbs.db
+
+# Backup and configuration assets to avoid tracking
+*.bak
+*.config
+.env
+
+# Proxmox / Home Assistant backup dumps
+*.tar.gz
+*.backup
