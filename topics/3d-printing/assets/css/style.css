@@ -1,0 +1,26 @@
+:root {
+  --bg: #0b111e;
+  --text: #e2e8f0;
+  --accent: #38bdf8;
+  --card: #1e293b;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: var(--accent);
+}
+
+.card, .panel, .box, .content {
+  background: var(--card);
+  color: var(--text);
+}
+
+button, .button, .btn {
+  background: var(--accent);
+  color: #0b111e;
+  border-color: var(--accent);
+}

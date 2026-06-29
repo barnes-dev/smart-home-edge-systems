@@ -14,13 +14,18 @@
       gtag('config', 'G-TRACKING-ID-PLACEHOLDER');
     </script>
     <style>
-        :root { --bg: #121212; --text: #e0e0e0; --accent: #ffb300; --card: #1e1e1e; }
+        :root {
+            --bg: #0b111e;
+            --text: #e2e8f0;
+            --accent: #38bdf8;
+            --card: #1e293b;
+        }
         body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; margin: 3rem; }
         h1 { color: var(--accent); margin-bottom: 2rem; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-        .card { background: var(--card); padding: 1.5rem; border-radius: 8px; border: 1px solid #333; transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .card h3 { margin-top: 0; color: #fff; }
+        .card { background: var(--card); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.25); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+        .card h3 { margin-top: 0; color: var(--accent); }
         .card a { color: var(--accent); text-decoration: none; font-weight: bold; }
     </style>
 </head>
