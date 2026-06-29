@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proxmox HA Node Guide</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <main class="page-shell guide-page">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Guide</p>
+        <h1>Proxmox Home Assistant node</h1>
+        <p>Use this runbook for a stable containerized deployment and backup-friendly layout.</p>
+      </div>
+    </header>
+
+    <section class="panel">
+      <h2>Recommended setup</h2>
+      <ul class="asset-list">
+        <li><strong>Node spec</strong><span>2 vCPU, 8 GB RAM, SSD-backed storage</span></li>
+        <li><strong>Networking</strong><span>Static IP, VLAN separation, and a dedicated management bridge</span></li>
+        <li><strong>Backups</strong><span>Snapshots plus off-site backup retention</span></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

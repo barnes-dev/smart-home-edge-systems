@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Printing Ecosystem Hub</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">3D Printing Ecosystem Hub</p>
+        <h1>Print farm dashboard matrix</h1>
+        <p>Track printer health, toolhead status, filament stock, and calibration metrics from a single interface.</p>
+      </div>
+      <div class="hero-badge">
+        <span class="status-dot"></span>
+        Farm online
+      </div>
+    </header>
+
+    <section class="stats-grid" aria-label="farm metrics overview">
+      <article class="stat-card">
+        <h2>Active printers</h2>
+        <p class="stat-value">6</p>
+        <span>Klipper-configured and scheduled</span>
+      </article>
+      <article class="stat-card">
+        <h2>Filament spools</h2>
+        <p class="stat-value">18</p>
+        <span>PLA, PETG, ABS, and TPU stocked</span>
+      </article>
+      <article class="stat-card">
+        <h2>Calibration score</h2>
+        <p class="stat-value">96%</p>
+        <span>Bed mesh and flow tuning in sync</span>
+      </article>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Print farm inventory</h2>
+          <span class="pill">Asset manager</span>
+        </div>
+        <div class="asset-stack">
+          <div class="asset-card">
+            <h3>Klipper-configured printers</h3>
+            <ul>
+              <li>Voron 2.4 — 220°C nozzle / 120°C bed</li>
+              <li>Prusa MK4 — active maintenance window</li>
+              <li>Ender 3 V2 — backup printer</li>
+            </ul>
+          </div>
+          <div class="asset-card">
+            <h3>Toolheads</h3>
+            <ul>
+              <li>Rapido HF — high-temp setup</li>
+              <li>Dragon SF — abrasive filament ready</li>
+              <li>Revo Micro — quick-swap station</li>
+            </ul>
+          </div>
+          <div class="asset-card">
+            <h3>Filament spools</h3>
+            <ul>
+              <li>PLA — 7 spools</li>
+              <li>PETG — 5 spools</li>
+              <li>TPU — 3 spools</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Calibration metrics</h2>
+          <span class="pill">Live tracking</span>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <strong>Bed mesh</strong>
+            <span>0.12 mm variance</span>
+          </div>
+          <div class="metric-card">
+            <strong>Flow rate</strong>
+            <span>97% target</span>
+          </div>
+          <div class="metric-card">
+            <strong>First layer</strong>
+            <span>Stable at 0.2 mm</span>
+          </div>
+          <div class="metric-card">
+            <strong>Extrusion temp</strong>
+            <span>±1°C drift</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel guide-panel">
+        <h2>Guide panel</h2>
+        <p>Use the Klipper bed mesh guide to refine leveling, calibration routines, and print consistency across the farm.</p>
+        <a href="guides/klipper-bed-mesh.html">Open guide</a>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

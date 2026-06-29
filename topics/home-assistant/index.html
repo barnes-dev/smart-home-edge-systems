@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Assistant Ecosystem Hub</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Home Assistant Ecosystem Hub</p>
+        <h1>Configuration dashboard</h1>
+        <p>Monitor Zigbee mesh health, dashboard layouts, and automation runbooks from one control surface.</p>
+      </div>
+      <div class="hero-badge">
+        <span class="status-dot"></span>
+        Connected
+      </div>
+    </header>
+
+    <section class="stats-grid" aria-label="system overview">
+      <article class="stat-card">
+        <h2>Mesh health</h2>
+        <p class="stat-value">98%</p>
+        <span>Stable links across 3 active networks</span>
+      </article>
+      <article class="stat-card">
+        <h2>Dashboards</h2>
+        <p class="stat-value">4</p>
+        <span>Operations, security, media, and guests</span>
+      </article>
+      <article class="stat-card">
+        <h2>Automations</h2>
+        <p class="stat-value">27</p>
+        <span>Rule set tuned for occupancy and energy use</span>
+      </article>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Active Zigbee networks</h2>
+          <span class="pill">3 online</span>
+        </div>
+        <ul class="asset-list">
+          <li>
+            <strong>Kitchen Floor</strong>
+            <span>Coordinator: SkyConnect • 18 devices</span>
+          </li>
+          <li>
+            <strong>Garage Annex</strong>
+            <span>Coordinator: Sonoff • 9 devices</span>
+          </li>
+          <li>
+            <strong>Outdoor Patio</strong>
+            <span>Coordinator: ZBDongle • 6 devices</span>
+          </li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Dashboard layouts</h2>
+          <span class="pill">4 layouts</span>
+        </div>
+        <div class="layout-cards">
+          <div class="layout-card">
+            <h3>Operations</h3>
+            <p>Critical systems, HVAC, alerts.</p>
+          </div>
+          <div class="layout-card">
+            <h3>Security</h3>
+            <p>Camera feeds and occupancy histories.</p>
+          </div>
+          <div class="layout-card">
+            <h3>Media</h3>
+            <p>Lighting scenes and entertainment controls.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel guide-panel">
+        <h2>Guide panel</h2>
+        <p>Follow the Proxmox Home Assistant node setup guide for deployment best practices and recommended network layout.</p>
+        <a href="guides/proxmox-ha-node.html">Open guide</a>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
