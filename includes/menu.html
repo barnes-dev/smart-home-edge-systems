@@ -29,14 +29,14 @@
         if (isInSectionHub) {
             currentSection = segments[0];
             // Perspective: inside a sub-section folder (e.g., /home-lab/)
-            document.getElementById('nav-home').href = 'index.html';
-            document.getElementById('nav-guides').href = currentSection + '/guides.html';
+            document.getElementById('nav-home').href = '../index.html';
+            document.getElementById('nav-guides').href = currentSection + '../guides/index.html';
             document.getElementById('nav-reference').href = currentSection + '/reference.html';
         } else {
             // Perspective: Top-Level Global Gateway Root
-            document.getElementById('nav-home').href = rootPrefix + "index.html";
-            document.getElementById('nav-guides').href = rootPrefix + "guides.html";
-            document.getElementById('nav-reference').href = rootPrefix + "reference.html";
+            document.getElementById('nav-home').href = rootPrefix + "/index.html";
+            document.getElementById('nav-guides').href = rootPrefix + "/guides/index.html";
+            document.getElementById('nav-reference').href = rootPrefix + "/reference/reference.html";
         }
 
         // "Gateway" always explicitly forces a jump completely back out to the master dashboard
