@@ -12,34 +12,36 @@
 </nav>
 
 <script>
-    (function() {
-        const segments = window.location.pathname.split('/').filter(Boolean);
-        const depth = segments.length;
+document.addEventListener("DOMContentLoaded", function() {
+    (function() { 
+        const segments = window.location.pathname.split('/').filter(Boolean); 
+        const depth = segments.length; 
         
-        // 1. Establish path back to the absolute Gateway Root
-        let rootPrefix = "./";
-        if (depth > 1) {
-            rootPrefix = "../".repeat(depth - 1);
-        }
-
-        // 2. Determine if the user is currently nested inside a section hub folder
-        // (e.g., /home-lab/ or /voice/)
-        const isInSectionHub = depth >= 1 && !segments[0].endsWith('.html');
-        let currentSection = '';
-        if (isInSectionHub) {
-            currentSection = segments[0];
-            // Perspective: inside a sub-section folder (e.g., /home-lab/)
-            document.getElementById('nav-home').href = '../index.html';
-            document.getElementById('nav-guides').href = currentSection + '../guides/index.html';
-            document.getElementById('nav-reference').href = currentSection + '/reference.html';
-        } else {
-            // Perspective: Top-Level Global Gateway Root
-            document.getElementById('nav-home').href = rootPrefix + "/index.html";
-            document.getElementById('nav-guides').href = rootPrefix + "/guides/index.html";
-            document.getElementById('nav-reference').href = rootPrefix + "/reference/reference.html";
-        }
-
-        // "Gateway" always explicitly forces a jump completely back out to the master dashboard
-        document.getElementById('nav-gateway').href = rootPrefix + "index.html";
+        // 1. Establish path back to the absolute Gateway Root 
+        let rootPrefix = "./"; 
+        if (depth > 1) { 
+            rootPrefix = "../".repeat(depth - 1); 
+        } 
+        
+        // 2. Determine if the user is currently nested inside a section hub folder 
+        const isInSectionHub = depth >= 1 && !segments[0].endsWith('.html'); 
+        let currentSection = ''; 
+        
+        if (isInSectionHub) { 
+            currentSection = segments[0]; 
+            // Perspective: inside a sub-section folder (e.g., /home-lab/) 
+            document.getElementById('nav-home').href = '../index.html'; 
+            document.getElementById('nav-guides').href = currentSection + '../guides/index.html'; 
+            document.getElementById('nav-reference').href = currentSection + '/reference.html'; 
+        } else { 
+            // Perspective: Top-Level Global Gateway Root 
+            document.getElementById('nav-home').href = rootPrefix + "index.html"; 
+            document.getElementById('nav-guides').href = rootPrefix + "guides/index.html"; 
+            document.getElementById('nav-reference').href = rootPrefix + "reference/reference.html"; 
+        } 
+        
+        // "Gateway" always explicitly forces a jump completely back out to the master dashboard 
+        document.getElementById('nav-gateway').href = rootPrefix + "index.html"; 
     })();
+});
 </script>
