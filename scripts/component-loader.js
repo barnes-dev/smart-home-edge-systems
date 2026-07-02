@@ -65,7 +65,7 @@ function fixMenuPaths() {
   // Dynamic path rewriting array queue mapping
   if (navHome) navHome.href = rootPrefix + "index.html"; 
   if (navGuides) navGuides.href = rootPrefix + "guides/index.html"; 
-  if (navReference) navReference.href = rootPrefix + "reference/reference.html"; 
+  if (navReference) navReference.href = rootPrefix + "reference/index.html"; 
   if (navGateway) navGateway.href = rootPrefix + "index.html"; 
 
   // HIGHLIGHT LOGIC START: Collect all links inside your navigation container
