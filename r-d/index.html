@@ -13,40 +13,8 @@
     gtag('config', 'G-LLK7685ZGC');
     </script>
     <title>Research and Development Hub</title>
-    <style>
-        :root {
-            --bg: #132f57;
-            --body-text: #e2e8f0;
-            --header-bg: #10284f;
-            --card-bg: #f3f9ff;
-            --card-border: #dbeafe;
-            --accent: #1d4ed8;
-            --footer-bg: #0f172a;
-            --footer-text: #94a3b8;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: var(--bg); color: var(--body-text); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
-        a { text-decoration: none; color: inherit; }
-        header { background-color: var(--header-bg); border-bottom: 1px solid #ffffff; padding: 1rem 2rem; }
-        .header-container { max-width: 1200px; margin: 0 auto; }
-        .title-block { display: flex; align-items: center; justify-content: center; min-height: 96px; width: 100%; }
-        .title-block h1 { font-size: 1.75rem; color: #1e293b; text-align: center; padding: 0 40px; margin: 0 auto; }
-        main { max-width: 1200px; width: 100%; margin: 1rem auto; padding: 0 1.5rem; flex: 1; }
-        .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }
-        .card { background: var(--card-bg); color: #0f172a; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--card-border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .card h3 { margin-top: 0; margin-bottom: 0.5rem; color: #0f172a; }
-        .card p { color: #475569; }
-        .card a { color: var(--accent); font-weight: 700; }
-        footer { background-color: var(--footer-bg); color: var(--footer-text); padding: 2rem 2rem 1.5rem; width: 100%; }
-        .footer-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 1rem; flex-wrap: wrap; padding-top: 1rem; }
-        .footer-column { flex: 1 1 220px; min-width: 220px; font-size: 0.9rem; line-height: 1.3; }
-        .footer-column h4, .footer-column h5 { color: #eaf4ff; margin-bottom: 0.5rem; font-size: 1rem; }
-        .footer-column ul { list-style: none; padding: 0; margin: 0; }
-        .footer-column ul li { margin-bottom: 0.2rem; }
-        .footer-column a { color: var(--footer-text); }
-        .footer-column a:hover { color: #ffffff; }
-    </style>
-</head>
+      <link rel="stylesheet" href="/css/global.css">
+
 <body>
     <div id="header-placeholder"></div>
     <div id="menu-placeholder"></div>
@@ -81,24 +49,6 @@
         </main>
 
     <div id="footer-placeholder"></div>
-    <script>
-        function loadComponent(elementId, filePath) {
-            fetch(filePath)
-                .then(response => {
-                    if (!response.ok) throw new Error(`Failed to load ${filePath}`);
-                    return response.text();
-                })
-                .then(data => {
-                    document.getElementById(elementId).innerHTML = data;
-                })
-                .catch(error => console.error(error));
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            loadComponent("header-placeholder", "/includes/header.html");
-            loadComponent("menu-placeholder", "/includes/menu.html");
-            loadComponent("footer-placeholder", "/includes/footer.html");
-        });
-    </script>
-</body>
+      <script src="/scripts/component-loader.js"></script>
+
 </html>
