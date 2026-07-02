@@ -1,0 +1,48 @@
+<nav id="dynamic-nav" style="background: var(--header-bg); padding: 0.5rem 2rem; display: flex; justify-content: flex-end; gap: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem;">
+    <a id="nav-home" href="#">🏠 Home</a>
+    <a id="nav-guides" href="#">📖 Guides</a>
+    <a id="nav-reference" href="#">📋 Reference</a>
+    <a id="nav-gateway" href="#">🌐 Gateway</a>
+    
+    <a href="mailto:info@smart-home-edge-systems.us" 
+       onclick="this.href='mailto:info@smart-home-edge-systems.us?subject=Inquiry from: ' + encodeURIComponent(window.location.href);" 
+       style="color: #60a5fa; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 1.5rem;">
+       ✉️ Contact Us
+    </a>
+</nav>
+
+<script>
+    (function() {
+        const segments = window.location.pathname.split('/').filter(Boolean);
+        const depth = segments.length;
+        
+        // 1. Establish path back to the absolute Gateway Root
+        let rootPrefix = "./";
+        if (depth > 1) {
+            rootPrefix = "../".repeat(depth - 1);
+        }
+
+        // 2. Determine if the user is currently nested inside a section hub folder
+        // (e.g., /home-lab/ or /voice/)
+        const isInSectionHub = depth >= 1 && !segments[0].endsWith('.html');
+        
+        if (isInSectionHub) {
+            // Perspective: Locked inside the sub-section folder (e.g., /home-lab/)
+            const currentSection = segments[0]; 
+            
+            // "Home" goes to the index.html of this specific hub
+            document.getElementById('nav-home').href = rootPrefix + currentSection + "/index.html";
+            // "Guides" and "Reference" target files inside this specific hub folder
+            document.getElementById('nav-guides').href = rootPrefix + currentSection + "/guides.html";
+            document.getElementById('nav-reference').href = rootPrefix + currentSection + "/reference.html";
+        } else {
+            // Perspective: Top-Level Global Gateway Root
+            document.getElementById('nav-home').href = rootPrefix + "index.html";
+            document.getElementById('nav-guides').href = rootPrefix + "guides.html";
+            document.getElementById('nav-reference').href = rootPrefix + "reference.html";
+        }
+
+        // "Gateway" always explicitly forces a jump completely back out to the master dashboard
+        document.getElementById('nav-gateway').href = rootPrefix + "index.html";
+    })();
+</script>
