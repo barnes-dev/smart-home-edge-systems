@@ -47,12 +47,15 @@ header {
 .header-container { 
   max-width: 1200px; 
   margin: 0 auto; 
+  display: flex;                 
+  justify-content: flex-start;   
+  align-items: center; 
 } 
 
 .title-block { 
   display: flex; 
   align-items: center; 
-  justify-content: center; 
+  justify-content: flex-start;   
   min-height: 96px; 
   width: 100%; 
 } 
@@ -60,9 +63,9 @@ header {
 .title-block h1 { 
   font-size: 1.75rem; 
   color: #1e293b; 
-  text-align: center; 
-  padding: 0 40px; 
-  margin: 0 auto; 
+  text-align: left; 
+  padding: 0;
+  margin: 0; 
 } 
 
 main { 
