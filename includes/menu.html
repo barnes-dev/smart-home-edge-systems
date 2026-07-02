@@ -17,31 +17,38 @@ document.addEventListener("DOMContentLoaded", function() {
         const segments = window.location.pathname.split('/').filter(Boolean); 
         const depth = segments.length; 
         
-        // 1. Establish path back to the absolute Gateway Root 
+        // 1. Establish clean relative root tracking path
         let rootPrefix = "./"; 
         if (depth > 1) { 
             rootPrefix = "../".repeat(depth - 1); 
-        } 
+        } else if (depth === 1) {
+            rootPrefix = "../";
+        }
         
-        // 2. Determine if the user is currently nested inside a section hub folder 
-        const isInSectionHub = depth >= 1 && !segments[0].endsWith('.html'); 
-        let currentSection = ''; 
+        // 2. Safely evaluate structural folder layout depth
+        const isInSectionHub = depth >= 1 && !segments[depth - 1].endsWith('.html'); 
         
+        // Safely pull element anchors to prevent breaking scripts if one is missing
+        const navHome = document.getElementById('nav-home');
+        const navGuides = document.getElementById('nav-guides');
+        const navReference = document.getElementById('nav-reference');
+        const navGateway = document.getElementById('nav-gateway');
+
         if (isInSectionHub) { 
-            currentSection = segments[0]; 
-            // Perspective: inside a sub-section folder (e.g., /home-lab/) 
-            document.getElementById('nav-home').href = '../index.html'; 
-            document.getElementById('nav-guides').href = currentSection + '../guides/index.html'; 
-            document.getElementById('nav-reference').href = currentSection + '/reference.html'; 
+            // Correct relative upward navigation path scaling from within a subfolder
+            if (navHome) navHome.href = rootPrefix + "index.html"; 
+            if (navGuides) navGuides.href = rootPrefix + "guides/index.html"; 
+            if (navReference) navReference.href = rootPrefix + "reference/reference.html"; 
         } else { 
-            // Perspective: Top-Level Global Gateway Root 
-            document.getElementById('nav-home').href = rootPrefix + "index.html"; 
-            document.getElementById('nav-guides').href = rootPrefix + "guides/index.html"; 
-            document.getElementById('nav-reference').href = rootPrefix + "reference/reference.html"; 
+            // Standard root execution assignment paths
+            if (navHome) navHome.href = rootPrefix + "index.html"; 
+            if (navGuides) navGuides.href = rootPrefix + "guides/index.html"; 
+            if (navReference) navReference.href = rootPrefix + "reference/reference.html"; 
         } 
         
-        // "Gateway" always explicitly forces a jump completely back out to the master dashboard 
-        document.getElementById('nav-gateway').href = rootPrefix + "index.html"; 
+        // Master override anchor link reset execution
+        if (navGateway) navGateway.href = rootPrefix + "index.html"; 
     })();
 });
 </script>
+
