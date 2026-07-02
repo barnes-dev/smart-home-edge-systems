@@ -16,7 +16,7 @@
             --footer-text: #94a3b8;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: var(--bg); color: var(--body-text); line-height: 1.6; min-height: 100vh; }
+        body { background: var(--bg); color: var(--body-text); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
         a { text-decoration: none; color: inherit; }
         header { background-color: var(--header-bg); border-bottom: 1px solid #ffffff; padding: 1rem 2rem; }
         .header-container { max-width: 1200px; margin: 0 auto; }
@@ -39,56 +39,47 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="title-block">
-                <h1 style="display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; width: 100%;">
-                    <span><span style="color: #1d4ed8; font-weight: 700;">SMART HOME</span> <span style="color: #60a5fa; font-weight: 700;">EDGE SYSTEMS</span></span>
-                    <span class="tagline" style="display: block !important; margin-top: 0.5rem !important; font-size: 1rem; font-weight: 400; color: #c7d2fe;">Your Data Stays Home</span>
-                </h1>
-            </div>
-        </div>
-    </header>
+    <div id="header-placeholder"></div>
+    <div id="menu-placeholder"></div>
 
-    <main>
-        <h1 style="color: #eaf4ff; margin-bottom: 1.5rem; font-size: 2rem;">3D Printing Hub</h1>
-        <div class="grid">
-            <div class="card">
-                <h3>Printer Status</h3>
-                <p>Keep track of your print farm, machine health, and active jobs.</p>
+        <main>
+            <p style="margin-bottom: 1rem;"><a href="../index.html" style="color: #bfdbfe; font-weight: 600;">← Back to Gateway</a></p>
+            <h1 style="color: #eaf4ff; margin-bottom: 1.5rem; font-size: 2rem;">3D Printing Hub</h1>
+            <div class="grid">
+                <div class="card">
+                    <h3>Printer Status</h3>
+                    <p>Keep track of your print farm, machine health, and active jobs.</p>
+                </div>
+                <div class="card">
+                    <h3>Calibration Notes</h3>
+                    <p>Record meshes, flow tuning, and recurring maintenance tasks.</p>
+                </div>
+                <div class="card">
+                    <h3>Helpful Guide</h3>
+                    <p><a href="guides/klipper-bed-mesh.html">Open the Klipper bed mesh guide</a></p>
+                </div>
             </div>
-            <div class="card">
-                <h3>Calibration Notes</h3>
-                <p>Record meshes, flow tuning, and recurring maintenance tasks.</p>
-            </div>
-            <div class="card">
-                <h3>Helpful Guide</h3>
-                <p><a href="guides/klipper-bed-mesh.html">Open the Klipper bed mesh guide</a></p>
-            </div>
-        </div>
-    </main>
+        </main>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-column">
-                <h4>About Our Mission</h4>
-                <p>We prove that you don't need a massive enterprise budget to break free from the cloud. Our hands-on validation allows us to deliver completely free, field-tested deployment blueprints that empower everyone to achieve absolute data privacy, total independence, and robust reliability—while permanently lowering their technology expenses.</p>
-            </div>
-            <div class="footer-column">
-                <h5>Quick Links</h5>
-                <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h5>Site Owner</h5>
-                <ul>
-                    <li><a href="#">🌐 Website: www.smart-home-edge-systems.us</a></li>
-                    <li><a href="#">✉️ Email: info@smart-home-edge-systems.us</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
+    <script>
+        function loadComponent(elementId, filePath) {
+            fetch(filePath)
+                .then(response => {
+                    if (!response.ok) throw new Error(`Failed to load ${filePath}`);
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById(elementId).innerHTML = data;
+                })
+                .catch(error => console.error(error));
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadComponent("header-placeholder", "../includes/header.html");
+            loadComponent("menu-placeholder", "../includes/menu.html");
+            loadComponent("footer-placeholder", "../includes/footer.html");
+        });
+    </script>
 </body>
 </html>

@@ -25,16 +25,13 @@
         // 2. Determine if the user is currently nested inside a section hub folder
         // (e.g., /home-lab/ or /voice/)
         const isInSectionHub = depth >= 1 && !segments[0].endsWith('.html');
-        
+        let currentSection = '';
         if (isInSectionHub) {
-            // Perspective: Locked inside the sub-section folder (e.g., /home-lab/)
-            const currentSection = segments[0]; 
-            
-            // "Home" goes to the index.html of this specific hub
-            document.getElementById('nav-home').href = rootPrefix + currentSection + "/index.html";
-            // "Guides" and "Reference" target files inside this specific hub folder
-            document.getElementById('nav-guides').href = rootPrefix + currentSection + "/guides.html";
-            document.getElementById('nav-reference').href = rootPrefix + currentSection + "/reference.html";
+            currentSection = segments[0];
+            // Perspective: inside a sub-section folder (e.g., /home-lab/)
+            document.getElementById('nav-home').href = 'index.html';
+            document.getElementById('nav-guides').href = currentSection + '/guides.html';
+            document.getElementById('nav-reference').href = currentSection + '/reference.html';
         } else {
             // Perspective: Top-Level Global Gateway Root
             document.getElementById('nav-home').href = rootPrefix + "index.html";
