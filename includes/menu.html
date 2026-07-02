@@ -12,43 +12,29 @@
 </nav>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    (function() { 
-        const segments = window.location.pathname.split('/').filter(Boolean); 
-        const depth = segments.length; 
-        
-        // 1. Establish clean relative root tracking path
-        let rootPrefix = "./"; 
-        if (depth > 1) { 
-            rootPrefix = "../".repeat(depth - 1); 
-        } else if (depth === 1) {
-            rootPrefix = "../";
-        }
-        
-        // 2. Safely evaluate structural folder layout depth
-        const isInSectionHub = depth >= 1 && !segments[depth - 1].endsWith('.html'); 
-        
-        // Safely pull element anchors to prevent breaking scripts if one is missing
-        const navHome = document.getElementById('nav-home');
-        const navGuides = document.getElementById('nav-guides');
-        const navReference = document.getElementById('nav-reference');
-        const navGateway = document.getElementById('nav-gateway');
+(function() { 
+  const segments = window.location.pathname.split('/').filter(Boolean); 
+  
+  // Calculate exact depth based on whether we are loading a file or a folder directory
+  let depth = segments.length; 
+  if (segments.length > 0 && segments[segments.length - 1].endsWith('.html')) {
+      depth = segments.length - 1;
+  }
+  
+  // Build a flawless relative path prefix
+  const rootPrefix = depth > 0 ? "../".repeat(depth) : "./"; 
+  
+  // Safely pull element anchors to update their target references
+  const navHome = document.getElementById('nav-home');
+  const navGuides = document.getElementById('nav-guides');
+  const navReference = document.getElementById('nav-reference');
+  const navGateway = document.getElementById('nav-gateway');
 
-        if (isInSectionHub) { 
-            // Correct relative upward navigation path scaling from within a subfolder
-            if (navHome) navHome.href = rootPrefix + "index.html"; 
-            if (navGuides) navGuides.href = rootPrefix + "guides/index.html"; 
-            if (navReference) navReference.href = rootPrefix + "reference/reference.html"; 
-        } else { 
-            // Standard root execution assignment paths
-            if (navHome) navHome.href = rootPrefix + "index.html"; 
-            if (navGuides) navGuides.href = rootPrefix + "guides/index.html"; 
-            if (navReference) navReference.href = rootPrefix + "reference/reference.html"; 
-        } 
-        
-        // Master override anchor link reset execution
-        if (navGateway) navGateway.href = rootPrefix + "index.html"; 
-    })();
-});
+  if (navHome) navHome.href = rootPrefix + "index.html"; 
+  if (navGuides) navGuides.href = rootPrefix + "guides/index.html"; 
+  if (navReference) navReference.href = rootPrefix + "reference/reference.html"; 
+  if (navGateway) navGateway.href = rootPrefix + "index.html"; 
+})();
 </script>
+
 
