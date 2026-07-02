@@ -78,24 +78,48 @@
     </main>
 
     <div id="footer-placeholder"></div>
-    <script>
-        function loadComponent(elementId, filePath) {
-            fetch(filePath)
-                .then(response => {
-                    if (!response.ok) throw new Error(`Failed to load ${filePath}`);
-                    return response.text();
-                })
-                .then(data => {
-                    document.getElementById(elementId).innerHTML = data;
-                })
-                .catch(error => console.error(error));
-        }
+<script>
+function loadComponent(elementId, filePath, callback = null) {
+  fetch(filePath)
+    .then(response => {
+      if (!response.ok) throw new Error(`Failed to load ${filePath}`);
+      return response.text();
+    })
+    .then(data => {
+      document.getElementById(elementId).innerHTML = data;
+      // If a callback function is provided, run it now!
+      if (callback) callback();
+    })
+    .catch(error => console.error(error));
+}
 
-        document.addEventListener("DOMContentLoaded", () => {
-            loadComponent("header-placeholder", "/includes/header.html");
-            loadComponent("menu-placeholder", "/includes/menu.html");
-            loadComponent("footer-placeholder", "/includes/footer.html");
-        });
-    </script>
+// Custom function to fix the menu links after injection
+function fixMenuPaths() {
+  const segments = window.location.pathname.split('/').filter(Boolean); 
+  let depth = segments.length; 
+  if (segments.length > 0 && segments[segments.length - 1].endsWith('.html')) {
+      depth = segments.length - 1;
+  }
+  
+  const rootPrefix = depth > 0 ? "../".repeat(depth) : "./"; 
+
+  const navHome = document.getElementById('nav-home');
+  const navGuides = document.getElementById('nav-guides');
+  const navReference = document.getElementById('nav-reference');
+  const navGateway = document.getElementById('nav-gateway');
+
+  if (navHome) navHome.href = rootPrefix + "index.html"; 
+  if (navGuides) navGuides.href = rootPrefix + "guides/index.html"; 
+  if (navReference) navReference.href = rootPrefix + "reference/reference.html"; 
+  if (navGateway) navGateway.href = rootPrefix + "index.html"; 
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadComponent("header-placeholder", "/includes/header.html");
+  // Pass the fixMenuPaths function as a callback here:
+  loadComponent("menu-placeholder", "/includes/menu.html", fixMenuPaths);
+  loadComponent("footer-placeholder", "/includes/footer.html");
+});
+</script>
 </body>
 </html>

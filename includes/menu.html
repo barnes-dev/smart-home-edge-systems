@@ -4,37 +4,12 @@
     <a id="nav-reference" href="#">📋 Reference</a>
     <a id="nav-gateway" href="#">🌐 Gateway</a>
     
-    <a href="mailto:info@smart-home-edge-systems.us" 
-       onclick="this.href='mailto:info@smart-home-edge-systems.us?subject=Inquiry from: ' + encodeURIComponent(window.location.href);" 
-       style="color: #60a5fa; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 1.5rem;">
-       ✉️ Contact Us
-    </a>
+<a href="mailto:info@smart-home-edge-systems.us" onclick="this.href='mailto:info@smart-home-edge-systems.us?subject=Inquiry from: ' + encodeURIComponent(window.location.href);" style="color: #60a5fa; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 1.5rem;">
+  ✉️ Contact Us
+</a>
+
 </nav>
 
-<script>
-(function() { 
-  const segments = window.location.pathname.split('/').filter(Boolean); 
-  
-  // Calculate exact depth based on whether we are loading a file or a folder directory
-  let depth = segments.length; 
-  if (segments.length > 0 && segments[segments.length - 1].endsWith('.html')) {
-      depth = segments.length - 1;
-  }
-  
-  // Build a flawless relative path prefix
-  const rootPrefix = depth > 0 ? "../".repeat(depth) : "./"; 
-  
-  // Safely pull element anchors to update their target references
-  const navHome = document.getElementById('nav-home');
-  const navGuides = document.getElementById('nav-guides');
-  const navReference = document.getElementById('nav-reference');
-  const navGateway = document.getElementById('nav-gateway');
 
-  if (navHome) navHome.href = rootPrefix + "index.html"; 
-  if (navGuides) navGuides.href = rootPrefix + "guides/index.html"; 
-  if (navReference) navReference.href = rootPrefix + "reference/reference.html"; 
-  if (navGateway) navGateway.href = rootPrefix + "index.html"; 
-})();
-</script>
 
 
