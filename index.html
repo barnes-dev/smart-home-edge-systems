@@ -1,74 +1,147 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Standard global style sheets link -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    body {
+      background: #07111f;
+      color: #eaf4ff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-align: left;
+      margin: 0 0 1.5rem 0;
+      padding: 0;
+      line-height: 1.2;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 1rem 1.15rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card h3 {
+      margin: 0 0 0.5rem;
+      color: #f5f9ff;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0 0 0.75rem;
+      color: #dbeafe;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+
+    .card a {
+      color: #bfdbfe;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .card a:hover {
+      color: #60a5fa;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div id="header-placeholder"></div>
 
-    <div id="header-placeholder"></div>
-    <div id="menu-placeholder"></div>
+  <main>
+    <h1>
+      <span style="color: #1d4ed8;">SMART HOME</span>
+      <span style="color: #60a5fa;">EDGE SYSTEMS</span>
+      <span style="color: #eaf4ff; font-weight: 400;">Gateway</span>
+    </h1>
 
-    <main>
-<main>
+    <div class="grid">
+      <div class="card">
+        <h3>Home Lab</h3>
+        <p>Core infrastructure, networks, and hypervisors.</p>
+        <a href="./home-lab/index.html">Enter Hub &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Home Assistant</h3>
+        <p>Smart automations, dashboards, and integrations.</p>
+        <a href="./home-assistant/index.html">Enter Hub &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Home Voice Assistants</h3>
+        <p>Voice Satellites and integration with Voice Services.</p>
+        <a href="./voice/index.html">Enter Hub &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Home Media Servers</h3>
+        <p>Music, and Movie Media Server Platforms.</p>
+        <a href="./media/index.html">Enter Hub &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Home Storage</h3>
+        <p>Smart home Storage Solutions.</p>
+        <a href="./storage/index.html">Enter Hub &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Home Survailence and Security</h3>
+        <p>Home Security and Survailence</p>
+        <a href="./survailence/index.html">Enter Hub &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>3D Printing</h3>
+        <p>Additive manufacturing, custom parts, and modifications.</p>
+        <a href="./3d-printing/index.html">Enter Hub &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Research and Development</h3>
+        <p>Projects that our Team is currently working on.</p>
+        <a href="./r-d/index.html">Enter Hub &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Marketing</h3>
+        <p>Marketing and Community Engagement.</p>
+        <a href="./marketing/index.html">Enter Hub &rarr;</a>
+      </div>
+    </div>
+  </main>
 
-<main>
-<h1 style="font-size: 1.75rem; font-weight: 700; text-align: left; margin: 0 0 1.5rem 0; padding: 0; line-height: 1.2;">
-    <span style="color: #1d4ed8;">SMART HOME</span> 
-    <span style="color: #60a5fa;">EDGE SYSTEMS</span> 
-    <span style="color: #eaf4ff; font-weight: 400;">Gateway</span>
-</h1>
-</main>
-        <div class="grid">
-            <div class="card">
-                <h3>Home Lab</h3>
-                <p>Core infrastructure, networks, and hypervisors.</p>
-                <a href="./home-lab/index.html">Enter Hub &rarr;</a>
-            </div>
-            <div class="card">
-                <h3>Home Assistant</h3>
-                <p>Smart automations, dashboards, and integrations.</p>
-                <a href="./home-assistant/index.html">Enter Hub &rarr;</a>
-            </div>
-            <div class="card">
-                <h3>Home Voice Assistants</h3>
-                <p>Voice Satellites and integration with Voice Services.</p>
-                <a href="./voice/index.html">Enter Hub &rarr;</a>
-            </div>
-            <div class="card">
-                <h3>Home Media Servers</h3>
-                <p>Music, and Movie Media Server Platforms.</p>
-                <a href="./media/index.html">Enter Hub &rarr;</a>
-            </div>
-            <div class="card">
-                <h3>Home Storage</h3>
-                <p>Smart home Storage Solutions.</p>
-                <a href="./storage/index.html">Enter Hub &rarr;</a>
-            </div>
-            <div class="card">
-                <h3>Home Survailence and Security</h3>
-                <p>Home Security and Survailence</p>
-                <a href="./survailence/index.html">Enter Hub &rarr;</a>
-            </div>
-            <div class="card">
-                <h3>3D Printing</h3>
-                <p>Additive manufacturing, custom parts, and modifications.</p>
-                <a href="./3d-printing/index.html">Enter Hub &rarr;</a>
-            </div>
-            <div class="card">
-                <h3>Research and Development</h3>
-                <p>Projects that our Team is currently working on.</p>
-                <a href="./r-d/index.html">Enter Hub &rarr;</a>
-            </div>
-            <div class="card">
-                <h3>Marketing</h3>
-                <p>Marketing and Community Engagement.</p>
-                <a href="./marketing/index.html">Enter Hub &rarr;</a>
-            </div>
-        </div>
-    </main>
-
-    <div id="footer-placeholder"></div>
-    <script src="/scripts/component-loader.js"></script>
+  <div id="footer-placeholder"></div>
+  <script src="/scripts/component-loader.js"></script>
 </body>
 </html>
