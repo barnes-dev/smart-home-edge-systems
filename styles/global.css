@@ -199,3 +199,91 @@ footer {
     border-bottom: 2px solid #60a5fa; 
     padding-bottom: 4px;             
 }
+
+/* ==========================================================================
+   DOCUMENT FORMATTING FIXES (INLINE-BLOCK BOXED TABLES)
+   ========================================================================== */
+
+/* 1. H3 Indentation */
+.document-content h3 {
+    color: #93c5fd;
+    font-size: 1.25rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    padding-left: 2.5em;
+}
+
+/* 2. H4 Indentation */
+.document-content h4 {
+    color: #60a5fa;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 5em;
+}
+
+/* 3. Global Left-Justified Isolated Tables */
+.document-content table {
+    /* FIX: Inline-block shrinks the box tightly to data width without layout clipping */
+    display: inline-block !important; 
+    
+    /* FORCE THE BOX TO SNAP SPECIFICALLY TO THE DATA WIDTH */
+    width: max-content !important;
+    max-width: 800px !important;
+    white-space: nowrap !important;
+    
+    /* Spacing around the container */
+    margin-top: 20px !important;
+    margin-bottom: 25px !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    
+    /* Clean Box Border Styling */
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding: 12px !important;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-collapse: separate !important; 
+}
+
+/* 4. Table Content Sizing & Layout Rules */
+.document-content th {
+    background-color: rgba(147, 197, 253, 0.1) !important;
+    color: #bfdbfe;
+    font-weight: 600;
+    text-align: left;
+    padding: 2px 10px !important; 
+    line-height: 1.2 !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.document-content td {
+    padding: 2px 10px !important; 
+    line-height: 1.2 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.document-content tr:last-child td {
+    border-bottom: none !important; /* Strips the final row line so it doesn't conflict with the outer box border */
+}
+
+.document-content tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* 5. Precision Caption Center Alignment */
+.document-content caption {
+    display: block !important; /* Allows caption to span the exact width of the table elements */
+    caption-side: top !important;
+    text-align: center !important; 
+    padding-bottom: 8px !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #bfdbfe;
+}
+/* Emergency Escape for Unclosed/Broken Tables */
+.document-content table {
+    overflow: hidden !important;
+    display: block !important; /* Forces it to yield its grip on the rest of the layout */
+    height: auto !important;
+}
