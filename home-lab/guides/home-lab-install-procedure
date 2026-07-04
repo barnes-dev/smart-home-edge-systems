@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home Lab Installation Procedure</title>
+    <title></title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -73,57 +73,6 @@
             margin: 1.5rem 0;
         }
 
-        /* CUSTOM TABLE SIZE & LEFT JUSTIFICATION */
-        .document-content table {
-            width: auto;
-            max-width: 850px;           /* Prevents stretching the full width of wide displays */
-            margin: 1.5rem 0;           /* FORCE LEFT JUSTIFIED (Removed auto right/left margins) */
-            border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-            text-align: left;
-        }
-
-        .document-content th, 
-        .document-content td {
-            padding: 10px 16px;         
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Preserve tabs and spacing formatting inside table cells natively */
-        .document-content td {
-            white-space: pre-wrap;      
-        }
-
-        .document-content th {
-            background: rgba(191, 219, 254, 0.1); 
-            color: #bfdbfe;
-            font-weight: 600;
-        }
-
-        /* FORCE ALL IMAGES AND CAPTIONS TO BE LEFT ALIGNED */
-        .document-content img {
-            display: block;
-            margin-left: 0 !important;
-            margin-right: auto !important;
-            text-align: left;
-        }
-
-        .document-content p.caption,
-        .document-content .caption,
-        .document-content figcaption {
-            text-align: left !important;
-            margin-left: 0 !important;
-            margin-top: 0.5rem;
-            color: #94a3b8;
-        }
-
-        .document-content tr:hover {
-            background: rgba(255, 255, 255, 0.04); 
-        }
-
         @media (max-width: 768px) {
             .doc-layout {
                 grid-template-columns: 1fr;
@@ -132,11 +81,6 @@
                 position: relative;
                 top: 0;
                 max-height: none;
-            }
-            .document-content table {
-                width: 100%;            
-                display: block;
-                overflow-x: auto;       
             }
         }
     </style>
@@ -152,8 +96,7 @@
         </p>
 
         <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-            <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Home
-Lab Installation Procedure</h1>
+            <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;"></h1>
             
             <h2 style="color: #bfdbfe; margin: 0 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
             
@@ -166,7 +109,7 @@ Lab Installation Procedure</h1>
                 <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
                 <ul>
                 <li><a href="#nav-figure-a-generic-home-lab"
-                id="nav-toc-figure-a-generic-home-lab">Figure : A
+                id="nav-toc-figure-a-generic-home-lab">Figure 1: A
                 Generic Home Lab</a></li>
                 <li><a href="#nav-introduction"
                 id="nav-toc-introduction">Introduction</a>
@@ -191,8 +134,7 @@ Lab Installation Procedure</h1>
                 <ul>
                 <li><a
                 href="#nav-figure-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram"
-                id="nav-toc-figure-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure
-                : Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
+                id="nav-toc-figure-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure 1: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
                 Network Diagram</a></li>
                 <li><a href="#nav-code-barnes-home-lab-configuration"
                 id="nav-toc-code-barnes-home-lab-configuration">Code :
@@ -214,15 +156,7 @@ Lab Installation Procedure</h1>
                 <ul>
                 <li><a href="#nav-step-by-step-deployment-guide"
                 id="nav-toc-step-by-step-deployment-guide">Step-by-Step
-                Deployment Guide</a>
-                <ul>
-                <li><a href="#nav-code-2-promox-boot-disk"
-                id="nav-toc-code-2-promox-boot-disk">Code 2: Promox Boot
-                Disk</a></li>
-                <li><a href="#nav-code-2-putty-ssh-setup-process"
-                id="nav-toc-code-2-putty-ssh-setup-process">Code 2:
-                Putty-ssh Setup Process</a></li>
-                </ul></li>
+                Deployment Guide</a></li>
                 </ul></li>
                 <li><a href="#nav-pihole-lxc-100"
                 id="nav-toc-pihole-lxc-100">PiHole (LXC 100)</a>
@@ -273,9 +207,34 @@ Lab Installation Procedure</h1>
                 <li><a href="#nav-load-the-agents"
                 id="nav-toc-load-the-agents">Load the Agents</a>
                 <ul>
-                <li><a href="#nav-code-8-loading-the-agents"
-                id="nav-toc-code-8-loading-the-agents">Code 8: Loading
-                the Agents</a></li>
+                <li><a
+                href="#nav-load-the-primary-voice-conversation-agent"
+                id="nav-toc-load-the-primary-voice-conversation-agent">1.
+                Load the Primary Voice &amp; Conversation Agent</a></li>
+                <li><a
+                href="#nav-load-the-complex-automation-code-sandbox-agent"
+                id="nav-toc-load-the-complex-automation-code-sandbox-agent">2.
+                Load the Complex Automation &amp; Code Sandbox
+                Agent</a></li>
+                <li><a
+                href="#nav-load-the-inline-ide-autocomplete-engine"
+                id="nav-toc-load-the-inline-ide-autocomplete-engine">3.
+                Load the Inline IDE Autocomplete Engine</a></li>
+                <li><a href="#nav-load-the-embedding-model"
+                id="nav-toc-load-the-embedding-model">4. Load the
+                Embedding Model</a></li>
+                <li><a href="#nav-test-the-primary-voice-agent"
+                id="nav-toc-test-the-primary-voice-agent">5. Test the
+                Primary Voice Agent</a></li>
+                <li><a href="#nav-test-the-code-sandbox"
+                id="nav-toc-test-the-code-sandbox">6. Test the Code
+                Sandbox</a></li>
+                <li><a href="#nav-test-the-ide-autocomplete-engine"
+                id="nav-toc-test-the-ide-autocomplete-engine">7. Test
+                the IDE Autocomplete Engine</a></li>
+                <li><a href="#nav-test-the-coding-engine"
+                id="nav-toc-test-the-coding-engine">8. Test the Coding
+                Engine</a></li>
                 </ul></li>
                 <li><a
                 href="#nav-how-to-connect-ollama-to-home-assistant"
@@ -304,9 +263,6 @@ Lab Installation Procedure</h1>
                 id="nav-toc-step-2-set-up-wyoming-docker-services">Step
                 2: Set Up Wyoming Docker Services</a>
                 <ul>
-                <li><a href="#nav-code-10-putty-setup"
-                id="nav-toc-code-10-putty-setup">Code 10: Putty
-                Setup</a></li>
                 <li><a href="#nav-code-wyomingdockercompose.sh"
                 id="nav-toc-code-wyomingdockercompose.sh">Code :
                 WyomingDockerCompose.sh</a></li>
@@ -377,38 +333,21 @@ Lab Installation Procedure</h1>
                 <ul>
                 <li><a href="#nav-for-home-assistant-os-vm-101"
                 id="nav-toc-for-home-assistant-os-vm-101">1. For Home
-                Assistant OS (VM 101)</a>
-                <ul>
-                <li><a href="#nav-code-20-haospost.sh"
-                id="nav-toc-code-20-haospost.sh">Code 20:
-                HAOSPost.sh</a></li>
-                </ul></li>
+                Assistant OS (VM 101)</a></li>
+                <li><a href="#nav-forpi-hole-lxc-100"
+                id="nav-toc-forpi-hole-lxc-100">2. ForPi-Hole (LXC
+                100)</a></li>
                 <li><a
                 href="#nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip"
-                id="nav-toc-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">2.
+                id="nav-toc-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">3.
                 Pi-Hole Limits (Ensuring it uses the temporary staging
-                IP)</a>
-                <ul>
-                <li><a href="#nav-code-20-piholepost.sh"
-                id="nav-toc-code-20-piholepost.sh">Code 20:
-                PiHolePost.sh</a></li>
-                </ul></li>
+                IP)</a></li>
                 <li><a href="#nav-for-ollama-llm-engine-lxc-103"
-                id="nav-toc-for-ollama-llm-engine-lxc-103">3. For Ollama
-                LLM Engine (LXC 103)</a>
-                <ul>
-                <li><a href="#nav-code-20-ollamaholepost.sh"
-                id="nav-toc-code-20-ollamaholepost.sh">Code 20:
-                OllamaHolePost.sh</a></li>
-                </ul></li>
+                id="nav-toc-for-ollama-llm-engine-lxc-103">4. For Ollama
+                LLM Engine (LXC 103)</a></li>
                 <li><a href="#nav-for-wyoming-docker-lxc-104"
-                id="nav-toc-for-wyoming-docker-lxc-104">4. For Wyoming
-                Docker (LXC 104)</a>
-                <ul>
-                <li><a href="#nav-code-20-wyomingpost.sh"
-                id="nav-toc-code-20-wyomingpost.sh">Code 20:
-                WyomingPost.sh</a></li>
-                </ul></li>
+                id="nav-toc-for-wyoming-docker-lxc-104">5. For Wyoming
+                Docker (LXC 104)</a></li>
                 </ul></li>
                 </ul></li>
                 <li><a href="#nav-disaster-recovery"
@@ -504,10 +443,8 @@ Lab Installation Procedure</h1>
                 id="nav-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.">A
                 Home Lab self-contained in an inexpensive single
                 mini-computer.</h3>
-                <p><img src="../assets/figures/image2.png"
-                style="width:6.5in;height:3.54861in" /></p>
                 <h4
-                id="nav-figure-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure 2: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
+                id="nav-figure-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure 1: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
                 Network Diagram</h4>
                 <p>Note: If you want to use this information in an AI
                 window – select this section into your chat window to
@@ -611,7 +548,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-barnes-home-lab-configuration">Code 1:
+                <h4 id="nav-code-barnes-home-lab-configuration">Code :
                 Barnes Home Lab Configuration</h4>
                 <h1
                 id="nav-installing-your-home-lab-on-a-mini-computer">Installing
@@ -631,7 +568,7 @@ Lab Installation Procedure</h1>
                 allocations that you will be asked for. Use the details
                 presented in each section, if there are questions the
                 table in <a
-                href="#nav-code-barnes-home-lab-configuration">Code 2:
+                href="#nav-code-barnes-home-lab-configuration">Code 1:
                 Barnes Home Lab Configuration</a> can be used for
                 reference to allocate your resources efficiently to
                 avoid crashing the host.</p>
@@ -641,25 +578,15 @@ Lab Installation Procedure</h1>
                 official website located at <a
                 href="https://www.proxmox.com/en/downloads/proxmox-virtual-environment"
                 class="uri">https://www.proxmox.com/en/downloads/proxmox-virtual-environment</a>.</p>
-                <table>
-                <colgroup>
-                <col style="width: 100%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th><p>1. Flash it to a USB drive using BalenaEtcher or
-                Rufus.</p>
-                <p>2. Boot your KAMRUI Mini PC into the BIOS and disable
-                Secure Boot. Also enable power on after power reset.</p>
-                <p>3. Boot from the USB, follow the on-screen installer
-                prompts, and set a static IP address.</p></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                </table>
-                <h4 id="nav-code-2-promox-boot-disk">Code 3: Promox Boot
-                Disk</h4>
+                <ol type="1">
+                <li><p>Flash it to a USB drive using BalenaEtcher or
+                Rufus.</p></li>
+                <li><p>Boot your KAMRUI Mini PC into the BIOS and
+                disable Secure Boot. Also enable power on after power
+                reset.</p></li>
+                <li><p>Boot from the USB, follow the on-screen installer
+                prompts, and set a static IP address.</p></li>
+                </ol>
                 <p>Step 2: Setup Putty/ssh for easy communication with
                 your new Home Lab.</p>
                 <ol type="1">
@@ -667,87 +594,99 @@ Lab Installation Procedure</h1>
                 server using PuTTY, you need to generate a key pair on
                 Windows, add the public key to Proxmox, and configure
                 PuTTY to use the private key.</p></li>
-                <li><p>Here is the complete step-by-step
-                process.</p></li>
+                <li><p>Here is the complete step-by-step process.</p>
+                <ul>
+                <li><p>Generate an SSH Key</p>
+                <ul>
+                <li><p>Open <strong>PuTTYgen</strong> on your Windows
+                computer.</p></li>
+                <li><p>Under <strong>Type of key to generate</strong>,
+                select <strong>Ed25519</strong> for modern security and
+                speed.</p></li>
+                <li><p>Click the <strong>Generate</strong>
+                button.</p></li>
+                <li><p>Move your mouse randomly over the blank area to
+                create entropy for the key generation.</p>
+                <ul>
+                <li><strong>Crucial</strong>: Leave both passphrase
+                fields completely blank to ensure a passwordless
+                login.</li>
+                </ul></li>
+                <li><p>Click <strong>Save private key</strong> and save
+                it to a secure folder on your PC as a .ppk file Save the
+                location for use below.</p></li>
+                <li><p>Keep the PuTTYgen window open; you will need the
+                text string inside the top box labeled <em>Public key
+                for pasting into OpenSSH authorized_keys
+                file.</em></p></li>
+                </ul></li>
+                <li><p>Add the Public Key to Proxmox<a
+                href="https://www.youtube.com/watch?v=OkY30sh-vRM">(SyncBricks,
+                2024)</a></p></li>
+                </ul></li>
                 </ol>
-                <table>
-                <colgroup>
-                <col style="width: 100%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th><p>o Generate an SSH Key</p>
-                <p>• Open PuTTYgen on your Windows computer.</p>
-                <p>• Under Type of key to generate, select Ed25519 for
-                modern security and</p>
-                <p>speed.</p>
-                <p>• Click the Generate button.</p>
-                <p>• Move your mouse randomly over the blank area to
-                create entropy for the key</p>
-                <p>generation.</p>
-                <p>Crucial: Leave both passphrase fields completely
-                blank to ensure a</p>
-                <p>passwordless login.</p>
-                <p>• Click Save private key and save it to a secure
-                folder on your PC as a .ppk</p>
-                <p>file Save the location for use below.</p>
-                <p>• Keep the PuTTYgen window open; you will need the
-                text string inside the</p>
-                <p>top box labeled Public key for pasting into OpenSSH
-                authorized_keys file.</p>
-                <p>o Add the Public Key to Proxmox(SyncBricks, 2024)</p>
-                <p>• Launch PuTTY and log into your Proxmox server using
-                your standard root</p>
-                <p>username and password.</p>
-                <p>• Create the directory for SSH keys if it does not
+                <ul>
+                <li><p>Launch PuTTY and log into your Proxmox server
+                using your standard root username and password.</p></li>
+                <li><p>Create the directory for SSH keys if it does not
                 already exist:</p>
-                <p>o mkdir -p ~/.ssh</p>
-                <p>• Set the appropriate folder permissions:</p>
-                <p>o chmod 700 ~/.ssh</p>
-                <p>• Open or create the authorization file with a text
+                <ul>
+                <li>mkdir -p ~/.ssh</li>
+                </ul></li>
+                <li><p>Set the appropriate folder permissions:</p>
+                <ul>
+                <li>chmod 700 ~/.ssh</li>
+                </ul></li>
+                <li><p>Open or create the authorization file with a text
                 editor:</p>
-                <p>o vi ~/.ssh/authorized_keys</p>
-                <p>• Go back to your PuTTYgen window, copy the entire
-                string of text from the</p>
-                <p>top box, and paste it into the PuTTY window. It must
-                occupy a single line.</p>
-                <p>• save the file, and exit the vi editor ("enter :wq!
-                ".</p>
-                <p>• Secure the authorization file permissions:</p>
-                <p>o chmod 600 ~/.ssh/authorized_keys</p>
-                <p>o Configure PuTTY for Key Authentication</p>
-                <p>• Close your current PuTTY session and open a brand
-                new PuTTY window.</p>
-                <p>• On the Session category page (on the left panel),
-                type your Proxmox</p>
-                <p>server's IP address (192.168.86.250) into the Host
-                Name field.</p>
-                <p>• In the left panel, navigate to Connection ➔
-                Data.</p>
-                <p>• In the Auto-login username box, type root (or your
-                chosen administrative</p>
-                <p>username).</p>
-                <p>• In the left panel, drill down to Connection ➔ SSH ➔
-                Auth ➔ Credentials.</p>
-                <p>• Click Browse next to Private key file for
-                authentication and select the</p>
-                <p>.ppk file you saved above.</p>
-                <p>• Navigate back to the Session category at the very
-                top of the left panel.</p>
-                <p>• Type a name for this connection profile (e.g.,
-                Proxmox_Server) in the</p>
-                <p>Saved Sessions box and click Save.</p>
-                <p>• Click Open. PuTTY will now log into your Proxmox
-                console automatically</p>
-                <p>using the private key, bypassing the password prompt
-                completely.</p></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                </table>
-                <h4 id="nav-code-2-putty-ssh-setup-process">Code 4:
-                Putty-ssh Setup Process</h4>
+                <ul>
+                <li>vi ~/.ssh/authorized_keys</li>
+                </ul></li>
+                <li><p>Go back to your PuTTYgen window, copy the entire
+                string of text from the top box, and paste it into the
+                PuTTY window. It must occupy a single line.</p></li>
+                <li><p>save the file, and exit the vi editor ("enter
+                :wq! ".</p></li>
+                <li><p>Secure the authorization file permissions:</p>
+                <ul>
+                <li>chmod 600 ~/.ssh/authorized_keys</li>
+                </ul>
+                <!-- -->
+                <ul>
+                <li>Configure PuTTY for Key Authentication</li>
+                </ul></li>
+                </ul>
+                <!-- -->
+                <ul>
+                <li><p>Close your current PuTTY session and open a brand
+                new <strong>PuTTY</strong> window.</p></li>
+                <li><p>On the <strong>Session</strong> category page (on
+                the left panel), type your Proxmox server's IP address
+                (192.168.86.250) into the <strong>Host Name</strong>
+                field.</p></li>
+                <li><p>In the left panel, navigate to
+                <strong>Connection</strong> ➔
+                <strong>Data</strong>.</p></li>
+                <li><p>In the <strong>Auto-login username</strong> box,
+                type root (or your chosen administrative
+                username).</p></li>
+                <li><p>In the left panel, drill down to
+                <strong>Connection</strong> ➔ <strong>SSH</strong> ➔
+                <strong>Auth</strong> ➔
+                <strong>Credentials</strong>.</p></li>
+                <li><p>Click <strong>Browse</strong> next to <em>Private
+                key file for authentication</em> and select the .ppk
+                file you saved above.</p></li>
+                <li><p>Navigate back to the <strong>Session</strong>
+                category at the very top of the left panel.</p></li>
+                <li><p>Type a name for this connection profile (e.g.,
+                Proxmox_Server) in the <strong>Saved Sessions</strong>
+                box and click <strong>Save</strong>.</p></li>
+                <li><p>Click <strong>Open</strong>. PuTTY will now log
+                into your Proxmox console automatically using the
+                private key, bypassing the password prompt
+                completely.</p></li>
+                </ul>
                 <p>Step 3: Use Helper Scripts for Easy Setup of the
                 remaining products.</p>
                 <blockquote>
@@ -791,7 +730,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-piholeinstallcommand.sh">Code 5:
+                <h4 id="nav-code-piholeinstallcommand.sh">Code :
                 PiHoleInstallCommand.sh</h4>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
@@ -827,7 +766,8 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-pihole-install-parameters-and-response">Code 6: PiHole Install Parameters and Response</h4>
+                id="nav-code-pihole-install-parameters-and-response">Code
+                : PiHole Install Parameters and Response</h4>
                 <h2 id="nav-home-assistant-os-lxc-101---haos-vm">Home
                 Assistant OS (LXC 101 - HAOS VM)</h2>
                 <p>Run this command in the Proxmox host shell to
@@ -846,7 +786,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-haosinstallcommand.sh">Code 7:
+                <h4 id="nav-code-haosinstallcommand.sh">Code :
                 HAOSInstallCommand.sh</h4>
                 <p>When you copy and run this command it will start the
                 install script.</p>
@@ -884,7 +824,8 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-haos-install-parameters-and-response">Code 8: HAOS Install Parameters and Response</h4>
+                id="nav-code-haos-install-parameters-and-response">Code
+                : HAOS Install Parameters and Response</h4>
                 <h2 id="nav-nginx-proxy-manager-lxc-102">NGINX Proxy
                 Manager (LXC 102):</h2>
                 <p>Run this command to deploy a lightweight NGINX
@@ -902,7 +843,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-nginxinstallcommand.sh">Code 9:
+                <h4 id="nav-code-nginxinstallcommand.sh">Code :
                 NGINXInstallCommand.sh</h4>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
@@ -945,7 +886,8 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-nginx-install-parameters-and-response">Code 10: NGINX Install Parameters and Response</h4>
+                id="nav-code-nginx-install-parameters-and-response">Code
+                : NGINX Install Parameters and Response</h4>
                 <h2 id="nav-ollama-ai-engine-lxc-103">Ollama AI Engine
                 (LXC 103)</h2>
                 <p>This uses the specialized ollama.sh hardware and
@@ -962,7 +904,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-ollamainstallcommand.sh">Code 11:
+                <h4 id="nav-code-ollamainstallcommand.sh">Code :
                 OllamaInstallCommand.sh</h4>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
@@ -1005,7 +947,8 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-ollama-install-parameters-and-response">Code 12: Ollama Install Parameters and Response</h4>
+                id="nav-code-ollama-install-parameters-and-response">Code
+                : Ollama Install Parameters and Response</h4>
                 <h3 id="nav-load-the-agents">Load the Agents</h3>
                 <p>In the Prolog Web GUI at <a
                 href="http://192.168.86.250:8006"
@@ -1024,44 +967,58 @@ Lab Installation Procedure</h1>
                 for the password anymore.</p></li>
                 </ul>
                 <p>In this window enter the commands listed below:</p>
-                <table>
-                <colgroup>
-                <col style="width: 100%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th><p>1. Load the Primary Voice &amp; Conversation
-                Agent</p>
-                <p>• ollama pull qwen2.5:7b</p>
-                <p>2. Load the Complex Automation &amp; Code Sandbox
-                Agent</p>
-                <p>• ollama pull qwen2.5-coder:7b</p>
-                <p>3. Load the Inline IDE Autocomplete Engine</p>
-                <p>• ollama pull qwen2.5-coder:1.5b</p>
-                <p>4. Load the Embedding Model</p>
-                <p>• ollama pull nomic-embed-text</p>
-                <p>5. Test the Primary Voice Agent</p>
-                <p>• echo "Hello, how are you today?" | ollama run
-                qwen2.5:7b</p>
-                <p>6. Test the Code Sandbox</p>
-                <p>• echo "Write a simple Python function to add two
-                numbers." | ollama run qwen2.5-coder:7b</p>
-                <p>7. Test the IDE Autocomplete Engine</p>
-                <p>• echo "def hello_world():" | ollama run
-                qwen2.5-coder:1.5b</p>
-                <p>8. Test the Coding Engine</p>
-                <p>• curl http://localhost:11434/api/embeddings -d
-                '{</p>
+                <h4
+                id="nav-load-the-primary-voice-conversation-agent">1.
+                Load the Primary Voice &amp; Conversation Agent</h4>
+                <ul>
+                <li>ollama pull qwen2.5:7b</li>
+                </ul>
+                <h4
+                id="nav-load-the-complex-automation-code-sandbox-agent">2.
+                Load the Complex Automation &amp; Code Sandbox
+                Agent</h4>
+                <ul>
+                <li>ollama pull qwen2.5-coder:7b</li>
+                </ul>
+                <h4 id="nav-load-the-inline-ide-autocomplete-engine">3.
+                Load the Inline IDE Autocomplete Engine</h4>
+                <ul>
+                <li>ollama pull qwen2.5-coder:1.5b</li>
+                </ul>
+                <h4 id="nav-load-the-embedding-model">4. Load the
+                Embedding Model</h4>
+                <ul>
+                <li>ollama pull nomic-embed-text</li>
+                </ul>
+                <h4 id="nav-test-the-primary-voice-agent">5. Test the
+                Primary Voice Agent</h4>
+                <ul>
+                <li>echo "Hello, how are you today?" | ollama run
+                qwen2.5:7b</li>
+                </ul>
+                <h4 id="nav-test-the-code-sandbox">6. Test the Code
+                Sandbox</h4>
+                <ul>
+                <li>echo "Write a simple Python function to add two
+                numbers." | ollama run qwen2.5-coder:7b</li>
+                </ul>
+                <h4 id="nav-test-the-ide-autocomplete-engine">7. Test
+                the IDE Autocomplete Engine</h4>
+                <ul>
+                <li>echo "def hello_world():" | ollama run
+                qwen2.5-coder:1.5b</li>
+                </ul>
+                <h4 id="nav-test-the-coding-engine">8. Test the Coding
+                Engine</h4>
+                <ul>
+                <li>curl http://localhost:11434/api/embeddings -d
+                '{</li>
+                </ul>
+                <blockquote>
                 <p>"model": "nomic-embed-text",</p>
                 <p>"prompt": "Testing local document parsing"</p>
-                <p>}'</p></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                </table>
-                <h4 id="nav-code-8-loading-the-agents">Code 13: Loading
-                the Agents</h4>
+                <p>}'</p>
+                </blockquote>
                 <h3 id="nav-how-to-connect-ollama-to-home-assistant">How
                 to Connect Ollama to Home Assistant</h3>
                 <p><strong>For Voice:</strong> Install the official
@@ -1116,7 +1073,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-dockerinstallcommand.sh">Code 14:
+                <h4 id="nav-code-dockerinstallcommand.sh">Code :
                 DockerInstallCommand.sh</h4>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
@@ -1164,7 +1121,8 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-wyoming-docker-install-parameters-and-response">Code 15: Wyoming Docker Install Parameters and Response</h4>
+                id="nav-code-wyoming-docker-install-parameters-and-response">Code
+                : Wyoming Docker Install Parameters and Response</h4>
                 <h3 id="nav-step-2-set-up-wyoming-docker-services">Step
                 2: Set Up Wyoming Docker Services</h3>
                 <p>Now that Docker is installed in your LXC, you can
@@ -1175,46 +1133,38 @@ Lab Installation Procedure</h1>
                 do not use the Proxmox Web UI Console.</li>
                 </ol>
                 <ul>
-                <li>Configure PuTTY for Key Authentication</li>
+                <li><p>Configure PuTTY for Key Authentication</p>
+                <ul>
+                <li><p>Close your current PuTTY session and open a brand
+                new <strong>PuTTY</strong> window.</p></li>
+                <li><p>On the <strong>Session</strong> category page (on
+                the left panel), type your Wyoming-docker IP address
+                (192.168.86.248) into the <strong>Host Name</strong>
+                field.</p></li>
+                <li><p>In the left panel, navigate to
+                <strong>Connection</strong> ➔
+                <strong>Data</strong>.</p></li>
+                <li><p>In the <strong>Auto-login username</strong> box,
+                type root (or your chosen administrative
+                username).</p></li>
+                <li><p>In the left panel, drill down to
+                <strong>Connection</strong> ➔ <strong>SSH</strong> ➔
+                <strong>Auth</strong> ➔
+                <strong>Credentials</strong>.</p></li>
+                <li><p>Click <strong>Browse</strong> next to <em>Private
+                key file for authentication</em> and select the .ppk
+                file you saved above.</p></li>
+                <li><p>Navigate back to the <strong>Session</strong>
+                category at the very top of the left panel.</p></li>
+                <li><p>Type a name for this connection profile (e.g.,
+                Proxmox_Wyoming) in the <strong>Saved Sessions</strong>
+                box and click <strong>Save</strong>.</p></li>
+                <li><p>Click <strong>Open</strong>. PuTTY will now log
+                into your Wyoming console automatically using the
+                private key, bypassing the password prompt
+                completely.</p></li>
+                </ul></li>
                 </ul>
-                <table style="width:99%;">
-                <colgroup>
-                <col style="width: 98%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th><p>o Close your current PuTTY session and open a
-                brand new PuTTY window.</p>
-                <p>o On the Session category page (on the left panel),
-                type your Wyoming-docker</p>
-                <p>IP address (192.168.86.248) into the Host Name
-                field.</p>
-                <p>o In the left panel, navigate to Connection ➔
-                Data.</p>
-                <p>o In the Auto-login username box, type root (or your
-                chosen administrative</p>
-                <p>username).</p>
-                <p>o In the left panel, drill down to Connection ➔ SSH ➔
-                Auth ➔ Credentials.</p>
-                <p>o Click Browse next to Private key file for
-                authentication and select the .ppk</p>
-                <p>file you saved above.</p>
-                <p>o Navigate back to the Session category at the very
-                top of the left panel.</p>
-                <p>o Type a name for this connection profile (e.g.,
-                Proxmox_Wyoming) in the Saved</p>
-                <p>Sessions box and click Save.</p>
-                <p>o Click Open. PuTTY will now log into your Wyoming
-                console automatically using</p>
-                <p>the private key, bypassing the password prompt
-                completely.</p></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                </table>
-                <h4 id="nav-code-10-putty-setup">Code 16: Putty
-                Setup</h4>
                 <ol start="2" type="1">
                 <li>Create a docker-compose.yaml file to manage your
                 Wyoming services. For example, to set up the
@@ -1235,7 +1185,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-wyomingdockercompose.sh">Code 17:
+                <h4 id="nav-code-wyomingdockercompose.sh">Code :
                 WyomingDockerCompose.sh</h4>
                 <p>Paste the following configuration, making sure to
                 replace paths and voices with your preferences:</p>
@@ -1269,7 +1219,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-wyoming-docker-portainer-stack">Code 18:
+                <h4 id="nav-code-wyoming-docker-portainer-stack">Code :
                 Wyoming-Docker Portainer Stack</h4>
                 <p><em>Spin up the containers by typing the following
                 command in you Putty ssh window:</em></p>
@@ -1281,7 +1231,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-dockercompose.sh">Code 19:
+                <h4 id="nav-code-dockercompose.sh">Code :
                 DockerCompose.sh</h4>
                 <h3 id="nav-step-3-connect-to-home-assistant">Step 3:
                 Connect to Home Assistant</h3>
@@ -1337,7 +1287,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-haos-wyoming-integrations">Code 20:
+                <h4 id="nav-code-haos-wyoming-integrations">Code :
                 HAOS-Wyoming Integrations</h4>
                 <h2 id="nav-twingate-connector-lxc-105">Twingate
                 Connector (LXC 105)</h2>
@@ -1380,7 +1330,7 @@ Lab Installation Procedure</h1>
                 </table>
                 <hr />
                 <h4
-                id="nav-code-twingateconnectorinstallcommand.sh">Code 21:
+                id="nav-code-twingateconnectorinstallcommand.sh">Code :
                 TwingateConnectorInstallCommand.sh</h4>
                 <p>Paste the following configuration, making sure to
                 replace paths and voices with your preferences:</p>
@@ -1426,7 +1376,8 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-twingate-connector-install-parameters">Code 22: Twingate Connector Install Parameters</h4>
+                id="nav-code-twingate-connector-install-parameters">Code
+                : Twingate Connector Install Parameters</h4>
                 <h2 id="nav-post-install-scripts">Post Install
                 Scripts</h2>
                 <h3 id="nav-proxmox-scripts">Proxmox Scripts:</h3>
@@ -1470,7 +1421,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-setviasdefault.sh">Code 23:
+                <h4 id="nav-code-setviasdefault.sh">Code :
                 SetVIasDefault.sh</h4>
                 <h5 id="nav-what-this-script-does">What This Script
                 Does</h5>
@@ -1503,7 +1454,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-exportviasdefault.sh">Code 24:
+                <h4 id="nav-code-exportviasdefault.sh">Code :
                 ExportVIasDefault.sh</h4>
                 <h2 id="nav-twingate-connector">Twingate Connector</h2>
                 <p>To safely disable password-based SSH logins and
@@ -1611,61 +1562,38 @@ Lab Installation Procedure</h1>
                 Assistant OS (VM 101)</h3>
                 <p>Run this because you used the HAOS VM installer to
                 attach your second isolated network adapter:</p>
-                <table>
-                <colgroup>
-                <col style="width: 100%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th><p>&gt;&gt;&gt; BASH Script start</p>
+                <p>&gt;&gt;&gt; BASH Script start</p>
+                <blockquote>
                 <p># Add the second network interface for the isolated
                 10.0.10.x backend</p>
                 <p>qm set 101 --net1 virtio,bridge=vmbr1</p>
                 <p># Enforce your custom CPU and RAM rules</p>
                 <p>qm set 101 --cores 2 --memory 4096</p>
-                <p>&gt;&gt;&gt; BASH Script end</p></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                </table>
-                <h4 id="nav-code-20-haospost.sh">Code 25:
-                HAOSPost.sh</h4>
+                </blockquote>
+                <p>&gt;&gt;&gt; BASH Script end</p>
+                <h3 id="nav-forpi-hole-lxc-100">2. ForPi-Hole (LXC
+                100)</h3>
+                <p>Run these to adjust your resource caps to match your
+                exact diagram profile:</p>
+                <p>&gt;&gt;&gt; BASH Script start</p>
                 <h3
-                id="nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">2.
+                id="nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">3.
                 Pi-Hole Limits (Ensuring it uses the temporary staging
                 IP)</h3>
-                <table>
-                <colgroup>
-                <col style="width: 100%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th><p>&gt;&gt;&gt; BASH Script start</p>
+                <blockquote>
                 <p>pct set 100 --cores 1 --memory 512 --net0
                 name=eth0,bridge=vmbr0,ip=192.168.86.249/24,gw=192.168.86.1</p>
                 <p>pct restart 102</p>
                 <p>pct restart 100</p>
-                <p>&gt;&gt;&gt; BASH Script end</p></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                </table>
-                <h4 id="nav-code-20-piholepost.sh">Code 26:
-                PiHolePost.sh</h4>
-                <h3 id="nav-for-ollama-llm-engine-lxc-103">3. For Ollama
+                </blockquote>
+                <p>&gt;&gt;&gt; BASH Script end</p>
+                <h3 id="nav-for-ollama-llm-engine-lxc-103">4. For Ollama
                 LLM Engine (LXC 103)</h3>
                 <p>Run this right after the Ollama LXC script finishes
                 to attach the isolated segment and map your 13th Gen
                 Intel iGPU:</p>
-                <table>
-                <colgroup>
-                <col style="width: 100%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th><p>&gt;&gt;&gt; BASH Script start</p>
+                <p>&gt;&gt;&gt; BASH Script start</p>
+                <blockquote>
                 <p># 1. Attach the isolated network backend interface
                 (eth1)</p>
                 <p>pct set 103 --net1
@@ -1684,14 +1612,8 @@ Lab Installation Procedure</h1>
                 dev/dri/renderD128 none bind,optional,create=file</p>
                 <p>EOF</p>
                 <p>pct restart 103</p>
-                <p>&gt;&gt;&gt; BASH Script end</p></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                </table>
-                <h4 id="nav-code-20-ollamaholepost.sh">Code 27:
-                OllamaHolePost.sh</h4>
+                </blockquote>
+                <p>&gt;&gt;&gt; BASH Script end</p>
                 <p>New:</p>
                 <blockquote>
                 <p>Append these environment flags directly to your
@@ -1699,7 +1621,7 @@ Lab Installation Procedure</h1>
                 at /etc/systemd/system/ollama.service.d/override.conf or
                 directly inside your LXC startup script environment
                 variables):</p>
-                <p><strong>Advanced Intel oneAPI &amp; SYCL Tuning
+                <p><strong>1. Advanced Intel oneAPI &amp; SYCL Tuning
                 Flags</strong></p>
                 <p>Add the following environment lines to your
                 deployment:</p>
@@ -1718,17 +1640,12 @@ Lab Installation Procedure</h1>
                 <p>OLLAMA_NUM_GPU=999</p>
                 <p>GGML_OPENCL_PLATFORM=Intel</p>
                 </blockquote>
-                <h3 id="nav-for-wyoming-docker-lxc-104">4. For Wyoming
+                <h3 id="nav-for-wyoming-docker-lxc-104">5. For Wyoming
                 Docker (LXC 104)</h3>
                 <p>Run this to map the isolated network switch so it can
                 talk privately to the Ollama API:</p>
-                <table>
-                <colgroup>
-                <col style="width: 100%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th><p>&gt;&gt;&gt; BASH Script start</p>
+                <p>&gt;&gt;&gt; BASH Script start</p>
+                <blockquote>
                 <p># Attach the isolated network backend interface
                 (eth1)</p>
                 <p>pct set 104 --net1
@@ -1736,15 +1653,19 @@ Lab Installation Procedure</h1>
                 <p># Enforce your 2 Cores and 2GB RAM blueprint</p>
                 <p>pct set 104 --cores 2 --memory 2048</p>
                 <p>pct restart 104</p>
+                </blockquote>
                 <p>&gt;&gt;&gt; BASH Script end</p>
                 <p>NOTES</p>
                 <p>Change the subscription keys at the Proxmox level</p>
-                <p>• echo "Enabled: no" &gt;&gt;
-                /etc/apt/sources.list.d/pve-enterprise.sources</p>
-                <p>• echo "Enabled: no" &gt;&gt;
-                /etc/apt/sources.list.d/ceph.sources</p>
-                <p>• cat &lt;&lt;EOF &gt;
-                /etc/apt/sources.list.d/pve-enterprise.sources</p>
+                <ul>
+                <li><p>echo "Enabled: no" &gt;&gt;
+                /etc/apt/sources.list.d/pve-enterprise.sources</p></li>
+                <li><p>echo "Enabled: no" &gt;&gt;
+                /etc/apt/sources.list.d/ceph.sources</p></li>
+                <li><p>cat &lt;&lt;EOF &gt;
+                /etc/apt/sources.list.d/pve-enterprise.sources</p></li>
+                </ul>
+                <blockquote>
                 <p>Types: deb</p>
                 <p>URIs: https://enterprise.proxmox.com/debian/pve</p>
                 <p>Suites: trixie</p>
@@ -1753,8 +1674,12 @@ Lab Installation Procedure</h1>
                 /usr/share/keyrings/proxmox-archive-keyring.gpg</p>
                 <p>Enabled: no</p>
                 <p>EOF</p>
-                <p>• cat &lt;&lt;EOF &gt;
-                /etc/apt/sources.list.d/ceph.sources</p>
+                </blockquote>
+                <ul>
+                <li>cat &lt;&lt;EOF &gt;
+                /etc/apt/sources.list.d/ceph.sources</li>
+                </ul>
+                <blockquote>
                 <p>Types: deb</p>
                 <p>URIs:
                 https://enterprise.proxmox.com/debian/ceph-squid</p>
@@ -1764,26 +1689,26 @@ Lab Installation Procedure</h1>
                 /usr/share/keyrings/proxmox-archive-keyring.gpg</p>
                 <p>Enabled: no</p>
                 <p>EOF</p>
-                <p>• vi
-                /etc/apt/sources.list.d/pve-no-subscription.sources</p>
+                </blockquote>
+                <ul>
+                <li>vi
+                /etc/apt/sources.list.d/pve-no-subscription.sources</li>
+                </ul>
                 <p>Enter 'i' in the window, then paste in the following
                 lines.</p>
+                <blockquote>
                 <p>Types: deb</p>
                 <p>URIs: http://download.proxmox.com/debian/pve</p>
                 <p>Suites: trixie</p>
                 <p>Components: pve-no-subscription</p>
                 <p>Signed-By:
                 /usr/share/keyrings/proxmox-archive-keyring.gpg</p>
+                </blockquote>
                 <p>Then entera ":!wq" wo save and exit the vi editor</p>
-                <p>Execute the following:</p>
-                <p>• apt dist-upgrade -y</p></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                </table>
-                <h4 id="nav-code-20-wyomingpost.sh">Code 28:
-                WyomingPost.sh</h4>
+                <p>Exectut the following:</p>
+                <ul>
+                <li>apt dist-upgrade -y</li>
+                </ul>
                 <h1 id="nav-disaster-recovery">Disaster Recovery:</h1>
                 <h2 id="nav-text-configuration-backup-script">Text
                 Configuration Backup Script</h2>
@@ -1866,7 +1791,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-backup_all_configs.sh">Code 29:
+                <h4 id="nav-code-backup_all_configs.sh">Code :
                 backup_all_configs.sh</h4>
                 <p>Save and exit (ESC, :wq, Enter).</p>
                 <p>Make the script executable:</p>
@@ -1940,7 +1865,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-quicksystemtest.sh">Code 30:
+                <h4 id="nav-code-quicksystemtest.sh">Code :
                 QuickSystemTest.sh</h4>
                 <p>When you copy and run this simple script in a
                 terminal of your Putty Shell, Proxmox host, or any
@@ -2022,7 +1947,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-quick-system-test-response">Code 31:
+                <h4 id="nav-code-quick-system-test-response">Code :
                 Quick System Test Response</h4>
                 <p>The check boxes show the hosts are correctly
                 configured and can communicate with each other.</p>

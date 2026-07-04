@@ -69,10 +69,10 @@ header {
 } 
 
 main { 
-  max-width: 100% !important; /* Widescreen boundary rule expansion */
+  max-width: 100% !important; /* Forces layout container to expand to monitor edges */
   width: 100%; 
-  margin: 1rem 0 !important;   /* Snaps content stream flush to the left gutter */
-  padding: 0 1.5rem;           
+  margin: 1rem 0 !important;   /* Snaps content stream far to the left margin */
+  padding: 0 1.5rem;           /* Clean 24px safety gutter from glass edge */
   flex: 1; 
 } 
 
@@ -206,9 +206,8 @@ footer {
 /* Main Document Workspace Grid Configuration */
 .doc-layout {
     display: grid;
-    /* Reduced by 25% (from 450px to 335px) for a sleeker profile */
-    grid-template-columns: 335px 1fr; 
-    gap: 2.5rem;                       
+    grid-template-columns: 450px 1fr; /* Set left TOC column to wide 4-inch visual footprint */
+    gap: 1.5rem;                       /* Clean spatial layout break between columns */
     margin-top: 2rem;
     align-items: start;
 }
@@ -217,76 +216,4 @@ footer {
 .document-content h3 {
     color: #93c5fd;
     font-size: 1.25rem;
-    margin-top: 1.75rem;
-    margin-bottom: 0.5rem;
-}
-
-.document-content h4 {
-    color: #60a5fa;
-    font-size: 1.1rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-/* --- RESTORED TABLE FORMATTING FOR DARK THEME --- */
-.document-content table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-    font-size: 1rem;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
-}
-
-.document-content th {
-    background-color: rgba(96, 165, 250, 0.15);
-    color: #eaf4ff;
-    font-weight: 600;
-    text-align: left;
-    padding: 0.75rem 1rem;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-.document-content td {
-    padding: 0.75rem 1rem;
-    color: #eaf4ff;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.document-content tr:last-child td {
-    border-bottom: none;
-}
-
-.document-content tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.04);
-}
-
-.document-content caption {
-    color: #bfdbfe;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    text-align: left;
-}
-
-/* ==========================================================================
-   7. DOCUMENT LIST OVERRIDES & CODE BLOCKS
-   ========================================================================== */
-
-/* Force indent all bulleted (ul) and numbered (ol) lists in the document */
-.document-content ul, 
-.document-content ol {
-    padding-left: 2.5rem !important;  
-    margin-top: 1rem !important;     
-    margin-bottom: 1rem !important;  
-}
-
-.document-content ul li {
-    list-style-type: disc !important; 
-    margin-bottom: 0.4rem !important;
-}
-
-.document-content ol li {
-    list-style-type: decimal !important; 
-    margin-bottom: 0.4rem !important;
-}
+    margin-

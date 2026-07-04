@@ -45,7 +45,7 @@ header {
 } 
 
 .header-container { 
-  max-width: 100% !important; 
+  max-width: 1200px; 
   margin: 0 auto; 
   display: flex;                 
   justify-content: flex-start;   
@@ -69,10 +69,10 @@ header {
 } 
 
 main { 
-  max-width: 100% !important; /* Widescreen boundary rule expansion */
+  max-width: 1200px; 
   width: 100%; 
-  margin: 1rem 0 !important;   /* Snaps content stream flush to the left gutter */
-  padding: 0 1.5rem;           
+  margin: 1rem auto; 
+  padding: 0 1.5rem; 
   flex: 1; 
 } 
 
@@ -140,7 +140,7 @@ footer {
 } 
 
 .footer-container { 
-  max-width: 100% !important; 
+  max-width: 1200px; 
   margin: 0 auto; 
   display: flex; 
   gap: 1rem; 
@@ -180,7 +180,7 @@ footer {
 }
 
 /* ==========================================
-   5. MENU HIGHLIGHT LOGIC 
+   5. MENU HIGHLIGHT LOGIC (COMBINED) 
    ========================================== */
 #dynamic-nav a {
     color: #ffffff;
@@ -192,6 +192,7 @@ footer {
     color: #60a5fa;
 }
 
+/* Script injection highlights the matching tab automatically */
 #dynamic-nav a.active {
     color: #60a5fa !important;       
     font-weight: bold;               
@@ -200,93 +201,141 @@ footer {
 }
 
 /* ==========================================================================
-   6. DOCUMENT CONTENT & TWO-COLUMN STRUCTURE
+   DOCUMENT FORMATTING FIXES (INLINE-BLOCK BOXED TABLES)
    ========================================================================== */
 
-/* Main Document Workspace Grid Configuration */
-.doc-layout {
-    display: grid;
-    /* Reduced by 25% (from 450px to 335px) for a sleeker profile */
-    grid-template-columns: 335px 1fr; 
-    gap: 2.5rem;                       
-    margin-top: 2rem;
-    align-items: start;
-}
-
-/* Header Indentation Rules */
+/* 1. H3 Indentation */
 .document-content h3 {
     color: #93c5fd;
     font-size: 1.25rem;
     margin-top: 1.75rem;
     margin-bottom: 0.5rem;
+    padding-left: 2.5em;
 }
 
+/* 2. H4 Indentation */
 .document-content h4 {
     color: #60a5fa;
     font-size: 1.1rem;
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
+    padding-left: 5em;
 }
 
-/* --- RESTORED TABLE FORMATTING FOR DARK THEME --- */
+/* 3. Global Left-Justified Isolated Tables */
 .document-content table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-    font-size: 1rem;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    /* FIX: Inline-block shrinks the box tightly to data width without layout clipping */
+    display: inline-block !important; 
+    
+    /* FORCE THE BOX TO SNAP SPECIFICALLY TO THE DATA WIDTH */
+    width: max-content !important;
+    max-width: 800px !important;
+    white-space: nowrap !important;
+    
+    /* Spacing around the container */
+    margin-top: 20px !important;
+    margin-bottom: 25px !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    
+    /* Clean Box Border Styling */
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding: 12px !important;
     border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-collapse: separate !important; 
 }
 
+/* 4. Table Content Sizing & Layout Rules */
 .document-content th {
-    background-color: rgba(96, 165, 250, 0.15);
-    color: #eaf4ff;
+    background-color: rgba(147, 197, 253, 0.1) !important;
+    color: #bfdbfe;
     font-weight: 600;
     text-align: left;
-    padding: 0.75rem 1rem;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 2px 10px !important; 
+    line-height: 1.2 !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
 }
 
 .document-content td {
-    padding: 0.75rem 1rem;
-    color: #eaf4ff;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2px 10px !important; 
+    line-height: 1.2 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .document-content tr:last-child td {
-    border-bottom: none;
+    border-bottom: none !important; /* Strips the final row line so it doesn't conflict with the outer box border */
 }
 
 .document-content tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.04);
+    background-color: rgba(255, 255, 255, 0.03) !important;
 }
 
+/* 5. Precision Caption Center Alignment */
 .document-content caption {
-    color: #bfdbfe;
+    display: block !important; /* Allows caption to span the exact width of the table elements */
+    caption-side: top !important;
+    text-align: center !important; 
+    padding-bottom: 8px !important;
+    font-size: 0.95rem;
     font-weight: 600;
-    margin-bottom: 0.75rem;
-    text-align: left;
+    color: #bfdbfe;
 }
-
+/* Emergency Escape for Unclosed/Broken Tables */
+.document-content table {
+    overflow: hidden !important;
+    display: block !important; /* Forces it to yield its grip on the rest of the layout */
+    height: auto !important;
+}
 /* ==========================================================================
-   7. DOCUMENT LIST OVERRIDES & CODE BLOCKS
+   DOCUMENT LIST FORMATTING OVERRIDES (Counteracts Universal Reset)
    ========================================================================== */
 
 /* Force indent all bulleted (ul) and numbered (ol) lists in the document */
 .document-content ul, 
 .document-content ol {
-    padding-left: 2.5rem !important;  
-    margin-top: 1rem !important;     
-    margin-bottom: 1rem !important;  
+    padding-left: 2.5rem !important;  /* Pushes lists out from the wall */
+    margin-top: 1rem !important;     /* Adds breathing room above */
+    margin-bottom: 1rem !important;  /* Adds breathing room below */
 }
 
+/* Ensure nested sub-lists indent appropriately */
+.document-content ul ul, 
+.document-content ol ol,
+.document-content ul ol,
+.document-content ol ul {
+    padding-left: 1.75rem !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
+}
+
+/* Ensure list items display proper markers and item spacing */
 .document-content ul li {
-    list-style-type: disc !important; 
+    list-style-type: disc !important; /* Restores standard round bullet points */
     margin-bottom: 0.4rem !important;
 }
 
 .document-content ol li {
-    list-style-type: decimal !important; 
+    list-style-type: decimal !important; /* Restores numbers (1, 2, 3) */
     margin-bottom: 0.4rem !important;
+}
+/* ==========================================================================
+   PRECISION CAPTION CONTAINMENT & CENTER ALIGNMENT
+   ========================================================================== */
+
+/* Forces the table layout engine to treat the caption as part of the internal grid */
+.document-content caption {
+    display: table-caption !important;   /* Integrates it cleanly into the table box */
+    caption-side: top !important;         /* Keeps it locked at the top inside the border */
+    text-align: center !important;        /* Centers text perfectly horizontally */
+    
+    /* Spacing & Content Typography */
+    padding: 8px 10px 12px 10px !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #bfdbfe;
+    
+    /* Accent line separating caption text from the headers below it */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+    margin-bottom: 8px !important;
 }

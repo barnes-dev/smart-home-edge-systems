@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Document Title</title>
+    <title>Home Lab Installation Procedure</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -17,7 +17,8 @@
     <style>
         .doc-layout {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            /* Widened the left column to 450px (~4 inches) */
+            grid-template-columns: 450px 1fr;
             gap: 2.5rem;
             margin-top: 2rem;
             align-items: start;
@@ -72,6 +73,57 @@
             margin: 1.5rem 0;
         }
 
+        /* CUSTOM TABLE SIZE & LEFT JUSTIFICATION */
+        .document-content table {
+            width: auto;
+            max-width: 850px;           /* Prevents stretching the full width of wide displays */
+            margin: 1.5rem 0;           /* FORCE LEFT JUSTIFIED (Removed auto right/left margins) */
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        .document-content th, 
+        .document-content td {
+            padding: 10px 16px;         
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Preserve tabs and spacing formatting inside table cells natively */
+        .document-content td {
+            white-space: pre-wrap;      
+        }
+
+        .document-content th {
+            background: rgba(191, 219, 254, 0.1); 
+            color: #bfdbfe;
+            font-weight: 600;
+        }
+
+        /* FORCE ALL IMAGES AND CAPTIONS TO BE LEFT ALIGNED */
+        .document-content img {
+            display: block;
+            margin-left: 0 !important;
+            margin-right: auto !important;
+            text-align: left;
+        }
+
+        .document-content p.caption,
+        .document-content .caption,
+        .document-content figcaption {
+            text-align: left !important;
+            margin-left: 0 !important;
+            margin-top: 0.5rem;
+            color: #94a3b8;
+        }
+
+        .document-content tr:hover {
+            background: rgba(255, 255, 255, 0.04); 
+        }
+
         @media (max-width: 768px) {
             .doc-layout {
                 grid-template-columns: 1fr;
@@ -81,6 +133,11 @@
                 top: 0;
                 max-height: none;
             }
+            .document-content table {
+                width: 100%;            
+                display: block;
+                overflow-x: auto;       
+            }
         }
     </style>
 </head>
@@ -88,161 +145,212 @@
     <div id="header-placeholder"></div>
     <div id="menu-placeholder"></div>
 
-    <main style="padding: 2rem; max-width: 1400px; margin: 0 auto;">
-        <p style="margin-bottom: 1rem;">
+    <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
+        
+        <p style="margin-bottom: 1.5rem; text-align: left;">
             <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Back to Home Lab Hub</a>
         </p>
-        <h1 style="color: #eaf4ff; margin-bottom: 1.5rem; font-size: 2rem;">Integrating your Home Lab with DNS</h1>
+
+        <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
+            <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Home
+Lab Installation Procedure</h1>
+            
+            <h2 style="color: #bfdbfe; margin: 0 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
+            
+            <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
+        </div>
         
         <div class="doc-layout">
             
             <aside class="sidebar-toc">
                 <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
                 <ul>
-                <li><a href="#table-of-contents"
-                id="toc-table-of-contents">Table of Contents</a></li>
-                <li><a href="#index-of-source-code-blocks"
-                id="toc-index-of-source-code-blocks">🛠️ Index of Source
-                Code Blocks</a></li>
-                <li><a href="#index-of-pictures"
-                id="toc-index-of-pictures">📸 Index of Pictures</a></li>
-                <li><a href="#introduction"
-                id="toc-introduction">Introduction</a>
+                <li><a href="#nav-table-of-contents"
+                id="nav-toc-table-of-contents">Table of
+                Contents</a></li>
+                <li><a href="#nav-index-of-source-code-blocks"
+                id="nav-toc-index-of-source-code-blocks">🛠️ Index of
+                Source Code Blocks</a></li>
+                <li><a href="#nav-index-of-pictures"
+                id="nav-toc-index-of-pictures">📸 Index of
+                Pictures</a></li>
+                <li><a href="#nav-introduction"
+                id="nav-toc-introduction">Introduction</a>
                 <ul>
-                <li><a href="#why-build-a-home-lab"
-                id="toc-why-build-a-home-lab">Why Build a Home
+                <li><a href="#nav-why-build-a-home-lab"
+                id="nav-toc-why-build-a-home-lab">Why Build a Home
                 Lab?</a></li>
                 </ul></li>
-                <li><a href="#recommended-design-architecture"
-                id="toc-recommended-design-architecture">Recommended
+                <li><a href="#nav-recommended-design-architecture"
+                id="nav-toc-recommended-design-architecture">Recommended
                 Design Architecture</a>
                 <ul>
-                <li><a href="#basic-home-lab-configuration"
-                id="toc-basic-home-lab-configuration">Basic Home Lab
+                <li><a href="#nav-basic-home-lab-configuration"
+                id="nav-toc-basic-home-lab-configuration">Basic Home Lab
                 Configuration</a>
                 <ul>
                 <li><a
-                href="#a-home-lab-self-contained-in-an-inexpensive-single-mini-computer."
-                id="toc-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.">A
+                href="#nav-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer."
+                id="nav-toc-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.">A
                 Home Lab self-contained in an inexpensive single
                 mini-computer.</a></li>
                 </ul></li>
                 </ul></li>
                 <li><a
-                href="#installing-your-home-lab-on-a-mini-computer"
-                id="toc-installing-your-home-lab-on-a-mini-computer">Installing
+                href="#nav-installing-your-home-lab-on-a-mini-computer"
+                id="nav-toc-installing-your-home-lab-on-a-mini-computer">Installing
                 your Home Lab on a Mini-Computer</a></li>
-                <li><a href="#step-by-step-instructions"
-                id="toc-step-by-step-instructions">Step by Step
+                <li><a href="#nav-step-by-step-instructions"
+                id="nav-toc-step-by-step-instructions">Step by Step
                 instructions</a>
                 <ul>
-                <li><a href="#proxmox-ve-base-layer"
-                id="toc-proxmox-ve-base-layer">Proxmox VE base layer</a>
+                <li><a href="#nav-proxmox-ve-base-layer"
+                id="nav-toc-proxmox-ve-base-layer">Proxmox VE base
+                layer</a>
                 <ul>
-                <li><a href="#step-by-step-deployment-guide"
-                id="toc-step-by-step-deployment-guide">Step-by-Step
+                <li><a href="#nav-step-by-step-deployment-guide"
+                id="nav-toc-step-by-step-deployment-guide">Step-by-Step
                 Deployment Guide</a></li>
                 </ul></li>
-                <li><a href="#pihole-lxc-100"
-                id="toc-pihole-lxc-100">PiHole (LXC 100)</a></li>
-                <li><a href="#home-assistant-os-lxc-101---haos-vm"
-                id="toc-home-assistant-os-lxc-101---haos-vm">Home
+                <li><a href="#nav-pihole-lxc-100"
+                id="nav-toc-pihole-lxc-100">PiHole (LXC 100)</a></li>
+                <li><a href="#nav-home-assistant-os-lxc-101---haos-vm"
+                id="nav-toc-home-assistant-os-lxc-101---haos-vm">Home
                 Assistant OS (LXC 101 - HAOS VM)</a></li>
-                <li><a href="#nginx-proxy-manager-lxc-102"
-                id="toc-nginx-proxy-manager-lxc-102">NGINX Proxy Manager
-                (LXC 102):</a></li>
-                <li><a href="#ollama-ai-engine-lxc-103"
-                id="toc-ollama-ai-engine-lxc-103">Ollama AI Engine (LXC
-                103)</a>
+                <li><a href="#nav-nginx-proxy-manager-lxc-102"
+                id="nav-toc-nginx-proxy-manager-lxc-102">NGINX Proxy
+                Manager (LXC 102):</a></li>
+                <li><a href="#nav-ollama-ai-engine-lxc-103"
+                id="nav-toc-ollama-ai-engine-lxc-103">Ollama AI Engine
+                (LXC 103)</a>
                 <ul>
-                <li><a href="#load-the-agents"
-                id="toc-load-the-agents">Load the Agents</a></li>
-                <li><a href="#how-to-connect-ollama-to-home-assistant"
-                id="toc-how-to-connect-ollama-to-home-assistant">How to
-                Connect Ollama to Home Assistant</a></li>
+                <li><a href="#nav-load-the-agents"
+                id="nav-toc-load-the-agents">Load the Agents</a>
+                <ul>
+                <li><a
+                href="#nav-load-the-primary-voice-conversation-agent"
+                id="nav-toc-load-the-primary-voice-conversation-agent">#
+                1. Load the Primary Voice &amp; Conversation
+                Agent</a></li>
+                <li><a
+                href="#nav-load-the-complex-automation-code-sandbox-agent"
+                id="nav-toc-load-the-complex-automation-code-sandbox-agent">#
+                2. Load the Complex Automation &amp; Code Sandbox
+                Agent</a></li>
+                <li><a
+                href="#nav-load-the-inline-ide-autocomplete-engine"
+                id="nav-toc-load-the-inline-ide-autocomplete-engine">#
+                3. Load the Inline IDE Autocomplete Engine</a></li>
+                <li><a href="#nav-load-the-embedding-model"
+                id="nav-toc-load-the-embedding-model"># 4. Load the
+                Embedding Model</a></li>
+                <li><a href="#nav-test-the-primary-voice-agent"
+                id="nav-toc-test-the-primary-voice-agent"># Test the
+                Primary Voice Agent</a></li>
+                <li><a href="#nav-test-the-code-sandbox"
+                id="nav-toc-test-the-code-sandbox"># Test the Code
+                Sandbox</a></li>
+                <li><a href="#nav-test-the-ide-autocomplete-engine"
+                id="nav-toc-test-the-ide-autocomplete-engine"># Test the
+                IDE Autocomplete Engine</a></li>
+                <li><a href="#nav-test-the-coding-engine"
+                id="nav-toc-test-the-coding-engine">Test the Coding
+                Engine</a></li>
                 </ul></li>
                 <li><a
-                href="#wyoming-docker-installation-lxc104---docker"
-                id="toc-wyoming-docker-installation-lxc104---docker">Wyoming
+                href="#nav-how-to-connect-ollama-to-home-assistant"
+                id="nav-toc-how-to-connect-ollama-to-home-assistant">How
+                to Connect Ollama to Home Assistant</a></li>
+                </ul></li>
+                <li><a
+                href="#nav-wyoming-docker-installation-lxc104---docker"
+                id="nav-toc-wyoming-docker-installation-lxc104---docker">Wyoming
                 Docker Installation (LXC104 - Docker)</a>
                 <ul>
-                <li><a href="#step-1-create-a-docker-lxc-in-proxmox"
-                id="toc-step-1-create-a-docker-lxc-in-proxmox">Step 1:
-                Create a Docker LXC in Proxmox</a></li>
-                <li><a href="#step-2-set-up-wyoming-docker-services"
-                id="toc-step-2-set-up-wyoming-docker-services">Step 2:
-                Set Up Wyoming Docker Services</a></li>
-                <li><a href="#step-3-connect-to-home-assistant"
-                id="toc-step-3-connect-to-home-assistant">Step 3:
+                <li><a href="#nav-step-1-create-a-docker-lxc-in-proxmox"
+                id="nav-toc-step-1-create-a-docker-lxc-in-proxmox">Step
+                1: Create a Docker LXC in Proxmox</a></li>
+                <li><a href="#nav-step-2-set-up-wyoming-docker-services"
+                id="nav-toc-step-2-set-up-wyoming-docker-services">Step
+                2: Set Up Wyoming Docker Services</a></li>
+                <li><a href="#nav-step-3-connect-to-home-assistant"
+                id="nav-toc-step-3-connect-to-home-assistant">Step 3:
                 Connect to Home Assistant</a></li>
-                <li><a href="#portainerdocker-changes"
-                id="toc-portainerdocker-changes">Portainer/Docker
+                <li><a href="#nav-portainerdocker-changes"
+                id="nav-toc-portainerdocker-changes">Portainer/Docker
                 changes</a></li>
                 </ul></li>
-                <li><a href="#twingate-connector-lxc-105"
-                id="toc-twingate-connector-lxc-105">Twingate Connector
-                (LXC 105)</a></li>
-                <li><a href="#post-install-scripts"
-                id="toc-post-install-scripts">Post Install Scripts</a>
+                <li><a href="#nav-twingate-connector-lxc-105"
+                id="nav-toc-twingate-connector-lxc-105">Twingate
+                Connector (LXC 105)</a></li>
+                <li><a href="#nav-post-install-scripts"
+                id="nav-toc-post-install-scripts">Post Install
+                Scripts</a>
                 <ul>
-                <li><a href="#proxmox-scripts"
-                id="toc-proxmox-scripts">Proxmox Scripts:</a></li>
+                <li><a href="#nav-proxmox-scripts"
+                id="nav-toc-proxmox-scripts">Proxmox Scripts:</a>
+                <ul>
+                <li><a href="#nav-setting-vi-as-your-default-editor"
+                id="nav-toc-setting-vi-as-your-default-editor">Setting
+                Vi as your default editor</a></li>
                 </ul></li>
-                <li><a href="#twingate-connector"
-                id="toc-twingate-connector">Twingate Connector</a>
+                </ul></li>
+                <li><a href="#nav-twingate-connector"
+                id="nav-toc-twingate-connector">Twingate Connector</a>
                 <ul>
-                <li><a href="#phase-1-verify-your-current-setup"
-                id="toc-phase-1-verify-your-current-setup">Phase 1:
+                <li><a href="#nav-phase-1-verify-your-current-setup"
+                id="nav-toc-phase-1-verify-your-current-setup">Phase 1:
                 Verify Your Current Setup</a></li>
-                <li><a href="#phase-2-modify-the-ssh-configuration-file"
-                id="toc-phase-2-modify-the-ssh-configuration-file">Phase
+                <li><a
+                href="#nav-phase-2-modify-the-ssh-configuration-file"
+                id="nav-toc-phase-2-modify-the-ssh-configuration-file">Phase
                 2: Modify the SSH Configuration File</a></li>
                 </ul></li>
-                <li><a href="#post-script-configuration-injection"
-                id="toc-post-script-configuration-injection">2.
+                <li><a href="#nav-post-script-configuration-injection"
+                id="nav-toc-post-script-configuration-injection">2.
                 Post-Script Configuration Injection</a>
                 <ul>
-                <li><a href="#for-home-assistant-os-vm-101"
-                id="toc-for-home-assistant-os-vm-101">1. For Home
+                <li><a href="#nav-for-home-assistant-os-vm-101"
+                id="nav-toc-for-home-assistant-os-vm-101">1. For Home
                 Assistant OS (VM 101)</a></li>
-                <li><a href="#forpi-hole-lxc-100"
-                id="toc-forpi-hole-lxc-100">2. ForPi-Hole (LXC
+                <li><a href="#nav-forpi-hole-lxc-100"
+                id="nav-toc-forpi-hole-lxc-100">2. ForPi-Hole (LXC
                 100)</a></li>
                 <li><a
-                href="#pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip"
-                id="toc-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">#
+                href="#nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip"
+                id="nav-toc-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">#
                 Pi-Hole Limits (Ensuring it uses the temporary staging
                 IP)</a></li>
-                <li><a href="#for-ollama-llm-engine-lxc-103"
-                id="toc-for-ollama-llm-engine-lxc-103">3. For Ollama LLM
-                Engine (LXC 103)</a></li>
-                <li><a href="#for-wyoming-docker-lxc-104"
-                id="toc-for-wyoming-docker-lxc-104">4. For Wyoming
+                <li><a href="#nav-for-ollama-llm-engine-lxc-103"
+                id="nav-toc-for-ollama-llm-engine-lxc-103">3. For Ollama
+                LLM Engine (LXC 103)</a></li>
+                <li><a href="#nav-for-wyoming-docker-lxc-104"
+                id="nav-toc-for-wyoming-docker-lxc-104">4. For Wyoming
                 Docker (LXC 104)</a></li>
                 </ul></li>
                 </ul></li>
-                <li><a href="#disaster-recovery"
-                id="toc-disaster-recovery">Disaster Recovery:</a>
+                <li><a href="#nav-disaster-recovery"
+                id="nav-toc-disaster-recovery">Disaster Recovery:</a>
                 <ul>
-                <li><a href="#text-configuration-backup-script"
-                id="toc-text-configuration-backup-script">Text
+                <li><a href="#nav-text-configuration-backup-script"
+                id="nav-toc-text-configuration-backup-script">Text
                 Configuration Backup Script</a></li>
                 </ul></li>
                 <li><a
-                href="#tools-to-verify-installation-and-functionality"
-                id="toc-tools-to-verify-installation-and-functionality">Tools
+                href="#nav-tools-to-verify-installation-and-functionality"
+                id="nav-toc-tools-to-verify-installation-and-functionality">Tools
                 to verify Installation and functionality</a>
                 <ul>
                 <li><a
-                href="#how-to-quickly-verify-promox-container-configurations"
-                id="toc-how-to-quickly-verify-promox-container-configurations">How
+                href="#nav-how-to-quickly-verify-promox-container-configurations"
+                id="nav-toc-how-to-quickly-verify-promox-container-configurations">How
                 to Quickly Verify Promox Container
                 Configurations:</a></li>
                 </ul></li>
-                <li><a href="#references"
-                id="toc-references">References</a></li>
-                <li><a href="#table-of-authorities"
-                id="toc-table-of-authorities">Table of
+                <li><a href="#nav-references"
+                id="nav-toc-references">References</a></li>
+                <li><a href="#nav-table-of-authorities"
+                id="nav-toc-table-of-authorities">Table of
                 Authorities</a></li>
                 </ul>
             </aside>
@@ -252,7 +360,7 @@
                 <p>Smart Home Edge Systems</p>
                 <p>(smart-home-edge-systems.us)</p>
                 <figure>
-                <img src="./images/media/image1.png"
+                <img src="../assets/figures/image1-1.png"
                 style="width:6.5in;height:3.25in"
                 alt=": A Generic Home Lab" />
                 <figcaption aria-hidden="true">: A Generic Home
@@ -260,8 +368,185 @@
                 </figure>
                 <p>How to build an</p>
                 <p>Inexpensive AI powered Home Lab</p>
-                <h1 id="introduction">Introduction</h1>
-                <h2 id="why-build-a-home-lab">Why Build a Home Lab?</h2>
+                <h1 class="TOC-Heading" id="nav-table-of-contents">Table
+                of Contents</h1>
+                <p><a href="#nav-introduction">Introduction
+                [5](#introduction)</a></p>
+                <p><a href="#nav-why-build-a-home-lab">Why Build a Home
+                Lab? [5](#why-build-a-home-lab)</a></p>
+                <p><a
+                href="#nav-recommended-design-architecture">Recommended
+                Design Architecture
+                [6](#recommended-design-architecture)</a></p>
+                <p><a href="#nav-basic-home-lab-configuration">Basic
+                Home Lab Configuration
+                [6](#basic-home-lab-configuration)</a></p>
+                <p><a
+                href="#nav-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.">A
+                Home Lab self-contained in an inexpensive single
+                mini-computer.
+                [6](#a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.)</a></p>
+                <p><a
+                href="#nav-installing-your-home-lab-on-a-mini-computer">Installing
+                your Home Lab on a Mini-Computer
+                [8](#installing-your-home-lab-on-a-mini-computer)</a></p>
+                <p><a href="#nav-step-by-step-instructions">Step by Step
+                instructions [8](#step-by-step-instructions)</a></p>
+                <p><a href="#nav-proxmox-ve-base-layer">Proxmox VE base
+                layer [8](#proxmox-ve-base-layer)</a></p>
+                <p><a
+                href="#nav-step-by-step-deployment-guide">Step-by-Step
+                Deployment Guide
+                [8](#step-by-step-deployment-guide)</a></p>
+                <p><a href="#nav-pihole-lxc-100">PiHole (LXC 100)
+                [10](#pihole-lxc-100)</a></p>
+                <p><a
+                href="#nav-home-assistant-os-lxc-101---haos-vm">Home
+                Assistant OS (LXC 101 - HAOS VM)
+                [11](#home-assistant-os-lxc-101—haos-vm)</a></p>
+                <p><a href="#nav-nginx-proxy-manager-lxc-102">NGINX
+                Proxy Manager (LXC 102):
+                [12](#nginx-proxy-manager-lxc-102)</a></p>
+                <p><a href="#nav-ollama-ai-engine-lxc-103">Ollama AI
+                Engine (LXC 103) [13](#ollama-ai-engine-lxc-103)</a></p>
+                <p><a href="#nav-load-the-agents">Load the Agents
+                [14](#load-the-agents)</a></p>
+                <p><a
+                href="#nav-how-to-connect-ollama-to-home-assistant">How
+                to Connect Ollama to Home Assistant
+                [15](#how-to-connect-ollama-to-home-assistant)</a></p>
+                <p><a
+                href="#nav-wyoming-docker-installation-lxc104---docker">Wyoming
+                Docker Installation (LXC104 - Docker)
+                [15](#wyoming-docker-installation-lxc104—docker)</a></p>
+                <p><a
+                href="#nav-step-1-create-a-docker-lxc-in-proxmox">Step
+                1: Create a Docker LXC in Proxmox
+                [15](#step-1-create-a-docker-lxc-in-proxmox)</a></p>
+                <p><a
+                href="#nav-step-2-set-up-wyoming-docker-services">Step
+                2: Set Up Wyoming Docker Services
+                [17](#step-2-set-up-wyoming-docker-services)</a></p>
+                <p><a href="#nav-step-3-connect-to-home-assistant">Step
+                3: Connect to Home Assistant
+                [18](#step-3-connect-to-home-assistant)</a></p>
+                <p><a
+                href="#nav-portainerdocker-changes">Portainer/Docker
+                changes [18](#portainerdocker-changes)</a></p>
+                <p><a href="#nav-twingate-connector-lxc-105">Twingate
+                Connector (LXC 105)
+                [19](#twingate-connector-lxc-105)</a></p>
+                <p><a href="#nav-post-install-scripts">Post Install
+                Scripts [20](#post-install-scripts)</a></p>
+                <p><a href="#nav-proxmox-scripts">Proxmox Scripts:
+                [20](#proxmox-scripts)</a></p>
+                <p><a href="#nav-twingate-connector">Twingate Connector
+                [21](#twingate-connector)</a></p>
+                <p><a
+                href="#nav-phase-1-verify-your-current-setup">Phase 1:
+                Verify Your Current Setup
+                [21](#phase-1-verify-your-current-setup)</a></p>
+                <p><a
+                href="#nav-phase-2-modify-the-ssh-configuration-file">Phase
+                2: Modify the SSH Configuration File
+                [22](#phase-2-modify-the-ssh-configuration-file)</a></p>
+                <p><a href="#nav-post-script-configuration-injection">2.
+                Post-Script Configuration Injection
+                [23](#post-script-configuration-injection)</a></p>
+                <p><a href="#nav-for-home-assistant-os-vm-101">1. For
+                Home Assistant OS (VM 101)
+                [23](#for-home-assistant-os-vm-101)</a></p>
+                <p><a href="#nav-forpi-hole-lxc-100">2. ForPi-Hole (LXC
+                100) [23](#forpi-hole-lxc-100)</a></p>
+                <p><a
+                href="#nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">#
+                Pi-Hole Limits (Ensuring it uses the temporary staging
+                IP)
+                [23](#pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip)</a></p>
+                <p><a href="#nav-for-ollama-llm-engine-lxc-103">3. For
+                Ollama LLM Engine (LXC 103)
+                [24](#for-ollama-llm-engine-lxc-103)</a></p>
+                <p><a href="#nav-for-wyoming-docker-lxc-104">4. For
+                Wyoming Docker (LXC 104)
+                [25](#for-wyoming-docker-lxc-104)</a></p>
+                <p><a href="#nav-disaster-recovery">Disaster Recovery:
+                [27](#disaster-recovery)</a></p>
+                <p><a href="#nav-text-configuration-backup-script">Text
+                Configuration Backup Script
+                [27](#text-configuration-backup-script)</a></p>
+                <p><a
+                href="#nav-tools-to-verify-installation-and-functionality">Tools
+                to verify Installation and functionality
+                [28](#tools-to-verify-installation-and-functionality)</a></p>
+                <p><a
+                href="#nav-how-to-quickly-verify-promox-container-configurations">How
+                to Quickly Verify Promox Container Configurations:
+                [28](#how-to-quickly-verify-promox-container-configurations)</a></p>
+                <p><a href="#nav-references">References
+                [30](#references)</a></p>
+                <p><a href="#nav-table-of-authorities">Table of
+                Authorities [31](#table-of-authorities)</a></p>
+                <h1 class="TOC-Heading"
+                id="nav-index-of-source-code-blocks">🛠️ Index of Source
+                Code Blocks</h1>
+                <p>Code 1: Barnes Home Lab Configuration <a
+                href="#nav-_Ref232848286">8</a></p>
+                <p>Code 2: PiHoleInstallCommand.sh <a
+                href="#nav-_Toc233771314">10</a></p>
+                <p><em>Code 3: PiHole Install Parameters and
+                Response</em> <a href="#nav-_Toc233771315">11</a></p>
+                <p>Code 4: HAOSInstallCommand.sh <a
+                href="#nav-_Toc233771316">11</a></p>
+                <p><em>Code 5: HAOS Install Parameters and Response</em>
+                <a href="#nav-_Toc233771317">12</a></p>
+                <p>Code 6: NGINXInstallCommand.sh <a
+                href="#nav-_Toc233771318">12</a></p>
+                <p><em>Code 7: NGINX Install Parameters and
+                Response</em> <a href="#nav-_Toc233771319">13</a></p>
+                <p>Code 8: OllamaInstallCommand.sh <a
+                href="#nav-_Toc233771320">13</a></p>
+                <p><em>Code 9: Ollama Install Parameters and
+                Response</em> <a href="#nav-_Toc233771321">14</a></p>
+                <p>Code 10: DockerInstallCommand.sh <a
+                href="#nav-_Toc233771322">16</a></p>
+                <p><em>Code 11: Wyoming Docker Install Parameters and
+                Response</em> <a href="#nav-_Toc233771323">16</a></p>
+                <p>Code 12: WyomingDockerCompose.sh <a
+                href="#nav-_Toc233771324">17</a></p>
+                <p>Code 13: DockerCompose.sh <a
+                href="#nav-_Toc233771325">18</a></p>
+                <p>Code 14: Wyoming-Docker Portainer Stack <a
+                href="#nav-_Toc233771326">18</a></p>
+                <p>Code 15: DockerCompose.sh <a
+                href="#nav-_Toc233771327">18</a></p>
+                <p>Code 16: HAOS-Wyoming Integrations <a
+                href="#nav-_Toc233771328">19</a></p>
+                <p>Code 17: TwingateConnectorInstallCommand.sh <a
+                href="#nav-_Toc233771329">19</a></p>
+                <p>Code 18: Twingate Connector Install Parameters <a
+                href="#nav-_Toc233771330">20</a></p>
+                <p>Code 19: SetVIasDefault.sh <a
+                href="#nav-_Toc233771331">21</a></p>
+                <p>Code 20: ExportVIasDefault.sh <a
+                href="#nav-_Toc233771332">21</a></p>
+                <p>Code 21: backup_all_configs.sh <a
+                href="#nav-_Toc233771333">28</a></p>
+                <p>Code 22: QuickSystemTest.sh <a
+                href="#nav-_Toc233771334">29</a></p>
+                <p>Code 23: Quick System Test Response <a
+                href="#nav-_Toc233771335">30</a></p>
+                <hr />
+                <h1 class="TOC-Heading" id="nav-index-of-pictures">📸
+                Index of Pictures</h1>
+                <p>Figure 1: They are watching you! <a
+                href="#nav-_Toc233266141">1</a></p>
+                <p>Figure 2: Proxmox VE 9.2.3 / Minicomputer
+                Architecture &amp; Network Diagram <a
+                href="#nav-_Toc233266142">6</a></p>
+                <p>**</p>
+                <h1 id="nav-introduction">Introduction</h1>
+                <h2 id="nav-why-build-a-home-lab">Why Build a Home
+                Lab?</h2>
                 <p>A <strong>home lab</strong> is essentially a mini
                 data center set up right in your own living space. It
                 can range from a single, low-power mini PC hidden behind
@@ -301,12 +586,12 @@
                 VMware ESXi) to split one physical machine into dozens
                 of isolated virtual machines (VMs).</p></li>
                 </ul>
-                <h1 id="recommended-design-architecture">Recommended
+                <h1 id="nav-recommended-design-architecture">Recommended
                 Design Architecture</h1>
-                <h2 id="basic-home-lab-configuration">Basic Home Lab
+                <h2 id="nav-basic-home-lab-configuration">Basic Home Lab
                 Configuration</h2>
                 <h3
-                id="a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.">A
+                id="nav-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.">A
                 Home Lab self-contained in an inexpensive single
                 mini-computer.</h3>
                 <p>: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
@@ -323,8 +608,8 @@
                 and caches and then load this config for reference."</p>
                 </blockquote>
                 <table>
-                <caption><span id="_Ref232848286"
-                class="anchor"></span>Code : Barnes Home Lab
+                <caption><span id="nav-_Ref232848286"
+                class="anchor"></span>Code 24: Barnes Home Lab
                 Configuration</caption>
                 <colgroup>
                 <col style="width: 101%" />
@@ -417,27 +702,27 @@
                 </tbody>
                 </table>
                 <h1
-                id="installing-your-home-lab-on-a-mini-computer">Installing
+                id="nav-installing-your-home-lab-on-a-mini-computer">Installing
                 your Home Lab on a Mini-Computer</h1>
                 <p>Although this setup may seem complex, you can
                 complete the installation in a day or two and have a
                 complete, running system ready for a production rollout
                 of your new Home Lab.</p>
-                <h1 id="step-by-step-instructions">Step by Step
+                <h1 id="nav-step-by-step-instructions">Step by Step
                 instructions</h1>
                 <p>To run Proxmox, Home Assistant, NGINX, PiHole,
                 Twingate Connector and Ollama together, a Proxmox VE
                 (PVE) base layer is the best approach.</p>
-                <h2 id="proxmox-ve-base-layer">Proxmox VE base
+                <h2 id="nav-proxmox-ve-base-layer">Proxmox VE base
                 layer</h2>
                 <p>When running there are some recommended resource
                 allocations that you will be asked for. Use the details
                 presented in each section, if there are questions the
-                table in <a href="#_Ref232848286">Code 1: Barnes Home
-                Lab Configuration</a> can be used for reference to
+                table in <a href="#nav-_Ref232848286">Code 25: Barnes
+                Home Lab Configuration</a> can be used for reference to
                 allocate your resources efficiently to avoid crashing
                 the host.</p>
-                <h3 id="step-by-step-deployment-guide">Step-by-Step
+                <h3 id="nav-step-by-step-deployment-guide">Step-by-Step
                 Deployment Guide</h3>
                 <p>Step 1: Download the latest Proxmox VE ISO from the
                 official website located at <a
@@ -580,20 +865,23 @@
                 install scripts. Leave your Proxmox Web UI for small
                 tasks.</p>
                 </blockquote>
-                <h2 id="pihole-lxc-100">PiHole (LXC 100)</h2>
+                <h2 id="nav-pihole-lxc-100">PiHole (LXC 100)</h2>
                 <p>To install PiHole run this command to deploy a
                 lightweight container:</p>
                 <table>
                 <tbody>
                 <tr>
-                <td style="text-align: left;">bash -c "$(curl -fsSL
-                https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/pihole.sh)"</td>
+                <td style="text-align: left;">bash -c "$(curl -fsSL</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/pihole.sh)"</td>
                 </tr>
                 </tbody>
                 </table>
                 <hr />
-                <p>: <span id="_Toc233771314" class="anchor"></span>Code
-                : PiHoleInstallCommand.sh</p>
+                <p>: <span id="nav-_Toc233771314"
+                class="anchor"></span>Code 26: PiHoleInstallCommand.sh</p>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
                 and if prompted select the GUI install method. When
@@ -627,10 +915,10 @@
                 <tbody>
                 </tbody>
                 </table>
-                <p><span id="_Toc233771315"
-                class="anchor"></span><em>Code 3: PiHole Install
+                <p><span id="nav-_Toc233771315"
+                class="anchor"></span><em>Code 27: PiHole Install
                 Parameters and Response</em></p>
-                <h2 id="home-assistant-os-lxc-101---haos-vm">Home
+                <h2 id="nav-home-assistant-os-lxc-101---haos-vm">Home
                 Assistant OS (LXC 101 - HAOS VM)</h2>
                 <p>Run this command in the Proxmox host shell to
                 automatically build a fully functional Home Assistant
@@ -639,14 +927,17 @@
                 <table>
                 <tbody>
                 <tr>
-                <td style="text-align: left;">bash -c "$(curl -fsSL
-                https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/vm/haos-vm.sh)"</td>
+                <td style="text-align: left;">bash -c "$(curl -fsSL</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/vm/haos-vm.sh)"</td>
                 </tr>
                 </tbody>
                 </table>
                 <hr />
-                <p>: <span id="_Toc233771316" class="anchor"></span>Code
-                : HAOSInstallCommand.sh</p>
+                <p>: <span id="nav-_Toc233771316"
+                class="anchor"></span>Code 28: HAOSInstallCommand.sh</p>
                 <p>When you copy and run this command it will start the
                 install script.</p>
                 <p>Make the selections in the GUI by using the output
@@ -682,24 +973,28 @@
                 <tbody>
                 </tbody>
                 </table>
-                <p><span id="_Toc233771317"
-                class="anchor"></span><em>Code 5: HAOS Install
+                <p><span id="nav-_Toc233771317"
+                class="anchor"></span><em>Code 29: HAOS Install
                 Parameters and Response</em></p>
-                <h2 id="nginx-proxy-manager-lxc-102">NGINX Proxy Manager
-                (LXC 102):</h2>
+                <h2 id="nav-nginx-proxy-manager-lxc-102">NGINX Proxy
+                Manager (LXC 102):</h2>
                 <p>Run this command to deploy a lightweight NGINX
                 container:</p>
                 <table>
                 <tbody>
                 <tr>
-                <td style="text-align: left;">bash -c "$(wget -qLO -
-                https://github.com/community-scripts/ProxmoxVE/raw/main/ct/nginxproxymanager.sh)"</td>
+                <td style="text-align: left;">bash -c "$(wget -qLO
+                -</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://github.com/community-scripts/ProxmoxVE/raw/main/ct/nginxproxymanager.sh)"</td>
                 </tr>
                 </tbody>
                 </table>
                 <hr />
-                <p>: <span id="_Toc233771318" class="anchor"></span>Code
-                : NGINXInstallCommand.sh</p>
+                <p>: <span id="nav-_Toc233771318"
+                class="anchor"></span>Code 30: NGINXInstallCommand.sh</p>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
                 and if prompted select the GUI install method.</p>
@@ -710,7 +1005,7 @@
                 output like this. - Verify that it matches.</p>
                 <table>
                 <colgroup>
-                <col style="width: 101%" />
+                <col style="width: 100%" />
                 </colgroup>
                 <thead>
                 <tr>
@@ -740,24 +1035,27 @@
                 <tbody>
                 </tbody>
                 </table>
-                <p><span id="_Toc233771319"
-                class="anchor"></span><em>Code 7: NGINX Install
+                <p><span id="nav-_Toc233771319"
+                class="anchor"></span><em>Code 31: NGINX Install
                 Parameters and Response</em></p>
-                <h2 id="ollama-ai-engine-lxc-103">Ollama AI Engine (LXC
-                103)</h2>
+                <h2 id="nav-ollama-ai-engine-lxc-103">Ollama AI Engine
+                (LXC 103)</h2>
                 <p>This uses the specialized ollama.sh hardware and
                 software installer path:</p>
                 <table>
                 <tbody>
                 <tr>
-                <td style="text-align: left;">bash -c "$(curl -fsSL
-                https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/ollama.sh)"</td>
+                <td style="text-align: left;">bash -c "$(curl -fsSL</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/ollama.sh)"</td>
                 </tr>
                 </tbody>
                 </table>
                 <hr />
-                <p>: <span id="_Toc233771320" class="anchor"></span>Code
-                : OllamaInstallCommand.sh</p>
+                <p>: <span id="nav-_Toc233771320"
+                class="anchor"></span>Code 32: OllamaInstallCommand.sh</p>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
                 and if prompted select the GUI install method.</p>
@@ -798,10 +1096,10 @@
                 <tbody>
                 </tbody>
                 </table>
-                <p><span id="_Toc233771321"
-                class="anchor"></span><em>Code 9: Ollama Install
+                <p><span id="nav-_Toc233771321"
+                class="anchor"></span><em>Code 33: Ollama Install
                 Parameters and Response</em></p>
-                <h3 id="load-the-agents">Load the Agents</h3>
+                <h3 id="nav-load-the-agents">Load the Agents</h3>
                 <p>In the Prolog Web GUI at <a
                 href="http://192.168.86.250:8006"
                 class="uri">http://192.168.86.250:8006</a> and select
@@ -819,47 +1117,47 @@
                 for the password anymore.</p></li>
                 </ul>
                 <p>In this window enter the commands listed below:</p>
-                <h4 id="load-the-primary-voice-conversation-agent"># 1.
-                Load the Primary Voice &amp; Conversation Agent</h4>
+                <h4 id="nav-load-the-primary-voice-conversation-agent">#
+                1. Load the Primary Voice &amp; Conversation Agent</h4>
                 <ul>
                 <li>ollama pull qwen2.5:7b</li>
                 </ul>
                 <h4
-                id="load-the-complex-automation-code-sandbox-agent"># 2.
-                Load the Complex Automation &amp; Code Sandbox
+                id="nav-load-the-complex-automation-code-sandbox-agent">#
+                2. Load the Complex Automation &amp; Code Sandbox
                 Agent</h4>
                 <ul>
                 <li>ollama pull qwen2.5-coder:7b</li>
                 </ul>
-                <h4 id="load-the-inline-ide-autocomplete-engine"># 3.
-                Load the Inline IDE Autocomplete Engine</h4>
+                <h4 id="nav-load-the-inline-ide-autocomplete-engine">#
+                3. Load the Inline IDE Autocomplete Engine</h4>
                 <ul>
                 <li>ollama pull qwen2.5-coder:1.5b</li>
                 </ul>
-                <h4 id="load-the-embedding-model"># 4. Load the
+                <h4 id="nav-load-the-embedding-model"># 4. Load the
                 Embedding Model</h4>
                 <ul>
                 <li>ollama pull nomic-embed-text</li>
                 </ul>
-                <h4 id="test-the-primary-voice-agent"># Test the Primary
-                Voice Agent</h4>
+                <h4 id="nav-test-the-primary-voice-agent"># Test the
+                Primary Voice Agent</h4>
                 <ul>
                 <li>echo "Hello, how are you today?" | ollama run
                 qwen2.5:7b</li>
                 </ul>
-                <h4 id="test-the-code-sandbox"># Test the Code
+                <h4 id="nav-test-the-code-sandbox"># Test the Code
                 Sandbox</h4>
                 <ul>
                 <li>echo "Write a simple Python function to add two
                 numbers." | ollama run qwen2.5-coder:7b</li>
                 </ul>
-                <h4 id="test-the-ide-autocomplete-engine"># Test the IDE
-                Autocomplete Engine</h4>
+                <h4 id="nav-test-the-ide-autocomplete-engine"># Test the
+                IDE Autocomplete Engine</h4>
                 <ul>
                 <li>echo "def hello_world():" | ollama run
                 qwen2.5-coder:1.5b</li>
                 </ul>
-                <h4 id="test-the-coding-engine">Test the Coding
+                <h4 id="nav-test-the-coding-engine">Test the Coding
                 Engine</h4>
                 <ul>
                 <li>curl http://localhost:11434/api/embeddings -d
@@ -870,8 +1168,8 @@
                 <p>"prompt": "Testing local document parsing"</p>
                 <p>}'</p>
                 </blockquote>
-                <h3 id="how-to-connect-ollama-to-home-assistant">How to
-                Connect Ollama to Home Assistant</h3>
+                <h3 id="nav-how-to-connect-ollama-to-home-assistant">How
+                to Connect Ollama to Home Assistant</h3>
                 <p><strong>For Voice:</strong> Install the official
                 Ollama Integration in Home Assistant.</p>
                 <p>Open the Home Assistant Web Page by going to <a
@@ -899,10 +1197,10 @@
                 Environment.</p>
                 </blockquote>
                 <h2
-                id="wyoming-docker-installation-lxc104---docker">Wyoming
+                id="nav-wyoming-docker-installation-lxc104---docker">Wyoming
                 Docker Installation (LXC104 - Docker)</h2>
-                <h3 id="step-1-create-a-docker-lxc-in-proxmox">Step 1:
-                Create a Docker LXC in Proxmox</h3>
+                <h3 id="nav-step-1-create-a-docker-lxc-in-proxmox">Step
+                1: Create a Docker LXC in Proxmox</h3>
                 <p>The easiest way to get Docker running in an LXC is to
                 use the community-maintained Proxmox Helper Scripts,
                 which handle setup and dependencies automatically.</p>
@@ -915,14 +1213,17 @@
                 <table>
                 <tbody>
                 <tr>
-                <td style="text-align: left;">bash -c "$(curl -fsSL
-                https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/docker.sh)"</td>
+                <td style="text-align: left;">bash -c "$(curl -fsSL</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/docker.sh)"</td>
                 </tr>
                 </tbody>
                 </table>
                 <hr />
-                <p>: <span id="_Toc233771322" class="anchor"></span>Code
-                : DockerInstallCommand.sh</p>
+                <p>: <span id="nav-_Toc233771322"
+                class="anchor"></span>Code 34: DockerInstallCommand.sh</p>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
                 and if prompted select the GUI install method.</p>
@@ -968,11 +1269,11 @@
                 <tbody>
                 </tbody>
                 </table>
-                <p><span id="_Toc233771323"
-                class="anchor"></span><em>Code 11: Wyoming Docker
+                <p><span id="nav-_Toc233771323"
+                class="anchor"></span><em>Code 35: Wyoming Docker
                 Install Parameters and Response</em></p>
-                <h3 id="step-2-set-up-wyoming-docker-services">Step 2:
-                Set Up Wyoming Docker Services</h3>
+                <h3 id="nav-step-2-set-up-wyoming-docker-services">Step
+                2: Set Up Wyoming Docker Services</h3>
                 <p>Now that Docker is installed in your LXC, you can
                 deploy your chosen Wyoming voice or speech-to-text
                 tools.</p>
@@ -1021,8 +1322,8 @@
                 run:</li>
                 </ol>
                 <table>
-                <caption><span id="_Toc233771324"
-                class="anchor"></span>Code :
+                <caption><span id="nav-_Toc233771324"
+                class="anchor"></span>Code 36:
                 WyomingDockerCompose.sh</caption>
                 <colgroup>
                 <col style="width: 100%" />
@@ -1039,8 +1340,8 @@
                 <p>Paste the following configuration, making sure to
                 replace paths and voices with your preferences:</p>
                 <table>
-                <caption><span id="_Toc233771325"
-                class="anchor"></span>Code : DockerCompose.sh</caption>
+                <caption><span id="nav-_Toc233771325"
+                class="anchor"></span>Code 37: DockerCompose.sh</caption>
                 <colgroup>
                 <col style="width: 100%" />
                 </colgroup>
@@ -1070,8 +1371,9 @@
                 <tbody>
                 </tbody>
                 </table>
-                <p><span id="_Toc233771326" class="anchor"></span>Code :
-                Wyoming-Docker Portainer Stack</p>
+                <p><span id="nav-_Toc233771326"
+                class="anchor"></span>Code 38: Wyoming-Docker Portainer
+                Stack</p>
                 <p><em>Spin up the containers by typing the following
                 command in you Putty ssh window:</em></p>
                 <table>
@@ -1082,9 +1384,9 @@
                 </tbody>
                 </table>
                 <hr />
-                <p>: <span id="_Toc233771327" class="anchor"></span>Code
-                : DockerCompose.sh</p>
-                <h3 id="step-3-connect-to-home-assistant">Step 3:
+                <p>: <span id="nav-_Toc233771327"
+                class="anchor"></span>Code 39: DockerCompose.sh</p>
+                <h3 id="nav-step-3-connect-to-home-assistant">Step 3:
                 Connect to Home Assistant</h3>
                 <p>Once your Docker containers are running on the
                 Proxmox LXC, you can easily link them to Home
@@ -1101,14 +1403,14 @@
                 service (e.g., 10200 for Piper or 10300 for Whisper)
                 integrations and associate the following links.</p></li>
                 </ul>
-                <h3 id="portainerdocker-changes">Portainer/Docker
+                <h3 id="nav-portainerdocker-changes">Portainer/Docker
                 changes</h3>
-                <table>
-                <caption><span id="_Toc233771328"
-                class="anchor"></span>Code : HAOS-Wyoming
+                <table style="width:99%;">
+                <caption><span id="nav-_Toc233771328"
+                class="anchor"></span>Code 40: HAOS-Wyoming
                 Integrations</caption>
                 <colgroup>
-                <col style="width: 101%" />
+                <col style="width: 98%" />
                 </colgroup>
                 <thead>
                 <tr>
@@ -1141,8 +1443,8 @@
                 <tbody>
                 </tbody>
                 </table>
-                <h2 id="twingate-connector-lxc-105">Twingate Connector
-                (LXC 105)</h2>
+                <h2 id="nav-twingate-connector-lxc-105">Twingate
+                Connector (LXC 105)</h2>
                 <p>Installing Twingate on a Proxmox server is
                 straightforward and highly automated, taking only a few
                 minutes to complete.</p>
@@ -1172,22 +1474,26 @@
                 <table>
                 <tbody>
                 <tr>
-                <td style="text-align: left;">bash -c "$(curl -fsSL
-                https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/twingate-connector.sh)"</td>
+                <td style="text-align: left;">bash -c "$(curl -fsSL</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/twingate-connector.sh)"</td>
                 </tr>
                 </tbody>
                 </table>
                 <hr />
-                <p>: <span id="_Toc233771329" class="anchor"></span>Code
-                : TwingateConnectorInstallCommand.sh</p>
+                <p>: <span id="nav-_Toc233771329"
+                class="anchor"></span>Code 41:
+                TwingateConnectorInstallCommand.sh</p>
                 <p>Paste the following configuration, making sure to
                 replace paths and voices with your preferences:</p>
-                <table>
-                <caption><span id="_Toc233771330"
-                class="anchor"></span>Code : Twingate Connector Install
+                <table style="width:99%;">
+                <caption><span id="nav-_Toc233771330"
+                class="anchor"></span>Code 42: Twingate Connector Install
                 Parameters</caption>
                 <colgroup>
-                <col style="width: 101%" />
+                <col style="width: 98%" />
                 </colgroup>
                 <thead>
                 <tr>
@@ -1226,10 +1532,11 @@
                 <tbody>
                 </tbody>
                 </table>
-                <h2 id="post-install-scripts">Post Install Scripts</h2>
-                <h3 id="proxmox-scripts">Proxmox Scripts:</h3>
-                <h4 id="setting-vi-as-your-default-editor">Setting Vi as
-                your default editor</h4>
+                <h2 id="nav-post-install-scripts">Post Install
+                Scripts</h2>
+                <h3 id="nav-proxmox-scripts">Proxmox Scripts:</h3>
+                <h4 id="nav-setting-vi-as-your-default-editor">Setting
+                Vi as your default editor</h4>
                 <p>To set <strong>vi</strong> as the default editor
                 across all containers in your Barnes Home Lab, you can
                 use a bash loop script run directly from your Proxmox
@@ -1238,13 +1545,13 @@
                 distribution (including minimal Debian, Ubuntu, and
                 Alpine templates), this script will work universally
                 without needing to install extra packages.</p>
-                <h5 id="the-automation-script">The Automation
+                <h5 id="nav-the-automation-script">The Automation
                 Script</h5>
                 <p>Run this complete script on your Proxmox host
                 terminal:</p>
                 <table>
-                <caption><span id="_Toc233771331"
-                class="anchor"></span>Code : SetVIasDefault.sh</caption>
+                <caption><span id="nav-_Toc233771331"
+                class="anchor"></span>Code 43: SetVIasDefault.sh</caption>
                 <colgroup>
                 <col style="width: 101%" />
                 </colgroup>
@@ -1270,7 +1577,7 @@
                 <tbody>
                 </tbody>
                 </table>
-                <h5 id="what-this-script-does">What This Script
+                <h5 id="nav-what-this-script-does">What This Script
                 Does</h5>
                 <ul>
                 <li><p><strong>Finds All LXCs</strong>: Loops through
@@ -1286,7 +1593,7 @@
                 href="https://jurf.github.io/2020/03/24/vscode-toolbox/">(Fiala,
                 2020)</a></p></li>
                 </ul>
-                <h5 id="how-to-apply-it-to-future-containers">How to
+                <h5 id="nav-how-to-apply-it-to-future-containers">How to
                 Apply It to Future Containers</h5>
                 <p>To guarantee that any <strong>new</strong> containers
                 you build in the future also default to vi, run this
@@ -1301,15 +1608,15 @@
                 </tbody>
                 </table>
                 <hr />
-                <p>: <span id="_Toc233771332" class="anchor"></span>Code
-                : ExportVIasDefault.sh</p>
-                <h2 id="twingate-connector">Twingate Connector</h2>
+                <p>: <span id="nav-_Toc233771332"
+                class="anchor"></span>Code 44: ExportVIasDefault.sh</p>
+                <h2 id="nav-twingate-connector">Twingate Connector</h2>
                 <p>To safely disable password-based SSH logins and
                 prevent brute-force attacks on Proxmox, you must
                 <strong>verify your key-based login is working, modify
                 the SSH daemon configuration, and restart the
                 service</strong>.</p>
-                <h3 id="phase-1-verify-your-current-setup">Phase 1:
+                <h3 id="nav-phase-1-verify-your-current-setup">Phase 1:
                 Verify Your Current Setup</h3>
                 <ul>
                 <li><p><strong>Keep your current session open.</strong>
@@ -1322,7 +1629,8 @@
                 in automatically without any password prompt before
                 proceeding.</p></li>
                 </ul>
-                <h3 id="phase-2-modify-the-ssh-configuration-file">Phase
+                <h3
+                id="nav-phase-2-modify-the-ssh-configuration-file">Phase
                 2: Modify the SSH Configuration File</h3>
                 <ol type="1">
                 <li>In your active Proxmox terminal, open the SSH
@@ -1392,7 +1700,7 @@
                 <p>If both tests pass, you can safely close your
                 original terminal window. Your Proxmox host is now
                 immune to password brute-force attacks.</p>
-                <h2 id="post-script-configuration-injection">2.
+                <h2 id="nav-post-script-configuration-injection">2.
                 Post-Script Configuration Injection</h2>
                 <p>Because helper scripts typically only create the
                 primary interface (eth0 on vmbr0), you can instantly
@@ -1403,7 +1711,7 @@
                 set up correctly.</p>
                 <p>Run these directly on your Proxmox host terminal
                 right after a script finishes:</p>
-                <h3 id="for-home-assistant-os-vm-101">1. For Home
+                <h3 id="nav-for-home-assistant-os-vm-101">1. For Home
                 Assistant OS (VM 101)</h3>
                 <p>Run this because you used the HAOS VM installer to
                 attach your second isolated network adapter:</p>
@@ -1416,12 +1724,13 @@
                 <p>qm set 101 --cores 2 --memory 4096</p>
                 </blockquote>
                 <p>&gt;&gt;&gt; BASH Script end</p>
-                <h3 id="forpi-hole-lxc-100">2. ForPi-Hole (LXC 100)</h3>
+                <h3 id="nav-forpi-hole-lxc-100">2. ForPi-Hole (LXC
+                100)</h3>
                 <p>Run these to adjust your resource caps to match your
                 exact diagram profile:</p>
                 <p>&gt;&gt;&gt; BASH Script start</p>
                 <h3
-                id="pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">#
+                id="nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">#
                 Pi-Hole Limits (Ensuring it uses the temporary staging
                 IP)</h3>
                 <blockquote>
@@ -1431,8 +1740,8 @@
                 <p>pct restart 100</p>
                 </blockquote>
                 <p>&gt;&gt;&gt; BASH Script end</p>
-                <h3 id="for-ollama-llm-engine-lxc-103">3. For Ollama LLM
-                Engine (LXC 103)</h3>
+                <h3 id="nav-for-ollama-llm-engine-lxc-103">3. For Ollama
+                LLM Engine (LXC 103)</h3>
                 <p>Run this right after the Ollama LXC script finishes
                 to attach the isolated segment and map your 13th Gen
                 Intel iGPU:</p>
@@ -1484,7 +1793,7 @@
                 <p>OLLAMA_NUM_GPU=999</p>
                 <p>GGML_OPENCL_PLATFORM=Intel</p>
                 </blockquote>
-                <h3 id="for-wyoming-docker-lxc-104">4. For Wyoming
+                <h3 id="nav-for-wyoming-docker-lxc-104">4. For Wyoming
                 Docker (LXC 104)</h3>
                 <p>Run this to map the isolated network switch so it can
                 talk privately to the Ollama API:</p>
@@ -1553,8 +1862,8 @@
                 <ul>
                 <li>apt dist-upgrade -y</li>
                 </ul>
-                <h1 id="disaster-recovery">Disaster Recovery:</h1>
-                <h2 id="text-configuration-backup-script">Text
+                <h1 id="nav-disaster-recovery">Disaster Recovery:</h1>
+                <h2 id="nav-text-configuration-backup-script">Text
                 Configuration Backup Script</h2>
                 <p>To secure your precise resource layouts, network
                 definitions, and maps, keep this custom backup tool
@@ -1567,8 +1876,8 @@
                 </ul>
                 <p>Paste the following code:</p>
                 <table>
-                <caption><span id="_Toc233771333"
-                class="anchor"></span>Code :
+                <caption><span id="nav-_Toc233771333"
+                class="anchor"></span>Code 45:
                 backup_all_configs.sh</caption>
                 <colgroup>
                 <col style="width: 101%" />
@@ -1649,10 +1958,10 @@
                 <p>/var/lib/vz/dump/config_backups/</p>
                 </blockquote>
                 <h1
-                id="tools-to-verify-installation-and-functionality">Tools
+                id="nav-tools-to-verify-installation-and-functionality">Tools
                 to verify Installation and functionality</h1>
                 <h2
-                id="how-to-quickly-verify-promox-container-configurations">How
+                id="nav-how-to-quickly-verify-promox-container-configurations">How
                 to Quickly Verify Promox Container Configurations:</h2>
                 <p>Sometimes a quick check is needed to verify if there
                 is a problem. For example, you may want to know if a
@@ -1663,12 +1972,12 @@
                 Console and paste in the following code. Or you can open
                 Putty and select the Container you want. In that shell
                 paste in the following code:</p>
-                <table>
-                <caption><span id="_Toc233771334"
-                class="anchor"></span>Code :
+                <table style="width:99%;">
+                <caption><span id="nav-_Toc233771334"
+                class="anchor"></span>Code 46:
                 QuickSystemTest.sh</caption>
                 <colgroup>
-                <col style="width: 100%" />
+                <col style="width: 98%" />
                 </colgroup>
                 <thead>
                 <tr>
@@ -1722,12 +2031,12 @@
                 this output.</p>
                 <p>After you run the above code block you will get an
                 output like this.</p>
-                <table>
-                <caption><span id="_Toc233771335"
-                class="anchor"></span>Code : Quick System Test
+                <table style="width:96%;">
+                <caption><span id="nav-_Toc233771335"
+                class="anchor"></span>Code 47: Quick System Test
                 Response</caption>
                 <colgroup>
-                <col style="width: 101%" />
+                <col style="width: 95%" />
                 </colgroup>
                 <thead>
                 <tr>
@@ -1798,7 +2107,7 @@
                 </table>
                 <p>The check boxes show the hosts are correctly
                 configured and can communicate with each other.</p>
-                <h1 id="references">References</h1>
+                <h1 id="nav-references">References</h1>
                 <blockquote>
                 <p>Debian Project. (n.d.). Debian GNU/Linux system
                 administration: OpenSSH Server. Debian.
@@ -1839,7 +2148,8 @@
                 SSH Access) [Video]. YouTube.
                 https://www.youtube.com/watch?v=OkY30sh-vRM</p>
                 </blockquote>
-                <h1 id="table-of-authorities">Table of Authorities</h1>
+                <h1 id="nav-table-of-authorities">Table of
+                Authorities</h1>
                 <p>Other Authorities</p>
                 <p>DigitalOcean. (2021). Hardening SSH access on Ubuntu
                 20.04. DigitalOcean Community.
