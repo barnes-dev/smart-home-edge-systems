@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home Lab Installation Procedure</title>
+    <title>Home Lab Install Procedure</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -76,8 +76,8 @@
         /* CUSTOM TABLE SIZE & LEFT JUSTIFICATION */
         .document-content table {
             width: auto;
-            max-width: 850px;           /* Prevents stretching the full width of wide displays */
-            margin: 1.5rem 0;           /* FORCE LEFT JUSTIFIED (Removed auto right/left margins) */
+            max-width: 850px;
+            margin: 1.5rem 0;
             border-collapse: collapse;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -132,6 +132,7 @@
                 position: relative;
                 top: 0;
                 max-height: none;
+                overflow-y: visible;
             }
             .document-content table {
                 width: 100%;            
@@ -143,20 +144,20 @@
 </head>
 <body>
     <div id="header-placeholder"></div>
-    <div id="menu-placeholder"></div>
 
     <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
         
         <p style="margin-bottom: 1.5rem; text-align: left;">
-            <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Back to Home Lab Hub</a>
-        </p>
+            <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Home Lab</a>
+            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+            <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Back</a>
+            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+            <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Gateway</a>        </p>
 
         <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
             <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Home
-Lab Installation Procedure</h1>
-            
+Lab Install Procedure</h1>
             <h2 style="color: #bfdbfe; margin: 0 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
-            
             <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
         </div>
         
@@ -165,8 +166,8 @@ Lab Installation Procedure</h1>
             <aside class="sidebar-toc">
                 <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
                 <ul>
-                <li><a href="#nav-figure-a-generic-home-lab"
-                id="nav-toc-figure-a-generic-home-lab">Figure : A
+                <li><a href="#nav-figure-1-a-generic-home-lab"
+                id="nav-toc-figure-1-a-generic-home-lab">Figure 1: A
                 Generic Home Lab</a></li>
                 <li><a href="#nav-introduction"
                 id="nav-toc-introduction">Introduction</a>
@@ -190,13 +191,13 @@ Lab Installation Procedure</h1>
                 mini-computer.</a>
                 <ul>
                 <li><a
-                href="#nav-figure-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram"
-                id="nav-toc-figure-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure
-                : Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
+                href="#nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram"
+                id="nav-toc-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure
+                2: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
                 Network Diagram</a></li>
-                <li><a href="#nav-code-barnes-home-lab-configuration"
-                id="nav-toc-code-barnes-home-lab-configuration">Code :
-                Barnes Home Lab Configuration</a></li>
+                <li><a href="#nav-code-1-barnes-home-lab-configuration"
+                id="nav-toc-code-1-barnes-home-lab-configuration">Code
+                1: Barnes Home Lab Configuration</a></li>
                 </ul></li>
                 </ul></li>
                 </ul></li>
@@ -227,49 +228,49 @@ Lab Installation Procedure</h1>
                 <li><a href="#nav-pihole-lxc-100"
                 id="nav-toc-pihole-lxc-100">PiHole (LXC 100)</a>
                 <ul>
-                <li><a href="#nav-code-piholeinstallcommand.sh"
-                id="nav-toc-code-piholeinstallcommand.sh">Code :
+                <li><a href="#nav-code-2-piholeinstallcommand.sh"
+                id="nav-toc-code-2-piholeinstallcommand.sh">Code 2:
                 PiHoleInstallCommand.sh</a></li>
                 <li><a
-                href="#nav-code-pihole-install-parameters-and-response"
-                id="nav-toc-code-pihole-install-parameters-and-response">Code
-                : PiHole Install Parameters and Response</a></li>
+                href="#nav-code-3-pihole-install-parameters-and-response"
+                id="nav-toc-code-3-pihole-install-parameters-and-response">Code
+                3: PiHole Install Parameters and Response</a></li>
                 </ul></li>
                 <li><a href="#nav-home-assistant-os-lxc-101---haos-vm"
                 id="nav-toc-home-assistant-os-lxc-101---haos-vm">Home
                 Assistant OS (LXC 101 - HAOS VM)</a>
                 <ul>
-                <li><a href="#nav-code-haosinstallcommand.sh"
-                id="nav-toc-code-haosinstallcommand.sh">Code :
+                <li><a href="#nav-code-4-haosinstallcommand.sh"
+                id="nav-toc-code-4-haosinstallcommand.sh">Code 4:
                 HAOSInstallCommand.sh</a></li>
                 <li><a
-                href="#nav-code-haos-install-parameters-and-response"
-                id="nav-toc-code-haos-install-parameters-and-response">Code
-                : HAOS Install Parameters and Response</a></li>
+                href="#nav-code-5-haos-install-parameters-and-response"
+                id="nav-toc-code-5-haos-install-parameters-and-response">Code
+                5: HAOS Install Parameters and Response</a></li>
                 </ul></li>
                 <li><a href="#nav-nginx-proxy-manager-lxc-102"
                 id="nav-toc-nginx-proxy-manager-lxc-102">NGINX Proxy
                 Manager (LXC 102):</a>
                 <ul>
-                <li><a href="#nav-code-nginxinstallcommand.sh"
-                id="nav-toc-code-nginxinstallcommand.sh">Code :
+                <li><a href="#nav-code-6-nginxinstallcommand.sh"
+                id="nav-toc-code-6-nginxinstallcommand.sh">Code 6:
                 NGINXInstallCommand.sh</a></li>
                 <li><a
-                href="#nav-code-nginx-install-parameters-and-response"
-                id="nav-toc-code-nginx-install-parameters-and-response">Code
-                : NGINX Install Parameters and Response</a></li>
+                href="#nav-code-7-nginx-install-parameters-and-response"
+                id="nav-toc-code-7-nginx-install-parameters-and-response">Code
+                7: NGINX Install Parameters and Response</a></li>
                 </ul></li>
                 <li><a href="#nav-ollama-ai-engine-lxc-103"
                 id="nav-toc-ollama-ai-engine-lxc-103">Ollama AI Engine
                 (LXC 103)</a>
                 <ul>
-                <li><a href="#nav-code-ollamainstallcommand.sh"
-                id="nav-toc-code-ollamainstallcommand.sh">Code :
+                <li><a href="#nav-code-8-ollamainstallcommand.sh"
+                id="nav-toc-code-8-ollamainstallcommand.sh">Code 8:
                 OllamaInstallCommand.sh</a></li>
                 <li><a
-                href="#nav-code-ollama-install-parameters-and-response"
-                id="nav-toc-code-ollama-install-parameters-and-response">Code
-                : Ollama Install Parameters and Response</a></li>
+                href="#nav-code-9-ollama-install-parameters-and-response"
+                id="nav-toc-code-9-ollama-install-parameters-and-response">Code
+                9: Ollama Install Parameters and Response</a></li>
                 <li><a href="#nav-load-the-agents"
                 id="nav-toc-load-the-agents">Load the Agents</a>
                 <ul>
@@ -291,13 +292,13 @@ Lab Installation Procedure</h1>
                 id="nav-toc-step-1-create-a-docker-lxc-in-proxmox">Step
                 1: Create a Docker LXC in Proxmox</a>
                 <ul>
-                <li><a href="#nav-code-dockerinstallcommand.sh"
-                id="nav-toc-code-dockerinstallcommand.sh">Code :
+                <li><a href="#nav-code-10-dockerinstallcommand.sh"
+                id="nav-toc-code-10-dockerinstallcommand.sh">Code 10:
                 DockerInstallCommand.sh</a></li>
                 <li><a
-                href="#nav-code-wyoming-docker-install-parameters-and-response"
-                id="nav-toc-code-wyoming-docker-install-parameters-and-response">Code
-                : Wyoming Docker Install Parameters and
+                href="#nav-code-11-wyoming-docker-install-parameters-and-response"
+                id="nav-toc-code-11-wyoming-docker-install-parameters-and-response">Code
+                11: Wyoming Docker Install Parameters and
                 Response</a></li>
                 </ul></li>
                 <li><a href="#nav-step-2-set-up-wyoming-docker-services"
@@ -307,14 +308,15 @@ Lab Installation Procedure</h1>
                 <li><a href="#nav-code-10-putty-setup"
                 id="nav-toc-code-10-putty-setup">Code 10: Putty
                 Setup</a></li>
-                <li><a href="#nav-code-wyomingdockercompose.sh"
-                id="nav-toc-code-wyomingdockercompose.sh">Code :
+                <li><a href="#nav-code-12-wyomingdockercompose.sh"
+                id="nav-toc-code-12-wyomingdockercompose.sh">Code 12:
                 WyomingDockerCompose.sh</a></li>
-                <li><a href="#nav-code-wyoming-docker-portainer-stack"
-                id="nav-toc-code-wyoming-docker-portainer-stack">Code :
-                Wyoming-Docker Portainer Stack</a></li>
-                <li><a href="#nav-code-dockercompose.sh"
-                id="nav-toc-code-dockercompose.sh">Code :
+                <li><a
+                href="#nav-code-14-wyoming-docker-portainer-stack"
+                id="nav-toc-code-14-wyoming-docker-portainer-stack">Code
+                14: Wyoming-Docker Portainer Stack</a></li>
+                <li><a href="#nav-code-15-dockercompose.sh"
+                id="nav-toc-code-15-dockercompose.sh">Code 15:
                 DockerCompose.sh</a></li>
                 </ul></li>
                 <li><a href="#nav-step-3-connect-to-home-assistant"
@@ -324,8 +326,8 @@ Lab Installation Procedure</h1>
                 <li><a href="#nav-step-3-portainerdocker-changes"
                 id="nav-toc-step-3-portainerdocker-changes">Step 3:
                 Portainer/Docker changes</a></li>
-                <li><a href="#nav-code-haos-wyoming-integrations"
-                id="nav-toc-code-haos-wyoming-integrations">Code :
+                <li><a href="#nav-code-16-haos-wyoming-integrations"
+                id="nav-toc-code-16-haos-wyoming-integrations">Code 16:
                 HAOS-Wyoming Integrations</a></li>
                 </ul></li>
                 </ul></li>
@@ -334,13 +336,13 @@ Lab Installation Procedure</h1>
                 Connector (LXC 105)</a>
                 <ul>
                 <li><a
-                href="#nav-code-twingateconnectorinstallcommand.sh"
-                id="nav-toc-code-twingateconnectorinstallcommand.sh">Code
-                : TwingateConnectorInstallCommand.sh</a></li>
+                href="#nav-code-17-twingateconnectorinstallcommand.sh"
+                id="nav-toc-code-17-twingateconnectorinstallcommand.sh">Code
+                17: TwingateConnectorInstallCommand.sh</a></li>
                 <li><a
-                href="#nav-code-twingate-connector-install-parameters"
-                id="nav-toc-code-twingate-connector-install-parameters">Code
-                : Twingate Connector Install Parameters</a></li>
+                href="#nav-code-18-twingate-connector-install-parameters"
+                id="nav-toc-code-18-twingate-connector-install-parameters">Code
+                18: Twingate Connector Install Parameters</a></li>
                 </ul></li>
                 <li><a href="#nav-post-install-scripts"
                 id="nav-toc-post-install-scripts">Post Install
@@ -352,11 +354,11 @@ Lab Installation Procedure</h1>
                 <li><a href="#nav-setting-vi-as-your-default-editor"
                 id="nav-toc-setting-vi-as-your-default-editor">Setting
                 Vi as your default editor</a></li>
-                <li><a href="#nav-code-setviasdefault.sh"
-                id="nav-toc-code-setviasdefault.sh">Code :
+                <li><a href="#nav-code-19-setviasdefault.sh"
+                id="nav-toc-code-19-setviasdefault.sh">Code 19:
                 SetVIasDefault.sh</a></li>
-                <li><a href="#nav-code-exportviasdefault.sh"
-                id="nav-toc-code-exportviasdefault.sh">Code :
+                <li><a href="#nav-code-20-exportviasdefault.sh"
+                id="nav-toc-code-20-exportviasdefault.sh">Code 20:
                 ExportVIasDefault.sh</a></li>
                 </ul></li>
                 </ul></li>
@@ -418,8 +420,8 @@ Lab Installation Procedure</h1>
                 id="nav-toc-text-configuration-backup-script">Text
                 Configuration Backup Script</a>
                 <ul>
-                <li><a href="#nav-code-backup_all_configs.sh"
-                id="nav-toc-code-backup_all_configs.sh">Code :
+                <li><a href="#nav-code-21-backup_all_configs.sh"
+                id="nav-toc-code-21-backup_all_configs.sh">Code 21:
                 backup_all_configs.sh</a></li>
                 </ul></li>
                 </ul></li>
@@ -433,26 +435,24 @@ Lab Installation Procedure</h1>
                 id="nav-toc-how-to-quickly-verify-promox-container-configurations">How
                 to Quickly Verify Promox Container Configurations:</a>
                 <ul>
-                <li><a href="#nav-code-quicksystemtest.sh"
-                id="nav-toc-code-quicksystemtest.sh">Code :
+                <li><a href="#nav-code-22-quicksystemtest.sh"
+                id="nav-toc-code-22-quicksystemtest.sh">Code 22:
                 QuickSystemTest.sh</a></li>
-                <li><a href="#nav-code-quick-system-test-response"
-                id="nav-toc-code-quick-system-test-response">Code :
+                <li><a href="#nav-code-23-quick-system-test-response"
+                id="nav-toc-code-23-quick-system-test-response">Code 23:
                 Quick System Test Response</a></li>
                 </ul></li>
                 </ul></li>
                 <li><a href="#nav-references"
                 id="nav-toc-references">References</a></li>
-                <li><a href="#nav-table-of-authorities"
-                id="nav-toc-table-of-authorities">Table of
-                Authorities</a></li>
                 </ul>
             </aside>
 
             <article class="document-content">
-                <p><img src="../assets/figures/image1.png"
+                <p><img
+                src="../assets/figures/home-lab-install-procedure/image1.png"
                 style="width:6.5in;height:3.25in" /></p>
-                <h4 id="nav-figure-a-generic-home-lab">Figure 1: A
+                <h4 id="nav-figure-1-a-generic-home-lab">Figure 1: A
                 Generic Home Lab</h4>
                 <h1 id="nav-introduction">Introduction</h1>
                 <h2 id="nav-why-build-a-home-lab">Why Build a Home
@@ -504,10 +504,11 @@ Lab Installation Procedure</h1>
                 id="nav-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.">A
                 Home Lab self-contained in an inexpensive single
                 mini-computer.</h3>
-                <p><img src="../assets/figures/image2.png"
+                <p><img
+                src="../assets/figures/home-lab-install-procedure/image2.png"
                 style="width:6.5in;height:3.54861in" /></p>
                 <h4
-                id="nav-figure-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure 2: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
+                id="nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure 2: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
                 Network Diagram</h4>
                 <p>Note: If you want to use this information in an AI
                 window – select this section into your chat window to
@@ -611,8 +612,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-barnes-home-lab-configuration">Code 1:
-                Barnes Home Lab Configuration</h4>
+                <h4 id="nav-code-1-barnes-home-lab-configuration">Code 1: Barnes Home Lab Configuration</h4>
                 <h1
                 id="nav-installing-your-home-lab-on-a-mini-computer">Installing
                 your Home Lab on a Mini-Computer</h1>
@@ -631,7 +631,7 @@ Lab Installation Procedure</h1>
                 allocations that you will be asked for. Use the details
                 presented in each section, if there are questions the
                 table in <a
-                href="#nav-code-barnes-home-lab-configuration">Code 2:
+                href="#nav-code-1-barnes-home-lab-configuration">Code 2:
                 Barnes Home Lab Configuration</a> can be used for
                 reference to allocate your resources efficiently to
                 avoid crashing the host.</p>
@@ -791,7 +791,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-piholeinstallcommand.sh">Code 5:
+                <h4 id="nav-code-2-piholeinstallcommand.sh">Code 5:
                 PiHoleInstallCommand.sh</h4>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
@@ -827,7 +827,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-pihole-install-parameters-and-response">Code 6: PiHole Install Parameters and Response</h4>
+                id="nav-code-3-pihole-install-parameters-and-response">Code 6: PiHole Install Parameters and Response</h4>
                 <h2 id="nav-home-assistant-os-lxc-101---haos-vm">Home
                 Assistant OS (LXC 101 - HAOS VM)</h2>
                 <p>Run this command in the Proxmox host shell to
@@ -846,7 +846,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-haosinstallcommand.sh">Code 7:
+                <h4 id="nav-code-4-haosinstallcommand.sh">Code 7:
                 HAOSInstallCommand.sh</h4>
                 <p>When you copy and run this command it will start the
                 install script.</p>
@@ -884,7 +884,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-haos-install-parameters-and-response">Code 8: HAOS Install Parameters and Response</h4>
+                id="nav-code-5-haos-install-parameters-and-response">Code 8: HAOS Install Parameters and Response</h4>
                 <h2 id="nav-nginx-proxy-manager-lxc-102">NGINX Proxy
                 Manager (LXC 102):</h2>
                 <p>Run this command to deploy a lightweight NGINX
@@ -902,7 +902,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-nginxinstallcommand.sh">Code 9:
+                <h4 id="nav-code-6-nginxinstallcommand.sh">Code 9:
                 NGINXInstallCommand.sh</h4>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
@@ -945,7 +945,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-nginx-install-parameters-and-response">Code 10: NGINX Install Parameters and Response</h4>
+                id="nav-code-7-nginx-install-parameters-and-response">Code 10: NGINX Install Parameters and Response</h4>
                 <h2 id="nav-ollama-ai-engine-lxc-103">Ollama AI Engine
                 (LXC 103)</h2>
                 <p>This uses the specialized ollama.sh hardware and
@@ -962,7 +962,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-ollamainstallcommand.sh">Code 11:
+                <h4 id="nav-code-8-ollamainstallcommand.sh">Code 11:
                 OllamaInstallCommand.sh</h4>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
@@ -1005,7 +1005,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-ollama-install-parameters-and-response">Code 12: Ollama Install Parameters and Response</h4>
+                id="nav-code-9-ollama-install-parameters-and-response">Code 12: Ollama Install Parameters and Response</h4>
                 <h3 id="nav-load-the-agents">Load the Agents</h3>
                 <p>In the Prolog Web GUI at <a
                 href="http://192.168.86.250:8006"
@@ -1116,7 +1116,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-dockerinstallcommand.sh">Code 14:
+                <h4 id="nav-code-10-dockerinstallcommand.sh">Code 14:
                 DockerInstallCommand.sh</h4>
                 <p>When you copy and run this command it will start the
                 install script. Always select the advance installation
@@ -1164,7 +1164,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-wyoming-docker-install-parameters-and-response">Code 15: Wyoming Docker Install Parameters and Response</h4>
+                id="nav-code-11-wyoming-docker-install-parameters-and-response">Code 15: Wyoming Docker Install Parameters and Response</h4>
                 <h3 id="nav-step-2-set-up-wyoming-docker-services">Step
                 2: Set Up Wyoming Docker Services</h3>
                 <p>Now that Docker is installed in your LXC, you can
@@ -1235,7 +1235,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-wyomingdockercompose.sh">Code 17:
+                <h4 id="nav-code-12-wyomingdockercompose.sh">Code 17:
                 WyomingDockerCompose.sh</h4>
                 <p>Paste the following configuration, making sure to
                 replace paths and voices with your preferences:</p>
@@ -1269,8 +1269,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-wyoming-docker-portainer-stack">Code 18:
-                Wyoming-Docker Portainer Stack</h4>
+                <h4 id="nav-code-14-wyoming-docker-portainer-stack">Code 18: Wyoming-Docker Portainer Stack</h4>
                 <p><em>Spin up the containers by typing the following
                 command in you Putty ssh window:</em></p>
                 <table>
@@ -1281,7 +1280,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-dockercompose.sh">Code 19:
+                <h4 id="nav-code-15-dockercompose.sh">Code 19:
                 DockerCompose.sh</h4>
                 <h3 id="nav-step-3-connect-to-home-assistant">Step 3:
                 Connect to Home Assistant</h3>
@@ -1337,7 +1336,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-haos-wyoming-integrations">Code 20:
+                <h4 id="nav-code-16-haos-wyoming-integrations">Code 20:
                 HAOS-Wyoming Integrations</h4>
                 <h2 id="nav-twingate-connector-lxc-105">Twingate
                 Connector (LXC 105)</h2>
@@ -1380,8 +1379,7 @@ Lab Installation Procedure</h1>
                 </table>
                 <hr />
                 <h4
-                id="nav-code-twingateconnectorinstallcommand.sh">Code 21:
-                TwingateConnectorInstallCommand.sh</h4>
+                id="nav-code-17-twingateconnectorinstallcommand.sh">Code 21: TwingateConnectorInstallCommand.sh</h4>
                 <p>Paste the following configuration, making sure to
                 replace paths and voices with your preferences:</p>
                 <table style="width:99%;">
@@ -1426,7 +1424,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <h4
-                id="nav-code-twingate-connector-install-parameters">Code 22: Twingate Connector Install Parameters</h4>
+                id="nav-code-18-twingate-connector-install-parameters">Code 22: Twingate Connector Install Parameters</h4>
                 <h2 id="nav-post-install-scripts">Post Install
                 Scripts</h2>
                 <h3 id="nav-proxmox-scripts">Proxmox Scripts:</h3>
@@ -1470,7 +1468,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-setviasdefault.sh">Code 23:
+                <h4 id="nav-code-19-setviasdefault.sh">Code 23:
                 SetVIasDefault.sh</h4>
                 <h5 id="nav-what-this-script-does">What This Script
                 Does</h5>
@@ -1503,7 +1501,7 @@ Lab Installation Procedure</h1>
                 </tbody>
                 </table>
                 <hr />
-                <h4 id="nav-code-exportviasdefault.sh">Code 24:
+                <h4 id="nav-code-20-exportviasdefault.sh">Code 24:
                 ExportVIasDefault.sh</h4>
                 <h2 id="nav-twingate-connector">Twingate Connector</h2>
                 <p>To safely disable password-based SSH logins and
@@ -1866,7 +1864,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-backup_all_configs.sh">Code 29:
+                <h4 id="nav-code-21-backup_all_configs.sh">Code 29:
                 backup_all_configs.sh</h4>
                 <p>Save and exit (ESC, :wq, Enter).</p>
                 <p>Make the script executable:</p>
@@ -1940,7 +1938,7 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-quicksystemtest.sh">Code 30:
+                <h4 id="nav-code-22-quicksystemtest.sh">Code 30:
                 QuickSystemTest.sh</h4>
                 <p>When you copy and run this simple script in a
                 terminal of your Putty Shell, Proxmox host, or any
@@ -2022,83 +2020,130 @@ Lab Installation Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-quick-system-test-response">Code 31:
+                <h4 id="nav-code-23-quick-system-test-response">Code 31:
                 Quick System Test Response</h4>
                 <p>The check boxes show the hosts are correctly
                 configured and can communicate with each other.</p>
                 <h1 id="nav-references">References</h1>
                 <blockquote>
-                <p>Debian Project. (n.d.). Debian GNU/Linux system
-                administration: OpenSSH Server. Debian.
-                https://www.debian.org/doc/</p>
-                <p>Debian Project. (n.d.). Debian GNU/Linux system
-                configuration: Environment variables. Debian.
-                https://www.debian.org/doc/</p>
-                <p>DigitalOcean. (2021). Hardening SSH access on Ubuntu
-                20.04. DigitalOcean Community.
-                https://www.digitalocean.com/community/tutorials/hardening-ssh-fail2ban</p>
-                <p>E2E Networks. (n.d.). How to enable/disable
-                password-based authentication. E2E Networks
-                Documentation.
-                https://docs.e2enetworks.com/docs/myaccount/security/enable_disable_passwordbased/</p>
-                <p>Fiala, J. (2020, March 24). Integrating Fedora
-                Toolbox into VS Code (with the help of SSH). Function
-                Over Form.
-                https://jurf.github.io/2020/03/24/vscode-toolbox/</p>
-                <p>OpenSSH. (n.d.). OpenSSH Server Configuration Guide:
-                sshd_config. OpenSSH.
-                https://www.openssh.com/manual.html</p>
-                <p>Project X. (n.d.). Security (Level 0, Chapter 4).
-                XTLS.
-                https://xtls.github.io/en/document/level-0/ch04-security.html</p>
-                <p>Proxmox Server Solutions. (n.d.). Proxmox Virtual
-                Environment documentation: CPU Resource Allocation.
-                Proxmox Server Solutions.
-                https://pve.proxmox.com/pve-docs/pve-admin-guide.html</p>
-                <p>Proxmox Server Solutions. (n.d.). Proxmox Virtual
-                Environment documentation: User Management and SSH.
-                Proxmox Server Solutions.
-                https://pve.proxmox.com/pve-docs/pve-admin-guide.html</p>
-                <p>Rackspace. (n.d.). Linux server security best
-                practices. Rackspace Documentation.
-                https://docs.rackspace.com/docs/linux-server-security-best-practices</p>
-                <p>SyncBricks. (2024, December). How to Generate and
-                Deploy SSH Keys for Proxmox Cluster Login (Passwordless
-                SSH Access) [Video]. YouTube.
-                https://www.youtube.com/watch?v=OkY30sh-vRM</p>
+                <p><strong>🌐 Cloudflare Resources</strong></p>
                 </blockquote>
-                <h1 id="nav-table-of-authorities">Table of
-                Authorities</h1>
-                <p>Other Authorities</p>
-                <p>DigitalOcean. (2021). Hardening SSH access on Ubuntu
-                20.04. DigitalOcean Community.
-                https://www.digitalocean.com/community/tutorials/hardening-ssh-fail2ban
-                20</p>
-                <p>E2E Networks. (n.d.). How to enable/disable
-                password-based authentication. E2E Networks
-                Documentation.
-                https://docs.e2enetworks.com/docs/myaccount/security/enable_disable_passwordbased/
-                20</p>
-                <p>Fiala, J. (2020, March 24). Integrating Fedora
-                Toolbox into VS Code (with the help of SSH). Function
-                Over Form.
-                https://jurf.github.io/2020/03/24/vscode-toolbox/ 19</p>
-                <p>Project X. (n.d.). Security (Level 0, Chapter 4).
-                XTLS.
-                https://xtls.github.io/en/document/level-0/ch04-security.html
-                20</p>
-                <p>Rackspace. (n.d.). Linux server security best
-                practices. Rackspace Documentation.
-                https://docs.rackspace.com/docs/linux-server-security-best-practices
-                20</p>
-                <p>SecureBits. (n.d.). Linux SSH absichern [Linux SSH
-                hardening]. SecureBits.
-                https://secure-bits.org/en/posts/linux/linux-ssh-absichern/
-                20</p>
-                <p>SyncBricks. (2024, December). How to Generate and
-                Deploy SSH Keys for Proxmox Cluster Login (Passwordless
-                SSH Access) [Video]. YouTube.
-                https://www.youtube.com/watch?v=OkY30sh-vRM 8</p>
+                <ul>
+                <li><p><a
+                href="https://developers.cloudflare.com/dns/manage-dns-records/">Cloudflare
+                Docs: Manage DNS Records</a></p></li>
+                <li><p><a
+                href="https://developers.cloudflare.com/email-service/configuration/domains/">Cloudflare
+                Docs: Post-Onboarding Domain Configuration</a></p></li>
+                <li><p><a
+                href="https://developers.cloudflare.com/email-service/get-started/route-emails/">Cloudflare
+                Docs: Route Incoming Emails with Email
+                Routing</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>🐧 Linux &amp; Proxmox VE
+                Resources</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a
+                href="https://pve.proxmox.com/wiki/Package_Repositories">Proxmox
+                VE Admin Guide: Package Repositories
+                Reference</a></p></li>
+                <li><p><a
+                href="https://pve.proxmox.com/pve-docs/">Proxmox VE
+                Admin Guide: Documentation Index</a></p></li>
+                <li><p><a href="https://ubuntu.com/server/docs">Ubuntu
+                Server Guide: Network Configuration</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>🐳 Docker &amp; Containerization
+                Resources</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a
+                href="https://docs.docker.com/get-started/docker-overview/">Docker
+                Docs: Product Manuals and Core Technical
+                Overview</a></p></li>
+                <li><p><a href="https://docs.docker.com/compose/">Docker
+                Docs: Multi-Container Orchestration via Docker
+                Compose</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>🏠 Home Assistant &amp; Wyoming
+                Protocols</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a
+                href="https://www.home-assistant.io/installation/">Home
+                Assistant Docs: Operating System Installation
+                Guide</a></p></li>
+                <li><p><a
+                href="https://www.home-assistant.io/docs/configuration/">Home
+                Assistant Docs: Core Configuration Options and YAML
+                Syntax</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>🛑 Network Filtering, Remote Access &amp;
+                Security Resources</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a href="https://docs.pi-hole.net/">Pi-hole Docs:
+                Deployment and Core Network Configuration
+                Guide</a></p></li>
+                <li><p><a href="https://www.twingate.com/">Twingate
+                Docs: Secure Remote Access Architecture</a></p></li>
+                <li><p>DigitalOcean Community: Hardening SSH Access via
+                Fail2Ban, Nftables, and Cloud Firewalls</p></li>
+                </ul>
+                <blockquote>
+                <p><strong>🖥️ Developer Tools &amp; Productivity
+                Systems</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a href="https://git-scm.com/doc">Git
+                Documentation: Reference Manual and Control
+                Workflows</a></p></li>
+                <li><p><a
+                href="https://code.visualstudio.com/docs">Visual Studio
+                Code Docs: Getting Started and Workspace
+                Management</a></p></li>
+                <li><p><a
+                href="https://support.microsoft.com/">Microsoft Support:
+                Advanced Find and Replace with Wildcard
+                Syntax</a></p></li>
+                <li><p><a
+                href="https://ai.google.dev/gemini-api/docs">Google
+                Gemini API: Developer Overview and Integration
+                Docs</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>⚙️ Web Servers &amp; Local AI
+                Engines</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a href="https://nginx.org/en/docs/">NGINX Core
+                Docs: Reverse Proxy and Web Server
+                Administration</a></p></li>
+                <li><p><a href="https://docs.ollama.com/faq">Ollama
+                Docs: Frequently Asked Questions and Configuration
+                Flags</a></p></li>
+                <li><p><a
+                href="https://github.com/intel/compute-runtime">Intel®
+                Graphics Compute Runtime for GitHub Codebase
+                (NEO)</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>💻 Hardware Specifications &amp; Vendor
+                Documentation</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a
+                href="https://www.intel.com/content/www/us/en/support.html">Intel
+                Support: Core i7 Processor Series Technical
+                Reference</a></p></li>
+                <li><p><a href="https://www.kamrui.com/">Kamrui Support:
+                Mini PC Support and Systems Overview</a></p></li>
+                </ul>
             </article>
 
         </div>

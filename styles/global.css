@@ -1,292 +1,142 @@
-/* ==========================================
-   1. GLOBAL VARIABLES & RESET RULES 
-   ========================================== */
-@charset "utf-8";
-:root { 
-  --bg: #132f57; 
-  --body-text: #e2e8f0; 
-  --header-bg: #10284f; 
-  --card-bg: #f3f9ff; 
-  --card-border: #dbeafe; 
-  --accent: #1d4ed8; 
-  --accent-2: #60a5fa; 
-  --footer-bg: #0f172a; 
-  --footer-text: #94a3b8; 
-} 
-
-* { 
-  margin: 0; 
-  padding: 0; 
-  box-sizing: border-box; 
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-} 
-
-body { 
-  background: var(--bg); 
-  color: var(--body-text); 
-  line-height: 1.6; 
-  min-height: 100vh; 
-  display: flex; 
-  flex-direction: column; 
-} 
-
-a { 
-  text-decoration: none; 
-  color: inherit; 
-} 
-
-/* ==========================================
-   2. LAYOUT COMPONENT BLOCKS 
-   ========================================== */
-header { 
-  background-color: var(--header-bg); 
-  border-bottom: 1px solid #ffffff; 
-  padding: 1rem 2rem; 
-} 
-
-.header-container { 
-  max-width: 100% !important; 
-  margin: 0 auto; 
-  display: flex;                 
-  justify-content: flex-start;   
-  align-items: center; 
-} 
-
-.title-block { 
-  display: flex; 
-  align-items: center; 
-  justify-content: flex-start;   
-  min-height: 96px; 
-  width: 100%; 
-} 
-
-.title-block h1 { 
-  font-size: 1.75rem; 
-  color: #1e293b; 
-  text-align: left; 
-  padding: 0;
-  margin: 0; 
-} 
-
-main { 
-  max-width: 100% !important; /* Widescreen boundary rule expansion */
-  width: 100%; 
-  margin: 1rem 0 !important;   /* Snaps content stream flush to the left gutter */
-  padding: 0 1.5rem;           
-  flex: 1; 
-} 
-
-/* ==========================================
-   3. GRID & CARDS SYSTEMS 
-   ========================================== */
-.grid { 
-  display: grid; 
-  grid-template-columns: repeat(3, minmax(0, 1fr)); 
-  gap: 1.5rem; 
-  margin-bottom: 1.5rem; 
-} 
-
-.card { 
-  background: var(--card-bg); 
-  color: #0f172a; 
-  padding: 1.5rem; 
-  border-radius: 8px; 
-  border: 1px solid var(--card-border); 
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
-} 
-
-.card h3 { 
-  margin-top: 0; 
-  margin-bottom: 0.5rem; 
-  color: #0f172a; 
-} 
-
-.card p { 
-  color: #475569; 
-} 
-
-.card a { 
-  color: var(--accent); 
-  font-weight: 700; 
-} 
-
-.card-list { 
-  list-style: none; 
-  padding: 0; 
-  margin: 0; 
-  display: grid; 
-  gap: 0.75rem; 
-} 
-
-.card-list li { 
-  background: var(--card-bg); 
-  padding: 1rem; 
-  border-radius: 8px; 
-  border: 1px solid var(--card-border); 
-} 
-
-.card-list li a { 
-  color: var(--accent); 
-} 
-
-/* ==========================================
-   4. FOOTER DEFINITIONS 
-   ========================================== */
-footer { 
-  background-color: var(--footer-bg); 
-  color: var(--footer-text); 
-  padding: 2rem 2rem 1.5rem; 
-  width: 100%; 
-} 
-
-.footer-container { 
-  max-width: 100% !important; 
-  margin: 0 auto; 
-  display: flex; 
-  gap: 1rem; 
-  flex-wrap: wrap; 
-  padding-top: 1rem; 
-} 
-
-.footer-column { 
-  flex: 1 1 220px; 
-  min-width: 220px; 
-  font-size: 0.9rem; 
-  line-height: 1.3; 
-} 
-
-.footer-column h4, .footer-column h5 { 
-  color: #eaf4ff; 
-  margin-bottom: 0.5rem; 
-  font-size: 1rem; 
-} 
-
-.footer-column ul { 
-  list-style: none; 
-  padding: 0; 
-  margin: 0; 
-} 
-
-.footer-column ul li { 
-  margin-bottom: 0.2rem; 
-} 
-
-.footer-column a { 
-  color: var(--footer-text); 
-} 
-
-.footer-column a:hover { 
-  color: #ffffff; 
-}
-
-/* ==========================================
-   5. MENU HIGHLIGHT LOGIC 
-   ========================================== */
-#dynamic-nav a {
-    color: #ffffff;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-#dynamic-nav a:hover {
-    color: #60a5fa;
-}
-
-#dynamic-nav a.active {
-    color: #60a5fa !important;       
-    font-weight: bold;               
-    border-bottom: 2px solid #60a5fa; 
-    padding-bottom: 4px;             
-}
-
 /* ==========================================================================
-   6. DOCUMENT CONTENT & TWO-COLUMN STRUCTURE
+   GLOBAL RESET & BASE TOKENS
    ========================================================================== */
-
-/* Main Document Workspace Grid Configuration */
-.doc-layout {
-    display: grid;
-    /* Reduced by 25% (from 450px to 335px) for a sleeker profile */
-    grid-template-columns: 335px 1fr; 
-    gap: 2.5rem;                       
-    margin-top: 2rem;
-    align-items: start;
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-/* Header Indentation Rules */
-.document-content h3 {
-    color: #93c5fd;
-    font-size: 1.25rem;
-    margin-top: 1.75rem;
-    margin-bottom: 0.5rem;
-}
-
-.document-content h4 {
-    color: #60a5fa;
-    font-size: 1.1rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-/* --- RESTORED TABLE FORMATTING FOR DARK THEME --- */
-.document-content table {
+html, body {
     width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-    font-size: 1rem;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
-}
-
-.document-content th {
-    background-color: rgba(96, 165, 250, 0.15);
+    min-height: 100vh;
+    background-color: #0f172a; /* Deep charcoal/slate foundation */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
     color: #eaf4ff;
-    font-weight: 600;
-    text-align: left;
-    padding: 0.75rem 1rem;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-.document-content td {
-    padding: 0.75rem 1rem;
-    color: #eaf4ff;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.document-content tr:last-child td {
-    border-bottom: none;
-}
-
-.document-content tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.04);
-}
-
-.document-content caption {
-    color: #bfdbfe;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    text-align: left;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ==========================================================================
-   7. DOCUMENT LIST OVERRIDES & CODE BLOCKS
+   TYPOGRAPHY & CONTENT HEADINGS
    ========================================================================== */
-
-/* Force indent all bulleted (ul) and numbered (ol) lists in the document */
-.document-content ul, 
-.document-content ol {
-    padding-left: 2.5rem !important;  
-    margin-top: 1rem !important;     
-    margin-bottom: 1rem !important;  
+h1, h2, h3, h4, h5, h6 {
+    color: #eaf4ff;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
 }
 
-.document-content ul li {
-    list-style-type: disc !important; 
-    margin-bottom: 0.4rem !important;
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.75rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.4rem; }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.15rem; }
+
+p {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    color: #cbd5e1; /* Smooth text readability contrast */
 }
 
-.document-content ol li {
-    list-style-type: decimal !important; 
-    margin-bottom: 0.4rem !important;
+/* Global Link Resets */
+a {
+    color: #3b82f6;
+    text-decoration: none;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+a:hover {
+    color: #60a5fa;
+    text-decoration: underline;
+}
+
+/* Inline Code Elements */
+p code, li code, td code {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f43f5e; /* Crisp contrast for technical properties */
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.875rem;
+}
+
+/* Lists */
+ul, ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.75rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+    color: #cbd5e1;
+}
+
+/* ==========================================================================
+   LAYOUT STRUCTURES & ROUTING CONTROLS
+   ========================================================================== */
+main {
+    display: block;
+    width: 100%;
+}
+
+/* Prevent layout breaking on extremely large multi-nested guides */
+.doc-layout {
+    overflow: visible !important;
+}
+
+/* Component Placeholders (Header, Menu, Footer) */
+#header-placeholder, 
+#menu-placeholder, 
+#footer-placeholder {
+    width: 100%;
+    background: #1e293b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#footer-placeholder {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: none;
+    margin-top: 5rem;
+    padding: 2rem 0;
+}
+
+/* Custom Scrollbar configurations for embedded code windows & Sticky TOC */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY & PRINT OVERRIDES
+   ========================================================================== */
+@media print {
+    body {
+        background: #fff;
+        color: #000;
+    }
+    .sidebar-toc, #header-placeholder, #menu-placeholder, #footer-placeholder {
+        display: none !important;
+    }
+    .doc-layout {
+        display: block !important;
+    }
+    .document-content {
+        color: #000 !important;
+    }
 }
