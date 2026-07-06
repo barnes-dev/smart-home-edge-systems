@@ -180,9 +180,9 @@ Lab DNS Procedure</h1>
                 id="nav-toc-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure
                 2: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
                 Network Diagram</a></li>
-                <li><a href="#nav-code-1-barnes-home-lab-configuration"
-                id="nav-toc-code-1-barnes-home-lab-configuration">Code
-                1: Barnes Home Lab Configuration</a></li>
+                <li><a href="#nav-code-barnes-home-lab-configuration"
+                id="nav-toc-code-barnes-home-lab-configuration">Code :
+                Barnes Home Lab Configuration</a></li>
                 </ul></li>
                 <li><a href="#nav-setting-up-a-domain-name"
                 id="nav-toc-setting-up-a-domain-name">Setting up a
@@ -209,22 +209,25 @@ Lab DNS Procedure</h1>
                 <li><a href="#nav-step-3-turn-on-github-pages"
                 id="nav-toc-step-3-turn-on-github-pages">Step 3: Turn on
                 GitHub Pages</a></li>
-                <li><a href="#nav-step-4-share-your-files-and-site"
-                id="nav-toc-step-4-share-your-files-and-site">Step 4:
+                <li><a href="#nav-step-4-install-github-desltop"
+                id="nav-toc-step-4-install-github-desltop">Step 4:
+                Install Github Desltop</a></li>
+                <li><a href="#nav-step-5-share-your-files-and-site"
+                id="nav-toc-step-5-share-your-files-and-site">Step 5:
                 Share Your Files and Site</a></li>
                 </ul></li>
-                <li><a href="#nav-pointing-it-to-git-hub"
-                id="nav-toc-pointing-it-to-git-hub">Pointing it to Git
-                Hub</a>
+                <li><a href="#nav-pointing-cloudfare-to-git-hub"
+                id="nav-toc-pointing-cloudfare-to-git-hub">Pointing
+                Cloudfare to Git Hub</a>
                 <ul>
                 <li><a
                 href="#nav-step-1-configure-dns-records-in-cloudflare"
                 id="nav-toc-step-1-configure-dns-records-in-cloudflare">Step
                 1: Configure DNS Records in Cloudflare</a>
                 <ul>
-                <li><a href="#nav-figure-4-cloudflare-dns-configuration"
-                id="nav-toc-figure-4-cloudflare-dns-configuration">Figure
-                4: Cloudflare DNS Configuration</a></li>
+                <li><a href="#nav-figure-cloudflare-dns-configuration"
+                id="nav-toc-figure-cloudflare-dns-configuration">Figure
+                : Cloudflare DNS Configuration</a></li>
                 </ul></li>
                 <li><a
                 href="#nav-step-2-configure-your-custom-domain-in-github"
@@ -247,11 +250,11 @@ Lab DNS Procedure</h1>
             <article class="document-content">
                 <figure>
                 <img
-                src="../assets/figures/home-lab-dns-procedure/Figure-1-Figure1YourHomeintheClouds.png"
+                src="../assets/figures/home-lab-dns-procedure/Figure-1-YourHomeintheClouds.png"
                 style="width:6.5in;height:3.54545in"
-                alt="Figure 1: Your Home in the Clouds!" />
-                <figcaption aria-hidden="true">Figure 2: Your Home in
-                the Clouds!</figcaption>
+                alt=": Your Home in the Clouds!" />
+                <figcaption aria-hidden="true">: Your Home in the
+                Clouds!</figcaption>
                 </figure>
                 <h1 id="nav-basic-home-lab-configuration">Basic Home Lab
                 Configuration</h1>
@@ -262,7 +265,7 @@ Lab DNS Procedure</h1>
                 src="../assets/figures/home-lab-dns-procedure/image2.png"
                 style="width:6.5in;height:3.54834in" /></p>
                 <h4
-                id="nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure 3: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
+                id="nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure 1: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
                 Network Diagram</h4>
                 <p>Note: If you want to use this information in an AI
                 window – select this section into your chat window to
@@ -366,7 +369,8 @@ Lab DNS Procedure</h1>
                 <tbody>
                 </tbody>
                 </table>
-                <h4 id="nav-code-1-barnes-home-lab-configuration">Code 1: Barnes Home Lab Configuration</h4>
+                <h4 id="nav-code-barnes-home-lab-configuration">Code 1:
+                Barnes Home Lab Configuration</h4>
                 <h2 id="nav-setting-up-a-domain-name">Setting up a
                 Domain Name</h2>
                 <p>Reserve your spot now if you think you want to
@@ -473,16 +477,22 @@ Lab DNS Procedure</h1>
                 <p>Your main web page must be named exactly index.html
                 (all lowercase, and no spaces) for GitHub to recognize
                 it as the homepage.</p>
+                <p>Since you don’t have any files yet just skip this
+                step for now:</p>
+                <blockquote>
                 <p>Inside your new repository</p>
+                </blockquote>
                 <ul>
                 <li>click the <strong>Add file</strong> dropdown button
                 and choose <strong>Upload files</strong>.</li>
                 </ul>
+                <blockquote>
                 <p>Drag and drop your website files into the box. Ensure
                 your main page is named index.html. You can also drop
                 any other files (like PDFs, images, or ZIPs) you want to
                 share.</p>
                 <p>Scroll down to <strong>Commit changes</strong></p>
+                </blockquote>
                 <ul>
                 <li>add a short note describing your upload and click
                 <strong>Commit changes</strong>.</li>
@@ -509,7 +519,111 @@ Lab DNS Procedure</h1>
                 a live link will appear at the top of the Pages section
                 (e.g., https://github.io).</p></li>
                 </ul>
-                <h3 id="nav-step-4-share-your-files-and-site">Step 4:
+                <h3 id="nav-step-4-install-github-desltop">Step 4:
+                Install Github Desltop</h3>
+                <p><strong>Its time to install Github Desltop and sync
+                it to your Git Repository</strong></p>
+                <blockquote>
+                <p><strong>Step 1: Install and Authenticate</strong></p>
+                </blockquote>
+                <ol type="1">
+                <li><p><strong>Download the Installer:</strong> Go to <a
+                href="https://desktop.github.com/"><u>desktop.github.com</u></a>
+                and download the version for your operating system
+                (macOS or Windows).</p></li>
+                <li><p><strong>Run the Setup:</strong> Open the
+                downloaded file and follow the standard installation
+                prompts.</p></li>
+                <li><p><strong>Sign In:</strong> Once it opens, you will
+                be prompted to sign into your account. Click
+                <strong>Sign in to GitHub.com</strong></p></li>
+                <li><p><strong>Authorize:</strong> This will open your
+                web browser. Confirm your credentials and click
+                <strong>Authorize desktop</strong>. Your browser will
+                then ask for permission to redirect you back to the
+                application.</p></li>
+                </ol>
+                <blockquote>
+                <p><strong>Step 2: Connect Your Repository</strong></p>
+                <p>Depending on whether your repository already exists
+                on GitHub or only exists as a folder on your computer,
+                choose <strong>one</strong> of the methods below. We
+                will be using the cloning method (Option A) since we do
+                not have any web pages yet.</p>
+                <p><strong>Option A: If your repository is already on
+                GitHub (Cloning)</strong></p>
+                <p><em>This is the most common path if you created the
+                repo on the website first.</em></p>
+                </blockquote>
+                <ol type="1">
+                <li><p>In GitHub Desktop, go to the top menu and select
+                <strong>File &gt; Clone Repository</strong>.</p></li>
+                <li><p>Click the <strong>GitHub.com</strong> tab. You
+                will see a list of all your online
+                repositories.</p></li>
+                <li><p>Select your repository from the list.</p></li>
+                <li><p>Choose the <strong>Local Path</strong> (the
+                folder on your computer where you want the project files
+                to live).</p></li>
+                <li><p>Click <strong>Clone</strong>.</p></li>
+                </ol>
+                <blockquote>
+                <p><strong>Option B: If the folder is only on your
+                computer (Adding &amp; Publishing)</strong></p>
+                <p><em>Use this if you have a local project folder that
+                you want to upload to GitHub for the first
+                time.</em></p>
+                </blockquote>
+                <ol type="1">
+                <li><p>Go to <strong>File &gt; Add Local
+                Repository</strong>.</p></li>
+                <li><p>Browse and select your project's folder, then
+                click <strong>Add Repository</strong>.</p></li>
+                <li><p>If it isn't a Git repository yet, the app will
+                ask if you want to initialize it. Click <strong>Create a
+                repository</strong>.</p></li>
+                <li><p>Once added, look at the top bar and click
+                <strong>Publish repository</strong> to push it to your
+                online GitHub account.</p></li>
+                </ol>
+                <blockquote>
+                <p><strong>Step 3: Syncing Your Changes Going
+                Forward</strong></p>
+                <p>To keep your local computer and your online GitHub
+                repository perfectly in sync, you will follow a simple
+                3-step loop whenever you do work:</p>
+                <p>[ Your Code Changes ] ──&gt; [ Commit (Save Locally)
+                ] ──&gt; [ Push (Sync to GitHub) ]</p>
+                </blockquote>
+                <ol type="1">
+                <li><p><strong>Make Changes:</strong> Edit, add, or
+                delete files in your project folder using your favorite
+                code editor. GitHub Desktop will automatically track
+                these changes in the left sidebar under the
+                <strong>Changes</strong> tab.</p></li>
+                <li><p><strong>Commit Your Changes:</strong> * At the
+                bottom of the left sidebar, write a short summary of
+                what you changed (e.g., "Updated home page text").</p>
+                <ul>
+                <li>Click the blue <strong>Commit to main</strong> (or
+                master) button. This saves a snapshot of your work
+                <em>locally</em> on your computer.</li>
+                </ul></li>
+                <li><p><strong>Push to GitHub:</strong> Look at the top
+                menu bar. Click <strong>Push origin</strong>. This
+                uploads your local commits to the cloud on
+                GitHub.com.</p></li>
+                </ol>
+                <blockquote>
+                <p>💡 <strong>Pro-Tip:</strong> Before you start working
+                next time, always click the <strong>Fetch
+                origin</strong> (or <strong>Pull origin</strong>) button
+                at the top. This downloads any changes made to the
+                GitHub repository (like updates made from another
+                computer or by a teammate) so your local files stay up
+                to date.</p>
+                </blockquote>
+                <h3 id="nav-step-5-share-your-files-and-site">Step 5:
                 Share Your Files and Site</h3>
                 <p><strong>To share the live website</strong>: Give
                 people the URL generated in <strong>Step 3</strong>.</p>
@@ -518,8 +632,8 @@ Lab DNS Procedure</h1>
                 example, if you uploaded a file named brochure.pdf, your
                 shareable download link is:<br />
                 https://github.io</p>
-                <h2 id="nav-pointing-it-to-git-hub">Pointing it to Git
-                Hub</h2>
+                <h2 id="nav-pointing-cloudfare-to-git-hub">Pointing
+                Cloudfare to Git Hub</h2>
                 <p>To point a custom domain managed by
                 <strong>Cloudflare</strong> to a <strong>GitHub
                 Pages</strong> web page, you need to configure specific
@@ -660,9 +774,7 @@ Lab DNS Procedure</h1>
                 <p><img
                 src="../assets/figures/home-lab-dns-procedure/image3.png"
                 style="width:6.66011in;height:3.08127in" /></p>
-                <h4
-                id="nav-figure-4-cloudflare-dns-configuration">Figure 4:
-                Cloudflare DNS Configuration</h4>
+                <h4 id="nav-figure-cloudflare-dns-configuration">Figure 2: Cloudflare DNS Configuration</h4>
                 <h3
                 id="nav-step-2-configure-your-custom-domain-in-github">Step
                 2: Configure Your Custom Domain in GitHub</h3>
