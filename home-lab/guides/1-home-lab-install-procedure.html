@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1 Home Lab Install Procedure</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-LLK7685ZGC');
+    </script>
+    <link rel="stylesheet" href="/styles/global.css">
+    
+    <style>
+        .doc-layout {
+            display: grid;
+            /* Widened the left column to 450px (~4 inches) */
+            grid-template-columns: 450px 1fr;
+            gap: 2.5rem;
+            margin-top: 2rem;
+            align-items: start;
+        }
+        
+        .sidebar-toc {
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Styling Pandoc's auto-generated list structure */
+        .sidebar-toc ul {
+            list-style: none;
+            padding-left: 1.25rem;
+            margin: 0;
+        }
+        .sidebar-toc > ul {
+            padding-left: 0;
+        }
+        .sidebar-toc li {
+            margin-bottom: 0.5rem;
+        }
+        .sidebar-toc a {
+            color: #bfdbfe;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+        .sidebar-toc a:hover {
+            color: #eaf4ff;
+            text-decoration: underline;
+        }
+
+        .document-content {
+            color: #eaf4ff;
+            line-height: 1.7;
+        }
+        
+        /* Modernized Code block layout matching the script regex output */
+        .document-content pre {
+            background: #1e1e1e;
+            padding: 1.25rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .document-content pre code {
+            font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #eaf4ff;
+            line-height: 1.5;
+        }
+
+        /* Codeblock Language Badges on top-right edge */
+        .document-content pre[class*="language-"]::before {
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            font-family: sans-serif;
+        }
+
+        .document-content pre.language-powershell::before { content: "POWERSHELL"; border-bottom: 1px solid #10b981; }
+        .document-content pre.language-css::before { content: "CSS"; border-bottom: 1px solid #3b82f6; }
+        .document-content pre.language-html::before { content: "HTML"; border-bottom: 1px solid #f97316; }
+        .document-content pre.language-yaml::before { content: "YAML"; border-bottom: 1px solid #a855f7; }
+        .document-content pre.language-plaintext::before { content: "TEXT"; }
+
+        /* Left border accent line linked to language profiles */
+        .document-content pre.language-powershell { border-left: 3px solid #10b981; }
+        .document-content pre.language-css { border-left: 3px solid #3b82f6; }
+        .document-content pre.language-html { border-left: 3px solid #f97316; }
+        .document-content pre.language-yaml { border-left: 3px solid #a855f7; }
+
+        /* CUSTOM TABLE SIZE & LEFT JUSTIFICATION */
+        .document-content table {
+            width: auto;
+            max-width: 850px;
+            margin: 1.5rem 0;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        .document-content th, 
+        .document-content td {
+            padding: 10px 16px;         
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Preserve tabs and spacing formatting inside table cells natively */
+        .document-content td {
+            white-space: pre-wrap;      
+        }
+
+        .document-content th {
+            background: rgba(191, 219, 254, 0.1); 
+            color: #bfdbfe;
+            font-weight: 600;
+        }
+
+        /* FORCE ALL IMAGES AND CAPTIONS TO BE LEFT ALIGNED */
+        .document-content img {
+            display: block;
+            margin-left: 0 !important;
+            margin-right: auto !important;
+            text-align: left;
+        }
+
+        .document-content p.caption,
+        .document-content .caption,
+        .document-content figcaption {
+            text-align: left !important;
+            margin-left: 0 !important;
+            margin-top: 0.5rem;
+            color: #94a3b8;
+        }
+
+        .document-content tr:hover {
+            background: rgba(255, 255, 255, 0.04); 
+        }
+
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-toc {
+                position: relative;
+                top: 0;
+                max-height: none;
+                overflow-y: visible;
+            }
+            .document-content table {
+                width: 100%;            
+                display: block;
+                overflow-x: auto;       
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
+        
+        <p style="margin-bottom: 1.5rem; text-align: left;">
+            <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Home Lab</a>
+            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+            <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Back</a>
+            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+            <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Gateway</a>
+        </p>
+
+        <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
+            <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">1
+Home Lab Install Procedure</h1>
+            <h2 style="color: #bfdbfe; margin: 0 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
+            <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
+        </div>
+        
+        <div class="doc-layout">
+            
+            <aside class="sidebar-toc">
+                <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
+                <ul>
+                <li><a href="#nav-figure-1-a-generic-home-lab"
+                id="nav-toc-figure-1-a-generic-home-lab">Figure 1: A
+                Generic Home Lab</a></li>
+                <li><a href="#nav-introduction"
+                id="nav-toc-introduction">Introduction</a>
+                <ul>
+                <li><a href="#nav-why-build-a-home-lab"
+                id="nav-toc-why-build-a-home-lab">Why Build a Home
+                Lab?</a></li>
+                </ul></li>
+                <li><a href="#nav-recommended-design-architecture"
+                id="nav-toc-recommended-design-architecture">Recommended
+                Design Architecture</a>
+                <ul>
+                <li><a href="#nav-basic-home-lab-configuration"
+                id="nav-toc-basic-home-lab-configuration">Basic Home Lab
+                Configuration</a>
+                <ul>
+                <li><a
+                href="#nav-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer."
+                id="nav-toc-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.">A
+                Home Lab self-contained in an inexpensive single
+                mini-computer.</a>
+                <ul>
+                <li><a
+                href="#nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram"
+                id="nav-toc-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure
+                2: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
+                Network Diagram</a></li>
+                <li><a href="#nav-code-1-barnes-home-lab-configuration"
+                id="nav-toc-code-1-barnes-home-lab-configuration">Code
+                1: Barnes Home Lab Configuration</a></li>
+                </ul></li>
+                </ul></li>
+                </ul></li>
+                <li><a
+                href="#nav-installing-your-home-lab-on-a-mini-computer"
+                id="nav-toc-installing-your-home-lab-on-a-mini-computer">Installing
+                your Home Lab on a Mini-Computer</a></li>
+                <li><a href="#nav-step-by-step-instructions"
+                id="nav-toc-step-by-step-instructions">Step by Step
+                instructions</a>
+                <ul>
+                <li><a href="#nav-proxmox-ve-base-layer"
+                id="nav-toc-proxmox-ve-base-layer">Proxmox VE base
+                layer</a>
+                <ul>
+                <li><a href="#nav-step-by-step-deployment-guide"
+                id="nav-toc-step-by-step-deployment-guide">Step-by-Step
+                Deployment Guide</a>
+                <ul>
+                <li><a href="#nav-code-2-promox-boot-disk"
+                id="nav-toc-code-2-promox-boot-disk">Code 2: Promox Boot
+                Disk</a></li>
+                <li><a href="#nav-code-2-putty-ssh-setup-process"
+                id="nav-toc-code-2-putty-ssh-setup-process">Code 2:
+                Putty-ssh Setup Process</a></li>
+                </ul></li>
+                </ul></li>
+                <li><a href="#nav-pihole-lxc-100"
+                id="nav-toc-pihole-lxc-100">PiHole (LXC 100)</a>
+                <ul>
+                <li><a href="#nav-code-2-piholeinstallcommand.sh"
+                id="nav-toc-code-2-piholeinstallcommand.sh">Code 2:
+                PiHoleInstallCommand.sh</a></li>
+                <li><a
+                href="#nav-code-3-pihole-install-parameters-and-response"
+                id="nav-toc-code-3-pihole-install-parameters-and-response">Code
+                3: PiHole Install Parameters and Response</a></li>
+                </ul></li>
+                <li><a href="#nav-home-assistant-os-lxc-101---haos-vm"
+                id="nav-toc-home-assistant-os-lxc-101---haos-vm">Home
+                Assistant OS (LXC 101 - HAOS VM)</a>
+                <ul>
+                <li><a href="#nav-code-4-haosinstallcommand.sh"
+                id="nav-toc-code-4-haosinstallcommand.sh">Code 4:
+                HAOSInstallCommand.sh</a></li>
+                <li><a
+                href="#nav-code-5-haos-install-parameters-and-response"
+                id="nav-toc-code-5-haos-install-parameters-and-response">Code
+                5: HAOS Install Parameters and Response</a></li>
+                </ul></li>
+                <li><a href="#nav-nginx-proxy-manager-lxc-102"
+                id="nav-toc-nginx-proxy-manager-lxc-102">NGINX Proxy
+                Manager (LXC 102):</a>
+                <ul>
+                <li><a href="#nav-code-6-nginxinstallcommand.sh"
+                id="nav-toc-code-6-nginxinstallcommand.sh">Code 6:
+                NGINXInstallCommand.sh</a></li>
+                <li><a
+                href="#nav-code-7-nginx-install-parameters-and-response"
+                id="nav-toc-code-7-nginx-install-parameters-and-response">Code
+                7: NGINX Install Parameters and Response</a></li>
+                </ul></li>
+                <li><a href="#nav-ollama-ai-engine-lxc-103"
+                id="nav-toc-ollama-ai-engine-lxc-103">Ollama AI Engine
+                (LXC 103)</a>
+                <ul>
+                <li><a href="#nav-code-8-ollamainstallcommand.sh"
+                id="nav-toc-code-8-ollamainstallcommand.sh">Code 8:
+                OllamaInstallCommand.sh</a></li>
+                <li><a
+                href="#nav-code-9-ollama-install-parameters-and-response"
+                id="nav-toc-code-9-ollama-install-parameters-and-response">Code
+                9: Ollama Install Parameters and Response</a></li>
+                <li><a href="#nav-load-the-agents"
+                id="nav-toc-load-the-agents">Load the Agents</a>
+                <ul>
+                <li><a href="#nav-code-8-loading-the-agents"
+                id="nav-toc-code-8-loading-the-agents">Code 8: Loading
+                the Agents</a></li>
+                </ul></li>
+                <li><a
+                href="#nav-how-to-connect-ollama-to-home-assistant"
+                id="nav-toc-how-to-connect-ollama-to-home-assistant">How
+                to Connect Ollama to Home Assistant</a></li>
+                </ul></li>
+                <li><a
+                href="#nav-wyoming-docker-installation-lxc104---docker"
+                id="nav-toc-wyoming-docker-installation-lxc104---docker">Wyoming
+                Docker Installation (LXC104 - Docker)</a>
+                <ul>
+                <li><a href="#nav-step-1-create-a-docker-lxc-in-proxmox"
+                id="nav-toc-step-1-create-a-docker-lxc-in-proxmox">Step
+                1: Create a Docker LXC in Proxmox</a>
+                <ul>
+                <li><a href="#nav-code-10-dockerinstallcommand.sh"
+                id="nav-toc-code-10-dockerinstallcommand.sh">Code 10:
+                DockerInstallCommand.sh</a></li>
+                <li><a
+                href="#nav-code-11-wyoming-docker-install-parameters-and-response"
+                id="nav-toc-code-11-wyoming-docker-install-parameters-and-response">Code
+                11: Wyoming Docker Install Parameters and
+                Response</a></li>
+                </ul></li>
+                <li><a href="#nav-step-2-set-up-wyoming-docker-services"
+                id="nav-toc-step-2-set-up-wyoming-docker-services">Step
+                2: Set Up Wyoming Docker Services</a>
+                <ul>
+                <li><a href="#nav-code-10-putty-setup"
+                id="nav-toc-code-10-putty-setup">Code 10: Putty
+                Setup</a></li>
+                <li><a href="#nav-code-12-wyomingdockercompose.sh"
+                id="nav-toc-code-12-wyomingdockercompose.sh">Code 12:
+                WyomingDockerCompose.sh</a></li>
+                <li><a
+                href="#nav-code-14-wyoming-docker-portainer-stack"
+                id="nav-toc-code-14-wyoming-docker-portainer-stack">Code
+                14: Wyoming-Docker Portainer Stack</a></li>
+                <li><a href="#nav-code-15-dockercompose.sh"
+                id="nav-toc-code-15-dockercompose.sh">Code 15:
+                DockerCompose.sh</a></li>
+                </ul></li>
+                <li><a href="#nav-step-3-connect-to-home-assistant"
+                id="nav-toc-step-3-connect-to-home-assistant">Step 3:
+                Connect to Home Assistant</a>
+                <ul>
+                <li><a href="#nav-step-3-portainerdocker-changes"
+                id="nav-toc-step-3-portainerdocker-changes">Step 3:
+                Portainer/Docker changes</a></li>
+                <li><a href="#nav-code-16-haos-wyoming-integrations"
+                id="nav-toc-code-16-haos-wyoming-integrations">Code 16:
+                HAOS-Wyoming Integrations</a></li>
+                </ul></li>
+                </ul></li>
+                <li><a href="#nav-twingate-connector-lxc-105"
+                id="nav-toc-twingate-connector-lxc-105">Twingate
+                Connector (LXC 105)</a>
+                <ul>
+                <li><a
+                href="#nav-code-17-twingateconnectorinstallcommand.sh"
+                id="nav-toc-code-17-twingateconnectorinstallcommand.sh">Code
+                17: TwingateConnectorInstallCommand.sh</a></li>
+                <li><a
+                href="#nav-code-18-twingate-connector-install-parameters"
+                id="nav-toc-code-18-twingate-connector-install-parameters">Code
+                18: Twingate Connector Install Parameters</a></li>
+                </ul></li>
+                <li><a href="#nav-post-install-scripts"
+                id="nav-toc-post-install-scripts">Post Install
+                Scripts</a>
+                <ul>
+                <li><a href="#nav-proxmox-scripts"
+                id="nav-toc-proxmox-scripts">Proxmox Scripts:</a>
+                <ul>
+                <li><a href="#nav-setting-vi-as-your-default-editor"
+                id="nav-toc-setting-vi-as-your-default-editor">Setting
+                Vi as your default editor</a></li>
+                <li><a href="#nav-code-19-setviasdefault.sh"
+                id="nav-toc-code-19-setviasdefault.sh">Code 19:
+                SetVIasDefault.sh</a></li>
+                <li><a href="#nav-code-20-exportviasdefault.sh"
+                id="nav-toc-code-20-exportviasdefault.sh">Code 20:
+                ExportVIasDefault.sh</a></li>
+                </ul></li>
+                </ul></li>
+                <li><a href="#nav-twingate-connector"
+                id="nav-toc-twingate-connector">Twingate Connector</a>
+                <ul>
+                <li><a href="#nav-phase-1-verify-your-current-setup"
+                id="nav-toc-phase-1-verify-your-current-setup">Phase 1:
+                Verify Your Current Setup</a></li>
+                <li><a
+                href="#nav-phase-2-modify-the-ssh-configuration-file"
+                id="nav-toc-phase-2-modify-the-ssh-configuration-file">Phase
+                2: Modify the SSH Configuration File</a></li>
+                </ul></li>
+                <li><a href="#nav-post-script-configuration-injection"
+                id="nav-toc-post-script-configuration-injection">Post-Script
+                Configuration Injection</a>
+                <ul>
+                <li><a href="#nav-for-home-assistant-os-vm-101"
+                id="nav-toc-for-home-assistant-os-vm-101">1. For Home
+                Assistant OS (VM 101)</a>
+                <ul>
+                <li><a href="#nav-code-20-haospost.sh"
+                id="nav-toc-code-20-haospost.sh">Code 20:
+                HAOSPost.sh</a></li>
+                </ul></li>
+                <li><a
+                href="#nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip"
+                id="nav-toc-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">2.
+                Pi-Hole Limits (Ensuring it uses the temporary staging
+                IP)</a>
+                <ul>
+                <li><a href="#nav-code-20-piholepost.sh"
+                id="nav-toc-code-20-piholepost.sh">Code 20:
+                PiHolePost.sh</a></li>
+                </ul></li>
+                <li><a href="#nav-for-ollama-llm-engine-lxc-103"
+                id="nav-toc-for-ollama-llm-engine-lxc-103">3. For Ollama
+                LLM Engine (LXC 103)</a>
+                <ul>
+                <li><a href="#nav-code-20-ollamaholepost.sh"
+                id="nav-toc-code-20-ollamaholepost.sh">Code 20:
+                OllamaHolePost.sh</a></li>
+                </ul></li>
+                <li><a href="#nav-for-wyoming-docker-lxc-104"
+                id="nav-toc-for-wyoming-docker-lxc-104">4. For Wyoming
+                Docker (LXC 104)</a>
+                <ul>
+                <li><a href="#nav-code-20-wyomingpost.sh"
+                id="nav-toc-code-20-wyomingpost.sh">Code 20:
+                WyomingPost.sh</a></li>
+                </ul></li>
+                </ul></li>
+                </ul></li>
+                <li><a href="#nav-disaster-recovery"
+                id="nav-toc-disaster-recovery">Disaster Recovery:</a>
+                <ul>
+                <li><a href="#nav-text-configuration-backup-script"
+                id="nav-toc-text-configuration-backup-script">Text
+                Configuration Backup Script</a>
+                <ul>
+                <li><a href="#nav-code-21-backup_all_configs.sh"
+                id="nav-toc-code-21-backup_all_configs.sh">Code 21:
+                backup_all_configs.sh</a></li>
+                </ul></li>
+                </ul></li>
+                <li><a
+                href="#nav-tools-to-verify-installation-and-functionality"
+                id="nav-toc-tools-to-verify-installation-and-functionality">Tools
+                to verify Installation and functionality</a>
+                <ul>
+                <li><a
+                href="#nav-how-to-quickly-verify-promox-container-configurations"
+                id="nav-toc-how-to-quickly-verify-promox-container-configurations">How
+                to Quickly Verify Promox Container Configurations:</a>
+                <ul>
+                <li><a href="#nav-code-22-quicksystemtest.sh"
+                id="nav-toc-code-22-quicksystemtest.sh">Code 22:
+                QuickSystemTest.sh</a></li>
+                <li><a href="#nav-code-23-quick-system-test-response"
+                id="nav-toc-code-23-quick-system-test-response">Code 23:
+                Quick System Test Response</a></li>
+                </ul></li>
+                </ul></li>
+                <li><a href="#nav-references"
+                id="nav-toc-references">References</a></li>
+                </ul>
+            </aside>
+
+            <article class="document-content">
+                <p><img
+                src="../assets/figures/1-home-lab-install-procedure/image1.png"
+                style="width:6.5in;height:3.25in" /></p>
+                <h4 id="nav-figure-1-a-generic-home-lab">Figure 1: A
+                Generic Home Lab</h4>
+                <h1 id="nav-introduction">Introduction</h1>
+                <h2 id="nav-why-build-a-home-lab">Why Build a Home
+                Lab?</h2>
+                <p>A <strong>home lab</strong> is essentially a mini
+                data center set up right in your own living space. It
+                can range from a single, low-power mini PC hidden behind
+                a desk to a dedicated server rack filled with
+                enterprise-grade network gear, switches, and
+                uninterruptible power supplies (UPS).</p>
+                <p>Many people build home labs because they want
+                complete ownership over their data. Instead of trusting
+                third-party cloud corporations with their files, photos,
+                and smart devices, they self-host.</p>
+                <ul>
+                <li><p><strong>Private Cloud Storage:</strong> Running
+                alternatives like Nextcloud to replace Google Drive or
+                Dropbox.</p></li>
+                <li><p><strong>Local Smart Home Control:</strong> Using
+                platforms like Home Assistant to manage smart switches,
+                lights, and automated voice clients locally. This
+                ensures your automated routines still work flawlessly
+                even if your internet connection goes down
+                entirely.</p></li>
+                <li><p><strong>Media Streaming:</strong> Setting up
+                personal media servers (like Plex or Jellyfin) to stream
+                an owned movie and music collection without relying on
+                changing streaming platform catalogs.</p></li>
+                </ul>
+                <!-- -->
+                <ul>
+                <li><p><strong>Breaking Things Safely:</strong> If you
+                want to learn enterprise network configurations, cluster
+                computing, or test out container environments like
+                Docker, doing it on a production system at work is a
+                massive risk. A home lab lets you experiment, break
+                configurations, and learn how to rebuild them with zero
+                real-world consequences.</p></li>
+                <li><p><strong>Hypervisor Mastery:</strong> It provides
+                a space to learn type-1 hypervisors (like Proxmox VE or
+                VMware ESXi) to split one physical machine into dozens
+                of isolated virtual machines (VMs).</p></li>
+                </ul>
+                <h1 id="nav-recommended-design-architecture">Recommended
+                Design Architecture</h1>
+                <h2 id="nav-basic-home-lab-configuration">Basic Home Lab
+                Configuration</h2>
+                <h3
+                id="nav-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.">A
+                Home Lab self-contained in an inexpensive single
+                mini-computer.</h3>
+                <p><img
+                src="../assets/figures/1-home-lab-install-procedure/image2.png"
+                style="width:6.5in;height:3.54861in" /></p>
+                <h4
+                id="nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure 2: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
+                Network Diagram</h4>
+                <p>Note: If you want to use this information in an AI
+                window – select this section into your chat window to
+                reference the entire configuration. This can be helpful
+                if you want to ask any AI questions regarding your Home
+                Lab configuration. Just tell your AI client "gemini" to
+                load this config your reference in your conversation. It
+                might be helpful to tell your AI conversation:</p>
+                <blockquote>
+                <p>"Please start a clean conversation, flush all buffers
+                and caches and then load this config for reference."</p>
+                </blockquote>
+                <table>
+                <colgroup>
+                <col style="width: 101%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>=========================================================================</p>
+                <p>Barnes Home Lab Configuration</p>
+                <p>KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
+                4.9GHz)</p>
+                <p>Proxmox VE 9.2.3 / Dedicated Ethernet / Intel Core
+                i7-13620H</p>
+                <p>Integrated GPU: Intel UHD Graphics (13th Gen) / 1TB
+                PCIe NVMe SSD</p>
+                <p>=========================================================================</p>
+                <p>[ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2
+                Threads for overhead ]</p>
+                <p>│ 192.168.86.250</p>
+                <p>├──► [ VM 101 ] HOME ASSISTANT OS (HAOS)</p>
+                <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+                <p>│ ├── RAM: 4 GB (Dedicated)</p>
+                <p>│ ├── STO: 32 GB - 64 GB NVMe</p>
+                <p>│ ├── 192.168.86.251 - Primary LAN Segment (vmbr0)
+                eth0</p>
+                <p>│ └── 10.0.10.1/24 - Isolated Backend Segment (vmbr1
+                -</p>
+                <p>│ No Gateway/DNS Emulation) eth1</p>
+                <p>├──► [ LXC 100 ] DNSMASQ SERVER (PiHole)</p>
+                <p>│ ├── CPU: 1 Core (vCPU)</p>
+                <p>│ ├── RAM: 512 MB (Ultra-lightweight)</p>
+                <p>│ ├── STO: 2 GB NVMe</p>
+                <p>│ └── 192.168.86.254 (Currently .249 until production
+                release)</p>
+                <p>├──► [ LXC 102 ] NGINX PROXY MANAGER</p>
+                <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+                <p>│ ├── RAM: 1 GB (Scalable)</p>
+                <p>│ ├── STO: 8 GB (OS) + Mount point to external
+                storage for media</p>
+                <p>│ └── 192.168.86.252</p>
+                <p>├──► [ LXC 103 ] OLLAMA LLM ENGINE</p>
+                <p>│ ├── CPU: 6 Cores (vCPUs) ---&gt; (Uses high-perf
+                Intel P-Cores)</p>
+                <p>│ ├── GPU Passthru: Vulkan0 Intel(R) Graphics
+                (RPL-P)</p>
+                <p>│ type=iGPU total=23.3 GiB Ram</p>
+                <p>│ ├── RAM: 16 GB (Allows up to 8B/11B parameter
+                models)</p>
+                <p>│ ├── STO: 40 GB NVMe --------&gt; (Large capacity
+                for model weights)</p>
+                <p>│ ├── LAM: gemma3:4b ---------&gt; Multimodal
+                (Vision) &amp; 128K Context Window</p>
+                <p>│ ├── LAM: phi4-mini:latest --&gt; Logic, Intense
+                Reasoning, &amp; Tool Calling</p>
+                <p>│ ├── LAM: qwen2.5-coder:7b --&gt; Complex Automation
+                Engineering,</p>
+                <p>│ Code Sandbox, &amp; YAML Chat</p>
+                <p>│ ├── LAM: qwen2.5-coder:1.5b -&gt; Inline IDE
+                Autocomplete Engine</p>
+                <p>│ (Fed via Desktop on LAN)</p>
+                <p>│ ├── LAM: nomic-embed-text --&gt; Vector Embeddings
+                &amp; Local</p>
+                <p>│ Document Context Parsing</p>
+                <p>│ ├── 192.168.86.253 - Primary LAN Segment (vmbr0)
+                eth0</p>
+                <p>│ └── 10.0.10.3/24 - Isolated Backend Segment (vmbr1
+                - No</p>
+                <p>│ Gateway/DNS Emulation) eth1</p>
+                <p>├──► [ LXC 104 ] WYOMING-DOCKER</p>
+                <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+                <p>│ ├── RAM: 2 GB (Scalable)</p>
+                <p>│ ├── STO: 10 GB (OS) + Mount point to external
+                storage for</p>
+                <p>│ media</p>
+                <p>│ ├── ports: 10200:10200</p>
+                <p>│ ├── volumes: piper-data:/data</p>
+                <p>│ ├── 192.168.86.248 - Primary LAN Segment (vmbr0)
+                eth0</p>
+                <p>│ └── 10.0.10.4/24 - Isolated Backend Segment (vmbr1)
+                eth1</p>
+                <p>└──► [ LXC 105 ] TWINGATE CONNECTOR</p>
+                <p>├── CPU: 1 Core (vCPU)</p>
+                <p>├── RAM: 512 MB (Ultra-lightweight)</p>
+                <p>├── STO: 2 GB NVMe (OS Only)</p>
+                <p>└── 192.168.86.247 - Primary LAN Segment (vmbr0)
+                eth0</p>
+                <p>(Routes 192.168.86.0/24 Securely)</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-1-barnes-home-lab-configuration">Code 1: Barnes Home Lab Configuration</h4>
+                <h1
+                id="nav-installing-your-home-lab-on-a-mini-computer">Installing
+                your Home Lab on a Mini-Computer</h1>
+                <p>Although this setup may seem complex, you can
+                complete the installation in a day or two and have a
+                complete, running system ready for a production rollout
+                of your new Home Lab.</p>
+                <h1 id="nav-step-by-step-instructions">Step by Step
+                instructions</h1>
+                <p>To run Proxmox, Home Assistant, NGINX, PiHole,
+                Twingate Connector and Ollama together, a Proxmox VE
+                (PVE) base layer is the best approach.</p>
+                <h2 id="nav-proxmox-ve-base-layer">Proxmox VE base
+                layer</h2>
+                <p>When running there are some recommended resource
+                allocations that you will be asked for. Use the details
+                presented in each section, if there are questions the
+                table in <a
+                href="#nav-code-1-barnes-home-lab-configuration">Code 2:
+                Barnes Home Lab Configuration</a> can be used for
+                reference to allocate your resources efficiently to
+                avoid crashing the host.</p>
+                <h3 id="nav-step-by-step-deployment-guide">Step-by-Step
+                Deployment Guide</h3>
+                <p>Step 1: Download the latest Proxmox VE ISO from the
+                official website located at <a
+                href="https://www.proxmox.com/en/downloads/proxmox-virtual-environment"
+                class="uri">https://www.proxmox.com/en/downloads/proxmox-virtual-environment</a>.</p>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>1. Flash it to a USB drive using BalenaEtcher or
+                Rufus.</p>
+                <p>2. Boot your KAMRUI Mini PC into the BIOS and disable
+                Secure Boot. Also enable power on after power reset.</p>
+                <p>3. Boot from the USB, follow the on-screen installer
+                prompts, and set a static IP address.</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-2-promox-boot-disk">Code 3: Promox Boot
+                Disk</h4>
+                <p>Step 2: Setup Putty/ssh for easy communication with
+                your new Home Lab.</p>
+                <ol type="1">
+                <li><p>To set up passwordless SSH login to a Proxmox VE
+                server using PuTTY, you need to generate a key pair on
+                Windows, add the public key to Proxmox, and configure
+                PuTTY to use the private key.</p></li>
+                <li><p>Here is the complete step-by-step
+                process.</p></li>
+                </ol>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>o Generate an SSH Key</p>
+                <p>• Open PuTTYgen on your Windows computer.</p>
+                <p>• Under Type of key to generate, select Ed25519 for
+                modern security and</p>
+                <p>speed.</p>
+                <p>• Click the Generate button.</p>
+                <p>• Move your mouse randomly over the blank area to
+                create entropy for the key</p>
+                <p>generation.</p>
+                <p>Crucial: Leave both passphrase fields completely
+                blank to ensure a</p>
+                <p>passwordless login.</p>
+                <p>• Click Save private key and save it to a secure
+                folder on your PC as a .ppk</p>
+                <p>file Save the location for use below.</p>
+                <p>• Keep the PuTTYgen window open; you will need the
+                text string inside the</p>
+                <p>top box labeled Public key for pasting into OpenSSH
+                authorized_keys file.</p>
+                <p>o Add the Public Key to Proxmox(SyncBricks, 2024)</p>
+                <p>• Launch PuTTY and log into your Proxmox server using
+                your standard root</p>
+                <p>username and password.</p>
+                <p>• Create the directory for SSH keys if it does not
+                already exist:</p>
+                <p>o mkdir -p ~/.ssh</p>
+                <p>• Set the appropriate folder permissions:</p>
+                <p>o chmod 700 ~/.ssh</p>
+                <p>• Open or create the authorization file with a text
+                editor:</p>
+                <p>o vi ~/.ssh/authorized_keys</p>
+                <p>• Go back to your PuTTYgen window, copy the entire
+                string of text from the</p>
+                <p>top box, and paste it into the PuTTY window. It must
+                occupy a single line.</p>
+                <p>• save the file, and exit the vi editor ("enter :wq!
+                ".</p>
+                <p>• Secure the authorization file permissions:</p>
+                <p>o chmod 600 ~/.ssh/authorized_keys</p>
+                <p>o Configure PuTTY for Key Authentication</p>
+                <p>• Close your current PuTTY session and open a brand
+                new PuTTY window.</p>
+                <p>• On the Session category page (on the left panel),
+                type your Proxmox</p>
+                <p>server's IP address (192.168.86.250) into the Host
+                Name field.</p>
+                <p>• In the left panel, navigate to Connection ➔
+                Data.</p>
+                <p>• In the Auto-login username box, type root (or your
+                chosen administrative</p>
+                <p>username).</p>
+                <p>• In the left panel, drill down to Connection ➔ SSH ➔
+                Auth ➔ Credentials.</p>
+                <p>• Click Browse next to Private key file for
+                authentication and select the</p>
+                <p>.ppk file you saved above.</p>
+                <p>• Navigate back to the Session category at the very
+                top of the left panel.</p>
+                <p>• Type a name for this connection profile (e.g.,
+                Proxmox_Server) in the</p>
+                <p>Saved Sessions box and click Save.</p>
+                <p>• Click Open. PuTTY will now log into your Proxmox
+                console automatically</p>
+                <p>using the private key, bypassing the password prompt
+                completely.</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-2-putty-ssh-setup-process">Code 4:
+                Putty-ssh Setup Process</h4>
+                <p>Step 3: Use Helper Scripts for Easy Setup of the
+                remaining products.</p>
+                <blockquote>
+                <p>If you do not think you want that specific product
+                installed, then you may skip that section. Just be aware
+                that when you get to the tools and backup sections below
+                the scripts may change. If you do end up changing the
+                scripts remember that you can comment on the lines by
+                using a "#" at the beginning of the line you do not want
+                executed. That way later you know what to uncomment if
+                you change your mind.</p>
+                <p>Once Proxmox is installed,</p>
+                </blockquote>
+                <ul>
+                <li><p>open the Proxmox Web UI (https://
+                192.168.86.250:8006)</p></li>
+                <li><p>select your main node</p></li>
+                <li><p>open the Shell</p></li>
+                </ul>
+                <blockquote>
+                <p>In this window you can execute simple commands and
+                check for status if you desire</p>
+                <p>To use the community-standard Proxmox VE
+                Helper-Scripts listed below to deploy your services
+                instantly open a dedicated ssh window for running
+                install scripts. Leave your Proxmox Web UI for small
+                tasks.</p>
+                </blockquote>
+                <h2 id="nav-pihole-lxc-100">PiHole (LXC 100)</h2>
+                <p>To install PiHole run this command to deploy a
+                lightweight container:</p>
+                <table>
+                <tbody>
+                <tr>
+                <td style="text-align: left;">bash -c "$(curl -fsSL</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/pihole.sh)"</td>
+                </tr>
+                </tbody>
+                </table>
+                <hr />
+                <h4 id="nav-code-2-piholeinstallcommand.sh">Code 5:
+                PiHoleInstallCommand.sh</h4>
+                <p>When you copy and run this command it will start the
+                install script. Always select the advance installation
+                and if prompted select the GUI install method. When
+                prompted enable all ssh keys and enable ssh.</p>
+                <p>Make the selections in the GUI by using the output
+                presented below:</p>
+                <p>After you run the above code block you will get an
+                output like this. - Verify that it matches.</p>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>Choose Advanced, set MAC address to
+                BC:24:11:AA:BB:02, static IP 192.168.1.5/24, and Gateway
+                192.168.1.1, then finish.</p>
+                <p>⚙️ Using Default Settings on node Promox |</p>
+                <p>💡 PVE Version 9.2.2 (Kernel: 7.0.2-6-pve)</p>
+                <p>🆔 Container ID: 100</p>
+                <p>🖥️ Operating System: debian (13) |</p>
+                <p>📦 Container Type: Unprivileged</p>
+                <p>💾 Disk Size: 2 GB</p>
+                <p>🧠 CPU Cores: 1</p>
+                <p>🛠️ RAM Size: 512 MiB |</p>
+                <p>🚀 Creating a Pihole LXC using the above default
+                settings</p>
+                <p>forwarding unbound</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4
+                id="nav-code-3-pihole-install-parameters-and-response">Code 6: PiHole Install Parameters and Response</h4>
+                <h2 id="nav-home-assistant-os-lxc-101---haos-vm">Home
+                Assistant OS (LXC 101 - HAOS VM)</h2>
+                <p>Run this command in the Proxmox host shell to
+                automatically build a fully functional Home Assistant
+                VM: When prompted enable all ssh keys and enable
+                ssh.</p>
+                <table>
+                <tbody>
+                <tr>
+                <td style="text-align: left;">bash -c "$(curl -fsSL</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/vm/haos-vm.sh)"</td>
+                </tr>
+                </tbody>
+                </table>
+                <hr />
+                <h4 id="nav-code-4-haosinstallcommand.sh">Code 7:
+                HAOSInstallCommand.sh</h4>
+                <p>When you copy and run this command it will start the
+                install script.</p>
+                <p>Make the selections in the GUI by using the output
+                presented below: When prompted enable all ssh keys and
+                enable ssh.</p>
+                <p>After you run the above code block you will get an
+                output like this. - Verify that it matches.</p>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>Please set MAC address to BC:24:11:AA:BB:01, IP
+                Address to 192.168.86.251/24, and gateway to
+                192.168.86.1</p>
+                <p>🆔 Virtual Machine ID: 101</p>
+                <p>📦 Machine Type: q35</p>
+                <p>💾 Disk Size: 32G</p>
+                <p>🏠 Hostname: haos-17.3</p>
+                <p>🖥️ CPU Model: KVM64 |</p>
+                <p>🧠 CPU Cores: 2</p>
+                <p>🛠️ RAM Size: 4096 |</p>
+                <p>🌉 Bridge: vmbr0</p>
+                <p>🔗 MAC Address: 02:93:F8:A8:3A:88</p>
+                <p>🏷️ VLAN: Default |</p>
+                <p>⚙️ Interface MTU Size: Default |</p>
+                <p>🌐 Start VM when completed: yes</p>
+                <p>🚀 Creating a Homeassistant OS VM using the above
+                default settings</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4
+                id="nav-code-5-haos-install-parameters-and-response">Code 8: HAOS Install Parameters and Response</h4>
+                <h2 id="nav-nginx-proxy-manager-lxc-102">NGINX Proxy
+                Manager (LXC 102):</h2>
+                <p>Run this command to deploy a lightweight NGINX
+                container:</p>
+                <table>
+                <tbody>
+                <tr>
+                <td style="text-align: left;">bash -c "$(wget -qLO
+                -</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://github.com/community-scripts/ProxmoxVE/raw/main/ct/nginxproxymanager.sh)"</td>
+                </tr>
+                </tbody>
+                </table>
+                <hr />
+                <h4 id="nav-code-6-nginxinstallcommand.sh">Code 9:
+                NGINXInstallCommand.sh</h4>
+                <p>When you copy and run this command it will start the
+                install script. Always select the advance installation
+                and if prompted select the GUI install method.</p>
+                <p>Make the selections in the GUI by using the output
+                presented below: When prompted enable all ssh keys and
+                enable ssh.</p>
+                <p>After you run the above code block you will get an
+                output like this. - Verify that it matches.</p>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>🧩 Using Advanced Install on node Promox</p>
+                <p>💡 PVE Version 9.2.3 (Kernel: 7.0.6-2-pve)</p>
+                <p>🖥️ Operating System: debian |</p>
+                <p>🌟 Version: 13</p>
+                <p>📦 Container Type: Unprivileged</p>
+                <p>🆔 Container ID: 102</p>
+                <p>🏠 Hostname: nginxproxymanager</p>
+                <p>💾 Disk Size: 8 GB</p>
+                <p>🧠 CPU Cores: 2</p>
+                <p>🛠️ RAM Size: 1024 MiB |</p>
+                <p>🌉 Bridge: vmbr0</p>
+                <p>📡 IPv4: 192.168.86.252/24</p>
+                <p>📡 IPv6: none</p>
+                <p>🗂️ FUSE Support: no |</p>
+                <p>📦 Nesting: Enabled</p>
+                <p>📦 Keyctl: Enabled</p>
+                <p>🎮 GPU Passthrough: no</p>
+                <p>💡 Timezone: America/Denver</p>
+                <p>🔍 Verbose Mode: yes</p>
+                <p>🚀 Creating an LXC of Nginx Proxy Manager using the
+                above advanced settings</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4
+                id="nav-code-7-nginx-install-parameters-and-response">Code 10: NGINX Install Parameters and Response</h4>
+                <h2 id="nav-ollama-ai-engine-lxc-103">Ollama AI Engine
+                (LXC 103)</h2>
+                <p>This uses the specialized ollama.sh hardware and
+                software installer path:</p>
+                <table>
+                <tbody>
+                <tr>
+                <td style="text-align: left;">bash -c "$(curl -fsSL</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/ollama.sh)"</td>
+                </tr>
+                </tbody>
+                </table>
+                <hr />
+                <h4 id="nav-code-8-ollamainstallcommand.sh">Code 11:
+                OllamaInstallCommand.sh</h4>
+                <p>When you copy and run this command it will start the
+                install script. Always select the advance installation
+                and if prompted select the GUI install method.</p>
+                <p>Make the selections in the GUI by using the output
+                presented below: When prompted enable all ssh keys and
+                enable ssh.</p>
+                <p>After you run the above code block you will get an
+                output like this. - Verify that it matches.</p>
+                <table style="width:96%;">
+                <colgroup>
+                <col style="width: 95%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>🧩 Using Advanced Install on node Promox</p>
+                <p>💡 PVE Version 9.2.2 (Kernel: 7.0.2-6-pve)</p>
+                <p>🖥️ Operating System: debian |</p>
+                <p>🌟 Version: 13</p>
+                <p>📦 Container Type: Unprivileged</p>
+                <p>🆔 Container ID: 103</p>
+                <p>🏠 Hostname: ollama</p>
+                <p>💾 Disk Size: 40 GB</p>
+                <p>🧠 CPU Cores: 6</p>
+                <p>🛠️ RAM Size: 16384 MiB |</p>
+                <p>🌉 Bridge: vmbr0</p>
+                <p>📡 IPv4: 192.168.86.249/24</p>
+                <p>📡 IPv6: none</p>
+                <p>🗂️ FUSE Support: no |</p>
+                <p>📡 TUN/TAP Support: no</p>
+                <p>📦 Nesting: Disabled</p>
+                <p>📦 Keyctl: Enabled</p>
+                <p>🎮 GPU Passthrough: yes</p>
+                <p>Protection: no</p>
+                <p>💡 Timezone: America/Denver</p>
+                <p>🔍 Verbose Mode: no</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4
+                id="nav-code-9-ollama-install-parameters-and-response">Code 12: Ollama Install Parameters and Response</h4>
+                <h3 id="nav-load-the-agents">Load the Agents</h3>
+                <p>In the Prolog Web GUI at <a
+                href="http://192.168.86.250:8006"
+                class="uri">http://192.168.86.250:8006</a> and select
+                Datacenter - Promox - 103 (ollama) in the Server View
+                column</p>
+                <p>In Container 103 (ollama) on node Promox window
+                select the console</p>
+                <p>It should log you in without using a password.</p>
+                <ul>
+                <li><p>If it does not - then log in as root with the
+                password of your Promox server</p></li>
+                <li><p>Enter "passwd" and set the new password the same
+                as your Promox server's password.</p></li>
+                <li><p>The next time you log in it should not ask you
+                for the password anymore.</p></li>
+                </ul>
+                <p>In this window enter the commands listed below:</p>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>1. Load the Primary Voice &amp; Conversation
+                Agent</p>
+                <p>• ollama pull qwen2.5:7b</p>
+                <p>2. Load the Complex Automation &amp; Code Sandbox
+                Agent</p>
+                <p>• ollama pull qwen2.5-coder:7b</p>
+                <p>3. Load the Inline IDE Autocomplete Engine</p>
+                <p>• ollama pull qwen2.5-coder:1.5b</p>
+                <p>4. Load the Embedding Model</p>
+                <p>• ollama pull nomic-embed-text</p>
+                <p>5. Test the Primary Voice Agent</p>
+                <p>• echo "Hello, how are you today?" | ollama run
+                qwen2.5:7b</p>
+                <p>6. Test the Code Sandbox</p>
+                <p>• echo "Write a simple Python function to add two
+                numbers." | ollama run qwen2.5-coder:7b</p>
+                <p>7. Test the IDE Autocomplete Engine</p>
+                <p>• echo "def hello_world():" | ollama run
+                qwen2.5-coder:1.5b</p>
+                <p>8. Test the Coding Engine</p>
+                <p>• curl http://localhost:11434/api/embeddings -d
+                '{</p>
+                <p>"model": "nomic-embed-text",</p>
+                <p>"prompt": "Testing local document parsing"</p>
+                <p>}'</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-8-loading-the-agents">Code 13: Loading
+                the Agents</h4>
+                <h3 id="nav-how-to-connect-ollama-to-home-assistant">How
+                to Connect Ollama to Home Assistant</h3>
+                <p><strong>For Voice:</strong> Install the official
+                Ollama Integration in Home Assistant.</p>
+                <p>Open the Home Assistant Web Page by going to <a
+                href="http://homeassistant.local:8123"
+                class="uri">http://homeassistant.local:8123</a>.</p>
+                <ul>
+                <li><p>Open your <strong>Home Assistant
+                Dashboard</strong>.</p></li>
+                <li><p>Navigate to <strong>Settings</strong> &gt;
+                <strong>Voice Assistants</strong>.</p></li>
+                <li><p>Create an Assist Pipeline, and assign the
+                qwen2.5:7b model to handle your conversational sentences
+                and smart home exposures.</p></li>
+                </ul>
+                <p><strong>For Coding:</strong></p>
+                <blockquote>
+                <p>Point your development environment (like VS Code or
+                Cursor) to your server's IP address
+                (http://192.168.86.250:11434) using a local copilot
+                extension to begin drafting automations locally.</p>
+                <p>It is highly recommended to use external VS Code IDEs
+                instead of the embedded Home Assistant Integration. You
+                can still connect remotely via ssh and do everything
+                without bogging down your Home Assistant
+                Environment.</p>
+                </blockquote>
+                <h2
+                id="nav-wyoming-docker-installation-lxc104---docker">Wyoming
+                Docker Installation (LXC104 - Docker)</h2>
+                <h3 id="nav-step-1-create-a-docker-lxc-in-proxmox">Step
+                1: Create a Docker LXC in Proxmox</h3>
+                <p>The easiest way to get Docker running in an LXC is to
+                use the community-maintained Proxmox Helper Scripts,
+                which handle setup and dependencies automatically.</p>
+                <p>Execute the following command inside of a Putty-SSH
+                window connected to the Promox host.</p>
+                <p>This must be done in a Putty Shell and not via the
+                Promox web GUI because if the GUI gets changed or dies
+                for some reason the script will be backgrounded. If it
+                is waiting for a prompt, it will never exit.</p>
+                <table>
+                <tbody>
+                <tr>
+                <td style="text-align: left;">bash -c "$(curl -fsSL</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/docker.sh)"</td>
+                </tr>
+                </tbody>
+                </table>
+                <hr />
+                <h4 id="nav-code-10-dockerinstallcommand.sh">Code 14:
+                DockerInstallCommand.sh</h4>
+                <p>When you copy and run this command it will start the
+                install script. Always select the advance installation
+                and if prompted select the GUI install method.</p>
+                <p>Make the selections in the GUI by using the output
+                presented below:</p>
+                <p>Ensure you enable all ssh keys and enable ssh,
+                <strong>Docker Compose</strong> AND install
+                <strong>Portainer</strong> during the prompt, as you
+                will need it to run your Wyoming services later.</p>
+                <p>After you run the above code block you will get an
+                output like this. - Verify that it matches.</p>
+                <table style="width:92%;">
+                <colgroup>
+                <col style="width: 91%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>🧩 Using Advanced Install on node Promox</p>
+                <p>💡 PVE Version 9.2.2 (Kernel: 7.0.2-6-pve)</p>
+                <p>🖥️ Operating System: debian |</p>
+                <p>🌟 Version: 13</p>
+                <p>📦 Container Type: Unprivileged</p>
+                <p>🆔 Container ID: 104</p>
+                <p>🏠 Hostname: wyoming-docker</p>
+                <p>💾 Disk Size: 10 GB</p>
+                <p>🧠 CPU Cores: 4</p>
+                <p>🛠️ RAM Size: 2048 MiB |</p>
+                <p>🌉 Bridge: vmbr0</p>
+                <p>📡 IPv4: 192.168.86.249/24</p>
+                <p>📡 IPv6: none</p>
+                <p>🗂️ FUSE Support: yes |</p>
+                <p>📡 TUN/TAP Support: yes</p>
+                <p>📦 Nesting: Enabled</p>
+                <p>📦 Keyctl: Enabled</p>
+                <p>🎮 GPU Passthrough: no</p>
+                <p>💡 Timezone: America/Denver</p>
+                <p>🔍 Verbose Mode: no</p>
+                <p>💡 If you installed Portainer, access it at the
+                following URL:</p>
+                <p>🌐 https://192.168.86.249:9443</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4
+                id="nav-code-11-wyoming-docker-install-parameters-and-response">Code 15: Wyoming Docker Install Parameters and Response</h4>
+                <h3 id="nav-step-2-set-up-wyoming-docker-services">Step
+                2: Set Up Wyoming Docker Services</h3>
+                <p>Now that Docker is installed in your LXC, you can
+                deploy your chosen Wyoming voice or speech-to-text
+                tools.</p>
+                <ol type="1">
+                <li><strong>SSH</strong> into your Docker LXC IP address
+                do not use the Proxmox Web UI Console.</li>
+                </ol>
+                <ul>
+                <li>Configure PuTTY for Key Authentication</li>
+                </ul>
+                <table style="width:99%;">
+                <colgroup>
+                <col style="width: 98%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>o Close your current PuTTY session and open a
+                brand new PuTTY window.</p>
+                <p>o On the Session category page (on the left panel),
+                type your Wyoming-docker</p>
+                <p>IP address (192.168.86.248) into the Host Name
+                field.</p>
+                <p>o In the left panel, navigate to Connection ➔
+                Data.</p>
+                <p>o In the Auto-login username box, type root (or your
+                chosen administrative</p>
+                <p>username).</p>
+                <p>o In the left panel, drill down to Connection ➔ SSH ➔
+                Auth ➔ Credentials.</p>
+                <p>o Click Browse next to Private key file for
+                authentication and select the .ppk</p>
+                <p>file you saved above.</p>
+                <p>o Navigate back to the Session category at the very
+                top of the left panel.</p>
+                <p>o Type a name for this connection profile (e.g.,
+                Proxmox_Wyoming) in the Saved</p>
+                <p>Sessions box and click Save.</p>
+                <p>o Click Open. PuTTY will now log into your Wyoming
+                console automatically using</p>
+                <p>the private key, bypassing the password prompt
+                completely.</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-10-putty-setup">Code 16: Putty
+                Setup</h4>
+                <ol start="2" type="1">
+                <li>Create a docker-compose.yaml file to manage your
+                Wyoming services. For example, to set up the
+                <strong>Piper Text-to-Speech</strong> and
+                <strong>Whisper Speech-to-Text</strong> services,
+                run:</li>
+                </ol>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>mkdir -p ~/wyoming &amp;&amp; cd ~/wyoming</p>
+                <p>vi docker-compose.yaml</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-12-wyomingdockercompose.sh">Code 17:
+                WyomingDockerCompose.sh</h4>
+                <p>Paste the following configuration, making sure to
+                replace paths and voices with your preferences:</p>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>services:</p>
+                <p>piper:</p>
+                <p>image: rhasspy/wyoming-piper</p>
+                <p>container_name: wyoming-piper</p>
+                <p>restart: unless-stopped</p>
+                <p>volumes:</p>
+                <p>- ./piper-data:/data</p>
+                <p>ports:</p>
+                <p>- "10200:10200"</p>
+                <p>command: --voice en_US-lessac-medium</p>
+                <p>whisper:</p>
+                <p>image: rhasspy/wyoming-whisper</p>
+                <p>container_name: wyoming-whisper</p>
+                <p>restart: unless-stopped</p>
+                <p>volumes:</p>
+                <p>- ./whisper-data:/data</p>
+                <p>ports:</p>
+                <p>- "10300:10300"</p>
+                <p>command: --model tiny-int8 --language en</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-14-wyoming-docker-portainer-stack">Code 18: Wyoming-Docker Portainer Stack</h4>
+                <p><em>Spin up the containers by typing the following
+                command in you Putty ssh window:</em></p>
+                <table>
+                <tbody>
+                <tr>
+                <td style="text-align: left;">docker compose up -d</td>
+                </tr>
+                </tbody>
+                </table>
+                <hr />
+                <h4 id="nav-code-15-dockercompose.sh">Code 19:
+                DockerCompose.sh</h4>
+                <h3 id="nav-step-3-connect-to-home-assistant">Step 3:
+                Connect to Home Assistant</h3>
+                <p>Once your Docker containers are running on the
+                Proxmox LXC, you can easily link them to Home
+                Assistant:</p>
+                <ul>
+                <li><p>Open your <strong>Home Assistant
+                Dashboard</strong>.</p></li>
+                <li><p>Navigate to <strong>Settings</strong> &gt;
+                <strong>Devices &amp; Services</strong>.</p></li>
+                <li><p>Click <strong>Add Integration</strong> and search
+                for <strong>Wyoming Protocol</strong>.</p></li>
+                <li><p>Enter the IP address of your Proxmox Docker LXC
+                (192.168.86.248/24) and the corresponding port for the
+                service (e.g., 10200 for Piper or 10300 for Whisper)
+                integrations and associate the following links.</p></li>
+                </ul>
+                <h4 id="nav-step-3-portainerdocker-changes">Step 3:
+                Portainer/Docker changes</h4>
+                <table style="width:99%;">
+                <colgroup>
+                <col style="width: 98%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>Home Assistant Wyoming Integration:</p>
+                <p>Settings -&gt; Devices &amp; Services -&gt; Add
+                Integration -&gt; Wyoming</p>
+                <p>link ports 10200 and 10201.</p>
+                <p>For Voice: Install the official Ollama Integration in
+                Home Assistant.</p>
+                <p>Go to Settings -&gt; Voice Assistants, create an
+                Assist Pipeline,</p>
+                <p>and assign the qwen2.5:7b model to handle your
+                conversational sentences and smart home exposures.</p>
+                <p>For Coding: Point your development environment (like
+                VS Code or Cursor)</p>
+                <p>to your server's IP address
+                (http://&lt;your-server-ip&gt;:11434)</p>
+                <p>using a local copilot extension to begin drafting
+                automations locally.</p>
+                <p>NOTE: I found that running VS Code inside of HAOS is
+                a bad idea.</p>
+                <p>I reccommend running the VS Code on a client and
+                point it to HAOS</p>
+                <p>You can use a Remote Connection via to see the
+                filesystem.</p>
+                <p>Do not mount the root fs - It will hang the server
+                with indexing.</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-16-haos-wyoming-integrations">Code 20:
+                HAOS-Wyoming Integrations</h4>
+                <h2 id="nav-twingate-connector-lxc-105">Twingate
+                Connector (LXC 105)</h2>
+                <p>Installing Twingate on a Proxmox server is
+                straightforward and highly automated, taking only a few
+                minutes to complete.</p>
+                <p>Before running the script, you must generate the
+                necessary Connector tokens from your Twingate Admin
+                Console.</p>
+                <p><strong>Phase 1: Generate Twingate Connector
+                Tokens</strong></p>
+                <ol type="1">
+                <li><p>Log in to your <strong>Twingate Admin Console
+                https:// twingate.com</strong>.</p></li>
+                <li><p>If you don’t have an account you will need to
+                create one.</p></li>
+                <li><p>After you are logged in Go to
+                <strong>Network</strong> &gt; <strong>Remote
+                Networks</strong> and select your remote network (or
+                create one).</p></li>
+                <li><p>Click to <strong>Add a Connector</strong> and
+                select the <strong>Manual</strong> deployment
+                type.</p></li>
+                <li><p>Scroll down and click <strong>Generate
+                Tokens</strong>.</p></li>
+                <li><p>Copy the <strong>Access Token</strong> and
+                <strong>Refresh Token</strong> (you will need these
+                below)</p></li>
+                </ol>
+                <table>
+                <tbody>
+                <tr>
+                <td style="text-align: left;">bash -c "$(curl -fsSL</td>
+                </tr>
+                <tr>
+                <td
+                style="text-align: left;">https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/twingate-connector.sh)"</td>
+                </tr>
+                </tbody>
+                </table>
+                <hr />
+                <h4
+                id="nav-code-17-twingateconnectorinstallcommand.sh">Code 21: TwingateConnectorInstallCommand.sh</h4>
+                <p>Paste the following configuration, making sure to
+                replace paths and voices with your preferences:</p>
+                <table style="width:99%;">
+                <colgroup>
+                <col style="width: 98%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>💡 Missing jq for script status check. Continuing
+                without status verification.</p>
+                <p>🧩 Using Advanced Install on node Promox</p>
+                <p>💡 PVE Version 9.2.3 (Kernel: 7.0.6-2-pve)</p>
+                <p>🖥️ Operating System: ubuntu |</p>
+                <p>🌟 Version: 24.04</p>
+                <p>📦 Container Type: Unprivileged</p>
+                <p>🆔 Container ID: 105</p>
+                <p>🏠 Hostname: twingate-connector</p>
+                <p>💾 Disk Size: 5 GB</p>
+                <p>🧠 CPU Cores: 1</p>
+                <p>🛠️ RAM Size: 1024 MiB |</p>
+                <p>🌉 Bridge: vmbr0</p>
+                <p>📡 IPv4: 192.168.86.247/24</p>
+                <p>📡 IPv6: none</p>
+                <p>🗂️ FUSE Support: no |</p>
+                <p>📦 Nesting: Enabled</p>
+                <p>📦 Keyctl: Enabled</p>
+                <p>🎮 GPU Passthrough: no</p>
+                <p>💡 Timezone: America/Denver</p>
+                <p>🔍 Verbose Mode: no</p>
+                <p>🚀 Creating an LXC of Twingate-Connector using the
+                above advanced settings</p>
+                <p>✔️ Updated Container OS |</p>
+                <p>Please enter your access token:</p>
+                <p>enter your access token from above.</p>
+                <p>Please enter your refresh token:</p>
+                <p>enter your access token from above.</p>
+                <p>Please enter your network name:</p>
+                <p>enter your network name from above.</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4
+                id="nav-code-18-twingate-connector-install-parameters">Code 22: Twingate Connector Install Parameters</h4>
+                <h2 id="nav-post-install-scripts">Post Install
+                Scripts</h2>
+                <h3 id="nav-proxmox-scripts">Proxmox Scripts:</h3>
+                <h4 id="nav-setting-vi-as-your-default-editor">Setting
+                Vi as your default editor</h4>
+                <p>To set <strong>vi</strong> as the default editor
+                across all containers in your Barnes Home Lab, you can
+                use a bash loop script run directly from your Proxmox
+                host terminal.</p>
+                <p>Since vi is natively included in almost every Linux
+                distribution (including minimal Debian, Ubuntu, and
+                Alpine templates), this script will work universally
+                without needing to install extra packages.</p>
+                <h5 id="nav-the-automation-script">The Automation
+                Script</h5>
+                <p>Run this complete script on your Proxmox host
+                terminal:</p>
+                <table>
+                <colgroup>
+                <col style="width: 101%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>for vmid in $(pct list | awk '{print $1}' | grep
+                -E '^[0-9]+$'); do</p>
+                <p>echo "----------------------------------------"</p>
+                <p>echo "Updating Container $vmid..."</p>
+                <p># 1. Update root user's profile</p>
+                <p>pct exec $vmid -- sh -c 'echo "export EDITOR=\"vi\""
+                &gt;&gt; /root/.bashrc'</p>
+                <p># 2. Update system-wide environment fallback</p>
+                <p>pct exec $vmid -- sh -c 'echo "export EDITOR=\"vi\""
+                &gt;&gt; /etc/profile'</p>
+                <p>echo "Container $vmid updated successfully."</p>
+                <p>done</p>
+                <p>echo "----------------------------------------"</p>
+                <p>echo "All containers configured to use vi as the
+                default editor."</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-19-setviasdefault.sh">Code 23:
+                SetVIasDefault.sh</h4>
+                <h5 id="nav-what-this-script-does">What This Script
+                Does</h5>
+                <ul>
+                <li><p><strong>Finds All LXCs</strong>: Loops through
+                your existing containers (LXC 100, 102, 103, 104, and
+                105).</p></li>
+                <li><p><strong>Updates Root Profiles</strong>: Appends
+                the environment variable to /root/.bashrc for root
+                terminal sessions.</p></li>
+                <li><p><strong>Sets a System-Wide Fallback</strong>:
+                Appends the variable to /etc/profile to capture
+                system-wide processes, automation tasks, and alternative
+                shell instances.<a
+                href="https://jurf.github.io/2020/03/24/vscode-toolbox/">(Fiala,
+                2020)</a></p></li>
+                </ul>
+                <h5 id="nav-how-to-apply-it-to-future-containers">How to
+                Apply It to Future Containers</h5>
+                <p>To guarantee that any <strong>new</strong> containers
+                you build in the future also default to vi, run this
+                single command on your Proxmox host to update the global
+                skeleton directory:</p>
+                <table>
+                <tbody>
+                <tr>
+                <td style="text-align: left;">echo 'export EDITOR="vi"'
+                &gt;&gt; /etc/skel/.bashrc</td>
+                </tr>
+                </tbody>
+                </table>
+                <hr />
+                <h4 id="nav-code-20-exportviasdefault.sh">Code 24:
+                ExportVIasDefault.sh</h4>
+                <h2 id="nav-twingate-connector">Twingate Connector</h2>
+                <p>To safely disable password-based SSH logins and
+                prevent brute-force attacks on Proxmox, you must
+                <strong>verify your key-based login is working, modify
+                the SSH daemon configuration, and restart the
+                service</strong>.</p>
+                <h3 id="nav-phase-1-verify-your-current-setup">Phase 1:
+                Verify Your Current Setup</h3>
+                <ul>
+                <li><p><strong>Keep your current session open.</strong>
+                Do not close your active SSH window until you verify the
+                new changes work.</p></li>
+                <li><p><strong>Test the key login in a new
+                window.</strong> Open a second PuTTY window, load your
+                saved session, and click <strong>Open</strong>.</p></li>
+                <li><p><strong>Confirm success.</strong> Ensure you log
+                in automatically without any password prompt before
+                proceeding.</p></li>
+                </ul>
+                <h3
+                id="nav-phase-2-modify-the-ssh-configuration-file">Phase
+                2: Modify the SSH Configuration File</h3>
+                <ol type="1">
+                <li>In your active Proxmox terminal, open the SSH
+                configuration file:</li>
+                </ol>
+                <ul>
+                <li>vi /etc/ssh/sshd_config</li>
+                </ul>
+                <ol start="2" type="1">
+                <li><p>Press Ctrl + W to search for
+                <strong>PasswordAuthentication</strong>.</p></li>
+                <li><p>Remove any # symbol from the beginning of the
+                line to uncomment it.</p></li>
+                <li><p>Change the value from yes to no:</p></li>
+                </ol>
+                <blockquote>
+                <p>PasswordAuthentication no</p>
+                </blockquote>
+                <ol start="5" type="1">
+                <li><p>Press Ctrl + W to search for
+                <strong>ChallengeResponseAuthentication</strong> (or
+                <strong>KbdInteractiveAuthentication</strong> on newer
+                Proxmox versions).</p></li>
+                <li><p>Ensure it is also set to no:</p></li>
+                </ol>
+                <blockquote>
+                <p>ChallengeResponseAuthentication no</p>
+                </blockquote>
+                <ol start="7" type="1">
+                <li>Save and exit the file by pressing Ctrl + O, Enter,
+                then Ctrl + X. (<a
+                href="https://secure-bits.org/en/posts/linux/linux-ssh-absichern/">SecureBits,
+                n.d.</a>; <a
+                href="https://xtls.github.io/en/document/level-0/ch04-security.html">Project
+                X, n.d.</a>; <a
+                href="https://docs.rackspace.com/docs/linux-server-security-best-practices">Rackspace,
+                n.d.</a>; <a
+                href="https://docs.e2enetworks.com/docs/myaccount/security/enable_disable_passwordbased/">E2E
+                Networks, n.d.</a>; <a
+                href="https://www.digitalocean.com/community/tutorials/hardening-ssh-fail2ban">DigitalOcean,
+                2021</a>)</li>
+                </ol>
+                <p><strong>Phase 3: Apply and Test the
+                Changes</strong></p>
+                <ol type="1">
+                <li>Apply the new settings by restarting the SSH
+                service:</li>
+                </ol>
+                <ul>
+                <li>systemctl restart sshd</li>
+                </ul>
+                <ol start="2" type="1">
+                <li><p><strong>Keep this configuration window
+                open.</strong></p></li>
+                <li><p>Launch a completely new instance of
+                PuTTY.</p></li>
+                <li><p>Attempt to log in to your Proxmox server
+                <strong>without</strong> loading your private
+                key.</p></li>
+                <li><p>Confirm the server rejects the connection with a
+                No supported authentication methods available
+                error.</p></li>
+                <li><p>Open another PuTTY window <strong>with</strong>
+                your private key loaded to confirm you can still access
+                the server.</p></li>
+                </ol>
+                <p>If both tests pass, you can safely close your
+                original terminal window. Your Proxmox host is now
+                immune to password brute-force attacks.</p>
+                <h2
+                id="nav-post-script-configuration-injection">Post-Script
+                Configuration Injection</h2>
+                <p>Because helper scripts typically only create the
+                primary interface (eth0 on vmbr0), you can instantly
+                wire up your isolated backend (vmbr1), lock down your
+                resource caps, and configure your pass-through
+                requirements using these post-install snippets.</p>
+                <p>This is the best way to ensure the entire system is
+                set up correctly.</p>
+                <p>Run these directly on your Proxmox host terminal
+                right after a script finishes:</p>
+                <h3 id="nav-for-home-assistant-os-vm-101">1. For Home
+                Assistant OS (VM 101)</h3>
+                <p>Run this because you used the HAOS VM installer to
+                attach your second isolated network adapter:</p>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>&gt;&gt;&gt; BASH Script start</p>
+                <p># Add the second network interface for the isolated
+                10.0.10.x backend</p>
+                <p>qm set 101 --net1 virtio,bridge=vmbr1</p>
+                <p># Enforce your custom CPU and RAM rules</p>
+                <p>qm set 101 --cores 2 --memory 4096</p>
+                <p>&gt;&gt;&gt; BASH Script end</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-20-haospost.sh">Code 25:
+                HAOSPost.sh</h4>
+                <h3
+                id="nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">2.
+                Pi-Hole Limits (Ensuring it uses the temporary staging
+                IP)</h3>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>&gt;&gt;&gt; BASH Script start</p>
+                <p>pct set 100 --cores 1 --memory 512 --net0
+                name=eth0,bridge=vmbr0,ip=192.168.86.249/24,gw=192.168.86.1</p>
+                <p>pct restart 102</p>
+                <p>pct restart 100</p>
+                <p>&gt;&gt;&gt; BASH Script end</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-20-piholepost.sh">Code 26:
+                PiHolePost.sh</h4>
+                <h3 id="nav-for-ollama-llm-engine-lxc-103">3. For Ollama
+                LLM Engine (LXC 103)</h3>
+                <p>Run this right after the Ollama LXC script finishes
+                to attach the isolated segment and map your 13th Gen
+                Intel iGPU:</p>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>&gt;&gt;&gt; BASH Script start</p>
+                <p># 1. Attach the isolated network backend interface
+                (eth1)</p>
+                <p>pct set 103 --net1
+                name=eth1,bridge=vmbr1,ip=10.0.10.3/24</p>
+                <p># 2. Allocate the 6 high-performance vCPUs and 16GB
+                RAM limits</p>
+                <p>pct set 103 --cores 6 --memory 16384</p>
+                <p># 3. Inject the Intel iGPU Passthrough rules into the
+                LXC hardware config</p>
+                <p>cat &lt;&lt;EOF &gt;&gt; /etc/pve/lxc/103.conf</p>
+                <p>lxc.cgroup2.devices.allow: c 226:0 rwm</p>
+                <p>lxc.cgroup2.devices.allow: c 226:128 rwm</p>
+                <p>lxc.mount.entry: /dev/dri dev/dri none
+                bind,optional,create=dir</p>
+                <p>lxc.mount.entry: /dev/dri/renderD128
+                dev/dri/renderD128 none bind,optional,create=file</p>
+                <p>EOF</p>
+                <p>pct restart 103</p>
+                <p>&gt;&gt;&gt; BASH Script end</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-20-ollamaholepost.sh">Code 27:
+                OllamaHolePost.sh</h4>
+                <p>New:</p>
+                <blockquote>
+                <p>Append these environment flags directly to your
+                Ollama service definition file (usually found
+                at /etc/systemd/system/ollama.service.d/override.conf or
+                directly inside your LXC startup script environment
+                variables):</p>
+                <p><strong>Advanced Intel oneAPI &amp; SYCL Tuning
+                Flags</strong></p>
+                <p>Add the following environment lines to your
+                deployment:</p>
+                <p># Force the Intel driver to bypass aggressive power
+                savings and keep execution units alert</p>
+                <p>NEOReadDebugKeys=1</p>
+                <p>OverrideGpuAddressSpace=48</p>
+                <p># Tell the SYCL backend to strictly optimize for
+                low-latency single-batch generation</p>
+                <p># This prevents the thread-pool from waiting for data
+                batches during quick autocomplete requests</p>
+                <p>CL_PROGRAM_OPTS="-cl-mad-enable
+                -cl-fast-relaxed-math"</p>
+                <p># Direct the GGML backend to pin memory mappings
+                across the virtualized container bridge</p>
+                <p>OLLAMA_NUM_GPU=999</p>
+                <p>GGML_OPENCL_PLATFORM=Intel</p>
+                </blockquote>
+                <h3 id="nav-for-wyoming-docker-lxc-104">4. For Wyoming
+                Docker (LXC 104)</h3>
+                <p>Run this to map the isolated network switch so it can
+                talk privately to the Ollama API:</p>
+                <table>
+                <colgroup>
+                <col style="width: 100%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>&gt;&gt;&gt; BASH Script start</p>
+                <p># Attach the isolated network backend interface
+                (eth1)</p>
+                <p>pct set 104 --net1
+                name=eth1,bridge=vmbr1,ip=10.0.10.4/24</p>
+                <p># Enforce your 2 Cores and 2GB RAM blueprint</p>
+                <p>pct set 104 --cores 2 --memory 2048</p>
+                <p>pct restart 104</p>
+                <p>&gt;&gt;&gt; BASH Script end</p>
+                <p>NOTES</p>
+                <p>Change the subscription keys at the Proxmox level</p>
+                <p>• echo "Enabled: no" &gt;&gt;
+                /etc/apt/sources.list.d/pve-enterprise.sources</p>
+                <p>• echo "Enabled: no" &gt;&gt;
+                /etc/apt/sources.list.d/ceph.sources</p>
+                <p>• cat &lt;&lt;EOF &gt;
+                /etc/apt/sources.list.d/pve-enterprise.sources</p>
+                <p>Types: deb</p>
+                <p>URIs: https://enterprise.proxmox.com/debian/pve</p>
+                <p>Suites: trixie</p>
+                <p>Components: pve-enterprise</p>
+                <p>Signed-By:
+                /usr/share/keyrings/proxmox-archive-keyring.gpg</p>
+                <p>Enabled: no</p>
+                <p>EOF</p>
+                <p>• cat &lt;&lt;EOF &gt;
+                /etc/apt/sources.list.d/ceph.sources</p>
+                <p>Types: deb</p>
+                <p>URIs:
+                https://enterprise.proxmox.com/debian/ceph-squid</p>
+                <p>Suites: trixie</p>
+                <p>Components: main</p>
+                <p>Signed-By:
+                /usr/share/keyrings/proxmox-archive-keyring.gpg</p>
+                <p>Enabled: no</p>
+                <p>EOF</p>
+                <p>• vi
+                /etc/apt/sources.list.d/pve-no-subscription.sources</p>
+                <p>Enter 'i' in the window, then paste in the following
+                lines.</p>
+                <p>Types: deb</p>
+                <p>URIs: http://download.proxmox.com/debian/pve</p>
+                <p>Suites: trixie</p>
+                <p>Components: pve-no-subscription</p>
+                <p>Signed-By:
+                /usr/share/keyrings/proxmox-archive-keyring.gpg</p>
+                <p>Then entera ":!wq" wo save and exit the vi editor</p>
+                <p>Execute the following:</p>
+                <p>• apt dist-upgrade -y</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-20-wyomingpost.sh">Code 28:
+                WyomingPost.sh</h4>
+                <h1 id="nav-disaster-recovery">Disaster Recovery:</h1>
+                <h2 id="nav-text-configuration-backup-script">Text
+                Configuration Backup Script</h2>
+                <p>To secure your precise resource layouts, network
+                definitions, and maps, keep this custom backup tool
+                saved on your host.</p>
+                <p>Creating the Host Backup Automator</p>
+                <p>Log into your Proxmox Host Shell.</p>
+                <p>Create the script file:</p>
+                <ul>
+                <li>vi /root/backup_all_configs.sh</li>
+                </ul>
+                <p>Paste the following code:</p>
+                <table>
+                <colgroup>
+                <col style="width: 101%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>#!/bin/bash</p>
+                <p># Configuration</p>
+                <p>BACKUP_DIR="/var/lib/vz/dump/config_backups"</p>
+                <p>TIMESTAMP=$(date +"%Y%m%d_%H%M%S")</p>
+                <p>ARCHIVE_NAME="${BACKUP_DIR}/ed_proxmox_configs_${TIMESTAMP}.tar.gz"</p>
+                <p>TEMP_DIR="/tmp/unified_config_backup"</p>
+                <p># Your specific Node IDs</p>
+                <p>LXCS=(100 102 103 104)</p>
+                <p>VMS=(101)</p>
+                <p>echo
+                "===================================================="</p>
+                <p>echo "Starting Configuration Backup for Ed's KAMRUI
+                PC..."</p>
+                <p>echo
+                "===================================================="</p>
+                <p># Initialize clean workspace</p>
+                <p>mkdir -p "$BACKUP_DIR"</p>
+                <p>mkdir -p "$TEMP_DIR"</p>
+                <p>echo "[1/3] Copying Proxmox host system
+                parameters..."</p>
+                <p>cp -r /etc/pve/
+                "$TEMP_DIR/pve_cluster_virtual_fs/"</p>
+                <p>cp /etc/network/interfaces
+                "$TEMP_DIR/host_network_interfaces"</p>
+                <p>cp /etc/passwd /etc/group "$TEMP_DIR/"</p>
+                <p>echo "-&gt; Host network, storage definitions, and
+                clusters copied successfully."</p>
+                <p>echo "[2/3] Copying individual Container &amp; VM
+                .conf files..."</p>
+                <p>for id in "${LXCS[@]}"; do</p>
+                <p>if [ -f "/etc/pve/lxc/${id}.conf" ]; then</p>
+                <p>echo " -&gt; Copying LXC ${id}.conf..."</p>
+                <p>cp "/etc/pve/lxc/${id}.conf" "$TEMP_DIR/"</p>
+                <p>else</p>
+                <p>echo " -&gt; WARNING: LXC ${id}.conf file was not
+                found!"</p>
+                <p>fi</p>
+                <p>done</p>
+                <p>for id in "${VMS[@]}"; do</p>
+                <p>if [ -f "/etc/pve/qemu-server/${id}.conf" ]; then</p>
+                <p>echo " -&gt; Copying VM ${id}.conf..."</p>
+                <p>cp "/etc/pve/qemu-server/${id}.conf" "$TEMP_DIR/"</p>
+                <p>else</p>
+                <p>echo " -&gt; WARNING: VM ${id}.conf file was not
+                found!"</p>
+                <p>fi</p>
+                <p>done</p>
+                <p>echo "[3/3] Packing everything into gzip
+                archive..."</p>
+                <p>tar -czf "$ARCHIVE_NAME" -C "$TEMP_DIR" .</p>
+                <p>rm -rf "$TEMP_DIR"</p>
+                <p>echo
+                "===================================================="</p>
+                <p>echo "SUCCESS! All text configurations backed up
+                cleanly."</p>
+                <p>echo "Archive saved to: $ARCHIVE_NAME"</p>
+                <p>echo
+                "===================================================="</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-21-backup_all_configs.sh">Code 29:
+                backup_all_configs.sh</h4>
+                <p>Save and exit (ESC, :wq, Enter).</p>
+                <p>Make the script executable:</p>
+                <ul>
+                <li>chmod +x /root/backup_all_configs.sh</li>
+                </ul>
+                <p>Execute it at any time to output a fresh, timestamped
+                config snapshot to your host storage directory:</p>
+                <blockquote>
+                <p>/var/lib/vz/dump/config_backups/</p>
+                </blockquote>
+                <h1
+                id="nav-tools-to-verify-installation-and-functionality">Tools
+                to verify Installation and functionality</h1>
+                <h2
+                id="nav-how-to-quickly-verify-promox-container-configurations">How
+                to Quickly Verify Promox Container Configurations:</h2>
+                <p>Sometimes a quick check is needed to verify if there
+                is a problem. For example, you may want to know if a
+                specific Proxmox container can see all your other
+                containers.</p>
+                <p>You can log into any Promox container via Putty ssh
+                or the Promox web page. In the Promox container select
+                Console and paste in the following code. Or you can open
+                Putty and select the Container you want. In that shell
+                paste in the following code:</p>
+                <table style="width:99%;">
+                <colgroup>
+                <col style="width: 98%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p><strong>#!/bin/</strong>bash</p>
+                <p><strong>declare -A</strong> nodes=(</p>
+                <p>["Wyoming Docker"]="192.168.86.248"</p>
+                <p>["Pi-hole"]="192.168.86.249"</p>
+                <p>["Home Assistant"]="192.168.86.251"</p>
+                <p>["NGINX"]="192.168.86.252"</p>
+                <p>["Ollama Engine"]="192.168.86.253"</p>
+                <p>["Surveillance NAS"]="192.168.86.104"</p>
+                <p>["Primary NAS"]="192.168.86.93"</p>
+                <p>["EdsDesktop"]="192.168.86.246"</p>
+                <p>["Home Assistant Backend"]="10.0.10.1"</p>
+                <p>["Pi-hole Backend"]="10.0.10.4"</p>
+                <p>["Pi-hole Backup"]="192.168.86.254"</p>
+                <p>)</p>
+                <p>echo "=== VERIFYING HOME LAB NETWORK INTERCONNECTS
+                ==="</p>
+                <p>for name in "${!nodes[@]}"; do</p>
+                <p>ip=${nodes[$name]}</p>
+                <p>if ping -c 1 -W 1 "$ip" &gt; /dev/null; then</p>
+                <p>echo -e "✅ [ONLINE] $name matches configuration at
+                $ip"</p>
+                <p>else</p>
+                <p>echo -e "❌ [OFFLINE] $name failed to respond at
+                $ip"</p>
+                <p>fi</p>
+                <p>done</p>
+                <p># ollama model verification</p>
+                <p>curl -s http://192.168.86.253:11434/api/tags | grep
+                -o '"name":"[^"]*"' | sed 's/"name":"//;s/"//'</p>
+                <p>echo -e "\n=== VM 101 (HAOS) CONFIG ===" &amp;&amp;
+                cat /etc/pve/qemu-server/101.conf | grep -E
+                "cores|memory|scsi|sata|virtio" &amp;&amp; echo -e
+                "\n=== LXC CONFIGURATIONS ===" &amp;&amp; for id in 100
+                101 102 103 104 105; do echo -e "\n--- Container $id
+                ---"; cat /etc/pve/lxc/$id.conf | grep -E
+                "cores|memory|rootfs|mp"; done</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-22-quicksystemtest.sh">Code 30:
+                QuickSystemTest.sh</h4>
+                <p>When you copy and run this simple script in a
+                terminal of your Putty Shell, Proxmox host, or any
+                Linux-based container it automatically verifies that
+                every IP in your config is alive and responsive on your
+                subnet. It will also tell you specific configuration
+                items for each container that you can verify against
+                this output.</p>
+                <p>After you run the above code block you will get an
+                output like this.</p>
+                <table style="width:96%;">
+                <colgroup>
+                <col style="width: 95%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th><p>=== VERIFYING HOME LAB NETWORK INTERCONNECTS
+                ===</p>
+                <p>✅ [ONLINE] Primary NAS matches configuration at
+                192.168.86.93</p>
+                <p>✅ [ONLINE] Home Assistant matches configuration at
+                192.168.86.251</p>
+                <p>✅ [ONLINE] Pi-hole Backend matches configuration at
+                10.0.10.4</p>
+                <p>✅ [ONLINE] Ollama Engine matches configuration at
+                192.168.86.253</p>
+                <p>✅ [ONLINE] Pi-hole matches configuration at
+                192.168.86.249</p>
+                <p>✅ [ONLINE] Home Assistant Backend matches
+                configuration at 10.0.10.1</p>
+                <p>✅ [ONLINE] Surveillance NAS matches configuration at
+                192.168.86.104</p>
+                <p>✅ [ONLINE] Wyoming Docker matches configuration at
+                192.168.86.248</p>
+                <p>✅ [ONLINE] EdsDesktop matches configuration at
+                192.168.86.246</p>
+                <p>✅ [ONLINE] Pi-hole Backup matches configuration at
+                192.168.86.254</p>
+                <p>✅ [ONLINE] NGINX matches configuration at
+                192.168.86.252</p>
+                <p>gemma3:4b</p>
+                <p>phi4-mini:latest</p>
+                <p>nomic-embed-text:latest</p>
+                <p>qwen2.5-coder:1.5b</p>
+                <p>qwen2.5-coder:7b</p>
+                <p>=== VM 101 (HAOS) CONFIG ===</p>
+                <p>boot: order=scsi0</p>
+                <p>cores: 2</p>
+                <p>memory: 5120</p>
+                <p>net0: virtio=02:93:F8:A8:3A:88,bridge=vmbr0</p>
+                <p>net1: virtio=BC:24:11:3F:40:50,bridge=vmbr1</p>
+                <p>scsi0:
+                local-lvm:vm-101-disk-0,discard=on,size=32G,ssd=1</p>
+                <p>scsihw: virtio-scsi-pci</p>
+                <p>=== LXC CONFIGURATIONS ===</p>
+                <p>--- Container 100 ---</p>
+                <p>cores: 1</p>
+                <p>memory: 256</p>
+                <p>rootfs: local-lvm:vm-100-disk-0,size=2G</p>
+                <p>--- Container 102 ---</p>
+                <p>cores: 2</p>
+                <p>memory: 1024</p>
+                <p>rootfs: local-lvm:vm-102-disk-0,size=8G</p>
+                <p>--- Container 103 ---</p>
+                <p>cores: 6</p>
+                <p>memory: 16384</p>
+                <p>rootfs: local-lvm:vm-103-disk-0,size=60G</p>
+                <p>--- Container 104 ---</p>
+                <p>cores: 4</p>
+                <p>memory: 2048</p>
+                <p>rootfs: local-lvm:vm-104-disk-0,size=10G</p>
+                <p>--- Container 105 ---</p>
+                <p>cores: 1</p>
+                <p>memory: 1024</p>
+                <p>rootfs: local-lvm:vm-105-disk-0,size=5G</p>
+                <p>root@Promox:~#</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+                <h4 id="nav-code-23-quick-system-test-response">Code 31:
+                Quick System Test Response</h4>
+                <p>The check boxes show the hosts are correctly
+                configured and can communicate with each other.</p>
+                <h1 id="nav-references">References</h1>
+                <blockquote>
+                <p><strong>🌐 Cloudflare Resources</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a
+                href="https://developers.cloudflare.com/dns/manage-dns-records/">Cloudflare
+                Docs: Manage DNS Records</a></p></li>
+                <li><p><a
+                href="https://developers.cloudflare.com/email-service/configuration/domains/">Cloudflare
+                Docs: Post-Onboarding Domain Configuration</a></p></li>
+                <li><p><a
+                href="https://developers.cloudflare.com/email-service/get-started/route-emails/">Cloudflare
+                Docs: Route Incoming Emails with Email
+                Routing</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>🐧 Linux &amp; Proxmox VE
+                Resources</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a
+                href="https://pve.proxmox.com/wiki/Package_Repositories">Proxmox
+                VE Admin Guide: Package Repositories
+                Reference</a></p></li>
+                <li><p><a
+                href="https://pve.proxmox.com/pve-docs/">Proxmox VE
+                Admin Guide: Documentation Index</a></p></li>
+                <li><p><a href="https://ubuntu.com/server/docs">Ubuntu
+                Server Guide: Network Configuration</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>🐳 Docker &amp; Containerization
+                Resources</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a
+                href="https://docs.docker.com/get-started/docker-overview/">Docker
+                Docs: Product Manuals and Core Technical
+                Overview</a></p></li>
+                <li><p><a href="https://docs.docker.com/compose/">Docker
+                Docs: Multi-Container Orchestration via Docker
+                Compose</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>🏠 Home Assistant &amp; Wyoming
+                Protocols</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a
+                href="https://www.home-assistant.io/installation/">Home
+                Assistant Docs: Operating System Installation
+                Guide</a></p></li>
+                <li><p><a
+                href="https://www.home-assistant.io/docs/configuration/">Home
+                Assistant Docs: Core Configuration Options and YAML
+                Syntax</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>🛑 Network Filtering, Remote Access &amp;
+                Security Resources</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a href="https://docs.pi-hole.net/">Pi-hole Docs:
+                Deployment and Core Network Configuration
+                Guide</a></p></li>
+                <li><p><a href="https://www.twingate.com/">Twingate
+                Docs: Secure Remote Access Architecture</a></p></li>
+                <li><p>DigitalOcean Community: Hardening SSH Access via
+                Fail2Ban, Nftables, and Cloud Firewalls</p></li>
+                </ul>
+                <blockquote>
+                <p><strong>🖥️ Developer Tools &amp; Productivity
+                Systems</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a href="https://git-scm.com/doc">Git
+                Documentation: Reference Manual and Control
+                Workflows</a></p></li>
+                <li><p><a
+                href="https://code.visualstudio.com/docs">Visual Studio
+                Code Docs: Getting Started and Workspace
+                Management</a></p></li>
+                <li><p><a
+                href="https://support.microsoft.com/">Microsoft Support:
+                Advanced Find and Replace with Wildcard
+                Syntax</a></p></li>
+                <li><p><a
+                href="https://ai.google.dev/gemini-api/docs">Google
+                Gemini API: Developer Overview and Integration
+                Docs</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>⚙️ Web Servers &amp; Local AI
+                Engines</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a href="https://nginx.org/en/docs/">NGINX Core
+                Docs: Reverse Proxy and Web Server
+                Administration</a></p></li>
+                <li><p><a href="https://docs.ollama.com/faq">Ollama
+                Docs: Frequently Asked Questions and Configuration
+                Flags</a></p></li>
+                <li><p><a
+                href="https://github.com/intel/compute-runtime">Intel®
+                Graphics Compute Runtime for GitHub Codebase
+                (NEO)</a></p></li>
+                </ul>
+                <blockquote>
+                <p><strong>💻 Hardware Specifications &amp; Vendor
+                Documentation</strong></p>
+                </blockquote>
+                <ul>
+                <li><p><a
+                href="https://www.intel.com/content/www/us/en/support.html">Intel
+                Support: Core i7 Processor Series Technical
+                Reference</a></p></li>
+                <li><p><a href="https://www.kamrui.com/">Kamrui Support:
+                Mini PC Support and Systems Overview</a></p></li>
+                </ul>
+            </article>
+
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="/scripts/component-loader.js"></script>
+</body>
+</html>

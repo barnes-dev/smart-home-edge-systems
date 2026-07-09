@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voice Assistant Lab Testing Strategy</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-LLK7685ZGC');
+    </script>
+    <link rel="stylesheet" href="/styles/global.css">
+    
+    <style>
+        .doc-layout {
+            display: grid;
+            /* Widened the left column to 450px (~4 inches) */
+            grid-template-columns: 450px 1fr;
+            gap: 2.5rem;
+            margin-top: 2rem;
+            align-items: start;
+        }
+        
+        .sidebar-toc {
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Styling Pandoc's auto-generated list structure */
+        .sidebar-toc ul {
+            list-style: none;
+            padding-left: 1.25rem;
+            margin: 0;
+        }
+        .sidebar-toc > ul {
+            padding-left: 0;
+        }
+        .sidebar-toc li {
+            margin-bottom: 0.5rem;
+        }
+        .sidebar-toc a {
+            color: #bfdbfe;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+        .sidebar-toc a:hover {
+            color: #eaf4ff;
+            text-decoration: underline;
+        }
+
+        .document-content {
+            color: #eaf4ff;
+            line-height: 1.7;
+        }
+        
+        /* Modernized Code block layout matching the script regex output */
+        .document-content pre {
+            background: #1e1e1e;
+            padding: 1.25rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .document-content pre code {
+            font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #eaf4ff;
+            line-height: 1.5;
+        }
+
+        /* Codeblock Language Badges on top-right edge */
+        .document-content pre[class*="language-"]::before {
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            font-family: sans-serif;
+        }
+
+        .document-content pre.language-powershell::before { content: "POWERSHELL"; border-bottom: 1px solid #10b981; }
+        .document-content pre.language-css::before { content: "CSS"; border-bottom: 1px solid #3b82f6; }
+        .document-content pre.language-html::before { content: "HTML"; border-bottom: 1px solid #f97316; }
+        .document-content pre.language-yaml::before { content: "YAML"; border-bottom: 1px solid #a855f7; }
+        .document-content pre.language-plaintext::before { content: "TEXT"; }
+
+        /* Left border accent line linked to language profiles */
+        .document-content pre.language-powershell { border-left: 3px solid #10b981; }
+        .document-content pre.language-css { border-left: 3px solid #3b82f6; }
+        .document-content pre.language-html { border-left: 3px solid #f97316; }
+        .document-content pre.language-yaml { border-left: 3px solid #a855f7; }
+
+        /* CUSTOM TABLE SIZE & LEFT JUSTIFICATION */
+        .document-content table {
+            width: auto;
+            max-width: 850px;
+            margin: 1.5rem 0;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        .document-content th, 
+        .document-content td {
+            padding: 10px 16px;         
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Preserve tabs and spacing formatting inside table cells natively */
+        .document-content td {
+            white-space: pre-wrap;      
+        }
+
+        .document-content th {
+            background: rgba(191, 219, 254, 0.1); 
+            color: #bfdbfe;
+            font-weight: 600;
+        }
+
+        /* FORCE ALL IMAGES AND CAPTIONS TO BE LEFT ALIGNED */
+        .document-content img {
+            display: block;
+            margin-left: 0 !important;
+            margin-right: auto !important;
+            text-align: left;
+        }
+
+        .document-content p.caption,
+        .document-content .caption,
+        .document-content figcaption {
+            text-align: left !important;
+            margin-left: 0 !important;
+            margin-top: 0.5rem;
+            color: #94a3b8;
+        }
+
+        .document-content tr:hover {
+            background: rgba(255, 255, 255, 0.04); 
+        }
+
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-toc {
+                position: relative;
+                top: 0;
+                max-height: none;
+                overflow-y: visible;
+            }
+            .document-content table {
+                width: 100%;            
+                display: block;
+                overflow-x: auto;       
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
+        
+        <p style="margin-bottom: 1.5rem; text-align: left;">
+            <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Home Lab</a>
+            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+            <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Back</a>
+            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+            <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Gateway</a>
+        </p>
+
+        <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
+            <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Voice
+Assistant Lab Testing Strategy</h1>
+            <h2 style="color: #bfdbfe; margin: 0 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
+            <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
+        </div>
+        
+        <div class="doc-layout">
+            
+            <aside class="sidebar-toc">
+                <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
+                <ul>
+                <li><a href="#nav-table-of-contents"
+                id="nav-toc-table-of-contents">Table of Contents</a>
+                <ul>
+                <li><a href="#nav-end-to-end-voice-architecture-flow"
+                id="nav-toc-end-to-end-voice-architecture-flow"><strong>1.
+                End-to-End Voice Architecture Flow</strong></a></li>
+                <li><a
+                href="#nav-testing-phases-conditions-and-documentation"
+                id="nav-toc-testing-phases-conditions-and-documentation"><strong>2.
+                Testing Phases, Conditions, and
+                Documentation</strong></a>
+                <ul>
+                <li><a
+                href="#nav-phase-a-the-satellite-network-ingestion"
+                id="nav-toc-phase-a-the-satellite-network-ingestion"><strong>Phase
+                A: The Satellite &amp; Network Ingestion</strong></a>
+                <ul>
+                <li><a href="#nav-conditions-to-meet"
+                id="nav-toc-conditions-to-meet"><strong>Conditions to
+                Meet:</strong></a></li>
+                <li><a href="#nav-documentation-logs-to-review"
+                id="nav-toc-documentation-logs-to-review"><strong>Documentation
+                &amp; Logs to Review:</strong></a></li>
+                </ul></li>
+                </ul></li>
+                <li><a href="#nav-phase-b-wake-word-speech-to-text-stt"
+                id="nav-toc-phase-b-wake-word-speech-to-text-stt"><strong>Phase
+                B: Wake Word &amp; Speech-to-Text (STT)</strong></a>
+                <ul>
+                <li><a href="#nav-conditions-to-meet-1"
+                id="nav-toc-conditions-to-meet-1"><strong>Conditions to
+                Meet:</strong></a></li>
+                </ul></li>
+                <li><a
+                href="#nav-phase-c-intent-recognition-execution-ha-core"
+                id="nav-toc-phase-c-intent-recognition-execution-ha-core"><strong>Phase
+                C: Intent Recognition &amp; Execution (HA
+                Core)</strong></a>
+                <ul>
+                <li><a href="#nav-conditions-to-meet-2"
+                id="nav-toc-conditions-to-meet-2"><strong>Conditions to
+                Meet:</strong></a>
+                <ul>
+                <li><a href="#nav-documentation-logs-to-review-1"
+                id="nav-toc-documentation-logs-to-review-1"><strong>Documentation
+                &amp; Logs to Review:</strong></a></li>
+                </ul></li>
+                </ul></li>
+                <li><a
+                href="#nav-phase-d-text-to-speech-tts-audio-generation"
+                id="nav-toc-phase-d-text-to-speech-tts-audio-generation"><strong>Phase
+                D: Text-to-Speech (TTS) &amp; Audio
+                Generation</strong></a>
+                <ul>
+                <li><a href="#nav-conditions-to-meet-3"
+                id="nav-toc-conditions-to-meet-3"><strong>Conditions to
+                Meet:</strong></a>
+                <ul>
+                <li><a href="#nav-documentation-logs-to-review-2"
+                id="nav-toc-documentation-logs-to-review-2"><strong>Documentation
+                &amp; Logs to Review:</strong></a></li>
+                </ul></li>
+                </ul></li>
+                <li><a
+                href="#nav-phase-e-network-return-satellite-playback"
+                id="nav-toc-phase-e-network-return-satellite-playback"><strong>Phase
+                E: Network Return &amp; Satellite Playback</strong></a>
+                <ul>
+                <li><a href="#nav-conditions-to-meet-4"
+                id="nav-toc-conditions-to-meet-4"><strong>Conditions to
+                Meet:</strong></a>
+                <ul>
+                <li><a href="#nav-documentation-logs-to-review-3"
+                id="nav-toc-documentation-logs-to-review-3"><strong>Documentation
+                &amp; Logs to Review:</strong></a></li>
+                </ul></li>
+                </ul></li>
+                <li><a
+                href="#nav-the-core-diagnostic-tool-assist-pipeline-debugger"
+                id="nav-toc-the-core-diagnostic-tool-assist-pipeline-debugger"><strong>3.
+                The Core Diagnostic Tool: Assist Pipeline
+                Debugger</strong></a>
+                <ul>
+                <li><a href="#nav-network-topography-snooping-strategy"
+                id="nav-toc-network-topography-snooping-strategy"><strong>1.
+                Network Topography &amp; Snooping Strategy</strong></a>
+                <ul>
+                <li><a href="#nav-conditions-to-meet-5"
+                id="nav-toc-conditions-to-meet-5"><strong>Conditions to
+                Meet</strong></a></li>
+                <li><a href="#nav-document-tooling-architecture"
+                id="nav-toc-document-tooling-architecture"><strong>Document
+                &amp; Tooling Architecture</strong></a></li>
+                <li><a href="#nav-documentation-to-look-at"
+                id="nav-toc-documentation-to-look-at"><strong>Documentation
+                to Look At:</strong></a></li>
+                </ul></li>
+                <li><a
+                href="#nav-on-device-wake-word-analog-mic-testing"
+                id="nav-toc-on-device-wake-word-analog-mic-testing"><strong>2.
+                On-Device Wake Word &amp; Analog Mic
+                Testing</strong></a></li>
+                <li><a href="#nav-conditions-to-meet-6"
+                id="nav-toc-conditions-to-meet-6"><strong>Conditions to
+                Meet</strong></a></li>
+                <li><a href="#nav-document-technical-specs-to-look-at"
+                id="nav-toc-document-technical-specs-to-look-at"><strong>Document
+                &amp; Technical Specs to Look At</strong></a></li>
+                </ul></li>
+                <li><a href="#nav-the-backend-pipeline-wyoming-piper"
+                id="nav-toc-the-backend-pipeline-wyoming-piper">3. The
+                Backend Pipeline (Wyoming &amp; Piper)</a>
+                <ul>
+                <li><a href="#nav-conditions-to-meet-7"
+                id="nav-toc-conditions-to-meet-7"><strong>Conditions to
+                Meet</strong></a></li>
+                <li><a href="#nav-documentation-logs-to-review-4"
+                id="nav-toc-documentation-logs-to-review-4"><strong>Documentation
+                &amp; Logs to Review</strong></a></li>
+                </ul></li>
+                <li><a href="#nav-the-timeline-mapping-strategy"
+                id="nav-toc-the-timeline-mapping-strategy"><strong>1.
+                The Timeline Mapping Strategy</strong></a></li>
+                <li><a
+                href="#nav-setting-up-the-digital-snooping-telemetry"
+                id="nav-toc-setting-up-the-digital-snooping-telemetry"><strong>2.
+                Setting Up the Digital Snooping &amp;
+                Telemetry</strong></a>
+                <ul>
+                <li><a href="#nav-network-monitoring-with-wireshark"
+                id="nav-toc-network-monitoring-with-wireshark"><strong>Network
+                Monitoring with Wireshark</strong></a></li>
+                <li><a href="#nav-cpu-tracking-inside-proxmox"
+                id="nav-toc-cpu-tracking-inside-proxmox"><strong>CPU
+                Tracking inside Proxmox</strong></a></li>
+                </ul></li>
+                <li><a
+                href="#nav-aligning-the-camcorder-to-the-digital-clock"
+                id="nav-toc-aligning-the-camcorder-to-the-digital-clock"><strong>3.
+                Aligning the Camcorder to the Digital
+                Clock</strong></a></li>
+                <li><a href="#nav-documentation-verification-focus"
+                id="nav-toc-documentation-verification-focus"><strong>4.
+                Documentation &amp; Verification Focus</strong></a></li>
+                <li><a
+                href="#nav-strategic-objectives-engineering-rationale"
+                id="nav-toc-strategic-objectives-engineering-rationale">1.
+                Strategic Objectives &amp; Engineering
+                Rationale</a></li>
+                <li><a
+                href="#nav-laboratory-topology-environment-architecture"
+                id="nav-toc-laboratory-topology-environment-architecture">2.
+                Laboratory Topology &amp; Environment
+                Architecture</a></li>
+                <li><a href="#nav-test-methodology-variable-framework"
+                id="nav-toc-test-methodology-variable-framework">3. Test
+                Methodology &amp; Variable Framework</a>
+                <ul>
+                <li><a
+                href="#nav-architectural-variables-under-evaluation"
+                id="nav-toc-architectural-variables-under-evaluation">3.1
+                Architectural Variables under Evaluation</a></li>
+                <li><a
+                href="#nav-metric-definitions-timeline-milestones"
+                id="nav-toc-metric-definitions-timeline-milestones">3.2
+                Metric Definitions &amp; Timeline Milestones</a></li>
+                </ul></li>
+                <li><a href="#nav-step-by-step-lab-execution-procedures"
+                id="nav-toc-step-by-step-lab-execution-procedures">4.
+                Step-by-Step Lab Execution Procedures</a>
+                <ul>
+                <li><a
+                href="#nav-procedure-4.1-laboratory-temporal-synchronization"
+                id="nav-toc-procedure-4.1-laboratory-temporal-synchronization">Procedure
+                4.1: Laboratory Temporal Synchronization</a></li>
+                <li><a
+                href="#nav-procedure-4.2-digital-data-capture-sequence"
+                id="nav-toc-procedure-4.2-digital-data-capture-sequence">Procedure
+                4.2: Digital Data Capture Sequence</a></li>
+                </ul></li>
+                <li><a
+                href="#nav-data-compilation-visualization-framework"
+                id="nav-toc-data-compilation-visualization-framework">5.
+                Data Compilation &amp; Visualization Framework</a>
+                <ul>
+                <li><a
+                href="#nav-recommended-comparative-visualizations"
+                id="nav-toc-recommended-comparative-visualizations">5.1
+                Recommended Comparative Visualizations</a></li>
+                </ul></li>
+                </ul></li>
+                <li><a href="#nav-section-2---running-the-procedure"
+                id="nav-toc-section-2---running-the-procedure">Section 2
+                - Running the procedure</a>
+                <ul>
+                <li><a href="#nav-document-structural-overview"
+                id="nav-toc-document-structural-overview">Document
+                Structural Overview</a>
+                <ul>
+                <li><a
+                href="#nav-part-1-engineering-lab-test-strategy-hybrid-architecture"
+                id="nav-toc-part-1-engineering-lab-test-strategy-hybrid-architecture">PART
+                1: Engineering Lab Test Strategy (Hybrid
+                Architecture)</a></li>
+                <li><a
+                href="#nav-part-2-step-by-step-lab-output-procedures"
+                id="nav-toc-part-2-step-by-step-lab-output-procedures">PART
+                2: Step-by-Step Lab Output Procedures</a></li>
+                <li><a
+                href="#nav-part-3-sample-run-evaluation-final-report-master-template"
+                id="nav-toc-part-3-sample-run-evaluation-final-report-master-template">PART
+                3: Sample Run Evaluation &amp; Final Report (Master
+                Template)</a></li>
+                </ul></li>
+                </ul></li>
+                <li><a href="#nav-part-1-engineering-lab-test-strategy"
+                id="nav-toc-part-1-engineering-lab-test-strategy">PART
+                1: ENGINEERING LAB TEST STRATEGY</a>
+                <ul>
+                <li><a
+                href="#nav-rationale-for-the-hybrid-lab-ecosystem"
+                id="nav-toc-rationale-for-the-hybrid-lab-ecosystem">1.1
+                Rationale for the Hybrid Lab Ecosystem</a></li>
+                <li><a href="#nav-hybrid-network-topology-pathing"
+                id="nav-toc-hybrid-network-topology-pathing">1.2 Hybrid
+                Network &amp; Topology Pathing</a></li>
+                </ul></li>
+                <li><a
+                href="#nav-part-2-step-by-step-lab-output-procedures-1"
+                id="nav-toc-part-2-step-by-step-lab-output-procedures-1">PART
+                2: STEP-BY-STEP LAB OUTPUT PROCEDURES</a>
+                <ul>
+                <li><a
+                href="#nav-procedure-2.1-timing-calibration-video-prep"
+                id="nav-toc-procedure-2.1-timing-calibration-video-prep">Procedure
+                2.1: Timing Calibration &amp; Video Prep</a></li>
+                <li><a
+                href="#nav-procedure-2.2-telemetry-capture-sequence"
+                id="nav-toc-procedure-2.2-telemetry-capture-sequence">Procedure
+                2.2: Telemetry Capture Sequence</a></li>
+                </ul></li>
+                <li><a
+                href="#nav-part-3-sample-run-evaluation-final-report"
+                id="nav-toc-part-3-sample-run-evaluation-final-report">PART
+                3: SAMPLE RUN EVALUATION &amp; FINAL REPORT</a>
+                <ul>
+                <li><a
+                href="#nav-core-telemetry-timeline-delta-breakdown"
+                id="nav-toc-core-telemetry-timeline-delta-breakdown">Core
+                Telemetry Timeline Delta Breakdown</a></li>
+                <li><a
+                href="#nav-performance-visualization-architecture-comparisons"
+                id="nav-toc-performance-visualization-architecture-comparisons">3.2
+                Performance Visualization &amp; Architecture
+                Comparisons</a></li>
+                </ul></li>
+                </ul>
+            </aside>
+
+            <article class="document-content">
+                <p><strong>LOCAL VOICE ASSISTANT EVALUATION
+                LAB</strong></p>
+                <p><em>End-to-End Testing Strategy, Performance
+                Profiling, &amp; Benchmark Manual</em></p>
+                <p>**</p>
+                <h1 class="TOC-Heading" id="nav-table-of-contents">Table
+                of Contents</h1>
+                <p><a
+                href="#nav-end-to-end-voice-architecture-flow"><strong>1.
+                End-to-End Voice Architecture Flow</strong>
+                [2](#end-to-end-voice-architecture-flow)</a></p>
+                <p><a
+                href="#nav-testing-phases-conditions-and-documentation"><strong>2.
+                Testing Phases, Conditions, and Documentation</strong>
+                [2](#testing-phases-conditions-and-documentation)</a></p>
+                <p><a
+                href="#nav-phase-a-the-satellite-network-ingestion"><strong>Phase
+                A: The Satellite &amp; Network Ingestion</strong>
+                [2](#phase-a-the-satellite-network-ingestion)</a></p>
+                <p><a
+                href="#nav-phase-b-wake-word-speech-to-text-stt"><strong>Phase
+                B: Wake Word &amp; Speech-to-Text (STT)</strong>
+                [2](#phase-b-wake-word-speech-to-text-stt)</a></p>
+                <p><a
+                href="#nav-conditions-to-meet-1"><strong>Conditions to
+                Meet:</strong> [3](#conditions-to-meet-1)</a></p>
+                <p><a
+                href="#nav-phase-c-intent-recognition-execution-ha-core"><strong>Phase
+                C: Intent Recognition &amp; Execution (HA Core)</strong>
+                [3](#phase-c-intent-recognition-execution-ha-core)</a></p>
+                <p><a
+                href="#nav-conditions-to-meet-2"><strong>Conditions to
+                Meet:</strong> [3](#conditions-to-meet-2)</a></p>
+                <p><a
+                href="#nav-phase-d-text-to-speech-tts-audio-generation"><strong>Phase
+                D: Text-to-Speech (TTS) &amp; Audio Generation</strong>
+                [3](#phase-d-text-to-speech-tts-audio-generation)</a></p>
+                <p><a
+                href="#nav-conditions-to-meet-3"><strong>Conditions to
+                Meet:</strong> [3](#conditions-to-meet-3)</a></p>
+                <p><a
+                href="#nav-phase-e-network-return-satellite-playback"><strong>Phase
+                E: Network Return &amp; Satellite Playback</strong>
+                [4](#phase-e-network-return-satellite-playback)</a></p>
+                <p><a
+                href="#nav-conditions-to-meet-4"><strong>Conditions to
+                Meet:</strong> [4](#conditions-to-meet-4)</a></p>
+                <p><a
+                href="#nav-the-core-diagnostic-tool-assist-pipeline-debugger"><strong>3.
+                The Core Diagnostic Tool: Assist Pipeline
+                Debugger</strong>
+                [4](#the-core-diagnostic-tool-assist-pipeline-debugger)</a></p>
+                <p><a
+                href="#nav-network-topography-snooping-strategy"><strong>1.
+                Network Topography &amp; Snooping Strategy</strong>
+                [5](#network-topography-snooping-strategy)</a></p>
+                <p><a
+                href="#nav-on-device-wake-word-analog-mic-testing"><strong>2.
+                On-Device Wake Word &amp; Analog Mic Testing</strong>
+                [6](#on-device-wake-word-analog-mic-testing)</a></p>
+                <p><a
+                href="#nav-conditions-to-meet-6"><strong>Conditions to
+                Meet</strong> [6](#conditions-to-meet-6)</a></p>
+                <p><a
+                href="#nav-document-technical-specs-to-look-at"><strong>Document
+                &amp; Technical Specs to Look At</strong>
+                [6](#document-technical-specs-to-look-at)</a></p>
+                <p><a href="#nav-the-backend-pipeline-wyoming-piper">3.
+                The Backend Pipeline (Wyoming &amp; Piper)
+                [7](#the-backend-pipeline-wyoming-piper)</a></p>
+                <p><a
+                href="#nav-conditions-to-meet-7"><strong>Conditions to
+                Meet</strong> [7](#conditions-to-meet-7)</a></p>
+                <p><a
+                href="#nav-documentation-logs-to-review-4"><strong>Documentation
+                &amp; Logs to Review</strong>
+                [7](#documentation-logs-to-review-4)</a></p>
+                <p><a
+                href="#nav-the-timeline-mapping-strategy"><strong>1. The
+                Timeline Mapping Strategy</strong>
+                [7](#the-timeline-mapping-strategy)</a></p>
+                <p><a
+                href="#nav-setting-up-the-digital-snooping-telemetry"><strong>2.
+                Setting Up the Digital Snooping &amp; Telemetry</strong>
+                [8](#setting-up-the-digital-snooping-telemetry)</a></p>
+                <p><a
+                href="#nav-network-monitoring-with-wireshark"><strong>Network
+                Monitoring with Wireshark</strong>
+                [8](#network-monitoring-with-wireshark)</a></p>
+                <p><a
+                href="#nav-cpu-tracking-inside-proxmox"><strong>CPU
+                Tracking inside Proxmox</strong>
+                [9](#cpu-tracking-inside-proxmox)</a></p>
+                <p><a
+                href="#nav-aligning-the-camcorder-to-the-digital-clock"><strong>3.
+                Aligning the Camcorder to the Digital Clock</strong>
+                [9](#aligning-the-camcorder-to-the-digital-clock)</a></p>
+                <p><a
+                href="#nav-documentation-verification-focus"><strong>4.
+                Documentation &amp; Verification Focus</strong>
+                [9](#documentation-verification-focus)</a></p>
+                <p><a
+                href="#nav-strategic-objectives-engineering-rationale">1.
+                Strategic Objectives &amp; Engineering Rationale
+                [10](#strategic-objectives-engineering-rationale)</a></p>
+                <p><a
+                href="#nav-laboratory-topology-environment-architecture">2.
+                Laboratory Topology &amp; Environment Architecture
+                [10](#laboratory-topology-environment-architecture)</a></p>
+                <p><a href="#nav-test-methodology-variable-framework">3.
+                Test Methodology &amp; Variable Framework
+                [11](#test-methodology-variable-framework)</a></p>
+                <p><a
+                href="#nav-architectural-variables-under-evaluation">3.1
+                Architectural Variables under Evaluation
+                [11](#architectural-variables-under-evaluation)</a></p>
+                <p><a
+                href="#nav-metric-definitions-timeline-milestones">3.2
+                Metric Definitions &amp; Timeline Milestones
+                [12](#metric-definitions-timeline-milestones)</a></p>
+                <p><a
+                href="#nav-step-by-step-lab-execution-procedures">4.
+                Step-by-Step Lab Execution Procedures
+                [13](#step-by-step-lab-execution-procedures)</a></p>
+                <p><a
+                href="#nav-procedure-4.1-laboratory-temporal-synchronization">Procedure
+                4.1: Laboratory Temporal Synchronization
+                [13](#procedure-4.1-laboratory-temporal-synchronization)</a></p>
+                <p><a
+                href="#nav-procedure-4.2-digital-data-capture-sequence">Procedure
+                4.2: Digital Data Capture Sequence
+                [13](#procedure-4.2-digital-data-capture-sequence)</a></p>
+                <p><a
+                href="#nav-data-compilation-visualization-framework">5.
+                Data Compilation &amp; Visualization Framework
+                [13](#data-compilation-visualization-framework)</a></p>
+                <p><a
+                href="#nav-recommended-comparative-visualizations">5.1
+                Recommended Comparative Visualizations
+                [14](#recommended-comparative-visualizations)</a></p>
+                <p>To systematically test from the <strong>satellite
+                hardware</strong>, across the <strong>network</strong>,
+                through the <strong>Home Assistant voice
+                architecture</strong>, and back to the <strong>audio
+                response</strong>, we need a clear framework. Here is
+                how we can structure this testing methodology, along
+                with the documentation and logs you will want to look at
+                for each stage.</p>
+                <h2
+                id="nav-end-to-end-voice-architecture-flow"><strong>1.
+                End-to-End Voice Architecture Flow</strong></h2>
+                <p>To test effectively, we trace a single voice command
+                through five distinct phases:</p>
+                <blockquote>
+                <p>[Satellite Device] ──(Network / Wyoming)──&gt; [HA
+                Pipeline] ──&gt; [STT] ──&gt; [Intent (HA Core)]</p>
+                <p>[Satellite Speaker] &lt;──(Network / Audio)─── [HA
+                Pipeline] &lt;── [TTS] &lt;──────┘</p>
+                </blockquote>
+                <h2
+                id="nav-testing-phases-conditions-and-documentation"><strong>2.
+                Testing Phases, Conditions, and
+                Documentation</strong></h2>
+                <h3
+                id="nav-phase-a-the-satellite-network-ingestion"><strong>Phase
+                A: The Satellite &amp; Network Ingestion</strong></h3>
+                <p>This phase tests physical audio capture, wake word
+                detection (if done on-device), and transmission over the
+                network via the <strong>Wyoming protocol</strong>.</p>
+                <h4 id="nav-conditions-to-meet"><strong>Conditions to
+                Meet:</strong></h4>
+                <p>Clean audio stream capture without clipping or
+                excessive ambient gain.</p>
+                <p>Sub-second network latency between the satellite and
+                the Home Assistant server.</p>
+                <p>Successful TCP handshake on the designated Wyoming
+                protocol port.</p>
+                <h4
+                id="nav-documentation-logs-to-review"><strong>Documentation
+                &amp; Logs to Review:</strong></h4>
+                <p><strong>Wyoming Protocol Specification:</strong>
+                Understanding how audio chunks and events (like Wake)
+                are serialized.</p>
+                <p><strong>Satellite Firmware Logs:</strong>
+                Serial/Console logs from the satellite device to verify
+                microphone initialization and Wi-Fi RSSI (signal
+                strength).</p>
+                <p><strong>Home Assistant Wyoming Integration
+                Logs:</strong> Set the specific Wyoming container/add-on
+                log level to debug to verify the incoming connection
+                from the satellite's IP.</p>
+                <h2
+                id="nav-phase-b-wake-word-speech-to-text-stt"><strong>Phase
+                B: Wake Word &amp; Speech-to-Text (STT)</strong></h2>
+                <p>Once the server receives the stream, it must
+                accurately detect the wake word (if open-wake-word is
+                server-side) and convert the subsequent audio to text
+                (e.g., via Whisper).</p>
+                <h3 id="nav-conditions-to-meet-1"><strong>Conditions to
+                Meet:</strong></h3>
+                <p><strong>Wake Word Accuracy:</strong> High
+                true-positive rate with minimal false triggers.</p>
+                <p><strong>STT Processing Time:</strong> Whisper
+                processing time should ideally be under second for
+                standard commands.</p>
+                <p><strong>Transcription Accuracy:</strong> Exact
+                matching of standard entity names and domains.</p>
+                <p><strong>Documentation &amp; Logs to
+                Review:</strong></p>
+                <p><strong>Home Assistant Voice Architecture
+                Docs:</strong> Focus on the assist_pipeline component
+                documentation.</p>
+                <p><strong>Add-on Logs (Whisper /
+                open-wake-word):</strong> Look for VAD (Voice Activity
+                Detection) thresholds and chunk processing times.</p>
+                <p><strong>HA Core Developer Docs:</strong> Review the
+                Pipeline debug tool schema (Settings -&gt; Voice
+                Assistants -&gt; Debug).</p>
+                <h2
+                id="nav-phase-c-intent-recognition-execution-ha-core"><strong>Phase
+                C: Intent Recognition &amp; Execution (HA
+                Core)</strong></h2>
+                <p>The plaintext string from the STT engine is passed to
+                the conversation agent (like Conversation Core or a
+                local LLM) to match against a registered intent.</p>
+                <h3 id="nav-conditions-to-meet-2"><strong>Conditions to
+                Meet:</strong></h3>
+                <p>The intent parser must accurately resolve aliases and
+                areas (e.g., mapping "turn on kitchen overheads" to
+                light.kitchen_lights).</p>
+                <p>State changes must execute locally instantly without
+                cloud dependency.</p>
+                <h4
+                id="nav-documentation-logs-to-review-1"><strong>Documentation
+                &amp; Logs to Review:</strong></h4>
+                <p><strong>Intent Recognition Documentation:</strong>
+                Review Home Assistant's built-in sentences repository
+                (home-assistant/intents on GitHub).</p>
+                <p><strong>homeassistant.log:</strong> Filter for
+                homeassistant.components.conversation at debug level to
+                see how sentences are parsed against the current
+                area/device registry.</p>
+                <h2
+                id="nav-phase-d-text-to-speech-tts-audio-generation"><strong>Phase
+                D: Text-to-Speech (TTS) &amp; Audio
+                Generation</strong></h2>
+                <p>Once the intent is executed, Home Assistant generates
+                a textual response (e.g., "Turned on the light") and
+                converts it to audio chunks (e.g., via Piper).</p>
+                <h3 id="nav-conditions-to-meet-3"><strong>Conditions to
+                Meet:</strong></h3>
+                <p>TTS generation latency must be minimal (Piper should
+                stream audio back almost instantly).</p>
+                <p>Audio sample rate and format must match what the
+                satellite hardware natively expects (typically raw PCM
+                16kHz, 16-bit mono).</p>
+                <h4
+                id="nav-documentation-logs-to-review-2"><strong>Documentation
+                &amp; Logs to Review:</strong></h4>
+                <p><strong>Piper Documentation:</strong> Check voice
+                model configuration (.onnx) scaling options for
+                performance tuning.</p>
+                <p><strong>Assist Pipeline Step Metrics:</strong>
+                Reviewing the specific JSON execution steps to isolate
+                how long TTS generation took versus execution.</p>
+                <h2
+                id="nav-phase-e-network-return-satellite-playback"><strong>Phase
+                E: Network Return &amp; Satellite Playback</strong></h2>
+                <p>The audio payload travels back over the Wyoming
+                protocol to the satellite, which decodes it and plays it
+                via the speaker.</p>
+                <h3 id="nav-conditions-to-meet-4"><strong>Conditions to
+                Meet:</strong></h3>
+                <p>No audio stuttering, dropouts, or buffer underruns on
+                the satellite.</p>
+                <p>Immediate readiness of the satellite to return to an
+                idle/listening state post-playback.</p>
+                <h4
+                id="nav-documentation-logs-to-review-3"><strong>Documentation
+                &amp; Logs to Review:</strong></h4>
+                <p><strong>Satellite Audio Driver Docs:</strong> Looking
+                at DAC (Digital-to-Analog Converter) configuration or
+                IIS/I2S timing protocols if troubleshooting choppy
+                audio.</p>
+                <h2
+                id="nav-the-core-diagnostic-tool-assist-pipeline-debugger"><strong>3.
+                The Core Diagnostic Tool: Assist Pipeline
+                Debugger</strong></h2>
+                <p>The absolute single most critical document/tool you
+                will look at during this testing is the <strong>Assist
+                Pipeline Debug Graph</strong> within Home Assistant.</p>
+                <p>When you run a test voice command, Home Assistant
+                records a complete JSON object detailing every single
+                step. It breaks down:</p>
+                <p><strong>Engine timings</strong> (how many
+                milliseconds spent on STT, Intent, and TTS).</p>
+                <p><strong>Audio properties</strong> received.</p>
+                <p><strong>Raw text</strong> interpreted.</p>
+                <p>Where should we start diving in first? We can focus
+                on the <strong>hardware/network layer</strong>
+                (verifying the audio stream format and network
+                stability) or jump straight into configuring the
+                <strong>debug logging</strong> for the server-side
+                components.</p>
+                <p>In my condition, I would also hope that the wake
+                would be detected by the satellite device. And I am
+                looking at some sort of analog detection on microphone
+                for testing purposes and um network snooping. And when I
+                communicate from the Wyoming protocol, Piper protocol,
+                all that through home assistant, that is over a private
+                back end network that's inside of a promax
+                container.</p>
+                <p>Running everything locally inside a Proxmox
+                environment over a private backend network is the gold
+                standard for a privacy-focused smart home. It gives you
+                absolute control over the network stack, making packet
+                inspection and performance tuning incredibly clean.</p>
+                <p>Since your design requires <strong>on-device wake
+                word detection</strong>, <strong>analog microphone
+                testing</strong>, and <strong>network snooping</strong>
+                across your Proxmox/Wyoming boundary, let's break down
+                the conditions, tools, and documentation needed to test
+                this specific architecture.</p>
+                <h3
+                id="nav-network-topography-snooping-strategy"><strong>1.
+                Network Topography &amp; Snooping Strategy</strong></h3>
+                <p>Because your satellite communicates with a Home
+                Assistant stack hosted within Proxmox LXC containers or
+                VMs, your "snooping" will take place at the virtual
+                bridge layer (vmbr) or directly inside the container
+                network namespaces.</p>
+                <h4 id="nav-conditions-to-meet-5"><strong>Conditions to
+                Meet</strong></h4>
+                <ul>
+                <li><p><strong>Isolate Traffic:</strong> Ensure your
+                private backend network doesn't throttle or drop the
+                small, sustained UDP/TCP packets used by the Wyoming
+                protocol.</p></li>
+                <li><p><strong>Snooping Access:</strong> The host or a
+                designated monitoring container must have permission to
+                capture traffic traversing the virtual bridge without
+                disrupting the pipeline.</p></li>
+                </ul>
+                <h4
+                id="nav-document-tooling-architecture"><strong>Document
+                &amp; Tooling Architecture</strong></h4>
+                <blockquote>
+                <p>[Satellite Device] ──(Physical Network)──&gt;
+                [Proxmox Host (vmbrX)]</p>
+                <p>│</p>
+                <p>┌─────────────┴─────────────┐</p>
+                <p>▼ ▼</p>
+                <p>[HA Core Container] [Wyoming/Piper LXC]</p>
+                <p>│ │</p>
+                <p>└─────(veth interfaces)─────┘</p>
+                <p>▲</p>
+                <p>(Snoop here via tcpdump)</p>
+                </blockquote>
+                <ul>
+                <li><p><strong>The Tooling Stack:</strong> *
+                <strong>tcpdump on the Proxmox Host:</strong> You can
+                snoop on the specific virtual ethernet interface
+                (vethXXX) assigned to your voice/Wyoming container. This
+                avoids having to install troubleshooting utilities
+                inside your clean production containers.</p></li>
+                <li><p><strong>Wireshark (via SSH dump):</strong> You
+                can stream the live packet capture from your Proxmox
+                host directly to a desktop Wireshark instance
+                using:</p></li>
+                </ul>
+                <blockquote>
+                <p>ssh root@proxmox-ip 'tcpdump -s 0 -c 1000 -nn -w - -i
+                veth100i0 port 10400' | wireshark -k -i -</p>
+                </blockquote>
+                <h4
+                id="nav-documentation-to-look-at"><strong>Documentation
+                to Look At:</strong></h4>
+                <p><strong>Proxmox VE Network Configuration
+                Docs:</strong></p>
+                <p>Specifically sections on <strong>Linux
+                Bridges</strong> and capturing traffic on veth
+                interfaces.</p>
+                <p><strong>Wyoming Protocol Wire Format:</strong></p>
+                <p>Wyoming uses a simple line-based text header followed
+                by optional payload bytes (like raw PCM audio chunks).
+                Your network snooping should reveal clean wake or audio
+                JSON-like events in the plaintext portion of the TCP
+                packets on port 10400 (default).</p>
+                <h3
+                id="nav-on-device-wake-word-analog-mic-testing"><strong>2.
+                On-Device Wake Word &amp; Analog Mic
+                Testing</strong></h3>
+                <p>To handle wake word processing directly on the
+                satellite, the device must continuously analyze the
+                analog signal coming off the microphone array before it
+                ever hits the network.</p>
+                <h3 id="nav-conditions-to-meet-6"><strong>Conditions to
+                Meet</strong></h3>
+                <p><strong>Signal Integrity:</strong> The
+                analog-to-digital converter (ADC) must sample the
+                microphone signal cleanly, keeping the noise floor low
+                enough for the local wake-word model (like a lightweight
+                micro-wake-word implementation) to parse it.</p>
+                <p><strong>Zero Network Overhead on Idle:</strong> The
+                satellite should not stream any audio to the Proxmox
+                backend until the local wake word is triggered. Only
+                upon detection does it open the TCP socket and begin
+                streaming the voice command payload.</p>
+                <h3
+                id="nav-document-technical-specs-to-look-at"><strong>Document
+                &amp; Technical Specs to Look At</strong></h3>
+                <ul>
+                <li><p><strong>Hardware Schematic &amp;
+                Datasheets:</strong> You will want to look at the
+                pinning and datasheet for your satellite's audio
+                front-end or ADC chip. If you are diagnosing poor
+                recognition rates, look for notes on <strong>Gain
+                Control</strong> and <strong>Acoustic Echo Cancellation
+                (AEC)</strong>.</p></li>
+                <li><p><strong>Microphone Gain Verification
+                Logs:</strong> For testing the analog stage without
+                deploying the full pipeline, look at firmware frameworks
+                that allow raw analog readouts. If using ESPHome or a
+                dedicated C++ framework on the satellite, configure the
+                log to output raw audio RSSI or VAD (Voice Activity
+                Detection) states over the serial console.</p></li>
+                <li><p><strong>Micro-Wake-Word / ONNX Runtime
+                Docs:</strong> Review the documentation for the specific
+                wake word model size (e.g., streaming vs. non-streaming
+                models) to ensure the satellite's processor has enough
+                headroom to run inference without dropping audio
+                frames.</p></li>
+                </ul>
+                <h2 id="nav-the-backend-pipeline-wyoming-piper">3. The
+                Backend Pipeline (Wyoming &amp; Piper)</h2>
+                <p>Once the satellite detects the wake word, it alerts
+                the server. The server switches the pipeline to
+                "listening" mode, receives the raw audio stream,
+                processes it via STT, routes the text to the Home
+                Assistant intent engine, and feeds the response back to
+                Piper.</p>
+                <h3 id="nav-conditions-to-meet-7"><strong>Conditions to
+                Meet</strong></h3>
+                <p><strong>Inter-Container Latency:</strong> Because
+                Piper and Home Assistant are running in a private
+                Proxmox backend, inter-container communication should
+                have near of latency.</p>
+                <p><strong>Streaming Audio Format:</strong> Piper must
+                stream audio back over the private bridge in a format
+                the satellite's DAC (Digital-to-Analog Converter) can
+                instantly process without server-side transcoding
+                overhead.</p>
+                <h3
+                id="nav-documentation-logs-to-review-4"><strong>Documentation
+                &amp; Logs to Review</strong></h3>
+                <p><strong>Piper Integration Specs:</strong> Look at the
+                documentation for running Piper as a standalone
+                container via the Wyoming protocol. Ensure the voice
+                models (.onnx and .json configuration files) are stored
+                on fast, local storage (like an enterprise SSD or NVMe
+                storage pool on your Proxmox host) so model loading
+                doesn't introduce a bottleneck.</p>
+                <p><strong>Systemd / Docker Logs for the Wyoming
+                Containers:</strong> Inspecting the container runtime
+                logs will show the exact moments connections are
+                established, speech processing begins, and audio
+                generation finishes.</p>
+                <p><strong>Where to build the test rig
+                first?</strong></p>
+                <p>We are essentially building a <strong>physical and
+                digital profiling rig</strong> for your smart home voice
+                assistant. By combining external video/audio
+                time-stamping with network and host-level resource
+                monitoring, you can measure absolute end-to-end latency
+                down to the millisecond. This removes any guesswork
+                about where bottlenecks might be hiding.</p>
+                <h2 id="nav-the-timeline-mapping-strategy"><strong>1.
+                The Timeline Mapping Strategy</strong></h2>
+                <p>To measure the exact latency of each component, you
+                will align your external video timestamps with your
+                digital network/CPU logs using a single timeline.</p>
+                <table style="width:97%;">
+                <colgroup>
+                <col style="width: 10%" />
+                <col style="width: 40%" />
+                <col style="width: 19%" />
+                <col style="width: 26%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th style="text-align: left;">Event ID</th>
+                <th style="text-align: left;">Event Description</th>
+                <th style="text-align: left;">Data Source</th>
+                <th style="text-align: left;">Latency Metric
+                Captured</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                <td style="text-align: left;"></td>
+                <td style="text-align: left;">Human finishes speaking
+                the wake word.</td>
+                <td style="text-align: left;">Camcorder Audio</td>
+                <td
+                style="text-align: left;"><strong>Baseline</strong></td>
+                </tr>
+                <tr>
+                <td style="text-align: left;"></td>
+                <td style="text-align: left;">Satellite onboard LED
+                changes/triggers (Wake word detected locally).</td>
+                <td style="text-align: left;">Camcorder Video</td>
+                <td style="text-align: left;">On-device inference time
+                ()</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;"></td>
+                <td style="text-align: left;">First TCP payload packet
+                hits the Proxmox bridge.</td>
+                <td style="text-align: left;">Wireshark on Host</td>
+                <td style="text-align: left;">Network transit time
+                ()</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;"></td>
+                <td style="text-align: left;">CPU usage spikes on
+                Core/Wyoming container.</td>
+                <td style="text-align: left;">Proxmox Metrics
+                / htop</td>
+                <td style="text-align: left;">Processing overhead &amp;
+                model execution delay</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;"></td>
+                <td style="text-align: left;">Device action executes
+                (e.g., smart light turns on) OR audio packet
+                returns.</td>
+                <td style="text-align: left;">Wireshark / Camcorder
+                Video</td>
+                <td style="text-align: left;">Pipeline execution time
+                ()</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;"></td>
+                <td style="text-align: left;">Satellite speaker begins
+                playing the response audio.</td>
+                <td style="text-align: left;">Camcorder Audio</td>
+                <td style="text-align: left;">Total Voice-to-Voice
+                Latency ()</td>
+                </tr>
+                </tbody>
+                </table>
+                <h2
+                id="nav-setting-up-the-digital-snooping-telemetry"><strong>2.
+                Setting Up the Digital Snooping &amp;
+                Telemetry</strong></h2>
+                <p>To match your camcorder video, you need highly
+                granular, time-stamped data from the Proxmox host.</p>
+                <h3
+                id="nav-network-monitoring-with-wireshark"><strong>Network
+                Monitoring with Wireshark</strong></h3>
+                <p>Since you are running Wireshark directly on the
+                Proxmox host, you will want to capture on the specific
+                bridge or virtual interface (veth) tied to your Home
+                Assistant and Wyoming containers.</p>
+                <p><strong>Filter for the Wake Event:</strong> Look for
+                the initial TCP connection or the immediate burst of
+                data right after . The Wyoming protocol transmits
+                structured JSON events before streaming raw PCM
+                audio.</p>
+                <p><strong>Wireshark Display Filter Example:</strong>
+                ```text tcp.port == 10400 &amp;&amp; ip.src ==
+                [Satellite_IP]</p>
+                <p>Change your Wireshark time display format to
+                **Seconds Since Epoch** or **Time of Day** with
+                millisecond precision to perfectly align it with your
+                camcorder's clock.</p>
+                <h3 id="nav-cpu-tracking-inside-proxmox"><strong>CPU
+                Tracking inside Proxmox</strong></h3>
+                <p>Because containerized applications scale their CPU
+                usage instantly, standard 1-minute or 5-second summary
+                graphs in the Proxmox GUI won't show the micro-spikes of
+                a fast voice pipeline.</p>
+                <p><strong>The Tool:</strong> Use htop or atop directly
+                on the Proxmox host shell, or use container-specific
+                tracking via systemd-cgtop.</p>
+                <p><strong>High-Frequency Logging:</strong></p>
+                <p>For true test-lab data collection, you can log
+                container resource stats to a file at a sub-second
+                interval during your test window using a simple bash
+                loop on the host:</p>
+                <blockquote>
+                <p>while true; do cat
+                /sys/fs/cgroup/lxc/[CT_ID]/cpu.stat | grep "usage_usec";
+                sleep 0.1; done</p>
+                </blockquote>
+                <p>This will give you a raw microsecond timestamp of
+                exactly when the Wyoming/Piper container demanded CPU
+                cycles to process the incoming payload.</p>
+                <h2
+                id="nav-aligning-the-camcorder-to-the-digital-clock"><strong>3.
+                Aligning the Camcorder to the Digital
+                Clock</strong></h2>
+                <p>The biggest challenge in a hardware test lab is
+                ensuring your camera's clock matches the Proxmox
+                server's clock ().</p>
+                <p><strong>The Sync Trick:</strong> Before you begin
+                your test run, point your camcorder at a monitor showing
+                the Proxmox host terminal running a millisecond-accurate
+                clock command (e.g., watch -n 0.1 date +"%T.%3N").</p>
+                <p><strong>Why this matters:</strong> When you pull the
+                video file into an editing or analysis software, you
+                will know the exact offset between your video frame
+                counter and your Wireshark packet capture logs.</p>
+                <h2 id="nav-documentation-verification-focus"><strong>4.
+                Documentation &amp; Verification Focus</strong></h2>
+                <p>When executing these lab tests, here is the exact
+                documentation and telemetry files you should
+                cross-reference when evaluating the results:</p>
+                <p><strong>Home Assistant Assist Pipeline
+                Profiler:</strong> After running a test command, pull up
+                the config/voice-assist/debug page in Home Assistant.
+                This built-in profile documentation provides its own
+                internal timestamp breakdown of the pipeline (STT
+                duration, Intent duration, TTS duration). You can
+                compare HA's internal calculations directly against your
+                Wireshark captures to see if any latency is being
+                introduced by the container network stack itself.</p>
+                <p><strong>Wyoming Protocol Event
+                Specifications:</strong></p>
+                <p>Review the event documentation to understand exactly
+                what packets represent the "end" of an audio stream.
+                This helps you pinpoint the precise packet in Wireshark
+                that represents Piper completing its audio
+                generation.</p>
+                <p>By organizing your lab this way, if you notice a
+                delay, you can instantly see if it's because the
+                satellite took too long to process the wake word, the
+                private Proxmox network bridge experienced a hiccup, or
+                Piper caused a CPU bottleneck while rendering the TTS
+                response.</p>
+                <h2
+                id="nav-strategic-objectives-engineering-rationale">1.
+                Strategic Objectives &amp; Engineering Rationale</h2>
+                <p>Establishing the engineering "Why." This document
+                explains how transitioning from cloud-dependent systems
+                to localized smart home servers requires exact
+                measurement to ensure latency stays minimal and resource
+                use stays efficient.</p>
+                <p>The primary purpose of this testing program is to
+                establish an objective, empirical, and repeatable
+                methodology for benchmarking local, privacy-focused
+                voice assistant architectures. As smart home automation
+                transitions from cloud-dependent ecosystems to localized
+                compute environments, optimizing latency and hardware
+                efficiency becomes critical. This engineering framework
+                removes subjective estimation by syncing physical
+                telemetry (audio/visual recordings) with
+                infrastructure-level performance data (network packet
+                captures and microsecond host CPU metrics).</p>
+                <p>By controlling and monitoring every node in the
+                pipeline—from the analog microphone stage to the private
+                backend network—this methodology allows engineers to
+                isolate bottlenecks, evaluate the performance cost of
+                higher-accuracy AI models, and choose the most
+                cost-effective hardware configurations without
+                sacrificing user experience.</p>
+                <h2
+                id="nav-laboratory-topology-environment-architecture">2.
+                Laboratory Topology &amp; Environment Architecture</h2>
+                <p>This section documents the private backend network
+                environment hosted inside a <strong>Proxmox VE</strong>
+                environment.</p>
+                <p>Outlines the isolation of the satellite, the network
+                bridge capturing space (vmbr), and the decoupled voice
+                processing containers (Wyoming, Piper, Home Assistant
+                Core).</p>
+                <p>The Home Lab is deployed inside an isolated Proxmox
+                VE hypervisor environment using a completely local,
+                private backend network bridge. This topology guarantees
+                that zero audio or identity metadata leaves the physical
+                premises, and isolates test variables from external
+                network fluctuations.</p>
+                <p>This test environment is composed of three structural
+                layers:</p>
+                <ul>
+                <li><p><strong>Satellite Layer:</strong> Local physical
+                hardware utilizing a high-quality analog microphone
+                array and hardware-level acoustic front-ends. Wake word
+                processing runs completely on-device to prevent
+                continuous audio streaming over the home
+                network.</p></li>
+                <li><p><strong>Private Backend Network Bridge (Proxmox
+                VE):</strong> A dedicated Linux Bridge (vmbr) that
+                handles communication between Home Assistant Core and
+                the decoupled voice containers via the Wyoming protocol.
+                This layer allows complete non-intrusive packet
+                inspection.</p></li>
+                <li><p><strong>Voice Architecture Stack (LXC Containers
+                / VMs):</strong> Decoupled containers processing
+                speech-to-text (STT via Whisper), intent parsing (Home
+                Assistant Conversation Core/Local LLM), and
+                text-to-speech (TTS via Piper).</p></li>
+                </ul>
+                <h2 id="nav-test-methodology-variable-framework">3. Test
+                Methodology &amp; Variable Framework</h2>
+                <p>This section establishes independent variables under
+                test (e.g., comparing different hardware satellites,
+                different sizes of AI voice models like Whisper tiny
+                vs. base, and various Piper voices).</p>
+                <p><strong>Milestone Matrix ( to ):</strong></p>
+                <p>Creates a professional structural table detailing
+                exactly how to match the physical audio/video frame
+                timestamps (e.g., LED changes, spoken words) directly to
+                the digital data packets and CPU logs.</p>
+                <p><strong>Temporal Synchronization:</strong></p>
+                <p>A precise procedure for syncing your camcorder to the
+                Proxmox host time by filming a millisecond-accurate
+                terminal clock (watch -n 0.05 date +"%T.%3N").</p>
+                <p><strong>Digital Data Capture:</strong></p>
+                <p>Concrete console commands utilizing tcpdump on the
+                virtual ethernet (veth) interface to sniff the private
+                backend Wyoming/Piper traffic, as well as high-frequency
+                bash monitoring loops targeting sysfs / cgroups to
+                capture immediate microsecond CPU resource spikes.</p>
+                <p>To perform rigorous comparative analysis, tests must
+                isolate independent architectural components while
+                precisely measuring dependent performance metrics.</p>
+                <h3
+                id="nav-architectural-variables-under-evaluation">3.1
+                Architectural Variables under Evaluation</h3>
+                <p>The testing matrix accommodates comparisons across
+                the following vectors:</p>
+                <ul>
+                <li><p><strong>Hardware Satellite Platforms:</strong>
+                Comparing microcontroller processing capabilities,
+                analog mic configurations, and on-device wake-word
+                engine efficiencies.</p></li>
+                <li><p><strong>AI Voice Models:</strong> Evaluating
+                Whisper configurations (tiny, base, small, medium) and
+                Piper voice profiles (low, medium, high quality) against
+                computational cost.</p></li>
+                <li><p><strong>Intent Engines:</strong> Comparing native
+                rule-based conversation processors against localized
+                Large Language Models (LLMs).</p></li>
+                </ul>
+                <h3 id="nav-metric-definitions-timeline-milestones">3.2
+                Metric Definitions &amp; Timeline Milestones</h3>
+                <p>The total end-to-end user-perceived response time is
+                categorized into distinct, measurable milestones:</p>
+                <table style="width:97%;">
+                <colgroup>
+                <col style="width: 23%" />
+                <col style="width: 26%" />
+                <col style="width: 23%" />
+                <col style="width: 23%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th style="text-align: left;">Milestone</th>
+                <th style="text-align: left;">Description</th>
+                <th style="text-align: left;">Telemetry Source</th>
+                <th style="text-align: left;">Metric Derived</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                <td style="text-align: left;">T0</td>
+                <td style="text-align: left;">Human finishes vocalizing
+                the wake word.</td>
+                <td style="text-align: left;">Lab Camcorder Audio
+                Track</td>
+                <td style="text-align: left;">Baseline Reference
+                Point</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;">T1</td>
+                <td style="text-align: left;">Satellite hardware status
+                LED switches state.</td>
+                <td style="text-align: left;">Lab Camcorder Video
+                Frame</td>
+                <td style="text-align: left;">On-Device Wake Inference
+                Delay (T1 - T0)</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;">T2</td>
+                <td style="text-align: left;">Initial TCP stream
+                handshake/payload hits bridge.</td>
+                <td style="text-align: left;">Wireshark Host
+                Capture</td>
+                <td style="text-align: left;">Network Handshake Transit
+                Overhead (T2 - T1)</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;">T3</td>
+                <td style="text-align: left;">CPU consumption
+                micro-spike initiates on host.</td>
+                <td style="text-align: left;">Host Cgroup / sysfs
+                Logs</td>
+                <td style="text-align: left;">Model Activation &amp;
+                Engine Loading Delay</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;">T4</td>
+                <td style="text-align: left;">Execution packet/audio
+                return payload hits bridge.</td>
+                <td style="text-align: left;">Wireshark Host
+                Capture</td>
+                <td style="text-align: left;">Core Processing &amp; TTS
+                Synthesis Time (T4 - T2)</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;">T5</td>
+                <td style="text-align: left;">Satellite speaker begins
+                acoustic response playback.</td>
+                <td style="text-align: left;">Lab Camcorder Audio
+                Track</td>
+                <td style="text-align: left;">Total Voice-to-Voice
+                Execution Latency (T5 - T0)</td>
+                </tr>
+                </tbody>
+                </table>
+                <h2 id="nav-step-by-step-lab-execution-procedures">4.
+                Step-by-Step Lab Execution Procedures</h2>
+                <h3
+                id="nav-procedure-4.1-laboratory-temporal-synchronization">Procedure
+                4.1: Laboratory Temporal Synchronization</h3>
+                <p>To ensure sub-second timeline accuracy, physical and
+                digital clocks must be locked to a single master
+                reference before any testing run begins:</p>
+                <ol type="1">
+                <li><p>Verify that the Proxmox VE host is synchronized
+                to an atomic stratum-1 Network Time Protocol (NTP)
+                server.</p></li>
+                <li><p>Execute a millisecond-accurate terminal display
+                command on a test bench monitor:<br />
+                watch -n 0.05 date +"%T.%3N"</p></li>
+                <li><p>Position the lab camcorder to record both the
+                test operator and the terminal monitor showing the
+                millisecond clock. Film this clock for at least 5
+                seconds to establish a clear temporal offset inside the
+                video analysis environment.</p></li>
+                </ol>
+                <h3
+                id="nav-procedure-4.2-digital-data-capture-sequence">Procedure
+                4.2: Digital Data Capture Sequence</h3>
+                <p>While executing physical voice commands, the
+                telemetry capture utilities must run non-intrusively
+                from the Proxmox host layer:</p>
+                <ol start="4" type="1">
+                <li><p>Identify the specific virtual interface (veth)
+                assigned to the Voice Container using 'pct status' or
+                'qm monitor'.</p></li>
+                <li><p>Initiate a background tcpdump to isolate Wyoming
+                and Piper protocol frames, streaming directly into a
+                capture file:<br />
+                tcpdump -s 0 -nn -w /tmp/voice_test_run.pcap -i vethXXX
+                port 10400 or port 10200</p></li>
+                <li><p>Execute the high-frequency CPU monitoring loop to
+                log raw microsecond container group metrics:<br />
+                while true; do echo "$(date +%s.%N) $(cat
+                /sys/fs/cgroup/lxc/[CT_ID]/cpu.stat | grep usage_usec)"
+                &gt;&gt; /tmp/cpu_telemetry.log; sleep 0.05;
+                done</p></li>
+                </ol>
+                <h2 id="nav-data-compilation-visualization-framework">5.
+                Data Compilation &amp; Visualization Framework</h2>
+                <p>This section provides structural requirements for
+                translating your raw lab logs into meaningful
+                comparative graphs:</p>
+                <p><strong>Stacked Horizontal Bar Charts:</strong></p>
+                <p>For visually comparing component processing
+                breakdowns (Wake vs. STT vs. Intent vs. TTS) across
+                different hardware and model layouts.</p>
+                <p><strong>Scatter Plots:</strong></p>
+                <p>For mapping Model Accuracy against Voice-to-Voice
+                Latency to find the optimal performance sweet spot.</p>
+                <p><strong>Line Graphs:</strong></p>
+                <p>For tracking resource microsecond curves showing how
+                different container workloads or core allocations spike
+                during execution.</p>
+                <p>Once a test matrix iteration is complete, logs are
+                extracted and compiled into a master evaluation
+                spreadsheet. The raw data structure must map the delta
+                metrics calculated from Section 3.2.</p>
+                <h3 id="nav-recommended-comparative-visualizations">5.1
+                Recommended Comparative Visualizations</h3>
+                <p>To communicate performance trade-offs effectively,
+                the data should be plotted using three standard
+                visualization models:</p>
+                <ul>
+                <li><p><strong>Stacked Horizontal Bar Charts (Component
+                Breakdown):</strong> X-axis represents total
+                milliseconds; Y-axis represents different hardware/model
+                combinations. Segmenting the bar into colors
+                representing Wake, STT, Intent, and TTS instantly
+                identifies the specific component causing
+                bottlenecks.</p></li>
+                <li><p><strong>Scatter Plots (Accuracy vs. Compute
+                Cost):</strong> X-axis represents total voice-to-voice
+                latency (T5 - T0); Y-axis represents model accuracy or
+                true-positive wake word rates. This allows engineers to
+                find the 'sweet spot' where a model is accurate enough
+                without introducing sluggish response times.</p></li>
+                <li><p><strong>Line Graphs (Resource Profile
+                Curves):</strong> X-axis tracking execution timeline
+                seconds; Y-axis tracking raw CPU usage percentage.
+                Plotting multiple hardware types or container workloads
+                onto a single grid highlights how multi-core processors
+                absorb speech pipelines versus lower-powered single-core
+                configurations.</p></li>
+                </ul>
+                <h1 id="nav-section-2---running-the-procedure">Section 2
+                - Running the procedure</h1>
+                <p>To accommodate a benchmark run utilizing a
+                <strong>Google Home Mini</strong> (repurposed via
+                hardware hacking or running on specialized firmware) as
+                your physical satellite, connected to your private
+                Proxmox backend ecosystem via <strong>Google Home Cloud
+                Execution paths / Local Home SDK paths</strong> to
+                coordinate timing, the documentation must shift to
+                reflect a complex multi-ecosystem timing
+                environment.</p>
+                <p>A new, comprehensive engineering blueprint and an
+                aligned <strong>Template Test Run &amp; Final
+                Report</strong> have been structured to match this
+                precise lab configuration.</p>
+                <p>A comprehensive document contains three distinct
+                sections compiled to act as your master reference
+                files:</p>
+                <h2 id="nav-document-structural-overview">Document
+                Structural Overview</h2>
+                <h3
+                id="nav-part-1-engineering-lab-test-strategy-hybrid-architecture">PART
+                1: Engineering Lab Test Strategy (Hybrid
+                Architecture)</h3>
+                <ul>
+                <li><p>Outlines the architectural rationale for bridging
+                consumer <strong>Google Home Mini</strong> hardware with
+                cloud endpoints and a private localized Proxmox
+                container pool.</p></li>
+                <li><p>Explains the theory of tracking latency
+                bottlenecks through dynamic routing channels.</p></li>
+                </ul>
+                <h3
+                id="nav-part-2-step-by-step-lab-output-procedures">PART
+                2: Step-by-Step Lab Output Procedures</h3>
+                <ul>
+                <li><p>Clear guidelines for setting up temporal
+                synchronization inside the lab using a high-resolution
+                camcorder and an atomic NTP display.</p></li>
+                <li><p>Specific tcpdump syntax and cgroup telemetry bash
+                loops modified to track packets passing from external
+                Google Home Cloud intents down through the network
+                bridge into your local containers.</p></li>
+                </ul>
+                <h3
+                id="nav-part-3-sample-run-evaluation-final-report-master-template">PART
+                3: Sample Run Evaluation &amp; Final Report (Master
+                Template)</h3>
+                <ul>
+                <li><p>Contains a pre-populated <strong>Test Execution
+                Report (ID: RUN-2026-HYBRID-004)</strong> showing a
+                reference sample run.</p></li>
+                <li><p>Features a detailed markdown table breaking down
+                precise timestamps across all variables from $T_0$
+                (vocal wake word) through cloud routing down to local
+                container execution, culminating at $T_5$ (speaker
+                feedback audio).</p></li>
+                <li><p>Provides data analysis summaries that you can
+                wipe out and use to build comparison charts when grading
+                different hardware form-factors, cloud networks, or
+                Whisper/Piper neural configurations.</p></li>
+                </ul>
+                <p><strong>Using the Template File</strong></p>
+                <p>To begin executing your benchmark matrix, use the
+                table inside <strong>Part 3</strong> as your baseline
+                template. For every change in hardware (e.g., swapping
+                to a different satellite type) or change in AI model
+                size (e.g., swapping Whisper-Base for Whisper-Tiny),
+                duplicate this report structure to visualize exactly
+                which step expands or contracts on your time tracking
+                layout.</p>
+                <p>A Sample Test Strategy Report follows:</p>
+                <p>HYBRID VOICE EVALUATION LAB SYSTEM<br />
+                <em>Testing Strategies, Output Procedures, and Final
+                Evaluation Report Templates</em></p>
+                <h1 id="nav-part-1-engineering-lab-test-strategy">PART
+                1: ENGINEERING LAB TEST STRATEGY</h1>
+                <h2 id="nav-rationale-for-the-hybrid-lab-ecosystem">1.1
+                Rationale for the Hybrid Lab Ecosystem</h2>
+                <p>This laboratory strategy establishes a repeatable
+                framework for measuring the performance of a voice
+                pipeline bridging consumer-grade hardware with localized
+                backend infrastructure. By utilizing a Google Home Mini
+                as a satellite and routing timing checkpoints through
+                Google Cloud Stations alongside Local Home SDK execution
+                blocks, we can isolate latency variances introduced by
+                token authentication, wide-area network routing, and
+                private container execution environments (hosted within
+                Proxmox VE). This benchmarking paradigm serves to inform
+                production tradeoffs between open-source models
+                (Whisper/Piper) and standardized mass-market audio
+                engines.</p>
+                <h2 id="nav-hybrid-network-topology-pathing">1.2 Hybrid
+                Network &amp; Topology Pathing</h2>
+                <p>The audio path initiates at the Google Home Mini
+                array. The local wake-word trigger kicks off telemetry
+                metrics. The signal travels via WAN to Google Home Cloud
+                Cloud-to-Cloud stations, executing timing hooks before
+                passing the intents down to the private Proxmox Linux
+                Bridge (vmbr) interfaces. Here, local voice components
+                (Home Assistant, Wyoming, Piper) take over to handle
+                underlying device states, before routing the acoustic
+                response payload back to the hardware device.</p>
+                <h1
+                id="nav-part-2-step-by-step-lab-output-procedures-1">PART
+                2: STEP-BY-STEP LAB OUTPUT PROCEDURES</h1>
+                <h2
+                id="nav-procedure-2.1-timing-calibration-video-prep">Procedure
+                2.1: Timing Calibration &amp; Video Prep</h2>
+                <ol type="1">
+                <li><p>Synchronize the Proxmox local host and your
+                network routers to a Stratum-1 NTP server.</p></li>
+                <li><p>Spin up a millisecond console clock on a
+                test-bench screen using: watch -n 0.05 date
+                +"%T.%3N"</p></li>
+                <li><p>Focus the lab camcorder to cover the status LED
+                of the Google Home Mini and the timing monitor.</p></li>
+                </ol>
+                <h2
+                id="nav-procedure-2.2-telemetry-capture-sequence">Procedure
+                2.2: Telemetry Capture Sequence</h2>
+                <p>Execute these capture loops on the Proxmox host to
+                catch the incoming Cloud Station packets:</p>
+                <p># Capture incoming WAN execution intents hitting the
+                private bridge interface<br />
+                tcpdump -s 0 -nn -w /tmp/google_hybrid_run.pcap -i vmbr1
+                port 10400 or port 8123<br />
+                <br />
+                # Monitor microsecond container group execution
+                metrics<br />
+                while true; do echo "$(date +%s.%N) $(cat
+                /sys/fs/cgroup/lxc/[HA_CT_ID]/cpu.stat | grep
+                usage_usec)" &gt;&gt; /tmp/proxmox_cpu.log; sleep 0.02;
+                done</p>
+                <h1
+                id="nav-part-3-sample-run-evaluation-final-report">PART
+                3: SAMPLE RUN EVALUATION &amp; FINAL REPORT</h1>
+                <p>Below is an official sample execution report
+                generated under the prescribed lab guidelines. This
+                serves as a master template for tracking comparisons
+                across divergent hardware platforms and model
+                depths.</p>
+                <table style="width:97%;">
+                <colgroup>
+                <col style="width: 48%" />
+                <col style="width: 48%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th style="text-align: left;">Test Execution ID</th>
+                <th style="text-align: left;">RUN-2026-HYBRID-004</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                <td style="text-align: left;">Physical Satellite</td>
+                <td style="text-align: left;">Google Home Mini (Gen 1
+                Hardware Matrix)</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;">Timing Engine</td>
+                <td style="text-align: left;">Google Home Setup / Cloud
+                Stations Pipeline</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;">Private Backend
+                Environment</td>
+                <td style="text-align: left;">Proxmox VE v8.x / LXC
+                Isolated Containers</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;">AI Models Under
+                Evaluation</td>
+                <td style="text-align: left;">Whisper-Base (STT) /
+                Piper-Medium (TTS)</td>
+                </tr>
+                </tbody>
+                </table>
+                <h2
+                id="nav-core-telemetry-timeline-delta-breakdown">Core
+                Telemetry Timeline Delta Breakdown</h2>
+                <table style="width:98%;">
+                <colgroup>
+                <col style="width: 10%" />
+                <col style="width: 16%" />
+                <col style="width: 16%" />
+                <col style="width: 14%" />
+                <col style="width: 16%" />
+                <col style="width: 10%" />
+                <col style="width: 13%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th style="text-align: left;"><strong>ID</strong></th>
+                <th style="text-align: left;"><strong>Milestone
+                Checklist</strong></th>
+                <th style="text-align: left;"><strong>Baseline Timestamp
+                (NTP Source)</strong></th>
+                <th style="text-align: left;"><strong>Baseline Delta
+                (ms)</strong></th>
+                <th style="text-align: left;"><strong>UUT Absolute
+                Timestamp (NTP Source)</strong></th>
+                <th style="text-align: left;"><strong>UUT Delta
+                (ms)</strong></th>
+                <th style="text-align: left;"><strong>Source Log
+                Channel</strong></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                <td style="text-align: left;"><strong>T0</strong></td>
+                <td style="text-align: left;">Vocal Wake Word
+                Concluded</td>
+                <td style="text-align: left;">12:04:15.000</td>
+                <td style="text-align: left;">0</td>
+                <td style="text-align: left;">12:04:15.000</td>
+                <td style="text-align: left;">0</td>
+                <td style="text-align: left;">Camcorder Audio
+                Profile</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;"><strong>T1</strong></td>
+                <td style="text-align: left;">On-Device Processing &amp;
+                Light Trigger</td>
+                <td style="text-align: left;">12:04:15.220</td>
+                <td style="text-align: left;">220</td>
+                <td style="text-align: left;">12:04:15.220</td>
+                <td style="text-align: left;">220</td>
+                <td style="text-align: left;">Camcorder Video Frame</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;"><strong>T2</strong></td>
+                <td style="text-align: left;">Cloud Station Handshake
+                Received at Host</td>
+                <td style="text-align: left;">12:04:15.540</td>
+                <td style="text-align: left;">320</td>
+                <td style="text-align: left;">12:04:15.540</td>
+                <td style="text-align: left;">320</td>
+                <td style="text-align: left;">Wireshark Packet Log</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;"><strong>T3</strong></td>
+                <td style="text-align: left;">Proxmox HA Container CPU
+                Micro-Spike</td>
+                <td style="text-align: left;">12:04:15.565</td>
+                <td style="text-align: left;">25</td>
+                <td style="text-align: left;">12:04:15.565</td>
+                <td style="text-align: left;">25</td>
+                <td style="text-align: left;">Host Cgroup System
+                Metrics</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;"><strong>T4</strong></td>
+                <td style="text-align: left;">Intent Executed / Return
+                Payload Emitted</td>
+                <td style="text-align: left;">12:04:16.115</td>
+                <td style="text-align: left;">550</td>
+                <td style="text-align: left;">12:04:16.115</td>
+                <td style="text-align: left;">550</td>
+                <td style="text-align: left;">Wyoming Container
+                Output</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;"><strong>T5</strong></td>
+                <td style="text-align: left;">Speaker Emits Audio
+                Feedback Response</td>
+                <td style="text-align: left;">12:04:16.435</td>
+                <td style="text-align: left;">320</td>
+                <td style="text-align: left;">12:04:16.435</td>
+                <td style="text-align: left;">320</td>
+                <td style="text-align: left;">Camcorder Audio
+                Profile</td>
+                </tr>
+                </tbody>
+                </table>
+                <p>Example Graphing Data</p>
+                <table style="width:97%;">
+                <colgroup>
+                <col style="width: 29%" />
+                <col style="width: 11%" />
+                <col style="width: 11%" />
+                <col style="width: 11%" />
+                <col style="width: 11%" />
+                <col style="width: 11%" />
+                <col style="width: 11%" />
+                </colgroup>
+                <thead>
+                <tr>
+                <th style="text-align: left;"><strong>Configuration
+                (Rows)</strong></th>
+                <th style="text-align: left;"><strong>T0</strong></th>
+                <th style="text-align: left;"><strong>T1</strong></th>
+                <th style="text-align: left;"><strong>T2</strong></th>
+                <th style="text-align: left;"><strong>T3</strong></th>
+                <th style="text-align: left;"><strong>T4</strong></th>
+                <th style="text-align: left;"><strong>T5</strong></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                <td style="text-align: left;">Run 1: Google Home
+                Mini</td>
+                <td style="text-align: left;">0</td>
+                <td style="text-align: left;">220</td>
+                <td style="text-align: left;">320</td>
+                <td style="text-align: left;">25</td>
+                <td style="text-align: left;">550</td>
+                <td style="text-align: left;">320</td>
+                </tr>
+                <tr>
+                <td style="text-align: left;">Run 2: Custom
+                Satellite</td>
+                <td style="text-align: left;">0</td>
+                <td style="text-align: left;">150</td>
+                <td style="text-align: left;">10</td>
+                <td style="text-align: left;">20</td>
+                <td style="text-align: left;">300</td>
+                <td style="text-align: left;">320</td>
+                </tr>
+                </tbody>
+                </table>
+                <h2
+                id="nav-performance-visualization-architecture-comparisons">3.2
+                Performance Visualization &amp; Architecture
+                Comparisons</h2>
+                <p>Based on data visualized through stacked metrics, the
+                total voice-to-voice execution loop clocked at 1,435
+                milliseconds. The primary delay remains within the Cloud
+                Station processing pipeline (T2 - T1 = 320ms) and the
+                regional Whisper processing envelope (T4 - T3 = 550ms).
+                Conversely, the Proxmox virtual backend layer showed
+                minimal overhead, indicating highly efficient
+                inter-container routing.</p>
+            </article>
+
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="/scripts/component-loader.js"></script>
+</body>
+</html>
