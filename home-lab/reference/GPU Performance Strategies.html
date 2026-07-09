@@ -200,9 +200,6 @@ Performance Strategies</h1>
             <aside class="sidebar-toc">
                 <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
                 <ul>
-                <li><a href="#nav-table-of-contents"
-                id="nav-toc-table-of-contents">Table of Contents</a>
-                <ul>
                 <li><a
                 href="#nav-prompted-what-intel-gpus-are-not-supported"
                 id="nav-toc-prompted-what-intel-gpus-are-not-supported">Prompted
@@ -226,10 +223,10 @@ Performance Strategies</h1>
                 id="nav-toc-but-this-works-for-ollama"> But this works
                 for ollama</a></li>
                 <li><a
-                href="#nav-prompted-but-i-watch-gpu-tools-grab-the-processinv-zbd-the-cpu-drops-tfe-processing-when-i-send-a-model"
-                id="nav-toc-prompted-but-i-watch-gpu-tools-grab-the-processinv-zbd-the-cpu-drops-tfe-processing-when-i-send-a-model">Prompted
-                But i watch gpu tools grab the processinv zbd the cpu
-                drops tfe processing when i send a model</a></li>
+                href="#nav-prompted-but-i-watch-gpu-tools-grab-the-processing-and-the-cpu-drops-the-processing-when-i-send-a-model"
+                id="nav-toc-prompted-but-i-watch-gpu-tools-grab-the-processing-and-the-cpu-drops-the-processing-when-i-send-a-model">Prompted
+                But i watch gpu tools grab the processing, and the cpu
+                drops the processing when i send a model</a></li>
                 <li><a href="#nav-prompted-but-the-vpu-never-peaks."
                 id="nav-toc-prompted-but-the-vpu-never-peaks.">Prompted
                 But the vpu never peaks.</a></li>
@@ -246,16 +243,16 @@ Performance Strategies</h1>
                 id="nav-toc-even-with-the-intel-core-14450hx">Even with
                 the Intel Core 14450HX</a></li>
                 <li><a
-                href="#nav-what-is-the-cheapest-mjni-computer-tgatxwill-run-pllama-efficiently"
-                id="nav-toc-what-is-the-cheapest-mjni-computer-tgatxwill-run-pllama-efficiently">What
-                is the cheapest mjni computer tgatxwill run pllama
+                href="#nav-what-is-the-cheapest-mini-computer-that-will-run-ollama-efficiently"
+                id="nav-toc-what-is-the-cheapest-mini-computer-that-will-run-ollama-efficiently">What
+                is the cheapest mini computer that will run Ollama
                 efficiently</a></li>
                 <li><a
-                href="#nav-thosd-run-ftom-700-to-1000-mine-was-under-500.-but-i-am-getting-adequate-performance-with-all-types-of-quieries.-ni-amnusing-the-qwen-models"
-                id="nav-toc-thosd-run-ftom-700-to-1000-mine-was-under-500.-but-i-am-getting-adequate-performance-with-all-types-of-quieries.-ni-amnusing-the-qwen-models">Thosd
-                run ftom $700 to $1000 mine was under $500. But i am
-                getting adequate performance with all types of quieries.
-                Ni amnusing the qwen models</a></li>
+                href="#nav-those-run-from-700-to-1000-mine-was-under-500.-but-i-am-getting-adequate-performance-with-all-types-of-queries.-i-am-using-the-qwen-models"
+                id="nav-toc-those-run-from-700-to-1000-mine-was-under-500.-but-i-am-getting-adequate-performance-with-all-types-of-queries.-i-am-using-the-qwen-models">Those
+                run from $700 to $1000 mine was under $500. But i am
+                getting adequate performance with all types of queries.
+                I am using the qwen models</a></li>
                 <li><a
                 href="#nav-prompted-yes-qwen-coder-as-well-as-autocomplete"
                 id="nav-toc-prompted-yes-qwen-coder-as-well-as-autocomplete">Prompted
@@ -264,105 +261,10 @@ Performance Strategies</h1>
                 href="#nav-what-times-woulc-you-expect-from-this-setup"
                 id="nav-toc-what-times-woulc-you-expect-from-this-setup">What
                 times woulc you expect from this setup</a></li>
-                </ul></li>
                 </ul>
             </aside>
 
             <article class="document-content">
-                <p><strong>GPU Performance Strategies</strong></p>
-                <p><em>How to pick the correct GPU for you</em></p>
-                <p>**</p>
-                <h1 class="TOC-Heading" id="nav-table-of-contents">Table
-                of Contents</h1>
-                <p><a href="#nav-_Toc233176163"><strong>1. End-to-End
-                Voice Architecture Flow</strong>
-                [2](#_Toc233176163)</a></p>
-                <p><a href="#nav-_Toc233176164"><strong>2. Testing
-                Phases, Conditions, and Documentation</strong>
-                [2](#_Toc233176164)</a></p>
-                <p><a href="#nav-_Toc233176165"><strong>Phase A: The
-                Satellite &amp; Network Ingestion</strong>
-                [2](#_Toc233176165)</a></p>
-                <p><a href="#nav-_Toc233176166"><strong>Phase B: Wake
-                Word &amp; Speech-to-Text (STT)</strong>
-                [2](#_Toc233176166)</a></p>
-                <p><a href="#nav-_Toc233176167"><strong>Conditions to
-                Meet:</strong> [3](#_Toc233176167)</a></p>
-                <p><a href="#nav-_Toc233176168"><strong>Phase C: Intent
-                Recognition &amp; Execution (HA Core)</strong>
-                [3](#_Toc233176168)</a></p>
-                <p><a href="#nav-_Toc233176169"><strong>Conditions to
-                Meet:</strong> [3](#_Toc233176169)</a></p>
-                <p><a href="#nav-_Toc233176170"><strong>Phase D:
-                Text-to-Speech (TTS) &amp; Audio Generation</strong>
-                [3](#_Toc233176170)</a></p>
-                <p><a href="#nav-_Toc233176171"><strong>Conditions to
-                Meet:</strong> [3](#_Toc233176171)</a></p>
-                <p><a href="#nav-_Toc233176172"><strong>Phase E: Network
-                Return &amp; Satellite Playback</strong>
-                [4](#_Toc233176172)</a></p>
-                <p><a href="#nav-_Toc233176173"><strong>Conditions to
-                Meet:</strong> [4](#_Toc233176173)</a></p>
-                <p><a href="#nav-_Toc233176174"><strong>3. The Core
-                Diagnostic Tool: Assist Pipeline Debugger</strong>
-                [4](#_Toc233176174)</a></p>
-                <p><a href="#nav-_Toc233176175"><strong>1. Network
-                Topography &amp; Snooping Strategy</strong>
-                [5](#_Toc233176175)</a></p>
-                <p><a href="#nav-_Toc233176176"><strong>2. On-Device
-                Wake Word &amp; Analog Mic Testing</strong>
-                [6](#_Toc233176176)</a></p>
-                <p><a href="#nav-_Toc233176177"><strong>Conditions to
-                Meet</strong> [6](#_Toc233176177)</a></p>
-                <p><a href="#nav-_Toc233176178"><strong>Document &amp;
-                Technical Specs to Look At</strong>
-                [6](#_Toc233176178)</a></p>
-                <p><a href="#nav-_Toc233176179">3. The Backend Pipeline
-                (Wyoming &amp; Piper) [7](#_Toc233176179)</a></p>
-                <p><a href="#nav-_Toc233176180"><strong>Conditions to
-                Meet</strong> [7](#_Toc233176180)</a></p>
-                <p><a href="#nav-_Toc233176181"><strong>Documentation
-                &amp; Logs to Review</strong>
-                [7](#_Toc233176181)</a></p>
-                <p><a href="#nav-_Toc233176182"><strong>1. The Timeline
-                Mapping Strategy</strong> [7](#_Toc233176182)</a></p>
-                <p><a href="#nav-_Toc233176183"><strong>2. Setting Up
-                the Digital Snooping &amp; Telemetry</strong>
-                [8](#_Toc233176183)</a></p>
-                <p><a href="#nav-_Toc233176184"><strong>Network
-                Monitoring with Wireshark</strong>
-                [8](#_Toc233176184)</a></p>
-                <p><a href="#nav-_Toc233176185"><strong>CPU Tracking
-                inside Proxmox</strong> [9](#_Toc233176185)</a></p>
-                <p><a href="#nav-_Toc233176186"><strong>3. Aligning the
-                Camcorder to the Digital Clock</strong>
-                [9](#_Toc233176186)</a></p>
-                <p><a href="#nav-_Toc233176187"><strong>4. Documentation
-                &amp; Verification Focus</strong>
-                [9](#_Toc233176187)</a></p>
-                <p><a href="#nav-_Toc233176188">1. Strategic Objectives
-                &amp; Engineering Rationale [10](#_Toc233176188)</a></p>
-                <p><a href="#nav-_Toc233176189">2. Laboratory Topology
-                &amp; Environment Architecture
-                [10](#_Toc233176189)</a></p>
-                <p><a href="#nav-_Toc233176190">3. Test Methodology
-                &amp; Variable Framework [11](#_Toc233176190)</a></p>
-                <p><a href="#nav-_Toc233176191">3.1 Architectural
-                Variables under Evaluation [11](#_Toc233176191)</a></p>
-                <p><a href="#nav-_Toc233176192">3.2 Metric Definitions
-                &amp; Timeline Milestones [12](#_Toc233176192)</a></p>
-                <p><a href="#nav-_Toc233176193">4. Step-by-Step Lab
-                Execution Procedures [13](#_Toc233176193)</a></p>
-                <p><a href="#nav-_Toc233176194">Procedure 4.1:
-                Laboratory Temporal Synchronization
-                [13](#_Toc233176194)</a></p>
-                <p><a href="#nav-_Toc233176195">Procedure 4.2: Digital
-                Data Capture Sequence [13](#_Toc233176195)</a></p>
-                <p><a href="#nav-_Toc233176196">5. Data Compilation
-                &amp; Visualization Framework
-                [13](#_Toc233176196)</a></p>
-                <p><a href="#nav-_Toc233176197">5.1 Recommended
-                Comparative Visualizations [14](#_Toc233176197)</a></p>
                 <p>What intel gpus does ollama support abd can you
                 provide performancs specs for each maybe use a table
                 format</p>
@@ -987,9 +889,9 @@ Performance Strategies</h1>
                 readable speeds purely over the CPU bridge.</p></li>
                 </ul>
                 <h2
-                id="nav-prompted-but-i-watch-gpu-tools-grab-the-processinv-zbd-the-cpu-drops-tfe-processing-when-i-send-a-model">Prompted
-                But i watch gpu tools grab the processinv zbd the cpu
-                drops tfe processing when i send a model</h2>
+                id="nav-prompted-but-i-watch-gpu-tools-grab-the-processing-and-the-cpu-drops-the-processing-when-i-send-a-model">Prompted
+                But i watch gpu tools grab the processing, and the cpu
+                drops the processing when i send a model</h2>
                 <p>That behavior happens because you have successfully
                 passed the hardware nodes (/dev/dri) into the LXC
                 container, allowing standard Linux diagnostic tools
@@ -1212,7 +1114,7 @@ Performance Strategies</h1>
                 (i915 or xe)</strong> as a fast-track buffer tool.</p>
                 <p>Because the system sees a graphics endpoint, Ollama
                 maps the initialization tasks onto the hardware's shared
-                unified memory architectures (using direct render
+                unified memory architecture (using direct render
                 execution). The graphics driver immediately grabs a
                 massive block of your RAM and uses its memory management
                 units to map the model files instantly into an active
@@ -1317,8 +1219,8 @@ Performance Strategies</h1>
                 keeps the Linux memory pipes wide open for a
                 near-instantaneous model launch!</p>
                 <h2
-                id="nav-what-is-the-cheapest-mjni-computer-tgatxwill-run-pllama-efficiently">What
-                is the cheapest mjni computer tgatxwill run pllama
+                id="nav-what-is-the-cheapest-mini-computer-that-will-run-ollama-efficiently">What
+                is the cheapest mini computer that will run Ollama
                 efficiently</h2>
                 <p>To run <strong>Ollama efficiently</strong>, a mini PC
                 must avoid standard Intel UHD graphics and instead
@@ -1376,10 +1278,10 @@ Performance Strategies</h1>
                 Would you like me to find those pricing tiers for
                 you?</p>
                 <h2
-                id="nav-thosd-run-ftom-700-to-1000-mine-was-under-500.-but-i-am-getting-adequate-performance-with-all-types-of-quieries.-ni-amnusing-the-qwen-models">Thosd
-                run ftom $700 to $1000 mine was under $500. But i am
-                getting adequate performance with all types of quieries.
-                Ni amnusing the qwen models</h2>
+                id="nav-those-run-from-700-to-1000-mine-was-under-500.-but-i-am-getting-adequate-performance-with-all-types-of-queries.-i-am-using-the-qwen-models">Those
+                run from $700 to $1000 mine was under $500. But i am
+                getting adequate performance with all types of queries.
+                I am using the qwen models</h2>
                 <p>You have hit the absolute nail on the head. That
                 difference reveals exactly why your sub-$500 system is
                 performing so well: <strong>the Qwen models are
