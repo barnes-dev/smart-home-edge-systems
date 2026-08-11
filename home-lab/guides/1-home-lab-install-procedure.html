@@ -20,14 +20,21 @@
       margin-top: 2rem;
       align-items: start;
     }
-    [custom-style="TextBlock"], .TextBlock, .textblock {
-        background-color: #f0f4f8 !important; /* Your background color */
-        border: 2px solid #0056b3 !important; /* Your border thickness and color */
-        padding: 12px !important;              /* Space between text and the border */
-        line-height: 1.0 !important;           /* Forces tight spacing between lines */
-        display: block;                        /* Ensures it behaves as a full box block */
-        margin-bottom: 1em;                    /* Adds spacing after the block */
-        color: #1e293b !important;             /* Changes text to dark gray so it's readable on the light background */
+    [custom-style="TextBlock"], 
+    .TextBlock, 
+    .textblock, 
+    span[data-custom-style="TextBlock"],
+    p[custom-style="TextBlock"] {
+        background-color: #f0f4f8 !important;   /* Light gray/blue box background */
+        border: 2px solid #0056b3 !important;   /* Solid blue border box frame */
+        padding: 16px !important;               /* Creates internal breathing room */
+        line-height: 1.2 !important;            /* Keeps text lines tightly grouped */
+        display: block !important;              /* Forces the inline element to act like a box */
+        width: 100% !important;                 /* Spans the box structure across the viewport */
+        max-width: 850px !important;            /* Restricts maximum box width to look clean */
+        margin: 1.5rem 0 !important;            /* Vertical margins separate it from normal body text */
+        color: #1e293b !important;              /* Ensures dark readable text over the light background */
+        border-radius: 6px !important;          /* Gives the box sleek, rounded corners */
     }
     .sidebar-toc {
       position: sticky;
