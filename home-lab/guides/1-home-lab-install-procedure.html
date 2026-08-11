@@ -272,9 +272,6 @@ Home Lab Install Procedure</h1>
         id="nav-toc-figure-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure
         : Proxmox VE 9.2.3 / Minicomputer Architecture &amp; Network
         Diagram</a></li>
-        <li><a href="#nav-code-barnes-home-lab-configuration"
-        id="nav-toc-code-barnes-home-lab-configuration">Code : Barnes
-        Home Lab Configuration</a></li>
         </ul></li>
         </ul></li>
         </ul></li>
@@ -573,93 +570,81 @@ Home Lab Install Procedure</h1>
         conversation:</p>
         <blockquote>
         <p>"Please start a clean conversation, flush all buffers and
-        caches and then load this config for reference."</p>
+        caches and then load this config <span id="nav-_Ref232848286"
+        class="anchor"></span>Code 1: Barnes Home Lab Configuration</p>
         </blockquote>
-        <table>
-        <colgroup>
-        <col style="width: 101%" />
-        </colgroup>
-        <thead>
-        <tr>
-        <th><p>=========================================================================</p>
-        <p>Barnes Home Lab Configuration</p>
-        <p>KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
-        4.9GHz)</p>
-        <p>Proxmox VE 9.2.3 / Dedicated Ethernet / Intel Core
-        i7-13620H</p>
-        <p>Integrated GPU: Intel UHD Graphics (13th Gen) / 1TB PCIe NVMe
-        SSD</p>
-        <p>=========================================================================</p>
-        <p>[ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2 Threads for
-        overhead ]</p>
-        <p>│ 192.168.86.250</p>
-        <p>├──► [ VM 101 ] HOME ASSISTANT OS (HAOS)</p>
-        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-        <p>│ ├── RAM: 4 GB (Dedicated)</p>
-        <p>│ ├── STO: 32 GB - 64 GB NVMe</p>
-        <p>│ ├── 192.168.86.251 - Primary LAN Segment (vmbr0) eth0</p>
-        <p>│ └── 10.0.10.1/24 - Isolated Backend Segment (vmbr1 -</p>
-        <p>│ No Gateway/DNS Emulation) eth1</p>
-        <p>├──► [ LXC 100 ] DNSMASQ SERVER (PiHole)</p>
-        <p>│ ├── CPU: 1 Core (vCPU)</p>
-        <p>│ ├── RAM: 512 MB (Ultra-lightweight)</p>
-        <p>│ ├── STO: 2 GB NVMe</p>
-        <p>│ └── 192.168.86.254 (Currently .249 until production
-        release)</p>
-        <p>├──► [ LXC 102 ] NGINX PROXY MANAGER</p>
-        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-        <p>│ ├── RAM: 1 GB (Scalable)</p>
-        <p>│ ├── STO: 8 GB (OS) + Mount point to external storage for
-        media</p>
-        <p>│ └── 192.168.86.252</p>
-        <p>├──► [ LXC 103 ] OLLAMA LLM ENGINE</p>
-        <p>│ ├── CPU: 6 Cores (vCPUs) ---&gt; (Uses high-perf Intel
-        P-Cores)</p>
-        <p>│ ├── GPU Passthru: Vulkan0 Intel(R) Graphics (RPL-P)</p>
-        <p>│ type=iGPU total=23.3 GiB Ram</p>
-        <p>│ ├── RAM: 16 GB (Allows up to 8B/11B parameter models)</p>
-        <p>│ ├── STO: 40 GB NVMe --------&gt; (Large capacity for model
-        weights)</p>
-        <p>│ ├── LAM: gemma3:4b ---------&gt; Multimodal (Vision) &amp;
-        128K Context Window</p>
-        <p>│ ├── LAM: phi4-mini:latest --&gt; Logic, Intense Reasoning,
-        &amp; Tool Calling</p>
-        <p>│ ├── LAM: qwen2.5-coder:7b --&gt; Complex Automation
-        Engineering,</p>
-        <p>│ Code Sandbox, &amp; YAML Chat</p>
-        <p>│ ├── LAM: qwen2.5-coder:1.5b -&gt; Inline IDE Autocomplete
-        Engine</p>
-        <p>│ (Fed via Desktop on LAN)</p>
-        <p>│ ├── LAM: nomic-embed-text --&gt; Vector Embeddings &amp;
-        Local</p>
-        <p>│ Document Context Parsing</p>
-        <p>│ ├── 192.168.86.253 - Primary LAN Segment (vmbr0) eth0</p>
-        <p>│ └── 10.0.10.3/24 - Isolated Backend Segment (vmbr1 - No</p>
-        <p>│ Gateway/DNS Emulation) eth1</p>
-        <p>├──► [ LXC 104 ] WYOMING-DOCKER</p>
-        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-        <p>│ ├── RAM: 2 GB (Scalable)</p>
-        <p>│ ├── STO: 10 GB (OS) + Mount point to external storage
-        for</p>
-        <p>│ media</p>
-        <p>│ ├── ports: 10200:10200</p>
-        <p>│ ├── volumes: piper-data:/data</p>
-        <p>│ ├── 192.168.86.248 - Primary LAN Segment (vmbr0) eth0</p>
-        <p>│ └── 10.0.10.4/24 - Isolated Backend Segment (vmbr1)
-        eth1</p>
-        <p>└──► [ LXC 105 ] TWINGATE CONNECTOR</p>
-        <p>├── CPU: 1 Core (vCPU)</p>
-        <p>├── RAM: 512 MB (Ultra-lightweight)</p>
-        <p>├── STO: 2 GB NVMe (OS Only)</p>
-        <p>└── 192.168.86.247 - Primary LAN Segment (vmbr0) eth0</p>
-        <p>(Routes 192.168.86.0/24 Securely)</p></th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        </table>
-        <h4 id="nav-code-barnes-home-lab-configuration">Code 1: Barnes
-        Home Lab Configuration</h4>
+        <p>=========================================================================<br />
+        Barnes Home Lab Configuration<br />
+        KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
+        4.9GHz)<br />
+        Proxmox VE 9.2.3 / Dedicated Ethernet / Intel Core
+        i7-13620H<br />
+        Integrated GPU: Intel UHD Graphics (13th Gen) / 1TB PCIe NVMe
+        SSD<br />
+        =========================================================================<br />
+        <br />
+        [ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2 Threads for
+        overhead ]<br />
+        │ 192.168.86.250<br />
+        ├──► [ VM 101 ] HOME ASSISTANT OS (HAOS)<br />
+        │ ├── CPU: 2 Cores (vCPUs)<br />
+        │ ├── RAM: 4 GB (Dedicated)<br />
+        │ ├── STO: 32 GB - 64 GB NVMe<br />
+        │ ├── 192.168.86.251 - Primary LAN Segment (vmbr0) eth0<br />
+        │ └── 10.0.10.1/24 - Isolated Backend Segment (vmbr1 -<br />
+        │ No Gateway/DNS Emulation) eth1<br />
+        ├──► [ LXC 100 ] DNSMASQ SERVER (PiHole)<br />
+        │ ├── CPU: 1 Core (vCPU)<br />
+        │ ├── RAM: 512 MB (Ultra-lightweight)<br />
+        │ ├── STO: 2 GB NVMe<br />
+        │ └── 192.168.86.254 (Currently .249 until production
+        release)<br />
+        ├──► [ LXC 102 ] NGINX PROXY MANAGER<br />
+        │ ├── CPU: 2 Cores (vCPUs)<br />
+        │ ├── RAM: 1 GB (Scalable)<br />
+        │ ├── STO: 8 GB (OS) + Mount point to external storage for
+        media<br />
+        │ └── 192.168.86.252<br />
+        ├──► [ LXC 103 ] OLLAMA LLM ENGINE<br />
+        │ ├── CPU: 6 Cores (vCPUs) ---&gt; (Uses high-perf Intel
+        P-Cores)<br />
+        │ ├── GPU Passthru: Vulkan0 Intel(R) Graphics (RPL-P)<br />
+        │ type=iGPU total=23.3 GiB Ram<br />
+        │ ├── RAM: 16 GB (Allows up to 8B/11B parameter models)<br />
+        │ ├── STO: 40 GB NVMe --------&gt; (Large capacity for model
+        weights)<br />
+        │ ├── LAM: gemma3:4b ---------&gt; Multimodal (Vision) &amp;
+        128K Context Window<br />
+        │ ├── LAM: phi4-mini:latest --&gt; Logic, Intense Reasoning,
+        &amp; Tool Calling<br />
+        │ ├── LAM: qwen2.5-coder:7b --&gt; Complex Automation
+        Engineering,<br />
+        │ Code Sandbox, &amp; YAML Chat<br />
+        │ ├── LAM: qwen2.5-coder:1.5b -&gt; Inline IDE Autocomplete
+        Engine<br />
+        │ (Fed via Desktop on LAN)<br />
+        │ ├── LAM: nomic-embed-text --&gt; Vector Embeddings &amp;
+        Local<br />
+        │ Document Context Parsing<br />
+        │ ├── 192.168.86.253 - Primary LAN Segment (vmbr0) eth0<br />
+        │ └── 10.0.10.3/24 - Isolated Backend Segment (vmbr1 - No<br />
+        │ Gateway/DNS Emulation) eth1<br />
+        ├──► [ LXC 104 ] WYOMING-DOCKER<br />
+        │ ├── CPU: 2 Cores (vCPUs)<br />
+        │ ├── RAM: 2 GB (Scalable)<br />
+        │ ├── STO: 10 GB (OS) + Mount point to external storage
+        for<br />
+        │ media<br />
+        │ ├── ports: 10200:10200<br />
+        │ ├── volumes: piper-data:/data<br />
+        │ ├── 192.168.86.248 - Primary LAN Segment (vmbr0) eth0<br />
+        │ └── 10.0.10.4/24 - Isolated Backend Segment (vmbr1) eth1<br />
+        └──► [ LXC 105 ] TWINGATE CONNECTOR<br />
+        ├── CPU: 1 Core (vCPU)<br />
+        ├── RAM: 512 MB (Ultra-lightweight)<br />
+        ├── STO: 2 GB NVMe (OS Only)<br />
+        └── 192.168.86.247 - Primary LAN Segment (vmbr0) eth0<br />
+        (Routes 192.168.86.0/24 Securely)</p>
         <h1
         id="nav-installing-your-home-lab-on-a-mini-computer">Installing
         your Home Lab on a Mini-Computer</h1>
@@ -675,9 +660,9 @@ Home Lab Install Procedure</h1>
         <p>When running there are some recommended resource allocations
         that you will be asked for. Use the details presented in each
         section, if there are questions the table in <a
-        href="#nav-code-barnes-home-lab-configuration">Code 2: Barnes
-        Home Lab Configuration</a> can be used for reference to allocate
-        your resources efficiently to avoid crashing the host.</p>
+        href="#nav-_Ref232848286">Code 2: Barnes Home Lab
+        Configuration</a> can be used for reference to allocate your
+        resources efficiently to avoid crashing the host.</p>
         <h3 id="nav-step-by-step-deployment-guide">Step-by-Step
         Deployment Guide</h3>
         <p>Step 1: Download the latest Proxmox VE ISO from the official
