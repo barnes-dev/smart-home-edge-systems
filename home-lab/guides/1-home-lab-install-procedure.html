@@ -67,27 +67,22 @@
             line-height: 1.7;
         }
 
-        /* Custom Word "code" style mapping (Supports both lower and upper case style names) */
-        .document-content p.code,
-        .document-content div.code,
-        .document-content p.Code,
-        .document-content div.Code,
-        .document-content .code,
-        .document-content .Code {
+        /* Bulletproof override for any variant of the Word 'code' style */
+        .document-content [class*="code" i],
+        article.document-content [class*="code" i],
+        p[class*="code" i],
+        div[class*="code" i] {
             font-family: 'Courier New', Courier, monospace !important;
             font-size: 10pt !important;
-            line-height: 1.1 !important;        /* Tighter line spacing */
+            line-height: 1.0 !important;
+            margin: 0 !important;
             margin-top: 0 !important;
             margin-bottom: 0 !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
+            padding: 0 !important;
             white-space: pre-wrap !important;
         }
 
-        .document-content p.code + p.code,
-        .document-content div.code + div.code,
-        .document-content p.Code + p.Code,
-        .document-content div.Code + div.Code {
+        .document-content [class*="code" i] + [class*="code" i] {
             margin-top: 0 !important;
             margin-bottom: 0 !important;
         }
