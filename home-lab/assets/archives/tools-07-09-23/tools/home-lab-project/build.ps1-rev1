@@ -1,0 +1,168 @@
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory = $false)]
+    [string]$DocBaseName = "home-lab-dns-procedure"
+)
+
+# ========================================================================== # 
+# CONFIGURATION SETTINGS                                                     # 
+# ========================================================================== # 
+$InputDocx      = "${DocBaseName}.docx" 
+$TempMarkdown   = "${DocBaseName}-temp.md" 
+$FinalHtml      = "${DocBaseName}.html" 
+
+$HomeLabRootDir  = "C:\Users\barne\Documents\HomeAssistant\Proxmox\Web Design\smart-home-edge-systems\home-lab" 
+$OutputGuidesDir = Join-Path $HomeLabRootDir "reference" 
+$BaseAssetDir    = Join-Path $HomeLabRootDir "assets\figures" 
+
+$SubFolderName  = $DocBaseName.Trim().ToLower() -replace '\s+', '-'
+$SubFolderName  = $SubFolderName -replace '[^a-zA-Z0-9-]', ''
+
+$TargetAssetDir = [System.IO.Path]::GetFullPath((Join-Path $BaseAssetDir $SubFolderName))
+$WebAssetPath   = "../assets/figures/$SubFolderName" 
+
+if (-not (Test-Path $InputDocx)) {
+    Write-Error "CRITICAL: The source document '$InputDocx' was not found in the working directory."
+    return
+}
+
+# ========================================================================== # 
+# DYNAMIC TITLE BUILDER WITH ACRONYM DICTIONARY OVERRIDES                   # 
+# ========================================================================== # 
+$TextInfo = (Get-Culture).TextInfo
+$CleanBaseString = $DocBaseName -replace '[-_]', ' '
+$StandardTitleCase = $TextInfo.ToTitleCase($CleanBaseString)
+
+$Acronyms = @("Dns", "Lxc", "Haos", "Vm", "Ip", "Igpu", "Nginx", "Nas", "Ssh")
+$Words = $StandardTitleCase -split ' '
+for ($i = 0; $i -lt $Words.Count; $i++) {
+    if ($Acronyms -contains $Words[$i]) {
+        $Words[$i] = $Words[$i].ToUpper()
+    }
+}
+$ExtractedTitle = $Words -join ' '
+Write-Host "--> Dynamic Parameter Title applied: '$ExtractedTitle'" -ForegroundColor Green
+
+# --- TARGET ASSET DIRECTORY LIFECYCLE CONTROLS --- 
+if (Test-Path $TargetAssetDir) {
+    Write-Host "--> Resetting directory safely: $TargetAssetDir" -ForegroundColor DarkYellow
+    Remove-Item $TargetAssetDir -Recurse -Force
+}
+New-Item -ItemType Directory -Path $TargetAssetDir -Force | Out-Null 
+
+# ========================================================================== # 
+# STEP 1: CONVERT & EXTRACT MEDIA DIRECTLY TO TARGET ASSETS                  # 
+# ========================================================================== # 
+Write-Host "--> Converting $InputDocx to Markdown and extracting media..." -ForegroundColor Cyan 
+pandoc $InputDocx -f docx -t markdown --extract-media=$TargetAssetDir -o $TempMarkdown 
+
+# ========================================================================== # 
+# STEP 2: COMPILE TO STANDALONE HTML (Rewritten using safe Argument Arrays)  # 
+# ========================================================================== # 
+Write-Host "--> Compiling HTML with Pandoc templates..." -ForegroundColor Cyan 
+
+$PandocArgs = @(
+    $TempMarkdown,
+    "-f", "markdown",
+    "-t", "html5",
+    "--template=template.html",
+    "--metadata", "title=$ExtractedTitle",
+    "--standalone",
+    "--toc",
+    "--toc-depth=4",
+    "--id-prefix=nav-",
+    "-o", $FinalHtml
+)
+
+pandoc @PandocArgs
+
+# ========================================================================== # 
+# STEP 3: ARTIFACT PROCESSING & PATH SANITIZATION                            # 
+# ========================================================================== # 
+Write-Host "--> Isolating document content container blocks..." -ForegroundColor Cyan 
+$HtmlContent = Get-Content $FinalHtml -Raw 
+$MarkdownContent = Get-Content $TempMarkdown -Raw 
+
+if ($HtmlContent -match "(?s)(.*<article class=`"document-content`"[^>]*>)(.*)(</article>.*)") { 
+    $PreContent  = $Matches[1] 
+    $BodyContent = $Matches[2] 
+    $PostContent = $Matches[3] 
+
+    $script:FigIdx = 1 
+    $script:TableIdx = 1 
+    $script:CodeIdx = 1 
+
+    $BodyContent = ([regex]"\bFigure(?:\s*|&nbsp;)*\d*:").Replace($BodyContent, { "Figure $($script:FigIdx):"; $script:FigIdx++ }) 
+    $BodyContent = ([regex]"\bTable(?:\s*|&nbsp;)*\d*:").Replace($BodyContent, { "Table $($script:TableIdx):"; $script:TableIdx++ }) 
+    $BodyContent = ([regex]"\bCode(?:\s*|&nbsp;)*\d*:").Replace($BodyContent, { "Code $($script:CodeIdx):"; $script:CodeIdx++ }) 
+
+    $HtmlContent = $PreContent + $BodyContent + $PostContent 
+} 
+
+if ($HtmlContent -match "<title>\s*</title>") { 
+    $HtmlContent = $HtmlContent -replace "<title>\s*</title>", "<title>$ExtractedTitle</title>" 
+} 
+
+# --- SANITIZE AND REWRITE THE IMAGE PATH CHANNELS --- 
+$PandocNestedMedia = Join-Path $TargetAssetDir "media"
+if (Test-Path $PandocNestedMedia) {
+    $ExtractedFiles = Get-ChildItem -Path $PandocNestedMedia -File | Sort-Object Name 
+    $ImageIndex = 1 
+    $ProcessedBaseNames = @{} 
+
+    foreach ($File in $ExtractedFiles) { 
+        $OriginalName = $File.Name 
+        $Extension    = $File.Extension 
+        $TargetFileName = $OriginalName 
+
+        $EscapedDir = [Regex]::Escape($TargetAssetDir) -replace '\\\\', '[/\\\\]'
+        $EscapedFile = [Regex]::Escape($OriginalName)
+        $MdPattern = "!\[([^\]]*)\]\(${EscapedDir}[/\\\\]media[/\\\\]${EscapedFile}\)"
+
+        if ($MarkdownContent -match $MdPattern) { 
+            $CaptionText = $Matches[1].Trim() 
+            if ($CaptionText) { 
+                $FullCaption = "Figure-${ImageIndex}-${CaptionText}" 
+                $CleanName = $FullCaption -replace '[^a-zA-Z0-9-]', '' 
+                $TargetFileName = "${CleanName}${Extension}" 
+            } 
+        } 
+
+        if ($ProcessedBaseNames.ContainsKey($TargetFileName)) { 
+            Write-Warning "--> Internal Duplicate Name Detected. Appending unique suffix." 
+            $BaseName = [System.IO.Path]::GetFileNameWithoutExtension($TargetFileName) 
+            $TargetFileName = "${BaseName}-1${Extension}" 
+        } else { 
+            $ProcessedBaseNames[$TargetFileName] = $true 
+        } 
+
+        $FinalDestinationFile = Join-Path $TargetAssetDir $TargetFileName
+        Move-Item -Path $File.FullName -Destination $FinalDestinationFile -Force 
+
+        $OldHtmlSrcPattern = 'src="[^"]*' + [Regex]::Escape("media/$OriginalName") + '"'
+        $NewHtmlSrc        = "src=`"$WebAssetPath/$TargetFileName`"" 
+        $HtmlContent       = $HtmlContent -replace $OldHtmlSrcPattern, $NewHtmlSrc 
+        $ImageIndex++ 
+    } 
+    Remove-Item $PandocNestedMedia -Recurse -Force
+} 
+
+$CleanWebAssetPath = $WebAssetPath -replace '\\', '/'
+$HtmlContent = [Regex]::Replace($HtmlContent, 'src="[^"]*/assets/figures/[^"]*/media/([^"]+)"', "src=`"$CleanWebAssetPath/`$1`"")
+$HtmlContent | Set-Content $FinalHtml 
+
+# ========================================================================== # 
+# STEP 4: DEPLOY HTML & SCRUB THE WORKING DIRECTORY                          # 
+# ========================================================================== # 
+Write-Host "--> Deploying page file to final guides directory..." -ForegroundColor Cyan 
+if (-not (Test-Path $OutputGuidesDir)) { 
+    New-Item -ItemType Directory -Path $OutputGuidesDir -Force | Out-Null 
+} 
+$HtmlDestination = Join-Path $OutputGuidesDir $FinalHtml 
+Move-Item -Path $FinalHtml -Destination $HtmlDestination -Force 
+
+Write-Host "--> Build complete. Clean workspace teardown processing..." -ForegroundColor Cyan
+if (Test-Path $TempMarkdown) { Remove-Item $TempMarkdown -Force }
+if (Test-Path $FinalHtml)    { Remove-Item $FinalHtml -Force }
+
+Write-Host "SUCCESS: Workspace scrubbed. Acronym mappings applied successfully!" -ForegroundColor Green

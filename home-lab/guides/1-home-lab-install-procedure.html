@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1 Home Lab Install Procedure</title>
+  <title>1-home-lab-install-procedure</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -249,8 +249,7 @@
     </p>
 
     <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">1
-Home Lab Install Procedure</h1>
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">1-home-lab-install-procedure</h1>
       <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
       <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
     </div>
@@ -259,9 +258,22 @@ Home Lab Install Procedure</h1>
       <aside class="sidebar-toc">
         <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
         <ul>
-        <li><a href="#nav-code-1-barnes-home-lab-configuration"
-        id="nav-toc-code-1-barnes-home-lab-configuration">Code 1: Barnes
-        Home Lab Configuration</a></li>
+        <li><a href="#nav-introduction"
+        id="nav-toc-introduction">Introduction</a>
+        <ul>
+        <li><a href="#nav-why-build-a-home-lab"
+        id="nav-toc-why-build-a-home-lab">Why Build a Home Lab<span
+        class="custom-style-annotation reference annotation reference"
+        data-custom-style="annotation reference"></span>?</a></li>
+        <li><a href="#nav-recommended-design-architecture"
+        id="nav-toc-recommended-design-architecture">Recommended Design
+        Architecture</a>
+        <ul>
+        <li><a href="#nav-basic-home-lab-configuration"
+        id="nav-toc-basic-home-lab-configuration">Basic Home Lab
+        Configuration</a></li>
+        </ul></li>
+        </ul></li>
         <li><a href="#nav-installing-your-home-lab-on-a-mini-computer"
         id="nav-toc-installing-your-home-lab-on-a-mini-computer">Installing
         your Home Lab on a Mini-Computer</a></li>
@@ -276,77 +288,157 @@ Home Lab Install Procedure</h1>
         id="nav-toc-step-by-step-deployment-guide">Step-by-Step
         Deployment Guide</a>
         <ul>
-        <li><a href="#nav-code-2-promox-boot-disk"
-        id="nav-toc-code-2-promox-boot-disk">Code 2: Promox Boot
-        Disk</a></li>
-        <li><a href="#nav-code-2-putty-ssh-setup-process"
-        id="nav-toc-code-2-putty-ssh-setup-process">Code 2: Putty-ssh
-        Setup Process</a></li>
+        <li><a href="#nav-step-1-download-the-latest-proxmox-ve-iso"
+        id="nav-toc-step-1-download-the-latest-proxmox-ve-iso"><span
+        class="custom-style-Heading 4 Char Heading 4 Char"
+        data-custom-style="Heading 4 Char">Step 1: Download the latest
+        Proxmox VE ISO</span></a></li>
+        <li><a
+        href="#nav-the-official-website-is-located-at-httpswww.proxmox.comendownloadsproxmox-virtual-environment."
+        id="nav-toc-the-official-website-is-located-at-httpswww.proxmox.comendownloadsproxmox-virtual-environment.">The
+        official website is located at
+        https://www.proxmox.com/en/downloads/proxmox-virtual-environment.</a></li>
+        <li><a
+        href="#nav-step-2-setup-puttyssh-for-easy-communication-with-your-new-home-lab."
+        id="nav-toc-step-2-setup-puttyssh-for-easy-communication-with-your-new-home-lab.">Step
+        2: Setup Putty/ssh for easy communication with your new Home
+        Lab.</a></li>
+        <li><a
+        href="#nav-step-3-use-helper-scripts-for-easy-setup-of-the-remaining-products."
+        id="nav-toc-step-3-use-helper-scripts-for-easy-setup-of-the-remaining-products.">Step
+        3: Use Helper Scripts for Easy Setup of the remaining
+        products.</a></li>
         </ul></li>
         </ul></li>
         <li><a href="#nav-pihole-lxc-100"
-        id="nav-toc-pihole-lxc-100">PiHole (LXC 100)</a>
+        id="nav-toc-pihole-lxc-100">PiHole (LXC 100)</a></li>
+        <li><a href="#nav-home-assistant-os-lxc-101---haos-vm"
+        id="nav-toc-home-assistant-os-lxc-101---haos-vm"><span
+        class="custom-style-Heading 2 Char Heading 2 Char"
+        data-custom-style="Heading 2 Char">Home Assistant OS (LXC 101 -
+        HAOS VM)</span></a></li>
+        <li><a href="#nav-nginx-proxy-manager-lxc-102"
+        id="nav-toc-nginx-proxy-manager-lxc-102">NGINX Proxy Manager
+        (LXC 102):</a></li>
+        <li><a href="#nav-ollama-ai-engine-lxc-103"
+        id="nav-toc-ollama-ai-engine-lxc-103">Ollama AI Engine (LXC
+        103)</a>
         <ul>
-        <li><a href="#nav-code-2-piholeinstallcommand.sh"
-        id="nav-toc-code-2-piholeinstallcommand.sh">Code 2:
-        PiHoleInstallCommand.sh</a></li>
-        <li><a href="#nav-code-3-pihole-install-parameters-and-response"
-        id="nav-toc-code-3-pihole-install-parameters-and-response">Code
-        3: PiHole Install Parameters and Response</a></li>
-        <li><a href="#nav-code-15-dockercompose.sh"
-        id="nav-toc-code-15-dockercompose.sh">Code 15:
-        DockerCompose.sh</a></li>
+        <li><a href="#nav-load-the-agents"
+        id="nav-toc-load-the-agents">Load the Agents</a></li>
+        <li><a href="#nav-how-to-connect-ollama-to-home-assistant"
+        id="nav-toc-how-to-connect-ollama-to-home-assistant">How to
+        Connect Ollama to Home Assistant</a>
+        <ul>
+        <li><a
+        href="#nav-for-voice-install-the-official-ollama-integration-in-home-assistant."
+        id="nav-toc-for-voice-install-the-official-ollama-integration-in-home-assistant."><strong>For
+        Voice:</strong> Install the official Ollama Integration in Home
+        Assistant.</a></li>
+        <li><a href="#nav-for-coding" id="nav-toc-for-coding">For
+        Coding:</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-wyoming-docker-installation-lxc104---docker"
+        id="nav-toc-wyoming-docker-installation-lxc104---docker">Wyoming
+        Docker Installation (LXC104 - Docker)</a>
+        <ul>
+        <li><a href="#nav-step-1-create-a-docker-lxc-in-proxmox"
+        id="nav-toc-step-1-create-a-docker-lxc-in-proxmox">Step 1:
+        Create a Docker LXC in Proxmox</a></li>
+        <li><a href="#nav-step-2-set-up-wyoming-docker-services"
+        id="nav-toc-step-2-set-up-wyoming-docker-services">Step 2: Set
+        Up Wyoming Docker Services</a></li>
         <li><a href="#nav-step-3-connect-to-home-assistant"
         id="nav-toc-step-3-connect-to-home-assistant">Step 3: Connect to
-        Home Assistant</a></li>
-        <li><a
-        href="#nav-once-your-docker-containers-are-running-on-the-proxmox-lxc-you-can-easily-link-them-to-home-assistant"
-        id="nav-toc-once-your-docker-containers-are-running-on-the-proxmox-lxc-you-can-easily-link-them-to-home-assistant">Once
-        your Docker containers are running on the Proxmox LXC, you can
-        easily link them to Home Assistant:</a></li>
-        <li><a href="#nav-open-your-home-assistant-dashboard."
-        id="nav-toc-open-your-home-assistant-dashboard.">Open your
-        <strong>Home Assistant Dashboard</strong>.</a></li>
-        <li><a href="#nav-navigate-to-settings-devices-services."
-        id="nav-toc-navigate-to-settings-devices-services.">Navigate to
-        <strong>Settings</strong> &gt; <strong>Devices &amp;
-        Services</strong>.</a></li>
-        <li><a
-        href="#nav-click-add-integration-and-search-for-wyoming-protocol."
-        id="nav-toc-click-add-integration-and-search-for-wyoming-protocol.">Click
-        <strong>Add Integration</strong> and search for <strong>Wyoming
-        Protocol</strong>.</a></li>
-        <li><a
-        href="#nav-enter-the-ip-address-of-your-proxmox-docker-lxc-192.168.86.24824-and-the-corresponding-port-for-the-service-e.g.-10200-for-piper-or-10300-for-whisper-integrations-and-associate-the-following-links."
-        id="nav-toc-enter-the-ip-address-of-your-proxmox-docker-lxc-192.168.86.24824-and-the-corresponding-port-for-the-service-e.g.-10200-for-piper-or-10300-for-whisper-integrations-and-associate-the-following-links.">Enter
-        the IP address of your Proxmox Docker LXC (192.168.86.248/24)
-        and the corresponding port for the service (e.g., 10200 for
-        Piper or 10300 for Whisper) integrations and associate the
-        following links.</a></li>
-        <li><a href="#nav-step-3-portainerdocker-changes"
-        id="nav-toc-step-3-portainerdocker-changes">Step 3:
-        Portainer/Docker changes</a></li>
-        <li><a href="#nav-code-20-haospost.sh"
-        id="nav-toc-code-20-haospost.sh">Code 20: HAOSPost.sh</a></li>
-        <li><a
-        href="#nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip"
-        id="nav-toc-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">2.
-        Pi-Hole Limits (Ensuring it uses the temporary staging
-        IP)</a></li>
+        Home Assistant</a>
+        <ul>
+        <li><a href="#nav-portainerdocker-changes"
+        id="nav-toc-portainerdocker-changes">Portainer/Docker
+        changes</a></li>
         </ul></li>
         </ul></li>
+        <li><a href="#nav-twingate-connector-lxc-105"
+        id="nav-toc-twingate-connector-lxc-105">Twingate Connector (LXC
+        105)</a></li>
+        <li><a href="#nav-post-install-scripts"
+        id="nav-toc-post-install-scripts">Post Install Scripts</a>
+        <ul>
+        <li><a href="#nav-proxmox-scripts"
+        id="nav-toc-proxmox-scripts">Proxmox Scripts:</a>
+        <ul>
+        <li><a href="#nav-setting-vi-as-your-default-editor"
+        id="nav-toc-setting-vi-as-your-default-editor">Setting Vi as
+        your default editor</a></li>
+        <li><a href="#nav-the-automation-script"
+        id="nav-toc-the-automation-script">The Automation
+        Script</a></li>
+        </ul></li>
+        <li><a href="#nav-twingate-connector"
+        id="nav-toc-twingate-connector">Twingate Connector</a>
+        <ul>
+        <li><a href="#nav-phase-1-verify-your-current-setup"
+        id="nav-toc-phase-1-verify-your-current-setup">Phase 1: Verify
+        Your Current Setup</a></li>
+        <li><a href="#nav-phase-2-modify-the-ssh-configuration-file"
+        id="nav-toc-phase-2-modify-the-ssh-configuration-file">Phase 2:
+        Modify the SSH Configuration File</a></li>
+        <li><a href="#nav-phase-3-apply-and-test-the-changes"
+        id="nav-toc-phase-3-apply-and-test-the-changes">Phase 3: Apply
+        and Test the Changes</a></li>
+        </ul></li>
+        <li><a href="#nav-post-script-configuration-injection"
+        id="nav-toc-post-script-configuration-injection">Post-Script
+        Configuration Injection</a>
+        <ul>
+        <li><a href="#nav-home-assistant-os-vm-101"
+        id="nav-toc-home-assistant-os-vm-101">Home Assistant OS (VM
+        101)</a></li>
+        <li><a href="#nav-ollama-llm-engine-lxc-103"
+        id="nav-toc-ollama-llm-engine-lxc-103">Ollama LLM Engine (LXC
+        103)</a></li>
+        <li><a href="#nav-advanced-intel-oneapi-sycl-tuning-flags"
+        id="nav-toc-advanced-intel-oneapi-sycl-tuning-flags">Advanced
+        Intel oneAPI &amp; SYCL Tuning Flags</a></li>
+        <li><a href="#nav-wyoming-docker-lxc-104"
+        id="nav-toc-wyoming-docker-lxc-104">Wyoming Docker (LXC
+        104)</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-disaster-recovery"
+        id="nav-toc-disaster-recovery">Disaster Recovery:</a>
+        <ul>
+        <li><a href="#nav-text-configuration-backup-script"
+        id="nav-toc-text-configuration-backup-script">Text Configuration
+        Backup Script</a></li>
+        </ul></li>
+        <li><a
+        href="#nav-tools-to-verify-installation-and-functionality"
+        id="nav-toc-tools-to-verify-installation-and-functionality">Tools
+        to verify Installation and functionality</a>
+        <ul>
+        <li><a
+        href="#nav-how-to-quickly-verify-promox-container-configurations"
+        id="nav-toc-how-to-quickly-verify-promox-container-configurations">How
+        to Quickly Verify Promox Container Configurations:</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-references"
+        id="nav-toc-references">References</a></li>
         </ul>
       </aside>
 
       <article class="document-content">
-        <p><img
-        src="../assets/figures/1-home-lab-install-procedure/image1.png"
-        style="width:6.5in;height:3.25in" /></p>
-        <p>Figure 1: A Generic Home Lab</p>
-        <p>Introduction</p>
-        <p>Why Build a Home Lab<span
+        <div class="custom-style-caption caption"
+        data-custom-style="caption">
+        <p><img src="1-home-lab-install-procedure/media/image1.png"
+        style="width:6.5in;height:3.25in" />Figure 1: A Generic Home
+        Lab</p>
+        </div>
+        <h1 id="nav-introduction">Introduction</h1>
+        <h2 id="nav-why-build-a-home-lab">Why Build a Home Lab<span
         class="custom-style-annotation reference annotation reference"
-        data-custom-style="annotation reference"></span>?</p>
+        data-custom-style="annotation reference"></span>?</h2>
         <p>A <strong>home lab</strong> is essentially a mini data center
         set up right in your own living space. It can range from a
         single, low-power mini PC hidden behind a desk to a dedicated
@@ -356,38 +448,59 @@ Home Lab Install Procedure</h1>
         ownership over their data. Instead of trusting third-party cloud
         corporations with their files, photos, and smart devices, they
         self-host.</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p><strong>Private Cloud Storage:</strong> Running alternatives
         like Nextcloud to replace Google Drive or Dropbox.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p><strong>Local Smart Home Control:</strong> Using platforms
         like Home Assistant to manage smart switches, lights, and
         automated voice clients locally. This ensures your automated
         routines still work flawlessly even if your internet connection
         goes down entirely.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p><strong>Media Streaming:</strong> Setting up personal media
         servers (like Plex or Jellyfin) to stream an owned movie and
         music collection without relying on changing streaming platform
         catalogs.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p><strong>Breaking Things Safely:</strong> If you want to learn
         enterprise network configurations, cluster computing, or test
         out container environments like Docker, doing it on a production
         system at work is a massive risk. A home lab lets you
         experiment, break configurations, and learn how to rebuild them
         with zero real-world consequences.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p><strong>Hypervisor Mastery:</strong> It provides a space to
         learn type-1 hypervisors (like Proxmox VE or VMware ESXi) to
         split one physical machine into dozens of isolated virtual
         machines (VMs).</p>
-        <p>Recommended Design Architecture</p>
-        <p>Basic Home Lab Configuration</p>
+        </div></li>
+        </ul>
+        <h2 id="nav-recommended-design-architecture">Recommended Design
+        Architecture</h2>
+        <h3 id="nav-basic-home-lab-configuration">Basic Home Lab
+        Configuration</h3>
         <p>A Home Lab self-contained in an inexpensive single
         mini-computer.</p>
-        <p><img
-        src="../assets/figures/1-home-lab-install-procedure/image2.png"
+        <p><img src="1-home-lab-install-procedure/media/image2.png"
         style="width:6.5in;height:3.54861in" /></p>
+        <div class="custom-style-caption caption"
+        data-custom-style="caption">
         <p>Figure 2: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
         Network Diagram<span
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span></p>
+        </div>
         <p>Note: If you want to use this information in an AI window –
         select this section into your chat window to reference the
         entire configuration<span
@@ -400,14 +513,18 @@ Home Lab Install Procedure</h1>
         <p>"Please start a clean conversation, flush all buffers and
         caches and then load this config for reference."</p>
         <table>
+        <caption>Code 1: Barnes Home Lab Configuration</caption>
         <colgroup>
-        <col style="width: 101%" />
+        <col style="width: 100%" />
         </colgroup>
         <thead>
         <tr>
         <th><div class="custom-style-TextBlock TextBlock"
         data-custom-style="TextBlock">
-        <p>=========================================================================<br />
+        <p>"Please start a clean conversation, flush all buffers and
+        caches and then load this config Code 2: Barnes Home Lab
+        Configuration<br />
+        =========================================================================<br />
         Barnes Home Lab Configuration<br />
         KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
         4.9GHz)<br />
@@ -448,9 +565,11 @@ Home Lab Install Procedure</h1>
         │ ├── STO: 40 GB NVMe --------&gt; (Large capacity for model
         weights)<br />
         │ ├── LAM: gemma3:4b ---------&gt; Multimodal (Vision) &amp;
-        128K Context Window<br />
+        128K Context<br />
+        Window<br />
         │ ├── LAM: phi4-mini:latest --&gt; Logic, Intense Reasoning,
-        &amp; Tool Calling<br />
+        &amp; Tool<br />
+        Calling<br />
         │ ├── LAM: qwen2.5-coder:7b --&gt; Complex Automation
         Engineering,<br />
         │ Code Sandbox, &amp; YAML Chat<br />
@@ -485,8 +604,6 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-code-1-barnes-home-lab-configuration">Code 1: Barnes
-        Home Lab Configuration</h4>
         <h1
         id="nav-installing-your-home-lab-on-a-mini-computer">Installing
         your Home Lab on a Mini-Computer</h1>
@@ -501,20 +618,23 @@ Home Lab Install Procedure</h1>
         <h2 id="nav-proxmox-ve-base-layer">Proxmox VE base layer</h2>
         <p>When running there are some recommended resource allocations
         that you will be asked for. Use the details presented in each
-        section, if there are questions the table in <a
-        href="#nav-_Ref232848286">Code 2: Barnes Home Lab
-        Configuration</a> can be used for reference to allocate your
-        resources efficiently to avoid crashing the host.</p>
+        section to allocate your resources efficiently to avoid crashing
+        the host.</p>
         <h3 id="nav-step-by-step-deployment-guide">Step-by-Step
         Deployment Guide</h3>
-        <p>Step 1: Download the latest Proxmox VE ISO from the official
-        website located at <a
-        href="https://www.proxmox.com/en/downloads/proxmox-virtual-environment"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">https://www.proxmox.com/en/downloads/proxmox-virtual-environment</span></a>.</p>
+        <h4 id="nav-step-1-download-the-latest-proxmox-ve-iso"><span
+        class="custom-style-Heading 4 Char Heading 4 Char"
+        data-custom-style="Heading 4 Char">Step 1: Download the latest
+        Proxmox VE ISO</span></h4>
+        <h4
+        id="nav-the-official-website-is-located-at-httpswww.proxmox.comendownloadsproxmox-virtual-environment.">The
+        official website is located at <a
+        href="https://www.proxmox.com/en/downloads/proxmox-virtual-environment"
+        class="uri">https://www.proxmox.com/en/downloads/proxmox-virtual-environment</a>.</h4>
         <table>
+        <caption>Code 3: Promox Boot Disk</caption>
         <colgroup>
-        <col style="width: 100%" />
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
@@ -522,19 +642,21 @@ Home Lab Install Procedure</h1>
         data-custom-style="TextBlock">
         <p>1. Flash it to a USB drive using BalenaEtcher or Rufus.<br />
         2. Boot your KAMRUI Mini PC into the BIOS and disable Secure
-        Boot. Also enable power on after power reset.<br />
+        Boot. Also enable<br />
+        power on after power reset.<br />
         3. Boot from the USB, follow the on-screen installer prompts,
-        and set a static IP address.</p>
+        and set a<br />
+        static IP address.</p>
         </div></th>
         </tr>
         </thead>
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-code-2-promox-boot-disk">Code 3: Promox Boot
-        Disk</h4>
-        <p>Step 2: Setup Putty/ssh for easy communication with your new
-        Home Lab.</p>
+        <h4
+        id="nav-step-2-setup-puttyssh-for-easy-communication-with-your-new-home-lab.">Step
+        2: Setup Putty/ssh for easy communication with your new Home
+        Lab.</h4>
         <ol type="1">
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
@@ -549,14 +671,15 @@ Home Lab Install Procedure</h1>
         </div></li>
         </ol>
         <table>
+        <caption>Code 4: Putty-ssh Setup Process</caption>
         <colgroup>
-        <col style="width: 100%" />
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
         <th><div class="custom-style-TextBlock TextBlock"
         data-custom-style="TextBlock">
-        <p>o Generate an SSH Key<br />
+        <p>1. Generate an SSH Key<br />
         • Open PuTTYgen on your Windows computer.<br />
         • Under Type of key to generate, select Ed25519 for modern
         security and<br />
@@ -565,9 +688,11 @@ Home Lab Install Procedure</h1>
         • Move your mouse randomly over the blank area to create entropy
         for the key<br />
         generation.<br />
+        <br />
         Crucial: Leave both passphrase fields completely blank to ensure
         a<br />
         passwordless login.<br />
+        <br />
         • Click Save private key and save it to a secure folder on your
         PC as a .ppk<br />
         file Save the location for use below.<br />
@@ -575,7 +700,8 @@ Home Lab Install Procedure</h1>
         inside the<br />
         top box labeled Public key for pasting into OpenSSH
         authorized_keys file.<br />
-        o Add the Public Key to Proxmox(SyncBricks, 2024)<br />
+        <br />
+        2. Add the Public Key to Proxmox(SyncBricks, 2024)<br />
         • Launch PuTTY and log into your Proxmox server using your
         standard root<br />
         username and password.<br />
@@ -594,7 +720,8 @@ Home Lab Install Procedure</h1>
         • save the file, and exit the vi editor ("enter :wq! ".<br />
         • Secure the authorization file permissions:<br />
         o chmod 600 ~/.ssh/authorized_keys<br />
-        o Configure PuTTY for Key Authentication<br />
+        <br />
+        3. Configure PuTTY for Key Authentication<br />
         • Close your current PuTTY session and open a brand new PuTTY
         window.<br />
         • On the Session category page (on the left panel), type your
@@ -625,10 +752,10 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-code-2-putty-ssh-setup-process">Code 4: Putty-ssh
-        Setup Process</h4>
-        <p>Step 3: Use Helper Scripts for Easy Setup of the remaining
-        products.</p>
+        <h4
+        id="nav-step-3-use-helper-scripts-for-easy-setup-of-the-remaining-products.">Step
+        3: Use Helper Scripts for Easy Setup of the remaining
+        products.</h4>
         <blockquote>
         <p>If you do not think you want that specific product installed,
         then you may skip that section. Just be aware that when you get
@@ -665,13 +792,14 @@ Home Lab Install Procedure</h1>
         <p>To install PiHole run this command to deploy a lightweight
         container:</p>
         <table>
+        <caption>Code 5: PiHoleInstallCommand.sh</caption>
         <colgroup>
-        <col style="width: 101%" />
+        <col style="width: 100%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>bash -c "$(curl -fsSL
         https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/pihole.sh)"</p>
         </div></th>
@@ -680,8 +808,6 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-code-2-piholeinstallcommand.sh">Code 5:
-        PiHoleInstallCommand.sh</h4>
         <p>When you copy and run this command it will start the install
         script. Always select the advance installation and if prompted
         select the GUI install method. When prompted enable all ssh keys
@@ -693,6 +819,8 @@ Home Lab Install Procedure</h1>
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span>.</p>
         <table>
+        <caption>Code 6: PiHole Install Parameters and
+        Response</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -718,21 +846,22 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-code-3-pihole-install-parameters-and-response">Code 6: PiHole Install Parameters and Response</h4>
-        <p><span class="custom-style-Heading 2 Char Heading 2 Char"
+        <h2 id="nav-home-assistant-os-lxc-101---haos-vm"><span
+        class="custom-style-Heading 2 Char Heading 2 Char"
         data-custom-style="Heading 2 Char">Home Assistant OS (LXC 101 -
-        HAOS VM)</span></p>
+        HAOS VM)</span></h2>
         <p>Run this command in the Proxmox host shell to automatically
         build a fully functional Home Assistant VM: When prompted enable
         all ssh keys and enable ssh.</p>
         <table>
+        <caption>Code 7: HAOSInstallCommand.sh</caption>
         <colgroup>
-        <col style="width: 101%" />
+        <col style="width: 100%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>bash -c "$(curl -fsSL
         https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/vm/haos-vm.sh)"</p>
         </div></th>
@@ -741,7 +870,6 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 7: HAOSInstallCommand.sh</p>
         <p>When you copy and run this command it will start the install
         script.</p>
         <p>Make the selections in the GUI by using the output presented
@@ -751,25 +879,68 @@ Home Lab Install Procedure</h1>
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span>.</p>
         <table>
+        <caption>Code 8: HAOS Install Parameters and Response</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>Please set MAC address to BC:24:11:AA:BB:01, IP Address to
-        192.168.86.251/24, and gateway to 192.168.86.1<br />
-        🆔 Virtual Machine ID: 101<br />
-        📦 Machine Type: q35<br />
-        💾 Disk Size: 32G<br />
-        🏠 Hostname: haos-17.3<br />
-        🖥️ CPU Model: KVM64  | 🧠 CPU Cores: 2<br />
-        🛠️ RAM Size: 4096  | 🌉 Bridge: vmbr0<br />
-        🔗 MAC Address: 02:93:F8:A8:3A:88<br />
-        🏷️ VLAN: Default  | ⚙️ Interface MTU Size: Default  | 🌐 Start
-        VM when completed: yes<br />
-        🚀 Creating a Homeassistant OS VM using the above default
+        192.168.86.251/24, and gateway to 192.168.86.1</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🆔 Virtual Machine ID: 101</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📦 Machine Type: q35</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>💾 Disk Size: 32G</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🏠 Hostname: haos-17.3</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🖥️ CPU Model: KVM64 |</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🧠 CPU Cores: 2</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🛠️ RAM Size: 4096 |</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🌉 Bridge: vmbr0</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🔗 MAC Address: 02:93:F8:A8:3A:88</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🏷️ VLAN: Default |</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>⚙️ Interface MTU Size: Default |</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🌐 Start VM when completed: yes</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🚀 Creating a Homeassistant OS VM using the above default
         settings</p>
         </div></th>
         </tr>
@@ -777,12 +948,26 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 8: HAOS Install Parameters and Response</p>
-        <p>NGINX Proxy Manager (LXC 102):</p>
+        <h2 id="nav-nginx-proxy-manager-lxc-102">NGINX Proxy Manager
+        (LXC 102):</h2>
         <p>Run this command to deploy a lightweight NGINX container:</p>
-        <hr />
-        <hr />
-        <p>Code 9: NGINXInstallCommand.sh</p>
+        <table>
+        <caption>Code 9: NGINXInstallCommand.sh</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>bash -c "$(wget -qLO -
+        https://github.com/community-scripts/ProxmoxVE/raw/main/ct/nginxproxymanager.sh)"</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
         <p>When you copy and run this command it will start the install
         script. Always select the advance installation and if prompted
         select the GUI install method.</p>
@@ -792,20 +977,112 @@ Home Lab Install Procedure</h1>
         like this. - Verify that it matches<span
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span>.</p>
-        <hr />
-        <hr />
-        <p>Code 10: NGINX Install Parameters and Response</p>
-        <p>Ollama AI Engine (LXC 103)</p>
-        <p>This uses the specialized ollama.sh hardware and software
-        installer path:</p>
         <table>
+        <caption>Code 10: NGINX Install Parameters and Response</caption>
         <colgroup>
         <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🧩 Using Advanced Install on node Promox</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>💡 PVE Version 9.2.3 (Kernel: 7.0.6-2-pve)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🖥️ Operating System: debian |</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🌟 Version: 13</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📦 Container Type: Unprivileged</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🆔 Container ID: 102</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🏠 Hostname: nginxproxymanager</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>💾 Disk Size: 8 GB</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🧠 CPU Cores: 2</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🛠️ RAM Size: 1024 MiB |</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🌉 Bridge: vmbr0</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📡 IPv4: 192.168.86.252/24</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📡 IPv6: none</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🗂️ FUSE Support: no |</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📦 Nesting: Enabled</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📦 Keyctl: Enabled</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🎮 GPU Passthrough: no</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>💡 Timezone: America/Denver</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🔍 Verbose Mode: yes</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🚀 Creating an LXC of Nginx Proxy Manager using the above
+        advanced settings</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h2 id="nav-ollama-ai-engine-lxc-103">Ollama AI Engine (LXC
+        103)</h2>
+        <p>This uses the specialized ollama.sh hardware and software
+        installer path:</p>
+        <table>
+        <caption>Code 11: OllamaInstallCommand.sh</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>bash -c "$(curl -fsSL
         https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/ollama.sh)"</p>
         </div></th>
@@ -814,7 +1091,6 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 11: OllamaInstallCommand.sh</p>
         <p>When you copy and run this command it will start the install
         script. Always select the advance installation and if prompted
         select the GUI install method.</p>
@@ -825,6 +1101,8 @@ Home Lab Install Procedure</h1>
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span>.</p>
         <table style="width:96%;">
+        <caption>Code 12: Ollama Install Parameters and
+        Response</caption>
         <colgroup>
         <col style="width: 95%" />
         </colgroup>
@@ -856,8 +1134,7 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 12: Ollama Install Parameters and Response</p>
-        <p>Load the Agents</p>
+        <h3 id="nav-load-the-agents">Load the Agents</h3>
         <p>In the Prolog Web GUI at <a
         href="http://192.168.86.250:8006"><span
         class="custom-style-Hyperlink Hyperlink"
@@ -875,8 +1152,9 @@ Home Lab Install Procedure</h1>
         password anymore.</p>
         <p>In this window enter the commands listed below:</p>
         <table>
+        <caption>Code 13: Loading the Agents</caption>
         <colgroup>
-        <col style="width: 100%" />
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
@@ -909,31 +1187,57 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 13: Loading the Agents</p>
-        <p>How to Connect Ollama to Home Assistant</p>
-        <p><strong>For Voice:</strong> Install the official Ollama
-        Integration in Home Assistant.</p>
+        <h3 id="nav-how-to-connect-ollama-to-home-assistant">How to
+        Connect Ollama to Home Assistant</h3>
+        <h4
+        id="nav-for-voice-install-the-official-ollama-integration-in-home-assistant."><strong>For
+        Voice:</strong> Install the official Ollama Integration in Home
+        Assistant.</h4>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Open the Home Assistant Web Page by going to <a
         href="http://homeassistant.local:8123"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">http://homeassistant.local:8123</span></a>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Open your <strong>Home Assistant Dashboard</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Navigate to <strong>Settings</strong> &gt; <strong>Voice
         Assistants</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Create an Assist Pipeline, and assign the qwen2.5:7b model to
         handle your conversational sentences and smart home
         exposures.</p>
-        <p><strong>For Coding:</strong></p>
+        </div></li>
+        </ul>
+        <h4 id="nav-for-coding">For Coding:</h4>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Point your development environment (like VS Code or Cursor)
         to your server's IP address (http://192.168.86.250:11434) using
         a local copilot extension to begin drafting automations
         locally.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>It is highly recommended to use external VS Code IDEs instead
         of the embedded Home Assistant Integration. You can still
         connect remotely via ssh and do everything without bogging down
         your Home Assistant Environment.</p>
-        <p>Wyoming Docker Installation (LXC104 - Docker)</p>
-        <p>Step 1: Create a Docker LXC in Proxmox</p>
+        </div></li>
+        </ul>
+        <h2 id="nav-wyoming-docker-installation-lxc104---docker">Wyoming
+        Docker Installation (LXC104 - Docker)</h2>
+        <h3 id="nav-step-1-create-a-docker-lxc-in-proxmox">Step 1:
+        Create a Docker LXC in Proxmox</h3>
         <p>The easiest way to get Docker running in an LXC is to use the
         community-maintained Proxmox Helper Scripts, which handle setup
         and dependencies automatically.</p>
@@ -944,13 +1248,14 @@ Home Lab Install Procedure</h1>
         script will be backgrounded. If it is waiting for a prompt, it
         will never exit.</p>
         <table>
+        <caption>Code 14: DockerInstallCommand.sh</caption>
         <colgroup>
-        <col style="width: 101%" />
+        <col style="width: 100%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>bash -c "$(curl -fsSL
         https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/docker.sh)"</p>
         </div></th>
@@ -959,7 +1264,6 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 14: DockerInstallCommand.sh</p>
         <p>When you copy and run this command it will start the install
         script. Always select the advance installation and if prompted
         select the GUI install method.</p>
@@ -973,34 +1277,157 @@ Home Lab Install Procedure</h1>
         like this. - Verify that it matches<span
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span>.</p>
-        <table style="width:85%;">
+        <table style="width:92%;">
+        <caption>Code 15: Wyoming Docker Install Parameters and
+        Response</caption>
         <colgroup>
-        <col style="width: 84%" />
+        <col style="width: 91%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🧩 Using Advanced Install on node Promox</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>💡 PVE Version 9.2.2 (Kernel: 7.0.2-6-pve)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🖥️ Operating System: debian |</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🌟 Version: 13</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📦 Container Type: Unprivileged</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🆔 Container ID: 104</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🏠 Hostname: wyoming-docker</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>💾 Disk Size: 10 GB</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🧠 CPU Cores: 4</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🛠️ RAM Size: 2048 MiB |</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🌉 Bridge: vmbr0</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📡 IPv4: 192.168.86.249/24</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📡 IPv6: none</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🗂️ FUSE Support: yes |</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📡 TUN/TAP Support: yes</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📦 Nesting: Enabled</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>📦 Keyctl: Enabled</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🎮 GPU Passthrough: no</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>💡 Timezone: America/Denver</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🔍 Verbose Mode: no</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>💡 If you installed Portainer, access it at the following
+        URL:</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>🌐 https://192.168.86.249:9443</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3 id="nav-step-2-set-up-wyoming-docker-services">Step 2: Set
+        Up Wyoming Docker Services</h3>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Now that Docker is installed in your LXC, you can deploy your
+        chosen Wyoming voice or speech-to-text tools.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>SSH into your Docker LXC IP address do not use the Proxmox
+        Web UI Console.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Configure PuTTY for Key Authentication</p>
+        </div></li>
+        </ul>
+        <table>
+        <caption>Code 16: Putty Setup</caption>
+        <colgroup>
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
         <th><div class="custom-style-TextBlock TextBlock"
         data-custom-style="TextBlock">
-        <p>🧩 Using Advanced Install on node Promox<br />
-        💡 PVE Version 9.2.2 (Kernel: 7.0.2-6-pve)<br />
-        🖥️ Operating System: debian  | 🌟 Version: 13<br />
-        📦 Container Type: Unprivileged<br />
-        🆔 Container ID: 104<br />
-        🏠 Hostname: wyoming-docker<br />
-        💾 Disk Size: 10 GB<br />
-        🧠 CPU Cores: 4<br />
-        🛠️ RAM Size: 2048 MiB  | 🌉 Bridge: vmbr0<br />
-        📡 IPv4: 192.168.86.249/24<br />
-        📡 IPv6: none<br />
-        🗂️ FUSE Support: yes  | 📡 TUN/TAP Support: yes<br />
-        📦 Nesting: Enabled<br />
-        📦 Keyctl: Enabled<br />
-        🎮 GPU Passthrough: no<br />
-        💡 Timezone: America/Denver<br />
-        🔍 Verbose Mode: no<br />
-        💡 If you installed Portainer, access it at the following
-        URL:<br />
-        🌐 https://192.168.86.249:9443</p>
+        <p>o Close your current PuTTY session and open a brand new PuTTY
+        window.<br />
+        o On the Session category page (on the left panel), type your
+        Wyoming-docker<br />
+        IP address (192.168.86.248) into the Host Name field.<br />
+        o In the left panel, navigate to Connection ➔ Data.<br />
+        o In the Auto-login username box, type root (or your chosen
+        administrative<br />
+        username).<br />
+        o In the left panel, drill down to Connection ➔ SSH ➔ Auth ➔
+        Credentials.<br />
+        o Click Browse next to Private key file for authentication and
+        select the .ppk<br />
+        file you saved above.<br />
+        o Navigate back to the Session category at the very top of the
+        left panel.<br />
+        o Type a name for this connection profile (e.g.,
+        Proxmox_Wyoming) in the Saved<br />
+        Sessions box and click Save.<br />
+        o Click Open. PuTTY will now log into your Wyoming console
+        automatically using<br />
+        the private key, bypassing the password prompt completely.</p>
         </div></th>
         </tr>
         </thead>
@@ -1010,44 +1437,21 @@ Home Lab Install Procedure</h1>
         <ul>
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
-        <p>Code 15: Wyoming Docker Install Parameters and Response</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>Step 2: Set Up Wyoming Docker Services</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>Now that Docker is installed in your LXC, you can deploy your
-        chosen Wyoming voice or speech-to-text tools.</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p><strong>SSH</strong> into your Docker LXC IP address do not
-        use the Proxmox Web UI Console.</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>Configure PuTTY for Key Authentication</p>
-        </div>
-        <hr />
-        <hr /></li>
-        </ul>
-        <ol type="1">
-        <li><p>Code 16: Putty Setup</p></li>
-        <li><p>Create a docker-compose.yaml file to manage your Wyoming
+        <p>Create a docker-compose.yaml file to manage your Wyoming
         services. For example, to set up the <strong>Piper
         Text-to-Speech</strong> and <strong>Whisper
-        Speech-to-Text</strong> services, run:</p></li>
-        </ol>
+        Speech-to-Text</strong> services, run:</p>
+        </div></li>
+        </ul>
         <table>
+        <caption>Code 17: WyomingDockerCompose.sh</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>mkdir -p ~/wyoming &amp;&amp; cd ~/wyoming<br />
         vi docker-compose.yaml</p>
         </div></th>
@@ -1056,10 +1460,10 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 17: WyomingDockerCompose.sh</p>
         <p>Paste the following configuration, making sure to replace
         paths and voices with your preferences:</p>
         <table>
+        <caption>Code 18: Wyoming-Docker Portainer Stack</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -1093,17 +1497,17 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 18: Wyoming-Docker Portainer Stack</p>
         <p><em>Spin up the containers by typing the following command in
         you Putty ssh window:</em></p>
         <table>
+        <caption>Code 19: DockerCompose.sh</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>docker compose up -d</p>
         </div></th>
         </tr>
@@ -1111,34 +1515,42 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-code-15-dockercompose.sh">Code 19:
-        DockerCompose.sh</h4>
-        <h4 id="nav-step-3-connect-to-home-assistant">Step 3: Connect to
-        Home Assistant</h4>
-        <h4
-        id="nav-once-your-docker-containers-are-running-on-the-proxmox-lxc-you-can-easily-link-them-to-home-assistant">Once
-        your Docker containers are running on the Proxmox LXC, you can
-        easily link them to Home Assistant:</h4>
-        <h4 id="nav-open-your-home-assistant-dashboard.">Open your
-        <strong>Home Assistant Dashboard</strong>.</h4>
-        <h4 id="nav-navigate-to-settings-devices-services.">Navigate to
-        <strong>Settings</strong> &gt; <strong>Devices &amp;
-        Services</strong>.</h4>
-        <h4
-        id="nav-click-add-integration-and-search-for-wyoming-protocol.">Click
-        <strong>Add Integration</strong> and search for <strong>Wyoming
-        Protocol</strong>.</h4>
-        <h4
-        id="nav-enter-the-ip-address-of-your-proxmox-docker-lxc-192.168.86.24824-and-the-corresponding-port-for-the-service-e.g.-10200-for-piper-or-10300-for-whisper-integrations-and-associate-the-following-links.">Enter
-        the IP address of your Proxmox Docker LXC (192.168.86.248/24)
-        and the corresponding port for the service (e.g., 10200 for
-        Piper or 10300 for Whisper) integrations and associate the
-        following links.</h4>
-        <h4 id="nav-step-3-portainerdocker-changes">Step 3:
-        Portainer/Docker changes</h4>
-        <table style="width:99%;">
+        <h3 id="nav-step-3-connect-to-home-assistant">Step 3: Connect to
+        Home Assistant</h3>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Once your Docker containers are running on the Proxmox LXC,
+        you can easily link them to Home Assistant:</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Open your <strong>Home Assistant Dashboard</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Navigate to <strong>Settings</strong> &gt; <strong>Devices
+        &amp; Services</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Click <strong>Add Integration</strong> and search for
+        <strong>Wyoming Protocol</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Enter the IP address of your Proxmox Docker LXC
+        (192.168.86.248/24) and the corresponding port for the service
+        (e.g., 10200 for Piper or 10300 for Whisper) integrations and
+        associate the following links.</p>
+        </div></li>
+        </ul>
+        <h4 id="nav-portainerdocker-changes">Portainer/Docker
+        changes</h4>
+        <table>
+        <caption>Code 20: HAOS-Wyoming Integrations</caption>
         <colgroup>
-        <col style="width: 98%" />
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
@@ -1176,40 +1588,63 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <ol type="1">
-        <li><p>Code 20: HAOS-Wyoming Integrations</p></li>
-        <li><p>Twingate Connector (LXC 105)</p></li>
-        <li><p>Installing Twingate on a Proxmox server is
-        straightforward and highly automated, taking only a few minutes
-        to complete.</p></li>
-        <li><p>Before running the script, you must generate the
-        necessary Connector tokens from your Twingate Admin
-        Console.</p></li>
-        <li><p><strong>Phase 1: Generate Twingate Connector
-        Tokens</strong></p></li>
-        <li><p>Log in to your <strong>Twingate Admin Console https://
-        twingate.com</strong>.</p></li>
-        <li><p>If you don’t have an account you will need to create
-        one.</p></li>
-        <li><p>After you are logged in Go to <strong>Network</strong>
-        &gt; <strong>Remote Networks</strong> and select your remote
-        network (or create one).</p></li>
-        <li><p>Click to <strong>Add a Connector</strong> and select the
-        <strong>Manual</strong> deployment type.</p></li>
-        <li><p>Scroll down and click <strong>Generate
-        Tokens</strong>.</p></li>
-        <li><p>Copy the <strong>Access Token</strong> and
-        <strong>Refresh Token</strong> (you will need these
-        below)</p></li>
-        </ol>
+        <h2 id="nav-twingate-connector-lxc-105">Twingate Connector (LXC
+        105)</h2>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Installing Twingate on a Proxmox server is straightforward
+        and highly automated, taking only a few minutes to complete.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Before running the script, you must generate the necessary
+        Connector tokens from your Twingate Admin Console.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Phase 1: Generate Twingate Connector
+        Tokens</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Log in to your <strong>Twingate Admin Console https://
+        twingate.com</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>If you don’t have an account you will need to create one.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>After you are logged in Go to <strong>Network</strong> &gt;
+        <strong>Remote Networks</strong> and select your remote network
+        (or create one).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Click to <strong>Add a Connector</strong> and select the
+        <strong>Manual</strong> deployment type.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Scroll down and click <strong>Generate Tokens</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Copy the <strong>Access Token</strong> and <strong>Refresh
+        Token</strong> (you will need these below)</p>
+        </div></li>
+        </ul>
         <table>
+        <caption>Code 21: TwingateConnectorInstallCommand.sh</caption>
         <colgroup>
-        <col style="width: 101%" />
+        <col style="width: 100%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>bash -c "$(curl -fsSL
         https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/twingate-connector.sh)"</p>
         </div></th>
@@ -1218,12 +1653,13 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 21: TwingateConnectorInstallCommand.sh</p>
         <p>Paste the following configuration, making sure to replace
         paths and voices with your preferences:</p>
-        <table style="width:99%;">
+        <table>
+        <caption>Code 22: Twingate Connector Install
+        Parameters</caption>
         <colgroup>
-        <col style="width: 98%" />
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
@@ -1249,6 +1685,7 @@ Home Lab Install Procedure</h1>
         🔍 Verbose Mode: no<br />
         🚀 Creating an LXC of Twingate-Connector using the above
         advanced settings<br />
+        <br />
         ✔️ Updated Container OS  |<br />
         Please enter your access token:<br />
         enter your access token from above.<br />
@@ -1264,10 +1701,10 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 22: Twingate Connector Install Parameters</p>
-        <p>Post Install Scripts</p>
-        <p>Proxmox Scripts:</p>
-        <p>Setting Vi as your default editor</p>
+        <h2 id="nav-post-install-scripts">Post Install Scripts</h2>
+        <h3 id="nav-proxmox-scripts">Proxmox Scripts:</h3>
+        <h4 id="nav-setting-vi-as-your-default-editor">Setting Vi as
+        your default editor</h4>
         <p>To set <strong>vi</strong> as the default editor across all
         containers in your Barnes Home Lab, you can use a bash loop
         script run directly from your Proxmox host terminal.</p>
@@ -1275,16 +1712,17 @@ Home Lab Install Procedure</h1>
         distribution (including minimal Debian, Ubuntu, and Alpine
         templates), this script will work universally without needing to
         install extra packages.</p>
-        <p>The Automation Script</p>
+        <h4 id="nav-the-automation-script">The Automation Script</h4>
         <p>Run this complete script on your Proxmox host terminal:</p>
         <table>
+        <caption>Code 23: SetVIasDefault.sh</caption>
         <colgroup>
         <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>for vmid in $(pct list | awk '{print $1}' | grep -E
         '^[0-9]+$'); do<br />
         echo "----------------------------------------"<br />
@@ -1306,8 +1744,28 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 23: SetVIasDefault.sh</p>
-        <p>What This Script Does</p>
+              <div class="download-container">
+                  <details class="collapsible-download-box">
+                      <summary class="box-header">
+                          <span class="folder-icon">📂</span> What This Script Does
+                      </summary>
+                      <div class="box-body">
+                          <p>This automated bundle contains the baseline configurations, code layouts, and operational manifests tracked for this module.</p>
+                          
+                          <!-- Internal Preview Block Context -->
+                          <div class="asset-preview-pane">
+                              <h4 class="preview-title">👁️ Internal Asset Preview</h4>
+                              <div class="preview-gallery">
+                                  <!-- Your webpage will display images or file links here -->
+                                  <p class="preview-instructions">All embedded diagrams, schematics, and configurations are packaged below. Click the button to download the full-resolution archive block.</p>
+                              </div>
+                          </div>
+
+                          <a href="../assets/figures/what-this-script-does/what-this-script-does.zip" class="download-btn" download>Download Asset Archive Bundle</a>
+                      </div>
+                  </details>
+              </div>
+            
         <p><strong>Finds All LXCs</strong>: Loops through your existing
         containers (LXC 100, 102, 103, 104, and 105).</p>
         <p><strong>Updates Root Profiles</strong>: Appends the
@@ -1319,7 +1777,28 @@ Home Lab Install Procedure</h1>
         href="https://jurf.github.io/2020/03/24/vscode-toolbox/"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">(Fiala, 2020)</span></a></p>
-        <p>How to Apply It to Future Containers</p>
+              <div class="download-container">
+                  <details class="collapsible-download-box">
+                      <summary class="box-header">
+                          <span class="folder-icon">📂</span> How to Apply It to Future Containers
+                      </summary>
+                      <div class="box-body">
+                          <p>This automated bundle contains the baseline configurations, code layouts, and operational manifests tracked for this module.</p>
+                          
+                          <!-- Internal Preview Block Context -->
+                          <div class="asset-preview-pane">
+                              <h4 class="preview-title">👁️ Internal Asset Preview</h4>
+                              <div class="preview-gallery">
+                                  <!-- Your webpage will display images or file links here -->
+                                  <p class="preview-instructions">All embedded diagrams, schematics, and configurations are packaged below. Click the button to download the full-resolution archive block.</p>
+                              </div>
+                          </div>
+
+                          <a href="../assets/figures/how-to-apply-it-to-future-containers/how-to-apply-it-to-future-containers.zip" class="download-btn" download>Download Asset Archive Bundle</a>
+                      </div>
+                  </details>
+              </div>
+            
         <p>To guarantee that any <strong>new</strong> containers you
         build in the future also default to vi, run this single command
         on your Proxmox host to update the global skeleton
@@ -1330,8 +1809,8 @@ Home Lab Install Procedure</h1>
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>echo 'export EDITOR="vi"' &gt;&gt; /etc/skel/.bashrc</p>
         </div></th>
         </tr>
@@ -1340,12 +1819,13 @@ Home Lab Install Procedure</h1>
         </tbody>
         </table>
         <p>Code 24: ExportVIasDefault.sh</p>
-        <p>Twingate Connector</p>
+        <h3 id="nav-twingate-connector">Twingate Connector</h3>
         <p>To safely disable password-based SSH logins and prevent
         brute-force attacks on Proxmox, you must <strong>verify your
         key-based login is working, modify the SSH daemon configuration,
         and restart the service</strong>.</p>
-        <p>Phase 1: Verify Your Current Setup</p>
+        <h4 id="nav-phase-1-verify-your-current-setup">Phase 1: Verify
+        Your Current Setup</h4>
         <p><strong>Keep your current session open.</strong> Do not close
         your active SSH window until you verify the new changes
         work.</p>
@@ -1354,54 +1834,82 @@ Home Lab Install Procedure</h1>
         <strong>Open</strong>.</p>
         <p><strong>Confirm success.</strong> Ensure you log in
         automatically without any password prompt before proceeding.</p>
-        <p>Phase 2: Modify the SSH Configuration File</p>
+        <h4 id="nav-phase-2-modify-the-ssh-configuration-file">Phase 2:
+        Modify the SSH Configuration File</h4>
         <p>In your active Proxmox terminal, open the SSH configuration
         file:</p>
         <p>vi /etc/ssh/sshd_config</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Press Ctrl + W to search for
         <strong>PasswordAuthentication</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Remove any # symbol from the beginning of the line to
         uncomment it.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Change the value from yes to no:</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>PasswordAuthentication no</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Press Ctrl + W to search for
         <strong>ChallengeResponseAuthentication</strong> (or
         <strong>KbdInteractiveAuthentication</strong> on newer Proxmox
         versions).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Ensure it is also set to no:</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>ChallengeResponseAuthentication no</p>
+        </div></li>
+        </ul>
         <p>Save and exit the file by pressing Ctrl + O, Enter, then Ctrl
-        + X. (<a
-        href="https://secure-bits.org/en/posts/linux/linux-ssh-absichern/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">SecureBits, n.d.</span></a>; <a
-        href="https://xtls.github.io/en/document/level-0/ch04-security.html"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">Project X, n.d.</span></a>; <a
-        href="https://docs.rackspace.com/docs/linux-server-security-best-practices"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">Rackspace, n.d.</span></a>; <a
-        href="https://docs.e2enetworks.com/docs/myaccount/security/enable_disable_passwordbased/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">E2E Networks, n.d.</span></a>; <a
-        href="https://www.digitalocean.com/community/tutorials/hardening-ssh-fail2ban"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">DigitalOcean, 2021</span></a>)</p>
-        <p><strong>Phase 3: Apply and Test the Changes</strong></p>
+        + X.</p>
+        <h4 id="nav-phase-3-apply-and-test-the-changes">Phase 3: Apply
+        and Test the Changes</h4>
         <p>Apply the new settings by restarting the SSH service:</p>
         <p>systemctl restart sshd</p>
         <p><strong>Keep this configuration window open.</strong></p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Launch a completely new instance of PuTTY.</p>
-        <p>Attempt to log in to your Proxmox server
-        <strong>without</strong> loading your private key.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Attempt to log in to your Proxmox server without loading your
+        private key.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Confirm the server rejects the connection with a No supported
         authentication methods available error.</p>
-        <p>Open another PuTTY window <strong>with</strong> your private
-        key loaded to confirm you can still access the server.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Open another PuTTY window with your private key loaded to
+        confirm you can still access the server.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>If both tests pass, you can safely close your original
         terminal window. Your Proxmox host is now immune to password
         brute-force attacks.</p>
-        <p>Post-Script Configuration Injection</p>
+        </div></li>
+        </ul>
+        <h3 id="nav-post-script-configuration-injection">Post-Script
+        Configuration Injection</h3>
         <p>Because helper scripts typically only create the primary
         interface (eth0 on vmbr0), you can instantly wire up your
         isolated backend (vmbr1), lock down your resource caps, and
@@ -1411,17 +1919,19 @@ Home Lab Install Procedure</h1>
         correctly.</p>
         <p>Run these directly on your Proxmox host terminal right after
         a script finishes:</p>
-        <p>1. For Home Assistant OS (VM 101)</p>
+        <h4 id="nav-home-assistant-os-vm-101">Home Assistant OS (VM
+        101)</h4>
         <p>Run this because you used the HAOS VM installer to attach
         your second isolated network adapter:</p>
         <table>
+        <caption>Code 25: HAOSPost.sh</caption>
         <colgroup>
-        <col style="width: 100%" />
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>&gt;&gt;&gt; BASH Script start<br />
         # Add the second network interface for the isolated 10.0.10.x
         backend<br />
@@ -1435,42 +1945,52 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <h3 id="nav-code-20-haospost.sh">Code 25: HAOSPost.sh</h3>
-        <h3
-        id="nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">2.
-        Pi-Hole Limits (Ensuring it uses the temporary staging IP)</h3>
+        <div class="custom-style-Code Code" data-custom-style="Code">
+        <p>Pi-Hole Limits (Ensuring it uses the temporary staging
+        IP)</p>
+        </div>
         <table>
+        <caption>Code 26: PiHolePost.sh</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>&gt;&gt;&gt; BASH Script start<br />
-        pct set 100 --cores 1 --memory 512 --net0
-        name=eth0,bridge=vmbr0,ip=192.168.86.249/24,gw=192.168.86.1<br />
-        pct restart 102<br />
-        pct restart 100<br />
-        &gt;&gt;&gt; BASH Script end</p>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>&gt;&gt;&gt; BASH Script start</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
+        <p>pct set 100 --cores 1 --memory 512 --net0
+        name=eth0,bridge=vmbr0,ip=192.168.86.249/24,gw=192.168.86.1</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
+        <p>pct restart 102</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
+        <p>pct restart 100</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
+        <p>&gt;&gt;&gt; BASH Script end</p>
         </div></th>
         </tr>
         </thead>
         <tbody>
         </tbody>
         </table>
-        <p>Code 26: PiHolePost.sh</p>
-        <p>3. For Ollama LLM Engine (LXC 103)</p>
+        <h4 id="nav-ollama-llm-engine-lxc-103">Ollama LLM Engine (LXC
+        103)</h4>
         <p>Run this right after the Ollama LXC script finishes to attach
         the isolated segment and map your 13th Gen Intel iGPU:</p>
         <table>
+        <caption>Code 27: OllamaHolePost.sh</caption>
         <colgroup>
-        <col style="width: 100%" />
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>&gt;&gt;&gt; BASH Script start<br />
         # 1. Attach the isolated network backend interface (eth1)<br />
         pct set 103 --net1 name=eth1,bridge=vmbr1,ip=10.0.10.3/24<br />
@@ -1495,17 +2015,15 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 27: OllamaHolePost.sh</p>
-        <p>New:</p>
+        <h4 id="nav-advanced-intel-oneapi-sycl-tuning-flags">Advanced
+        Intel oneAPI &amp; SYCL Tuning Flags</h4>
         <p>Append these environment flags directly to your Ollama
         service definition file (usually found
         at /etc/systemd/system/ollama.service.d/override.conf or
         directly inside your LXC startup script environment
         variables):</p>
-        <hr />
-        <p><strong>Advanced Intel oneAPI &amp; SYCL Tuning
-        Flags</strong></p>
         <p>Add the following environment lines to your deployment:</p>
+        <blockquote>
         <p># Force the Intel driver to bypass aggressive power savings
         and keep execution units alert</p>
         <p>NEOReadDebugKeys=1</p>
@@ -1519,17 +2037,20 @@ Home Lab Install Procedure</h1>
         virtualized container bridge</p>
         <p>OLLAMA_NUM_GPU=999</p>
         <p>GGML_OPENCL_PLATFORM=Intel</p>
-        <p>4. For Wyoming Docker (LXC 104)</p>
+        </blockquote>
+        <h4 id="nav-wyoming-docker-lxc-104">Wyoming Docker (LXC
+        104)</h4>
         <p>Run this to map the isolated network switch so it can talk
         privately to the Ollama API:</p>
         <table>
+        <caption>Code 28: WyomingPost.sh</caption>
         <colgroup>
-        <col style="width: 100%" />
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>&gt;&gt;&gt; BASH Script start<br />
         # Attach the isolated network backend interface (eth1)<br />
         pct set 104 --net1 name=eth1,bridge=vmbr1,ip=10.0.10.4/24<br />
@@ -1579,24 +2100,58 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 28: WyomingPost.sh</p>
-        <p>Disaster Recovery:</p>
-        <p>Text Configuration Backup Script</p>
+        <h2 id="nav-disaster-recovery">Disaster Recovery:</h2>
+        <h4 id="nav-text-configuration-backup-script">Text Configuration
+        Backup Script</h4>
         <p>To secure your precise resource layouts, network definitions,
         and maps, keep this custom backup tool saved on your host.</p>
-        <p>Creating the Host Backup Automator</p>
+              <div class="download-container">
+                  <details class="collapsible-download-box">
+                      <summary class="box-header">
+                          <span class="folder-icon">📂</span> Creating the Host Backup Automator
+                      </summary>
+                      <div class="box-body">
+                          <p>This automated bundle contains the baseline configurations, code layouts, and operational manifests tracked for this module.</p>
+                          
+                          <!-- Internal Preview Block Context -->
+                          <div class="asset-preview-pane">
+                              <h4 class="preview-title">👁️ Internal Asset Preview</h4>
+                              <div class="preview-gallery">
+                                  <!-- Your webpage will display images or file links here -->
+                                  <p class="preview-instructions">All embedded diagrams, schematics, and configurations are packaged below. Click the button to download the full-resolution archive block.</p>
+                              </div>
+                          </div>
+
+                          <a href="../assets/figures/creating-the-host-backup-automator/creating-the-host-backup-automator.zip" class="download-btn" download>Download Asset Archive Bundle</a>
+                      </div>
+                  </details>
+              </div>
+            
+        <div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Log into your Proxmox Host Shell.</p>
+        </div>
+        <div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Create the script file:</p>
+        </div>
+        <div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>vi /root/backup_all_configs.sh</p>
+        </div>
+        <div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Paste the following code:</p>
+        </div>
         <table>
+        <caption>Code 29: backup_all_configs.sh</caption>
         <colgroup>
         <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>#!/bin/bash<br />
         # Configuration<br />
         BACKUP_DIR="/var/lib/vz/dump/config_backups"<br />
@@ -1654,15 +2209,30 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 29: backup_all_configs.sh</p>
+        <div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Save and exit (ESC, :wq, Enter).</p>
+        </div>
+        <div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Make the script executable:</p>
+        </div>
+        <div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>chmod +x /root/backup_all_configs.sh</p>
+        </div>
         <p>Execute it at any time to output a fresh, timestamped config
         snapshot to your host storage directory:</p>
+        <div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>/var/lib/vz/dump/config_backups/</p>
-        <p>Tools to verify Installation and functionality</p>
-        <p>How to Quickly Verify Promox Container Configurations:</p>
+        </div>
+        <h2
+        id="nav-tools-to-verify-installation-and-functionality">Tools to
+        verify Installation and functionality</h2>
+        <h4
+        id="nav-how-to-quickly-verify-promox-container-configurations">How
+        to Quickly Verify Promox Container Configurations:</h4>
         <p>Sometimes a quick check is needed to verify if there is a
         problem. For example, you may want to know if a specific Proxmox
         container can see all your other containers.</p>
@@ -1671,16 +2241,17 @@ Home Lab Install Procedure</h1>
         paste in the following code. Or you can open Putty and select
         the Container you want. In that shell paste in the following
         code:</p>
-        <table style="width:99%;">
+        <table>
+        <caption>Code 30: QuickSystemTest.sh</caption>
         <colgroup>
-        <col style="width: 98%" />
+        <col style="width: 100%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p><strong>#!/bin/</strong>bash<br />
-        <strong>declare -A</strong> nodes=(<br />
+        <strong>declare</strong> -A nodes=(<br />
         ["Wyoming Docker"]="192.168.86.248"<br />
         ["Pi-hole"]="192.168.86.249"<br />
         ["Home Assistant"]="192.168.86.251"<br />
@@ -1720,7 +2291,6 @@ Home Lab Install Procedure</h1>
         <tbody>
         </tbody>
         </table>
-        <p>Code 30: QuickSystemTest.sh</p>
         <p>When you copy and run this simple script in a terminal of
         your Putty Shell, Proxmox host, or any Linux-based container it
         automatically verifies that every IP in your config is alive and
@@ -1729,9 +2299,10 @@ Home Lab Install Procedure</h1>
         against this output.</p>
         <p>After you run the above code block you will get an output
         like this.</p>
-        <table style="width:96%;">
+        <table>
+        <caption>Code 31: Quick System Test Response</caption>
         <colgroup>
-        <col style="width: 95%" />
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
@@ -1808,11 +2379,14 @@ Home Lab Install Procedure</h1>
         </tbody>
         </table>
         <ul>
-        <li><p>Code 31: Quick System Test Response</p></li>
-        <li><p>The check boxes show the hosts are correctly configured
-        and can communicate with each other.</p></li>
-        <li><p>References</p></li>
-        <li><p><strong>🌐 Cloudflare Resources</strong></p></li>
+        <li>The check boxes show the hosts are correctly configured and
+        can communicate with each other.</li>
+        </ul>
+        <h1 id="nav-references">References</h1>
+        <blockquote>
+        <p><strong>🌐 Cloudflare Resources</strong></p>
+        </blockquote>
+        <ul>
         <li><p><a
         href="https://developers.cloudflare.com/dns/manage-dns-records/"><span
         class="custom-style-Hyperlink Hyperlink"
@@ -1828,8 +2402,11 @@ Home Lab Install Procedure</h1>
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Cloudflare Docs: Route Incoming
         Emails with Email Routing</span></a></p></li>
-        <li><p><strong>🐧 Linux &amp; Proxmox VE
-        Resources</strong></p></li>
+        </ul>
+        <blockquote>
+        <p><strong>🐧 Linux &amp; Proxmox VE Resources</strong></p>
+        </blockquote>
+        <ul>
         <li><p><a
         href="https://pve.proxmox.com/wiki/Package_Repositories"><span
         class="custom-style-Hyperlink Hyperlink"
@@ -1843,8 +2420,12 @@ Home Lab Install Procedure</h1>
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Ubuntu Server Guide: Network
         Configuration</span></a></p></li>
-        <li><p><strong>🐳 Docker &amp; Containerization
-        Resources</strong></p></li>
+        </ul>
+        <blockquote>
+        <p><strong>🐳 Docker &amp; Containerization
+        Resources</strong></p>
+        </blockquote>
+        <ul>
         <li><p><a
         href="https://docs.docker.com/get-started/docker-overview/"><span
         class="custom-style-Hyperlink Hyperlink"
@@ -1854,8 +2435,12 @@ Home Lab Install Procedure</h1>
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Docker Docs: Multi-Container
         Orchestration via Docker Compose</span></a></p></li>
-        <li><p><strong>🏠 Home Assistant &amp; Wyoming
-        Protocols</strong></p></li>
+        </ul>
+        <blockquote>
+        <p><strong>🏠 Home Assistant &amp; Wyoming
+        Protocols</strong></p>
+        </blockquote>
+        <ul>
         <li><p><a
         href="https://www.home-assistant.io/installation/"><span
         class="custom-style-Hyperlink Hyperlink"
@@ -1866,8 +2451,12 @@ Home Lab Install Procedure</h1>
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Home Assistant Docs: Core
         Configuration Options and YAML Syntax</span></a></p></li>
-        <li><p><strong>🛑 Network Filtering, Remote Access &amp;
-        Security Resources</strong></p></li>
+        </ul>
+        <blockquote>
+        <p><strong>🛑 Network Filtering, Remote Access &amp; Security
+        Resources</strong></p>
+        </blockquote>
+        <ul>
         <li><p><a href="https://docs.pi-hole.net/"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Pi-hole Docs: Deployment and Core
@@ -1878,8 +2467,12 @@ Home Lab Install Procedure</h1>
         Access Architecture</span></a></p></li>
         <li><p>DigitalOcean Community: Hardening SSH Access via
         Fail2Ban, Nftables, and Cloud Firewalls</p></li>
-        <li><p><strong>🖥️ Developer Tools &amp; Productivity
-        Systems</strong></p></li>
+        </ul>
+        <blockquote>
+        <p><strong>🖥️ Developer Tools &amp; Productivity
+        Systems</strong></p>
+        </blockquote>
+        <ul>
         <li><p><a href="https://git-scm.com/doc"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Git Documentation: Reference
@@ -1896,8 +2489,11 @@ Home Lab Install Procedure</h1>
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Google Gemini API: Developer
         Overview and Integration Docs</span></a></p></li>
-        <li><p><strong>⚙️ Web Servers &amp; Local AI
-        Engines</strong></p></li>
+        </ul>
+        <blockquote>
+        <p><strong>⚙️ Web Servers &amp; Local AI Engines</strong></p>
+        </blockquote>
+        <ul>
         <li><p><a href="https://nginx.org/en/docs/"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">NGINX Core Docs: Reverse Proxy and
@@ -1910,8 +2506,12 @@ Home Lab Install Procedure</h1>
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Intel® Graphics Compute Runtime
         for GitHub Codebase (NEO)</span></a></p></li>
-        <li><p><strong>💻 Hardware Specifications &amp; Vendor
-        Documentation</strong></p></li>
+        </ul>
+        <blockquote>
+        <p><strong>💻 Hardware Specifications &amp; Vendor
+        Documentation</strong></p>
+        </blockquote>
+        <ul>
         <li><p><a
         href="https://www.intel.com/content/www/us/en/support.html"><span
         class="custom-style-Hyperlink Hyperlink"
@@ -1921,8 +2521,6 @@ Home Lab Install Procedure</h1>
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Kamrui Support: Mini PC Support
         and Systems Overview</span></a></p></li>
-        <li></li>
-        <li></li>
         </ul>
       </article>
     </div>

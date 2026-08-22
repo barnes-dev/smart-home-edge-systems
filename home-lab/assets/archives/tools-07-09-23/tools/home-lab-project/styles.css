@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>$title$</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-LLK7685ZGC');
+    </script>
+    <link rel="stylesheet" href="/styles/global.css">
+    
+    <style>
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2.5rem;
+            margin-top: 2rem;
+            align-items: start;
+        }
+        
+        .sidebar-toc {
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Styling Pandoc's auto-generated list structure */
+        .sidebar-toc ul {
+            list-style: none;
+            padding-left: 1.25rem;
+            margin: 0;
+        }
+        
+        /* Correctly targets the true root list generated inside Pandoc's nav wrapper */
+        .sidebar-toc nav#TOC > ul {
+            padding-left: 0;
+        }
+        
+        .sidebar-toc li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-toc a {
+            color: #bfdbfe;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+        
+        .sidebar-toc a:hover {
+            color: #eaf4ff;
+            text-decoration: underline;
+        }
+
+        .document-content {
+            color: #eaf4ff;
+            line-height: 1.7;
+        }
+
+        /* Automatically indent all bulleted and numbered lists in the document */
+        .document-content ul, 
+        .document-content ol {
+            padding-left: 2rem;      /* Pushes the entire list block to the right */
+            margin-top: 0.75rem;     /* Adds clean spacing above the list */
+            margin-bottom: 0.75rem;  /* Adds clean spacing below the list */
+        }
+
+        /* Ensure nested lists (sub-bullets) indent even further */
+        .document-content ul ul, 
+        .document-content ol ol,
+        .document-content ul ol,
+        .document-content ol ul {
+            padding-left: 1.5rem;
+            margin-top: 0.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Add breathing room between individual list items */
+        .document-content li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Style blockquotes (for text paragraphs indented using Quote styles in Word) */
+        .document-content blockquote {
+            padding-left: 1.5rem;
+            border-left: 4px solid #3498db; /* Adds a nice vertical blue accent line */
+            color: #94a3b8;                 /* Slightly dims the text color for contrast */
+            margin: 1.5rem 0;
+        }
+        
+        /* Ensure code blocks look great on the right side */
+        .document-content pre {
+            background: #1e1e1e;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 1.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-toc {
+                position: relative;
+                top: 0;
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <div id="menu-placeholder"></div>
+
+    <main style="padding: 2rem; max-width: 1400px; margin: 0 auto;">
+        <p style="margin-bottom: 1rem;">
+            <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">&#8592; Back to Home Lab Hub</a>
+        </p>
+        <h1 style="color: #eaf4ff; margin-bottom: 1.5rem; font-size: 2rem;">$title$</h1>
+        
+        <div class="doc-layout">
+            
+            <aside class="sidebar-toc">
+                <h2 style

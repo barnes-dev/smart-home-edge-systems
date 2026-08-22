@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>$title$</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-LLK7685ZGC');
+    </script>
+    <link rel="stylesheet" href="/styles/global.css">
+    
+    <style>
+        .doc-layout {
+            display: grid;
+            /* Widened the left column to 450px (~4 inches) */
+            grid-template-columns: 450px 1fr;
+            gap: 2.5rem;
+            margin-top: 2rem;
+            align-items: start;
+        }
+        
+        .sidebar-toc {
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Styling Pandoc's auto-generated list structure */
+        .sidebar-toc ul {
+            list-style: none;
+            padding-left: 1.25rem;
+            margin: 0;
+        }
+        .sidebar-toc > ul {
+            padding-left: 0;
+        }
+        .sidebar-toc li {
+            margin-bottom: 0.5rem;
+        }
+        .sidebar-toc a {
+            color: #bfdbfe;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+        .sidebar-toc a:hover {
+            color: #eaf4ff;
+            text-decoration: underline;
+        }
+
+        .document-content {
+            color: #eaf4ff;
+            line-height: 1.7;
+        }
+        
+        /* Modernized Code block layout matching the script regex output */
+        .document-content pre {
+            background: #1e1e1e;
+            padding: 1.25rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .document-content pre code {
+            font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #eaf4ff;
+            line-height: 1.5;
+        }
+
+        /* Codeblock Language Badges on top-right edge */
+        .document-content pre[class*="language-"]::before {
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            font-family: sans-serif;
+        }
+
+        .document-content pre.language-powershell::before { content: "POWERSHELL"; border-bottom: 1px solid #10b981; }
+        .document-content pre.language-css::before { content: "CSS"; border-bottom: 1px solid #3b82f6; }
+        .document-content pre.language-html::before { content: "HTML"; border-bottom: 1px solid #f97316; }
+        .document-content pre.language-yaml::before { content: "YAML"; border-bottom: 1px solid #a855f7; }
+        .document-content pre.language-plaintext::before { content: "TEXT"; }
+
+        /* Left border accent line linked to language profiles */
+        .document-content pre.language-powershell { border-left: 3px solid #10b981; }
+        .document-content pre.language-css { border-left: 3px solid #3b82f6; }
+        .document-content pre.language-html { border-left: 3px solid #f97316; }
+        .document-content pre.language-yaml { border-left: 3px solid #a855f7; }
+
+        /* CUSTOM TABLE SIZE & LEFT JUSTIFICATION */
+        .document-content table {
+            width: auto;
+            max-width: 850px;
+            margin: 1.5rem 0;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        .document-content th, 
+        .document-content td {
+            padding: 10px 16px;         
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Preserve tabs and spacing formatting inside table cells natively */
+        .document-content td {
+            white-space: pre-wrap;      
+        }
+
+        .document-content th {
+            background: rgba(191, 219, 254, 0.1); 
+            color: #bfdbfe;
+            font-weight: 600;
+        }
+
+        /* FORCE ALL IMAGES AND CAPTIONS TO BE LEFT ALIGNED */
+        .document-content img {
+            display: block;
+            margin-left: 0 !important;
+            margin-right: auto !important;
+            text-align: left;
+        }
+
+        .document-content p.caption,
+        .document-content .caption,
+        .document-content figcaption {
+            text-align: left !important;
+            margin-left: 0 !important;
+            margin-top: 0.5rem;
+            color: #94a3b8;
+        }
+
+        .document-content tr:hover {
+            background: rgba(255, 255, 255, 0.04); 
+        }
+
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-toc {
+                position: relative;
+                top: 0;
+                max-height: none;
+                overflow-y: visible;
+            }
+            .document-content table {
+                width: 100%;            
+                display: block;
+                overflow-x: auto;       
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
+        
+        <p style="margin-bottom: 1.5rem; text-align: left;">
+            <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Home Lab</a>
+            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+            <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Back</a>
+            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+            <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Gateway</a>
+        </p>
+
+        <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
+            <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">$title$</h1>
+            <h2 style="color: #bfdbfe; margin: 0 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
+            <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
+        </div>
+        
+        <div class="doc-layout">
+            
+            <aside class="sidebar-toc">
+                <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
+                $toc$
+            </aside>
+
+            <article class="document-content">
+                $body$
+            </article>
+
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="/scripts/component-loader.js"></script>
+</body>
+</html>

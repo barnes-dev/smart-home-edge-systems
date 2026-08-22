@@ -1,0 +1,104 @@
+
+I want linux to tell synology to sleep, i want it to shutdown on LL. i want it to poll wifi. * linux has ethernet and wifi). i want linux to run a restart script that cycles internet ( wifi ) and then wait 1 minute then cycle smartthings.
+
+This advanced, multi-network automation is completely possible using your Linux machine as the central coordinator. Since your Linux box has both Ethernet and Wi-Fi, we can isolate the networks: Ethernet handles your local infrastructure (Synology and SmartThings), while Wi-Fi tests and handles the internet recovery.
+Here is the complete blueprint to orchestrate this logic flow.
+
+Step 1: The Linux Network Strategy
+To make this reliable, you must ensure your Linux routing table doesn't get confused by having two active network interfaces.
+  Ethernet (eth0): Hardwired to your local network switch. This interface must be configured without a default gateway so it only handles local IP traffic (talking to Synology, SmartThings, and your UPS).
+  Wi-Fi (wlan0): Connected to your main Wi-Fi network. This interface must hold the default gateway, forcing all external internet traffic (pings to the outside world) to go through the Wi-Fi chip.
+
+Step 2: The UPS Core Logic (Synology Standby & Low Battery Shutdown)
+As configured earlier, your Linux server runs the NUT master service.
+Synology Standby: 
+  In your Synology DSM interface (Control Panel > Hardware & Power > UPS), set the time-based countdown to a short window (e.g., 2 to 5 minutes).
+
+When power drops, the Linux NUT server broadcasts the power failure. The Synology countdown triggers, safely unmounting its drives and slipping into its low-power standby "Safe Mode."
+
+Linux Low Battery Shutdown: Your Linux server ignores the short timer and remains fully operational on battery. It will continue running the internet monitoring script below until the UPS battery drops to its physical low-voltage threshold, at which point the NUT daemon executes its native SHUTDOWNCMD.
+
+Step 3: The Unified Internet Recovery Script
+This script runs on your Linux box. It forces all ping tests to route through your Wi-Fi interface. If the internet fails, it drops your Wi-Fi connection to attempt a local software reset, waits, and then instructs your SmartThings Z-Wave plug to cycle.
+Create the script file on your Linux machine:
+  bash
+  sudo nano /usr/local/bin/network_watchdog.sh
+
+Paste the following automated script. Note: Ensure you update your SmartThings API Token, Z-Wave Plug Device ID, and your local Wi-Fi interface name (usually wlan0).
+  bash
+  #!/bin/bash
+
+  # Configuration Parameters
+  TARGET_IP="8.8.8.8"
+  WIFI_INTERFACE="wlan0"  # Change to your actual Linux Wi-Fi interface name
+  ST_TOKEN="YOUR_SMARTTHINGS_BEARER_TOKEN"
+  ST_DEVICE_ID="YOUR_Z_WAVE_PLUG_DEVICE_ID"
+
+  echo "Executing Network Watchdog..."
+
+  # 1. Force the ping to route EXCLUSIVELY through the Wi-Fi interface
+  if ! ping -I "$WIFI_INTERFACE" -c 3 -W 5 "$TARGET_IP" > /dev/null 2>&1; then
+      echo "Internet failure detected on Wi-Fi interface!"
+      
+      # 2. Cycle local Linux Wi-Fi interface first to clear local software locks
+      echo "Restarting Linux Wi-Fi interface..."
+      sudo ip link set "$WIFI_INTERFACE" down
+      sleep 10
+      sudo ip link set "$WIFI_INTERFACE" up
+      
+      # Wait 45 seconds for Linux to reconnect to the Wi-Fi access point
+      echo "Waiting for Wi-Fi reconnection..."
+      sleep 45
+      
+      # 3. Re-test internet after local Wi-Fi reset. If still dead, proceed to hardware cycle.
+      if ! ping -I "$WIFI_INTERFACE" -c 3 -W 5 "$TARGET_IP" > /dev/null 2>&1; then
+          echo "Internet still dead. Initiating SmartThings Z-Wave power cycle..."
+          
+          # 4. Turn off the SmartThings Z-Wave plug powering your router/modem
+          curl -X POST -s -H "Authorization: Bearer $ST_TOKEN" -H "Content-Type: application/json" \
+               -d '{"commands": [{"component": "main", "capability": "switch", "command": "off"}]}' \
+               https://smartthings.com > /dev/null
+               
+          # 5. Wait exactly 1 minute (60 seconds) as requested
+          echo "Modem/Router powered off. Waiting 60 seconds..."
+          sleep 60
+          
+          # 6. Turn the SmartThings Z-Wave plug back ON
+          echo "Powering Modem/Router back on via SmartThings..."
+          curl -X POST -s -H "Authorization: Bearer $ST_TOKEN" -H "Content-Type: application/json" \
+               -d '{"commands": [{"component": "main", "capability": "switch", "command": "on"}]}' \
+               https://smartthings.com > /dev/null
+               
+          echo "Power cycle complete. Allowing network time to boot..."
+      else
+          echo "Local Linux Wi-Fi cycle resolved the issue. Internet restored."
+      fi
+  else
+      echo "Internet connection on Wi-Fi is perfectly healthy."
+  fi
+
+Save and close the file (Ctrl+O, Enter, Ctrl+X), then make it executable:
+  bash
+  sudo chmod +x /usr/local/bin/network_watchdog.sh
+
+Step 4: Schedule the Automated Check
+To give your modem and router plenty of time to finish booting up after a hard reset, configure this script to run every 15 minutes.
+Open your system's automation scheduler:
+  bash
+  crontab -e
+  Use code with caution.
+  Add this execution rule to the very bottom of the file:
+  text
+  */15 * * * * /usr/local/bin/network_watchdog.sh
+
+
+Step 5: Handle the SmartThings "Offline" Safety Net
+Because the SmartThings command travels over the internet, a critical safety issue arises: If your modem is completely locked up, the internet is down, meaning the Linux box cannot send the "Turn ON" command to SmartThings via the cloud API.
+To prevent your network from being permanently stuck in an "OFF" state, you must change a hardware parameter on your Z-Wave plug.
+  Open your SmartThings app and locate your Z-Wave plug.
+  Go to its Settings / Device Options.
+  Look for a setting called "Auto Turn-On Timer" or "Auto-Off Disabled / Auto-On Enabled" (varies by brand like Zooz or Aeotec).
+  Set the plug to automatically turn itself back ON after 60 seconds if it ever receives an OFF command.
+
+By enabling this hardware-level feature on the plug itself, the Linux box only needs to successfully transmit the initial "OFF" command while the internet is failing. Even if the internet cuts out immediately after, the Z-Wave plug's internal firmware countdown will guarantee your router turns back on 60 seconds later.
+
