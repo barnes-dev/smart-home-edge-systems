@@ -1,1052 +1,1366 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3 Home Lab DNS Procedure</title>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
-    <script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3-home-lab-dns-procedure</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+  <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-LLK7685ZGC');
-    </script>
-    <link rel="stylesheet" href="/styles/global.css">
+  </script>
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    .doc-layout {
+      display: grid;
+      grid-template-columns: 450px 1fr;
+      gap: 2.5rem;
+      margin-top: 2rem;
+      align-items: start;
+    }
+    [custom-style="TextBlock"], 
+    .TextBlock, 
+    .textblock, 
+    .code, 
+    .Code, 
+    span[data-custom-style="TextBlock"],
+    p[custom-style="TextBlock"] {
+        background: #1e1e1e !important;         /* Matches your dark code/box theme */
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Subtle dark-mode border */
+        border-left: 4px solid #3182ce !important;              /* Accent left border (or keep your preferred color) */
+        padding: 16px !important;               /* Creates internal breathing room */
+        line-height: 1.1 !important;           /* Keeps text lines tightly grouped */
+        display: block !important;              /* Forces the inline element to act like a box */
+        width: 100% !important;                 /* Spans the box structure across the viewport */
+        max-width: 850px !important;            /* Restricts maximum box width to look clean */
+        margin: 1.5rem 0 !important;            /* Vertical margins separate it from normal body text */
+        color: #eaf4ff !important;                     /* Matches your light text color */
+        border-radius: 6px !important;          /* Gives the box sleek, rounded corners */
+    }
+    .sidebar-toc {
+      position: sticky;
+      top: 2rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .sidebar-toc ul {
+      list-style: none;
+      padding-left: 1.25rem;
+      margin: 0;
+    }
+    .sidebar-toc > ul {
+      padding-left: 0;
+    }
+    .sidebar-toc li {
+      margin-bottom: 0.5rem;
+    }
+    .sidebar-toc a {
+      color: #bfdbfe;
+      text-decoration: none;
+      transition: color 0.2s;
+      font-size: 0.95rem;
+    }
+    .sidebar-toc a:hover {
+      color: #eaf4ff;
+      text-decoration: underline;
+    }
+    .document-content {
+      color: #eaf4ff;
+      line-height: 1.7;
+    }
+    .document-content pre {
+      background: #1e1e1e;
+      padding: 1.25rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    .document-content pre code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: #eaf4ff;
+      line-height: 1.5;
+    }
+    .document-content pre[class*="language-"]::before {
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-family: sans-serif;
+    }
+    .document-content pre.language-powershell::before { content: "POWERSHELL"; border-bottom: 1px solid #10b981; }
+    .document-content pre.language-css::before { content: "CSS"; border-bottom: 1px solid #3b82f6; }
+    .document-content pre.language-html::before { content: "HTML"; border-bottom: 1px solid #f97316; }
+    .document-content pre.language-yaml::before { content: "YAML"; border-bottom: 1px solid #a855f7; }
+    .document-content pre.language-plaintext::before { content: "TEXT"; }
     
-    <style>
-        .doc-layout {
-            display: grid;
-            /* Widened the left column to 450px (~4 inches) */
-            grid-template-columns: 450px 1fr;
-            gap: 2.5rem;
-            margin-top: 2rem;
-            align-items: start;
-        }
-        
-        .sidebar-toc {
-            position: sticky;
-            top: 2rem;
-            max-height: calc(100vh - 4rem);
-            overflow-y: auto;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    .document-content pre.language-powershell { border-left: 3px solid #10b981; }
+    .document-content pre.language-css { border-left: 3px solid #3b82f6; }
+    .document-content pre.language-html { border-left: 3px solid #f97316; }
+    .document-content pre.language-yaml { border-left: 3px solid #a855f7; }
 
-        /* Styling Pandoc's auto-generated list structure */
-        .sidebar-toc ul {
-            list-style: none;
-            padding-left: 1.25rem;
-            margin: 0;
-        }
-        .sidebar-toc > ul {
-            padding-left: 0;
-        }
-        .sidebar-toc li {
-            margin-bottom: 0.5rem;
-        }
-        .sidebar-toc a {
-            color: #bfdbfe;
-            text-decoration: none;
-            transition: color 0.2s;
-            font-size: 0.95rem;
-        }
-        .sidebar-toc a:hover {
-            color: #eaf4ff;
-            text-decoration: underline;
-        }
+    .document-content table {
+      width: auto;
+      max-width: 850px;
+      margin: 1.5rem 0;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      text-align: left;
+    }
+    .document-content th, .document-content td {
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .document-content td {
+      white-space: pre-wrap;
+    }
+    .document-content th {
+      background: rgba(191, 219, 254, 0.1);
+      color: #bfdbfe;
+      font-weight: 600;
+    }
+    .document-content img {
+      display: block;
+      margin-left: 0 !important;
+      margin-right: auto !important;
+      text-align: left;
+    }
+    .document-content p.caption, .document-content .caption, .document-content figcaption {
+      text-align: left !important;
+      margin-left: 0 !important;
+      margin-top: 0.5rem;
+      color: #94a3b8;
+    }
+    .document-content tr:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
 
-        .document-content {
-            color: #eaf4ff;
-            line-height: 1.7;
-        }
-        
-        /* Modernized Code block layout matching the script regex output */
-        .document-content pre {
-            background: #1e1e1e;
-            padding: 1.25rem;
-            border-radius: 6px;
-            overflow-x: auto;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 1.5rem 0;
-            position: relative;
-        }
+    /* ========================================================================== */
+    /* # COLLAPSIBLE DOWNLOAD BOX LAYOUT INTEGRATION                              */
+    /* ========================================================================== # */
+    .download-container {
+      margin: 1.5rem 0;
+      max-width: 850px;
+    }
+    .collapsible-download-box {
+      background: #1e1e1e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .collapsible-download-box[open] {
+      border: 1px solid rgba(191, 219, 254, 0.3);
+    }
+    .box-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      color: #bfdbfe;
+      background: rgba(191, 219, 254, 0.05);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .box-header::-webkit-details-marker {
+      display: none;
+    }
+    .box-header:hover {
+      background: rgba(191, 219, 254, 0.12);
+      color: #eaf4ff;
+    }
+    .folder-icon {
+      margin-right: 12px;
+      font-size: 1.1rem;
+    }
+    .box-body {
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.15);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      animation: expandReveal 0.2s ease-out;
+    }
+    .box-body p {
+      margin: 0 0 1rem 0;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+    .download-btn {
+      display: inline-block;
+      background: #3182ce;
+      color: #ffffff !important;
+      padding: 8px 16px;
+      text-decoration: none !important;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      transition: background 0.15s ease;
+    }
+    .download-btn:hover {
+      background: #2b6cb0;
+    }
+    @keyframes expandReveal {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-        .document-content pre code {
-            font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: #eaf4ff;
-            line-height: 1.5;
-        }
-
-        /* Codeblock Language Badges on top-right edge */
-        .document-content pre[class*="language-"]::before {
-            position: absolute;
-            top: 4px;
-            right: 8px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.35);
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            font-family: sans-serif;
-        }
-
-        .document-content pre.language-powershell::before { content: "POWERSHELL"; border-bottom: 1px solid #10b981; }
-        .document-content pre.language-css::before { content: "CSS"; border-bottom: 1px solid #3b82f6; }
-        .document-content pre.language-html::before { content: "HTML"; border-bottom: 1px solid #f97316; }
-        .document-content pre.language-yaml::before { content: "YAML"; border-bottom: 1px solid #a855f7; }
-        .document-content pre.language-plaintext::before { content: "TEXT"; }
-
-        /* Left border accent line linked to language profiles */
-        .document-content pre.language-powershell { border-left: 3px solid #10b981; }
-        .document-content pre.language-css { border-left: 3px solid #3b82f6; }
-        .document-content pre.language-html { border-left: 3px solid #f97316; }
-        .document-content pre.language-yaml { border-left: 3px solid #a855f7; }
-
-        /* CUSTOM TABLE SIZE & LEFT JUSTIFICATION */
-        .document-content table {
-            width: auto;
-            max-width: 850px;
-            margin: 1.5rem 0;
-            border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-            text-align: left;
-        }
-
-        .document-content th, 
-        .document-content td {
-            padding: 10px 16px;         
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Preserve tabs and spacing formatting inside table cells natively */
-        .document-content td {
-            white-space: pre-wrap;      
-        }
-
-        .document-content th {
-            background: rgba(191, 219, 254, 0.1); 
-            color: #bfdbfe;
-            font-weight: 600;
-        }
-
-        /* FORCE ALL IMAGES AND CAPTIONS TO BE LEFT ALIGNED */
-        .document-content img {
-            display: block;
-            margin-left: 0 !important;
-            margin-right: auto !important;
-            text-align: left;
-        }
-
-        .document-content p.caption,
-        .document-content .caption,
-        .document-content figcaption {
-            text-align: left !important;
-            margin-left: 0 !important;
-            margin-top: 0.5rem;
-            color: #94a3b8;
-        }
-
-        .document-content tr:hover {
-            background: rgba(255, 255, 255, 0.04); 
-        }
-
-        @media (max-width: 768px) {
-            .doc-layout {
-                grid-template-columns: 1fr;
-            }
-            .sidebar-toc {
-                position: relative;
-                top: 0;
-                max-height: none;
-                overflow-y: visible;
-            }
-            .document-content table {
-                width: 100%;            
-                display: block;
-                overflow-x: auto;       
-            }
-        }
-    </style>
+    @media (max-width: 768px) {
+      .doc-layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar-toc {
+        position: relative;
+        top: 0;
+        max-height: none;
+        overflow-y: visible;
+      }
+      .document-content table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="header-placeholder"></div>
+  <div id="header-placeholder"></div>
+  <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
+    <p style="margin-bottom: 1.5rem; text-align: left;">
+      <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">→Home Lab</a>
+      <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+      <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">→Back</a>
+      <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+      <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">→Gateway</a>
+    </p>
 
-    <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
+    <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">3-home-lab-dns-procedure</h1>
+      <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
+      <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
+    </div>
+
+    <div class="doc-layout">
+      <aside class="sidebar-toc">
+        <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
+        <ul>
+        <li><a href="#nav-basic-home-lab-configuration"
+        id="nav-toc-basic-home-lab-configuration">Basic Home Lab
+        Configuration</a>
+        <ul>
+        <li><a
+        href="#nav-a-home-lab-self-contained-in-a-single-mini-computer."
+        id="nav-toc-a-home-lab-self-contained-in-a-single-mini-computer.">A
+        Home Lab self-contained in a single mini-computer.</a>
+        <ul>
+        <li><a
+        href="#nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram"
+        id="nav-toc-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">
+
+            $FigureIndex++
+
+            "Figure ${FigureIndex}:"
+         Proxmox VE 9.2.3 / Minicomputer Architecture &amp; Network
+        Diagram<span
+        class="custom-style-annotation reference annotation reference"
+        data-custom-style="annotation reference"></span></a></li>
+        <li><a href="#nav-code-barnes-home-lab-configuration"
+        id="nav-toc-code-barnes-home-lab-configuration">
+
+            $CodeIndex++
+
+            "Code ${CodeIndex}:"
+         Barnes
+        Home Lab Configuration</a></li>
+        </ul></li>
+        <li><a href="#nav-setting-up-a-domain-name"
+        id="nav-toc-setting-up-a-domain-name">Setting up a Domain
+        Name</a>
+        <ul>
+        <li><a href="#nav-step-1-register-your-new-domain"
+        id="nav-toc-step-1-register-your-new-domain">Step 1: Register
+        Your New Domain</a></li>
+        <li><a href="#nav-step-2-access-your-new-dns-dashboard"
+        id="nav-toc-step-2-access-your-new-dns-dashboard">Step 2: Access
+        Your New DNS Dashboard</a></li>
+        </ul></li>
+        <li><a href="#nav-setting-up-a-public-repository-on-github"
+        id="nav-toc-setting-up-a-public-repository-on-github">Setting up
+        a Public Repository on Github</a>
+        <ul>
+        <li><a href="#nav-step-1-create-a-public-repository"
+        id="nav-toc-step-1-create-a-public-repository">Step 1: Create a
+        Public Repository</a></li>
+        <li><a href="#nav-step-2-upload-your-files"
+        id="nav-toc-step-2-upload-your-files">Step 2: Upload Your
+        Files</a></li>
+        <li><a href="#nav-step-3-turn-on-github-pages"
+        id="nav-toc-step-3-turn-on-github-pages">Step 3: Turn on GitHub
+        Pages</a></li>
+        <li><a href="#nav-step-4-install-github-desltop"
+        id="nav-toc-step-4-install-github-desltop">Step 4: Install
+        Github Desltop</a></li>
+        <li><a href="#nav-step-5-share-your-files-and-site"
+        id="nav-toc-step-5-share-your-files-and-site">Step 5: Share Your
+        Files and Site</a></li>
+        </ul></li>
+        <li><a href="#nav-pointing-cloudfare-to-git-hub"
+        id="nav-toc-pointing-cloudfare-to-git-hub">Pointing Cloudfare to
+        Git Hub</a>
+        <ul>
+        <li><a href="#nav-step-1-configure-dns-records-in-cloudflare"
+        id="nav-toc-step-1-configure-dns-records-in-cloudflare">Step 1:
+        Configure DNS Records in Cloudflare</a>
+        <ul>
+        <li><a href="#nav-figure-cloudflare-dns-configuration"
+        id="nav-toc-figure-cloudflare-dns-configuration">
+
+            $FigureIndex++
+
+            "Figure ${FigureIndex}:"
         
-        <p style="margin-bottom: 1.5rem; text-align: left;">
-            <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Home Lab</a>
-            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
-            <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Back</a>
-            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
-            <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Gateway</a>
-        </p>
+        Cloudflare DNS Configuration</a></li>
+        </ul></li>
+        <li><a href="#nav-step-2-configure-your-custom-domain-in-github"
+        id="nav-toc-step-2-configure-your-custom-domain-in-github">Step
+        2: Configure Your Custom Domain in GitHub</a></li>
+        <li><a href="#nav-step-3.-enable-email-routing"
+        id="nav-toc-step-3.-enable-email-routing">Step 3. Enable Email
+        Routing</a></li>
+        <li><a href="#nav-step-4.-custom-email-return-address-in-gmail"
+        id="nav-toc-step-4.-custom-email-return-address-in-gmail">Step
+        4. Custom Email Return Address in Gmail</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-references"
+        id="nav-toc-references">References</a></li>
+        </ul>
+      </aside>
 
-        <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-            <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">3
-Home Lab DNS Procedure</h1>
-            <h2 style="color: #bfdbfe; margin: 0 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
-            <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
+      <article class="document-content">
+        <figure>
+        <img
+        src="../assets/figures/3-home-lab-dns-procedure/media/image1.png"
+        style="width:6.5in;height:3.54545in"
+        alt=": Your Home in the Clouds!" />
+        <figcaption aria-hidden="true">: Your Home in the
+        Clouds!</figcaption>
+        </figure>
+        <h1 id="nav-basic-home-lab-configuration">Basic Home Lab
+        Configuration</h1>
+        <h3
+        id="nav-a-home-lab-self-contained-in-a-single-mini-computer.">A
+        Home Lab self-contained in a single mini-computer.</h3>
+        <p><img
+        src="../assets/figures/3-home-lab-dns-procedure/media/image2.png"
+        style="width:6.5in;height:3.54834in" /></p>
+        <h4
+        id="nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">
+
+            $FigureIndex++
+
+            "Figure ${FigureIndex}:"
+         Proxmox VE 9.2.3 / Minicomputer Architecture &amp; Network
+        Diagram<span
+        class="custom-style-annotation reference annotation reference"
+        data-custom-style="annotation reference"></span></h4>
+        <p>Note: If you want to use this information in an AI window –
+        select this section into your chat window to reference the
+        entire configuration<span
+        class="custom-style-annotation reference annotation reference"
+        data-custom-style="annotation reference"></span>. This can be
+        helpful if you want to ask any AI questions regarding your Home
+        Lab configuration. Just tell your AI client "gemini" to load
+        this config your reference in your conversation. It might be
+        helpful to tell your AI conversation:</p>
+        <blockquote>
+        <p>"Please start a clean conversation, flush all buffers and
+        caches and then load this config for reference."</p>
+        </blockquote>
+        <table>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>=========================================================================</p>
         </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>Barnes Home Lab Configuration</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
+        4.9GHz)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>Proxmox VE 9.2.3 / Dedicated Ethernet / Intel Core
+        i7-13620H</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>Integrated GPU: Intel UHD Graphics (13th Gen) / 1TB PCIe NVMe
+        SSD</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>=========================================================================</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>[ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2 Threads for
+        overhead ]</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ 192.168.86.250</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>├──► [ VM 101 ] HOME ASSISTANT OS (HAOS)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── RAM: 4 GB (Dedicated)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── STO: 32 GB - 64 GB NVMe</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── 192.168.86.251 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ └── 10.0.10.1/24 - Isolated Backend Segment (vmbr1 -</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ No Gateway/DNS Emulation) eth1</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>├──► [ LXC 100 ] DNSMASQ SERVER (PiHole)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── CPU: 1 Core (vCPU)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── RAM: 512 MB (Ultra-lightweight)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── STO: 2 GB NVMe</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ └── 192.168.86.254 (Currently .249 until production
+        release)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>├──► [ LXC 102 ] NGINX PROXY MANAGER</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── RAM: 1 GB (Scalable)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── STO: 8 GB (OS) + Mount point to external storage for
+        media</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ └── 192.168.86.252</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>├──► [ LXC 103 ] OLLAMA LLM ENGINE</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── CPU: 6 Cores (vCPUs) ---&gt; (Uses high-perf Intel
+        P-Cores)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── GPU Passthru: Vulkan0 Intel(R) Graphics (RPL-P)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ type=iGPU total=23.3 GiB Ram</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── RAM: 16 GB (Allows up to 8B/11B parameter models)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── STO: 40 GB NVMe --------&gt; (Large capacity for model
+        weights)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── LAM: gemma3:4b ---------&gt; Multimodal (Vision) &amp;
+        128K Context Window</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── LAM: phi4-mini:latest --&gt; Logic, Intense Reasoning,
+        &amp; Tool Calling</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── LAM: qwen2.5-coder:7b --&gt; Complex Automation
+        Engineering,</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ Code Sandbox, &amp; YAML Chat</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── LAM: qwen2.5-coder:1.5b -&gt; Inline IDE Autocomplete
+        Engine</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ (Fed via Desktop on LAN)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── LAM: nomic-embed-text --&gt; Vector Embeddings &amp;
+        Local</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ Document Context Parsing</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── 192.168.86.253 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ └── 10.0.10.3/24 - Isolated Backend Segment (vmbr1 - No</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ Gateway/DNS Emulation) eth1</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>├──► [ LXC 104 ] WYOMING-DOCKER</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── RAM: 2 GB (Scalable)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── STO: 10 GB (OS) + Mount point to external storage
+        for</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ media</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── ports: 10200:10200</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── volumes: piper-data:/data</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ ├── 192.168.86.248 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>│ └── 10.0.10.4/24 - Isolated Backend Segment (vmbr1)
+        eth1</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>└──► [ LXC 105 ] TWINGATE CONNECTOR</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>├── CPU: 1 Core (vCPU)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>├── RAM: 512 MB (Ultra-lightweight)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>├── STO: 2 GB NVMe (OS Only)</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>└── 192.168.86.247 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>(Routes 192.168.86.0/24 Securely)</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h4 id="nav-code-barnes-home-lab-configuration">
+
+            $CodeIndex++
+
+            "Code ${CodeIndex}:"
+         Barnes
+        Home Lab Configuration</h4>
+        <h2 id="nav-setting-up-a-domain-name">Setting up a Domain
+        Name</h2>
+        <p>Reserve your spot now if you think you want to present an
+        image to the external world. Names are unique to the individual
+        person or company. Cost can influence your Domain Name. I have
+        found that a .us domain costs around $7 US dollars per year.
+        That is probably the cheapest you can find. I have a reference
+        paper that you can read in helping you decide what extension you
+        want. I also have found the cheapest overall solution is to skip
+        the middleman (can introduce unknown costs and make the creation
+        and decision more complicated). Read my paper called <a
+        href="../../smart-home-edge-systems/home-lab/reference/choosing-your-domain-name.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Choosing a Domain Name</span></a>.
+        Here are the steps, when you are ready to register your Domain
+        Name.</p>
+        <ol type="1">
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Create an account on <a href="https://github.com"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">GitHub</span></a> if you don't
+        already have one.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Create an account on <a
+        href="https://dash.cloudflare.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Cloudfare.com</span></a></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Point the connector to your GitHub account for login purposes
+        to simplify authentication.</p>
+        </div></li>
+        </ol>
+        <h3 id="nav-step-1-register-your-new-domain">Step 1: Register
+        Your New Domain</h3>
+        <p>Cloudflare operates as an official domain registrar, selling
+        domain names at wholesale cost without added markups.</p>
+        <ol type="1">
+        <li><p>Log in to your <a
+        href="https://dash.cloudflare.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Cloudflare
+        Dashboard</span></a>.</p></li>
+        <li><p>On the left sidebar of your account home page, click
+        <strong>Domain Registration</strong> &gt; <strong>Register
+        Domains</strong>.</p></li>
+        <li><p>Type the domain name you want in the search bar and press
+        <strong>Enter</strong>.</p></li>
+        <li><p>Check the availability list. Click <strong>Add to
+        cart</strong> next to your preferred extension (e.g., .com,
+        .org, .net).</p></li>
+        <li><p>Click <strong>Purchase Now</strong>.</p></li>
+        <li><p>Select your registration term length (e.g., 1 year) and
+        fill out your <strong>Contact Information</strong> (required by
+        ICANN for domain ownership logs). Cloudflare provides free WHOIS
+        privacy, so your personal details will stay hidden from the
+        public.</p></li>
+        <li><p>Enter your payment details and click <strong>Finalize
+        Checkout</strong>.</p></li>
+        </ol>
+        <h3 id="nav-step-2-access-your-new-dns-dashboard">Step 2: Access
+        Your New DNS Dashboard</h3>
+        <p>Because you bought the domain directly through Cloudflare,
+        the nameservers are already configured automatically. You do not
+        need to change any registrar settings to start using it.</p>
+        <ol type="1">
+        <li><p>Go back to your main <strong>Cloudflare
+        Dashboard</strong> home page.</p></li>
+        <li><p>Click on your newly purchased domain name from your
+        website list.</p></li>
+        <li><p>In the left sidebar, navigate to <strong>DNS</strong>
+        &gt; <strong>Records</strong>.</p></li>
+        <li><p>From the active DNS management pane, click <strong>Add
+        Record</strong> to point your new domain to your web host,
+        GitHub Pages, or an email provider using the exact setup steps
+        described previously.</p></li>
+        </ol>
+        <h2 id="nav-setting-up-a-public-repository-on-github">Setting up
+        a Public Repository on Github</h2>
+        <p>To share files and host a web page on GitHub, you need to
+        create a <strong>repository</strong>, upload your files, and
+        activate <strong>GitHub Pages</strong>.</p>
+        <p>Follow this step-by-step process to get everything up and
+        running.</p>
+        <h3 id="nav-step-1-create-a-public-repository">Step 1: Create a
+        Public Repository</h3>
+        <p>GitHub Pages requires a public repository to host web pages
+        for free.</p>
+        <p>Log in to your <a href="https://github.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">GitHub account</span></a>.</p>
+        <p>Click the <strong>+</strong> (plus) icon in the top-right
+        corner and select <strong>New repository</strong>.</p>
+        <p>Configure your repository settings:</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Repository name</strong>: Type a name (e.g.,
+        home-lab-site).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Public/Private</strong>: Select
+        <strong>Public</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Initialize this repository with</strong>: Check the
+        box for <strong>Add a README file</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Click <strong>Create repository</strong>.</p>
+        </div></li>
+        </ul>
+        <h3 id="nav-step-2-upload-your-files">Step 2: Upload Your
+        Files</h3>
+        <p>Your main web page must be named exactly index.html (all
+        lowercase, and no spaces) for GitHub to recognize it as the
+        homepage.</p>
+        <p>Since you don’t have any files yet just skip this step for
+        now:</p>
+        <blockquote>
+        <p>Inside your new repository</p>
+        </blockquote>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>click the <strong>Add file</strong> dropdown button and
+        choose <strong>Upload files</strong>.</p>
+        </div></li>
+        </ul>
+        <blockquote>
+        <p>Drag and drop your website files into the box. Ensure your
+        main page is named index.html. You can also drop any other files
+        (like PDFs, images, or ZIPs) you want to share.</p>
+        <p>Scroll down to <strong>Commit changes</strong></p>
+        </blockquote>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>add a short note describing your upload and click
+        <strong>Commit changes</strong>.</p>
+        </div></li>
+        </ul>
+        <h3 id="nav-step-3-turn-on-github-pages">Step 3: Turn on GitHub
+        Pages</h3>
+        <p>Now, tell GitHub to turn those uploaded files into a live
+        website.</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Click the <strong>Settings</strong> tab at the top of your
+        repository.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>In the left-hand sidebar menu, scroll down to the <em>Code
+        and automation</em> section and click
+        <strong>Pages</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Under <strong>Build and deployment</strong> &gt;
+        <strong>Source</strong>, keep it set to <strong>Deploy from a
+        branch</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Under <strong>Branch</strong>, click the dropdown that says
+        <em>None</em>, change it to <strong>main</strong> (or
+        <em>master</em>), leave the folder as / (root), and click
+        <strong>Save</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Wait about 1 to 2 minutes. Refresh the page, and a live link
+        will appear at the top of the Pages section (e.g.,
+        https://github.io).</p>
+        </div></li>
+        </ul>
+        <h3 id="nav-step-4-install-github-desltop">Step 4: Install
+        Github Desltop</h3>
+        <p><strong>Its time to install Github Desltop and sync it to
+        your Git Repository</strong></p>
+        <blockquote>
+        <p><strong>Step 1: Install and Authenticate</strong></p>
+        </blockquote>
+        <ol type="1">
+        <li><p><strong>Download the Installer:</strong> Go to <a
+        href="https://desktop.github.com/"><u>desktop.github.com</u></a>
+        and download the version for your operating system (macOS or
+        Windows).</p></li>
+        <li><p><strong>Run the Setup:</strong> Open the downloaded file
+        and follow the standard installation prompts.</p></li>
+        <li><p><strong>Sign In:</strong> Once it opens, you will be
+        prompted to sign into your account. Click <strong>Sign in to
+        GitHub.com</strong></p></li>
+        <li><p><strong>Authorize:</strong> This will open your web
+        browser. Confirm your credentials and click <strong>Authorize
+        desktop</strong>. Your browser will then ask for permission to
+        redirect you back to the application.</p></li>
+        </ol>
+        <blockquote>
+        <p><strong>Step 2: Connect Your Repository</strong></p>
+        <p>Depending on whether your repository already exists on GitHub
+        or only exists as a folder on your computer, choose
+        <strong>one</strong> of the methods below. We will be using the
+        cloning method (Option A) since we do not have any web pages
+        yet.</p>
+        <p><strong>Option A: If your repository is already on GitHub
+        (Cloning)</strong></p>
+        <p><em>This is the most common path if you created the repo on
+        the website first.</em></p>
+        </blockquote>
+        <ol type="1">
+        <li><p>In GitHub Desktop, go to the top menu and select
+        <strong>File &gt; Clone Repository</strong>.</p></li>
+        <li><p>Click the <strong>GitHub.com</strong> tab. You will see a
+        list of all your online repositories.</p></li>
+        <li><p>Select your repository from the list.</p></li>
+        <li><p>Choose the <strong>Local Path</strong> (the folder on
+        your computer where you want the project files to
+        live).</p></li>
+        <li><p>Click <strong>Clone</strong>.</p></li>
+        </ol>
+        <blockquote>
+        <p><strong>Option B: If the folder is only on your computer
+        (Adding &amp; Publishing)</strong></p>
+        <p><em>Use this if you have a local project folder that you want
+        to upload to GitHub for the first time.</em></p>
+        </blockquote>
+        <ol type="1">
+        <li><p>Go to <strong>File &gt; Add Local
+        Repository</strong>.</p></li>
+        <li><p>Browse and select your project's folder, then click
+        <strong>Add Repository</strong>.</p></li>
+        <li><p>If it isn't a Git repository yet, the app will ask if you
+        want to initialize it. Click <strong>Create a
+        repository</strong>.</p></li>
+        <li><p>Once added, look at the top bar and click <strong>Publish
+        repository</strong> to push it to your online GitHub
+        account.</p></li>
+        </ol>
+        <blockquote>
+        <p><strong>Step 3: Syncing Your Changes Going
+        Forward</strong></p>
+        <p>To keep your local computer and your online GitHub repository
+        perfectly in sync, you will follow a simple 3-step loop whenever
+        you do work:</p>
+        <p>[ Your Code Changes ] ──&gt; [ Commit (Save Locally) ] ──&gt;
+        [ Push (Sync to GitHub) ]</p>
+        </blockquote>
+        <ol type="1">
+        <li><p><strong>Make Changes:</strong> Edit, add, or delete files
+        in your project folder using your favorite code editor. GitHub
+        Desktop will automatically track these changes in the left
+        sidebar under the <strong>Changes</strong> tab.</p></li>
+        <li><p><strong>Commit Your Changes:</strong> * At the bottom of
+        the left sidebar, write a short summary of what you changed
+        (e.g., "Updated home page text").</p>
+        <ul>
+        <li>Click the blue <strong>Commit to main</strong> (or master)
+        button. This saves a snapshot of your work <em>locally</em> on
+        your computer.</li>
+        </ul></li>
+        <li><p><strong>Push to GitHub:</strong> Look at the top menu
+        bar. Click <strong>Push origin</strong>. This uploads your local
+        commits to the cloud on GitHub.com.</p></li>
+        </ol>
+        <blockquote>
+        <p>💡 <strong>Pro-Tip:</strong> Before you start working next
+        time, always click the <strong>Fetch origin</strong> (or
+        <strong>Pull origin</strong>) button at the top. This downloads
+        any changes made to the GitHub repository (like updates made
+        from another computer or by a teammate) so your local files stay
+        up to date.</p>
+        </blockquote>
+        <h3 id="nav-step-5-share-your-files-and-site">Step 5: Share Your
+        Files and Site</h3>
+        <p><strong>To share the live website</strong>: Give people the
+        URL generated in <strong>Step 3</strong>.</p>
+        <p><strong>To share direct file downloads</strong>: Append the
+        exact file name to your website URL. For example, if you
+        uploaded a file named brochure.pdf, your shareable download link
+        is:<br />
+        https://github.io</p>
+        <h2 id="nav-pointing-cloudfare-to-git-hub">Pointing Cloudfare to
+        Git Hub</h2>
+        <p>To point a custom domain managed by
+        <strong>Cloudflare</strong> to a <strong>GitHub Pages</strong>
+        web page, you need to configure specific <strong>DNS
+        records</strong> in Cloudflare and input your domain inside your
+        <strong>GitHub repository settings</strong>.</p>
+        <p>Follow this complete step-by-step walkthrough to link your
+        domain.</p>
+        <h3 id="nav-step-1-configure-dns-records-in-cloudflare">Step 1:
+        Configure DNS Records in Cloudflare</h3>
+        <p>First, you need to map your root domain (e.g., example.com)
+        and your subdomain (e.g., www.example.com) to GitHub's
+        infrastructure.</p>
+        <ol type="1">
+        <li><p>Log in to your <a
+        href="https://dash.cloudflare.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Cloudflare Dashboard</span></a>
+        and select your domain name.</p></li>
+        <li><p>In the left-hand sidebar, navigate to
+        <strong>DNS</strong> &gt; <strong>Records</strong>.</p></li>
+        <li><p>Delete any existing A or CNAME records that are currently
+        pointing your root (@) or www subdomains to another
+        host.</p></li>
+        <li><p>Add four separate <strong>A records</strong> for your
+        root domain using GitHub’s official IP addresses:</p>
+        <ul>
+        <li><p>Click <strong>Add Record</strong>, choose Type
+        <strong>A</strong>, set the Name to @, <strong>Proxy
+        status</strong> set to <strong>DNS Only</strong> (grey cloud),
+        and input the IPv4 address 185.199.108.153.</p></li>
+        <li><p>Repeat this process to add the remaining three IP
+        addresses:</p>
+        <ul>
+        <li><p>185.199.109.153</p></li>
+        <li><p>185.199.110.153</p></li>
+        <li><p>185.199.111.153</p></li>
+        </ul></li>
+        </ul></li>
+        <li><p>Add a <strong>CNAME record</strong> to handle traffic
+        arriving via www:</p>
+        <ul>
+        <li>Click <strong>Add Record</strong>, choose Type
+        <strong>CNAME</strong>, set the Name to www, and set the Target
+        to your default GitHub Pages URL (e.g.,
+        yourusername.github.io).</li>
+        </ul></li>
+        <li><p><strong>Add MX Records (Mail Exchange</strong></p></li>
+        </ol>
+        <blockquote>
+        <p><strong>You must delete any existing MX records from previous
+        email hosts and add three separate Cloudflare MX
+        records:</strong></p>
+        <p><strong>Type Mail Server Priority</strong></p>
+        <p><strong>MX @ route3.mx.cloudflare.net 45</strong></p>
+        <p><strong>MX @ Route2.mx.cloudflare.net 19</strong></p>
+        <p><strong>MX @ route1.mx.cloudflare.net 2</strong></p>
+        </blockquote>
+        <ol start="7" type="1">
+        <li><strong>Add SPF Record (Sender Policy
+        Framework)</strong></li>
+        </ol>
+        <blockquote>
+        <p><strong>This TXT record authorizes Cloudflare to safely
+        forward your emails without major email providers (like Gmail)
+        flagging them as spam.</strong></p>
+        <p><strong>Type: TXT</strong></p>
+        <p>**Name: <span class="citation" data-cites="*">@*</span>*</p>
+        <p><strong>Value: "v=spf1 include:_spf.mx.cloudflare.net
+        ~all"</strong></p>
+        <p><strong>Note: You are only allowed to have one SPF record on
+        your root domain. If you already have an existing SPF record
+        (for example, from Google Workspace or Microsoft 365), you must
+        merge them together by inserting</strong></p>
+        <p><strong>include:_spf.mx.cloudflare.net right before the ~all
+        or -all tag.</strong></p>
+        </blockquote>
+        <ol start="8" type="1">
+        <li><strong>Find the Value in Your Settings</strong></li>
+        </ol>
+        <!-- -->
+        <ol type="1">
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Log in to the Cloudflare Dashboard and select your
+        domain name.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>In the left-hand sidebar, click Compute &gt; Email
+        Service &gt; Email Routing.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Click on the Settings tab at the top of the
+        page.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Scroll down to the DNS records section.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Look for the row where the record name begins with
+        cf2024-1._domainkey.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Click on that row to expand it, and copy the full
+        value string (the long text code starting with v=DKIM1;
+        p=).</strong></p>
+        </div></li>
+        </ol>
+        <!-- -->
+        <ol start="9" type="1">
+        <li><strong>Publish the Record to Your DNS</strong></li>
+        </ol>
+        <blockquote>
+        <p><strong>If Cloudflare doesn't add it automatically, or if you
+        prefer to publish it manually:</strong></p>
+        </blockquote>
+        <ol type="1">
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>In the left sidebar of your dashboard, click DNS &gt;
+        Records.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Click the Add record button.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Set the Type dropdown to TXT.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>In the Name field, type exactly:
+        cf2024-1._domainkey.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>In the Content (or Value) field, paste the long text
+        string you just copied from your Email Routing
+        settings.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Leave the TTL on Auto, make sure Proxy Status is set
+        to DNS Only (grey cloud), and click Save.</strong></p>
+        </div></li>
+        </ol>
+        <!-- -->
+        <ol start="10" type="1">
+        <li><strong>Important Proxy Status Rule</strong>: Ensure the
+        <strong>Proxy status</strong> toggle for all five newly created
+        records is set to <strong>DNS Only</strong> (grey cloud) during
+        the initial setup. This allows GitHub to verify the domain
+        ownership and successfully issue an SSL certificate. You should
+        change this to <em>Proxied</em> (orange cloud) later to enforce
+        Cloudflare's security protections.</li>
+        </ol>
+        <p><img
+        src="../assets/figures/3-home-lab-dns-procedure/media/image3.png"
+        style="width:6.66011in;height:3.08127in" /></p>
+        <h4 id="nav-figure-cloudflare-dns-configuration">
+
+            $FigureIndex++
+
+            "Figure ${FigureIndex}:"
         
-        <div class="doc-layout">
-            
-            <aside class="sidebar-toc">
-                <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
-                <ul>
-                <li><a href="#nav-basic-home-lab-configuration"
-                id="nav-toc-basic-home-lab-configuration">Basic Home Lab
-                Configuration</a>
-                <ul>
-                <li><a
-                href="#nav-a-home-lab-self-contained-in-a-single-mini-computer."
-                id="nav-toc-a-home-lab-self-contained-in-a-single-mini-computer.">A
-                Home Lab self-contained in a single mini-computer.</a>
-                <ul>
-                <li><a
-                href="#nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram"
-                id="nav-toc-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure
-                2: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
-                Network Diagram</a></li>
-                <li><a href="#nav-code-barnes-home-lab-configuration"
-                id="nav-toc-code-barnes-home-lab-configuration">Code :
-                Barnes Home Lab Configuration</a></li>
-                </ul></li>
-                <li><a href="#nav-setting-up-a-domain-name"
-                id="nav-toc-setting-up-a-domain-name">Setting up a
-                Domain Name</a>
-                <ul>
-                <li><a href="#nav-step-1-register-your-new-domain"
-                id="nav-toc-step-1-register-your-new-domain">Step 1:
-                Register Your New Domain</a></li>
-                <li><a href="#nav-step-2-access-your-new-dns-dashboard"
-                id="nav-toc-step-2-access-your-new-dns-dashboard">Step
-                2: Access Your New DNS Dashboard</a></li>
-                </ul></li>
-                <li><a
-                href="#nav-setting-up-a-public-repository-on-github"
-                id="nav-toc-setting-up-a-public-repository-on-github">Setting
-                up a Public Repository on Github</a>
-                <ul>
-                <li><a href="#nav-step-1-create-a-public-repository"
-                id="nav-toc-step-1-create-a-public-repository">Step 1:
-                Create a Public Repository</a></li>
-                <li><a href="#nav-step-2-upload-your-files"
-                id="nav-toc-step-2-upload-your-files">Step 2: Upload
-                Your Files</a></li>
-                <li><a href="#nav-step-3-turn-on-github-pages"
-                id="nav-toc-step-3-turn-on-github-pages">Step 3: Turn on
-                GitHub Pages</a></li>
-                <li><a href="#nav-step-4-install-github-desltop"
-                id="nav-toc-step-4-install-github-desltop">Step 4:
-                Install Github Desltop</a></li>
-                <li><a href="#nav-step-5-share-your-files-and-site"
-                id="nav-toc-step-5-share-your-files-and-site">Step 5:
-                Share Your Files and Site</a></li>
-                </ul></li>
-                <li><a href="#nav-pointing-cloudfare-to-git-hub"
-                id="nav-toc-pointing-cloudfare-to-git-hub">Pointing
-                Cloudfare to Git Hub</a>
-                <ul>
-                <li><a
-                href="#nav-step-1-configure-dns-records-in-cloudflare"
-                id="nav-toc-step-1-configure-dns-records-in-cloudflare">Step
-                1: Configure DNS Records in Cloudflare</a>
-                <ul>
-                <li><a href="#nav-figure-cloudflare-dns-configuration"
-                id="nav-toc-figure-cloudflare-dns-configuration">Figure
-                : Cloudflare DNS Configuration</a></li>
-                </ul></li>
-                <li><a
-                href="#nav-step-2-configure-your-custom-domain-in-github"
-                id="nav-toc-step-2-configure-your-custom-domain-in-github">Step
-                2: Configure Your Custom Domain in GitHub</a></li>
-                <li><a href="#nav-step-3.-enable-email-routing"
-                id="nav-toc-step-3.-enable-email-routing">Step 3. Enable
-                Email Routing</a></li>
-                <li><a
-                href="#nav-step-4.-custom-email-return-address-in-gmail"
-                id="nav-toc-step-4.-custom-email-return-address-in-gmail">Step
-                4. Custom Email Return Address in Gmail</a></li>
-                </ul></li>
-                </ul></li>
-                <li><a href="#nav-references"
-                id="nav-toc-references">References</a></li>
-                </ul>
-            </aside>
-
-            <article class="document-content">
-                <figure>
-                <img
-                src="../assets/figures/3-home-lab-dns-procedure/Figure-1-YourHomeintheClouds.png"
-                style="width:6.5in;height:3.54545in"
-                alt=": Your Home in the Clouds!" />
-                <figcaption aria-hidden="true">: Your Home in the
-                Clouds!</figcaption>
-                </figure>
-                <h1 id="nav-basic-home-lab-configuration">Basic Home Lab
-                Configuration</h1>
-                <h3
-                id="nav-a-home-lab-self-contained-in-a-single-mini-computer.">A
-                Home Lab self-contained in a single mini-computer.</h3>
-                <p><img
-                src="../assets/figures/3-home-lab-dns-procedure/image2.png"
-                style="width:6.5in;height:3.54834in" /></p>
-                <h4
-                id="nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure 1: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
-                Network Diagram</h4>
-                <p>Note: If you want to use this information in an AI
-                window – select this section into your chat window to
-                reference the entire configuration. This can be helpful
-                if you want to ask any AI questions regarding your Home
-                Lab configuration. Just tell your AI client "gemini" to
-                load this config your reference in your conversation. It
-                might be helpful to tell your AI conversation:</p>
-                <blockquote>
-                <p>"Please start a clean conversation, flush all buffers
-                and caches and then load this config for reference."</p>
-                </blockquote>
-                <table>
-                <colgroup>
-                <col style="width: 101%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th><p>=========================================================================</p>
-                <p>Barnes Home Lab Configuration</p>
-                <p>KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
-                4.9GHz)</p>
-                <p>Proxmox VE 9.2.3 / Dedicated Ethernet / Intel Core
-                i7-13620H</p>
-                <p>Integrated GPU: Intel UHD Graphics (13th Gen) / 1TB
-                PCIe NVMe SSD</p>
-                <p>=========================================================================</p>
-                <p>[ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2
-                Threads for overhead ]</p>
-                <p>│ 192.168.86.250</p>
-                <p>├──► [ VM 101 ] HOME ASSISTANT OS (HAOS)</p>
-                <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-                <p>│ ├── RAM: 4 GB (Dedicated)</p>
-                <p>│ ├── STO: 32 GB - 64 GB NVMe</p>
-                <p>│ ├── 192.168.86.251 - Primary LAN Segment (vmbr0)
-                eth0</p>
-                <p>│ └── 10.0.10.1/24 - Isolated Backend Segment (vmbr1
-                -</p>
-                <p>│ No Gateway/DNS Emulation) eth1</p>
-                <p>├──► [ LXC 100 ] DNSMASQ SERVER (PiHole)</p>
-                <p>│ ├── CPU: 1 Core (vCPU)</p>
-                <p>│ ├── RAM: 512 MB (Ultra-lightweight)</p>
-                <p>│ ├── STO: 2 GB NVMe</p>
-                <p>│ └── 192.168.86.254 (Currently .249 until production
-                release)</p>
-                <p>├──► [ LXC 102 ] NGINX PROXY MANAGER</p>
-                <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-                <p>│ ├── RAM: 1 GB (Scalable)</p>
-                <p>│ ├── STO: 8 GB (OS) + Mount point to external
-                storage for media</p>
-                <p>│ └── 192.168.86.252</p>
-                <p>├──► [ LXC 103 ] OLLAMA LLM ENGINE</p>
-                <p>│ ├── CPU: 6 Cores (vCPUs) ---&gt; (Uses high-perf
-                Intel P-Cores)</p>
-                <p>│ ├── GPU Passthru: Vulkan0 Intel(R) Graphics
-                (RPL-P)</p>
-                <p>│ type=iGPU total=23.3 GiB Ram</p>
-                <p>│ ├── RAM: 16 GB (Allows up to 8B/11B parameter
-                models)</p>
-                <p>│ ├── STO: 40 GB NVMe --------&gt; (Large capacity
-                for model weights)</p>
-                <p>│ ├── LAM: gemma3:4b ---------&gt; Multimodal
-                (Vision) &amp; 128K Context Window</p>
-                <p>│ ├── LAM: phi4-mini:latest --&gt; Logic, Intense
-                Reasoning, &amp; Tool Calling</p>
-                <p>│ ├── LAM: qwen2.5-coder:7b --&gt; Complex Automation
-                Engineering,</p>
-                <p>│ Code Sandbox, &amp; YAML Chat</p>
-                <p>│ ├── LAM: qwen2.5-coder:1.5b -&gt; Inline IDE
-                Autocomplete Engine</p>
-                <p>│ (Fed via Desktop on LAN)</p>
-                <p>│ ├── LAM: nomic-embed-text --&gt; Vector Embeddings
-                &amp; Local</p>
-                <p>│ Document Context Parsing</p>
-                <p>│ ├── 192.168.86.253 - Primary LAN Segment (vmbr0)
-                eth0</p>
-                <p>│ └── 10.0.10.3/24 - Isolated Backend Segment (vmbr1
-                - No</p>
-                <p>│ Gateway/DNS Emulation) eth1</p>
-                <p>├──► [ LXC 104 ] WYOMING-DOCKER</p>
-                <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-                <p>│ ├── RAM: 2 GB (Scalable)</p>
-                <p>│ ├── STO: 10 GB (OS) + Mount point to external
-                storage for</p>
-                <p>│ media</p>
-                <p>│ ├── ports: 10200:10200</p>
-                <p>│ ├── volumes: piper-data:/data</p>
-                <p>│ ├── 192.168.86.248 - Primary LAN Segment (vmbr0)
-                eth0</p>
-                <p>│ └── 10.0.10.4/24 - Isolated Backend Segment (vmbr1)
-                eth1</p>
-                <p>└──► [ LXC 105 ] TWINGATE CONNECTOR</p>
-                <p>├── CPU: 1 Core (vCPU)</p>
-                <p>├── RAM: 512 MB (Ultra-lightweight)</p>
-                <p>├── STO: 2 GB NVMe (OS Only)</p>
-                <p>└── 192.168.86.247 - Primary LAN Segment (vmbr0)
-                eth0</p>
-                <p>(Routes 192.168.86.0/24 Securely)</p></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                </table>
-                <h4 id="nav-code-barnes-home-lab-configuration">Code 1:
-                Barnes Home Lab Configuration</h4>
-                <h2 id="nav-setting-up-a-domain-name">Setting up a
-                Domain Name</h2>
-                <p>Reserve your spot now if you think you want to
-                present an image to the external world. Names are unique
-                to the individual person or company. Cost can influence
-                your Domain Name. I have found that a .us domain costs
-                around $7 US dollars per year. That is probably the
-                cheapest you can find. I have a reference paper that you
-                can read in helping you decide what extension you want.
-                I also have found the cheapest overall solution is to
-                skip the middleman (can introduce unknown costs and make
-                the creation and decision more complicated). Read my
-                paper called <a
-                href="../../smart-home-edge-systems/home-lab/reference/choosing-your-domain-name.html">Choosing
-                a Domain Name</a>. Here are the steps, when you are
-                ready to register your Domain Name.</p>
-                <ol type="1">
-                <li><p>Create an account on <a
-                href="https://github.com">GitHub</a> if you don't
-                already have one.</p></li>
-                <li><p>Create an account on <a
-                href="https://dash.cloudflare.com/">Cloudfare.com</a></p></li>
-                <li><p>Point the connector to your GitHub account for
-                login purposes to simplify authentication.</p></li>
-                </ol>
-                <h3 id="nav-step-1-register-your-new-domain">Step 1:
-                Register Your New Domain</h3>
-                <p>Cloudflare operates as an official domain registrar,
-                selling domain names at wholesale cost without added
-                markups.</p>
-                <ol type="1">
-                <li><p>Log in to your <a
-                href="https://dash.cloudflare.com/">Cloudflare
-                Dashboard</a>.</p></li>
-                <li><p>On the left sidebar of your account home page,
-                click <strong>Domain Registration</strong> &gt;
-                <strong>Register Domains</strong>.</p></li>
-                <li><p>Type the domain name you want in the search bar
-                and press <strong>Enter</strong>.</p></li>
-                <li><p>Check the availability list. Click <strong>Add to
-                cart</strong> next to your preferred extension (e.g.,
-                .com, .org, .net).</p></li>
-                <li><p>Click <strong>Purchase Now</strong>.</p></li>
-                <li><p>Select your registration term length (e.g., 1
-                year) and fill out your <strong>Contact
-                Information</strong> (required by ICANN for domain
-                ownership logs). Cloudflare provides free WHOIS privacy,
-                so your personal details will stay hidden from the
-                public.</p></li>
-                <li><p>Enter your payment details and click
-                <strong>Finalize Checkout</strong>.</p></li>
-                </ol>
-                <h3 id="nav-step-2-access-your-new-dns-dashboard">Step
-                2: Access Your New DNS Dashboard</h3>
-                <p>Because you bought the domain directly through
-                Cloudflare, the nameservers are already configured
-                automatically. You do not need to change any registrar
-                settings to start using it.</p>
-                <ol type="1">
-                <li><p>Go back to your main <strong>Cloudflare
-                Dashboard</strong> home page.</p></li>
-                <li><p>Click on your newly purchased domain name from
-                your website list.</p></li>
-                <li><p>In the left sidebar, navigate to
-                <strong>DNS</strong> &gt;
-                <strong>Records</strong>.</p></li>
-                <li><p>From the active DNS management pane, click
-                <strong>Add Record</strong> to point your new domain to
-                your web host, GitHub Pages, or an email provider using
-                the exact setup steps described previously.</p></li>
-                </ol>
-                <h2
-                id="nav-setting-up-a-public-repository-on-github">Setting
-                up a Public Repository on Github</h2>
-                <p>To share files and host a web page on GitHub, you
-                need to create a <strong>repository</strong>, upload
-                your files, and activate <strong>GitHub
-                Pages</strong>.</p>
-                <p>Follow this step-by-step process to get everything up
-                and running.</p>
-                <h3 id="nav-step-1-create-a-public-repository">Step 1:
-                Create a Public Repository</h3>
-                <p>GitHub Pages requires a public repository to host web
-                pages for free.</p>
-                <p>Log in to your <a href="https://github.com/">GitHub
-                account</a>.</p>
-                <p>Click the <strong>+</strong> (plus) icon in the
-                top-right corner and select <strong>New
-                repository</strong>.</p>
-                <p>Configure your repository settings:</p>
-                <ul>
-                <li><p><strong>Repository name</strong>: Type a name
-                (e.g., home-lab-site).</p></li>
-                <li><p><strong>Public/Private</strong>: Select
-                <strong>Public</strong>.</p></li>
-                <li><p><strong>Initialize this repository with</strong>:
-                Check the box for <strong>Add a README
-                file</strong>.</p></li>
-                <li><p>Click <strong>Create
-                repository</strong>.</p></li>
-                </ul>
-                <h3 id="nav-step-2-upload-your-files">Step 2: Upload
-                Your Files</h3>
-                <p>Your main web page must be named exactly index.html
-                (all lowercase, and no spaces) for GitHub to recognize
-                it as the homepage.</p>
-                <p>Since you don’t have any files yet just skip this
-                step for now:</p>
-                <blockquote>
-                <p>Inside your new repository</p>
-                </blockquote>
-                <ul>
-                <li>click the <strong>Add file</strong> dropdown button
-                and choose <strong>Upload files</strong>.</li>
-                </ul>
-                <blockquote>
-                <p>Drag and drop your website files into the box. Ensure
-                your main page is named index.html. You can also drop
-                any other files (like PDFs, images, or ZIPs) you want to
-                share.</p>
-                <p>Scroll down to <strong>Commit changes</strong></p>
-                </blockquote>
-                <ul>
-                <li>add a short note describing your upload and click
-                <strong>Commit changes</strong>.</li>
-                </ul>
-                <h3 id="nav-step-3-turn-on-github-pages">Step 3: Turn on
-                GitHub Pages</h3>
-                <p>Now, tell GitHub to turn those uploaded files into a
-                live website.</p>
-                <ul>
-                <li><p>Click the <strong>Settings</strong> tab at the
-                top of your repository.</p></li>
-                <li><p>In the left-hand sidebar menu, scroll down to the
-                <em>Code and automation</em> section and click
-                <strong>Pages</strong>.</p></li>
-                <li><p>Under <strong>Build and deployment</strong> &gt;
-                <strong>Source</strong>, keep it set to <strong>Deploy
-                from a branch</strong>.</p></li>
-                <li><p>Under <strong>Branch</strong>, click the dropdown
-                that says <em>None</em>, change it to
-                <strong>main</strong> (or <em>master</em>), leave the
-                folder as / (root), and click
-                <strong>Save</strong>.</p></li>
-                <li><p>Wait about 1 to 2 minutes. Refresh the page, and
-                a live link will appear at the top of the Pages section
-                (e.g., https://github.io).</p></li>
-                </ul>
-                <h3 id="nav-step-4-install-github-desltop">Step 4:
-                Install Github Desltop</h3>
-                <p><strong>Its time to install Github Desltop and sync
-                it to your Git Repository</strong></p>
-                <blockquote>
-                <p><strong>Step 1: Install and Authenticate</strong></p>
-                </blockquote>
-                <ol type="1">
-                <li><p><strong>Download the Installer:</strong> Go to <a
-                href="https://desktop.github.com/"><u>desktop.github.com</u></a>
-                and download the version for your operating system
-                (macOS or Windows).</p></li>
-                <li><p><strong>Run the Setup:</strong> Open the
-                downloaded file and follow the standard installation
-                prompts.</p></li>
-                <li><p><strong>Sign In:</strong> Once it opens, you will
-                be prompted to sign into your account. Click
-                <strong>Sign in to GitHub.com</strong></p></li>
-                <li><p><strong>Authorize:</strong> This will open your
-                web browser. Confirm your credentials and click
-                <strong>Authorize desktop</strong>. Your browser will
-                then ask for permission to redirect you back to the
-                application.</p></li>
-                </ol>
-                <blockquote>
-                <p><strong>Step 2: Connect Your Repository</strong></p>
-                <p>Depending on whether your repository already exists
-                on GitHub or only exists as a folder on your computer,
-                choose <strong>one</strong> of the methods below. We
-                will be using the cloning method (Option A) since we do
-                not have any web pages yet.</p>
-                <p><strong>Option A: If your repository is already on
-                GitHub (Cloning)</strong></p>
-                <p><em>This is the most common path if you created the
-                repo on the website first.</em></p>
-                </blockquote>
-                <ol type="1">
-                <li><p>In GitHub Desktop, go to the top menu and select
-                <strong>File &gt; Clone Repository</strong>.</p></li>
-                <li><p>Click the <strong>GitHub.com</strong> tab. You
-                will see a list of all your online
-                repositories.</p></li>
-                <li><p>Select your repository from the list.</p></li>
-                <li><p>Choose the <strong>Local Path</strong> (the
-                folder on your computer where you want the project files
-                to live).</p></li>
-                <li><p>Click <strong>Clone</strong>.</p></li>
-                </ol>
-                <blockquote>
-                <p><strong>Option B: If the folder is only on your
-                computer (Adding &amp; Publishing)</strong></p>
-                <p><em>Use this if you have a local project folder that
-                you want to upload to GitHub for the first
-                time.</em></p>
-                </blockquote>
-                <ol type="1">
-                <li><p>Go to <strong>File &gt; Add Local
-                Repository</strong>.</p></li>
-                <li><p>Browse and select your project's folder, then
-                click <strong>Add Repository</strong>.</p></li>
-                <li><p>If it isn't a Git repository yet, the app will
-                ask if you want to initialize it. Click <strong>Create a
-                repository</strong>.</p></li>
-                <li><p>Once added, look at the top bar and click
-                <strong>Publish repository</strong> to push it to your
-                online GitHub account.</p></li>
-                </ol>
-                <blockquote>
-                <p><strong>Step 3: Syncing Your Changes Going
-                Forward</strong></p>
-                <p>To keep your local computer and your online GitHub
-                repository perfectly in sync, you will follow a simple
-                3-step loop whenever you do work:</p>
-                <p>[ Your Code Changes ] ──&gt; [ Commit (Save Locally)
-                ] ──&gt; [ Push (Sync to GitHub) ]</p>
-                </blockquote>
-                <ol type="1">
-                <li><p><strong>Make Changes:</strong> Edit, add, or
-                delete files in your project folder using your favorite
-                code editor. GitHub Desktop will automatically track
-                these changes in the left sidebar under the
-                <strong>Changes</strong> tab.</p></li>
-                <li><p><strong>Commit Your Changes:</strong> * At the
-                bottom of the left sidebar, write a short summary of
-                what you changed (e.g., "Updated home page text").</p>
-                <ul>
-                <li>Click the blue <strong>Commit to main</strong> (or
-                master) button. This saves a snapshot of your work
-                <em>locally</em> on your computer.</li>
-                </ul></li>
-                <li><p><strong>Push to GitHub:</strong> Look at the top
-                menu bar. Click <strong>Push origin</strong>. This
-                uploads your local commits to the cloud on
-                GitHub.com.</p></li>
-                </ol>
-                <blockquote>
-                <p>💡 <strong>Pro-Tip:</strong> Before you start working
-                next time, always click the <strong>Fetch
-                origin</strong> (or <strong>Pull origin</strong>) button
-                at the top. This downloads any changes made to the
-                GitHub repository (like updates made from another
-                computer or by a teammate) so your local files stay up
-                to date.</p>
-                </blockquote>
-                <h3 id="nav-step-5-share-your-files-and-site">Step 5:
-                Share Your Files and Site</h3>
-                <p><strong>To share the live website</strong>: Give
-                people the URL generated in <strong>Step 3</strong>.</p>
-                <p><strong>To share direct file downloads</strong>:
-                Append the exact file name to your website URL. For
-                example, if you uploaded a file named brochure.pdf, your
-                shareable download link is:<br />
-                https://github.io</p>
-                <h2 id="nav-pointing-cloudfare-to-git-hub">Pointing
-                Cloudfare to Git Hub</h2>
-                <p>To point a custom domain managed by
-                <strong>Cloudflare</strong> to a <strong>GitHub
-                Pages</strong> web page, you need to configure specific
-                <strong>DNS records</strong> in Cloudflare and input
-                your domain inside your <strong>GitHub repository
-                settings</strong>.</p>
-                <p>Follow this complete step-by-step walkthrough to link
-                your domain.</p>
-                <h3
-                id="nav-step-1-configure-dns-records-in-cloudflare">Step
-                1: Configure DNS Records in Cloudflare</h3>
-                <p>First, you need to map your root domain (e.g.,
-                example.com) and your subdomain (e.g., www.example.com)
-                to GitHub's infrastructure.</p>
-                <ol type="1">
-                <li><p>Log in to your <a
-                href="https://dash.cloudflare.com/">Cloudflare
-                Dashboard</a> and select your domain name.</p></li>
-                <li><p>In the left-hand sidebar, navigate to
-                <strong>DNS</strong> &gt;
-                <strong>Records</strong>.</p></li>
-                <li><p>Delete any existing A or CNAME records that are
-                currently pointing your root (@) or www subdomains to
-                another host.</p></li>
-                <li><p>Add four separate <strong>A records</strong> for
-                your root domain using GitHub’s official IP
-                addresses:</p>
-                <ul>
-                <li><p>Click <strong>Add Record</strong>, choose Type
-                <strong>A</strong>, set the Name to @, <strong>Proxy
-                status</strong> set to <strong>DNS Only</strong> (grey
-                cloud), and input the IPv4 address
-                185.199.108.153.</p></li>
-                <li><p>Repeat this process to add the remaining three IP
-                addresses:</p>
-                <ul>
-                <li><p>185.199.109.153</p></li>
-                <li><p>185.199.110.153</p></li>
-                <li><p>185.199.111.153</p></li>
-                </ul></li>
-                </ul></li>
-                <li><p>Add a <strong>CNAME record</strong> to handle
-                traffic arriving via www:</p>
-                <ul>
-                <li>Click <strong>Add Record</strong>, choose Type
-                <strong>CNAME</strong>, set the Name to www, and set the
-                Target to your default GitHub Pages URL (e.g.,
-                yourusername.github.io).</li>
-                </ul></li>
-                <li><p><strong>Add MX Records (Mail
-                Exchange</strong></p></li>
-                </ol>
-                <blockquote>
-                <p><strong>You must delete any existing MX records from
-                previous email hosts and add three separate Cloudflare
-                MX records:</strong></p>
-                <p><strong>Type Mail Server Priority</strong></p>
-                <p><strong>MX @ route3.mx.cloudflare.net 45</strong></p>
-                <p><strong>MX @ Route2.mx.cloudflare.net 19</strong></p>
-                <p><strong>MX @ route1.mx.cloudflare.net 2</strong></p>
-                </blockquote>
-                <ol start="7" type="1">
-                <li><strong>Add SPF Record (Sender Policy
-                Framework)</strong></li>
-                </ol>
-                <blockquote>
-                <p><strong>This TXT record authorizes Cloudflare to
-                safely forward your emails without major email providers
-                (like Gmail) flagging them as spam.</strong></p>
-                <p><strong>Type: TXT</strong></p>
-                <p>**Name: <span class="citation"
-                data-cites="*">@*</span>*</p>
-                <p><strong>Value: "v=spf1 include:_spf.mx.cloudflare.net
-                ~all"</strong></p>
-                <p><strong>Note: You are only allowed to have one SPF
-                record on your root domain. If you already have an
-                existing SPF record (for example, from Google Workspace
-                or Microsoft 365), you must merge them together by
-                inserting</strong></p>
-                <p><strong>include:_spf.mx.cloudflare.net right before
-                the ~all or -all tag.</strong></p>
-                </blockquote>
-                <ol start="8" type="1">
-                <li><strong>Find the Value in Your
-                Settings</strong></li>
-                </ol>
-                <!-- -->
-                <ol type="1">
-                <li><p><strong>Log in to the Cloudflare Dashboard and
-                select your domain name.</strong></p></li>
-                <li><p><strong>In the left-hand sidebar, click Compute
-                &gt; Email Service &gt; Email Routing.</strong></p></li>
-                <li><p><strong>Click on the Settings tab at the top of
-                the page.</strong></p></li>
-                <li><p><strong>Scroll down to the DNS records
-                section.</strong></p></li>
-                <li><p><strong>Look for the row where the record name
-                begins with cf2024-1._domainkey.</strong></p></li>
-                <li><p><strong>Click on that row to expand it, and copy
-                the full value string (the long text code starting with
-                v=DKIM1; p=).</strong></p></li>
-                </ol>
-                <!-- -->
-                <ol start="9" type="1">
-                <li><strong>Publish the Record to Your DNS</strong></li>
-                </ol>
-                <blockquote>
-                <p><strong>If Cloudflare doesn't add it automatically,
-                or if you prefer to publish it manually:</strong></p>
-                </blockquote>
-                <ol type="1">
-                <li><p><strong>In the left sidebar of your dashboard,
-                click DNS &gt; Records.</strong></p></li>
-                <li><p><strong>Click the Add record
-                button.</strong></p></li>
-                <li><p><strong>Set the Type dropdown to
-                TXT.</strong></p></li>
-                <li><p><strong>In the Name field, type exactly:
-                cf2024-1._domainkey.</strong></p></li>
-                <li><p><strong>In the Content (or Value) field, paste
-                the long text string you just copied from your Email
-                Routing settings.</strong></p></li>
-                <li><p><strong>Leave the TTL on Auto, make sure Proxy
-                Status is set to DNS Only (grey cloud), and click
-                Save.</strong></p></li>
-                </ol>
-                <!-- -->
-                <ol start="10" type="1">
-                <li><strong>Important Proxy Status Rule</strong>: Ensure
-                the <strong>Proxy status</strong> toggle for all five
-                newly created records is set to <strong>DNS
-                Only</strong> (grey cloud) during the initial setup.
-                This allows GitHub to verify the domain ownership and
-                successfully issue an SSL certificate. You should change
-                this to <em>Proxied</em> (orange cloud) later to enforce
-                Cloudflare's security protections.</li>
-                </ol>
-                <p><img
-                src="../assets/figures/3-home-lab-dns-procedure/image3.png"
-                style="width:6.66011in;height:3.08127in" /></p>
-                <h4 id="nav-figure-cloudflare-dns-configuration">Figure 2: Cloudflare DNS Configuration</h4>
-                <h3
-                id="nav-step-2-configure-your-custom-domain-in-github">Step
-                2: Configure Your Custom Domain in GitHub</h3>
-                <p>Now, inform GitHub that your repository should accept
-                traffic originating from your custom domain.</p>
-                <ol type="1">
-                <li><p>Log in to GitHub and open the repository hosting
-                your web page.</p></li>
-                <li><p>Click on the <strong>Settings</strong> tab
-                located at the top of your repository navigation
-                bar.</p></li>
-                <li><p>Scroll down the left sidebar menu and click on
-                <strong>Pages</strong>.</p></li>
-                <li><p>Under the <strong>Custom domain</strong> section,
-                type your root domain (e.g., example.com) into the text
-                box and click <strong>Save</strong>.</p></li>
-                <li><p>GitHub will instantly create a file named CNAME
-                in the root of your main repository branch.</p></li>
-                <li><p>Wait a few minutes (1-15) for the <strong>DNS
-                check</strong> on the GitHub page to clear and the
-                Enforce HTTPS box to become available.</p></li>
-                </ol>
-                <ul>
-                <li><p>The "Enforce HTTPS" checkbox on GitHub is grayed
-                out for one specific reason: <strong>GitHub hasn't
-                finished provisioning your SSL/TLS security certificate
-                yet.</strong></p></li>
-                <li><p>When you change your DNS settings (like fixing
-                that CNAME record), GitHub has to talk to Let's Encrypt
-                to issue a secure certificate for your custom domain.
-                Until that process completes, it won't let you check
-                that box.</p></li>
-                </ul>
-                <ol start="7" type="1">
-                <li>Once it successfully clears, check the box labeled
-                <strong>Enforce HTTPS</strong> to secure your live
-                site.</li>
-                </ol>
-                <h3 id="nav-step-3.-enable-email-routing">Step 3. Enable
-                Email Routing</h3>
-                <p><strong>1. Set Up</strong> Enable Email Routing</p>
-                <ol type="1">
-                <li><p>Log in to your <a
-                href="https://dash.cloudflare.com/">Cloudflare
-                Dashboard</a>.</p></li>
-                <li><p>Select your <strong>domain</strong> from the
-                list.</p></li>
-                <li><p>On the left sidebar, click <strong>Email</strong>
-                &gt; <strong>Email Routing</strong>.</p></li>
-                <li><p>Click the blue <strong>Get Started</strong>
-                button.</p></li>
-                </ol>
-                <p><strong>2. Set Up Your Destination
-                Address</strong></p>
-                <ol type="1">
-                <li><p>Enter your <strong>Destination address</strong>
-                (your personal email, like yourname@gmail.com).</p></li>
-                <li><p>Click <strong>Save</strong>.</p></li>
-                <li><p>Check your personal inbox for a verification
-                email from Cloudflare and click the <strong>Verify email
-                address</strong> link.</p></li>
-                </ol>
-                <p><strong>3. Create a Routing Rule</strong></p>
-                <ol type="1">
-                <li><p>Go back to the <strong>Email Routing</strong>
-                page in Cloudflare.</p></li>
-                <li><p>Click the <strong>Routes</strong> tab at the top,
-                then click <strong>Create address</strong>.</p></li>
-                <li><p>In the <strong>Custom address</strong> field,
-                type the alias you want (e.g., hello or
-                contact).</p></li>
-                <li><p>Under <strong>Action</strong>, select
-                <strong>Forward to</strong> and choose your verified
-                destination email.</p></li>
-                <li><p>Click <strong>Save</strong>.</p></li>
-                </ol>
-                <p><strong>4. Test It Out</strong></p>
-                <p>To make sure it is working seamlessly:</p>
-                <ol type="1">
-                <li><p>Open a completely separate email account (like a
-                personal email or a work address).</p></li>
-                <li><p>Send a blank test email to your new custom domain
-                address (e.g.,
-                hello@smart-home-edge-systems.us).</p></li>
-                <li><p>Check your destination inbox (the destination
-                address you verified in Cloudflare earlier) to confirm
-                the message arrives safely.</p></li>
-                </ol>
-                <p>If it arrives, you are officially finished with the
-                setup and can completely ignore the top-left status
-                warnings.</p>
-                <h3
-                id="nav-step-4.-custom-email-return-address-in-gmail">Step
-                4. Custom Email Return Address in Gmail</h3>
-                <p><strong>Step 1: Add Your Custom Address to
-                Gmail</strong></p>
-                <ol type="1">
-                <li><p>Open <a href="https://mail.google.com/">Gmail</a>
-                on your computer, click the <strong>Settings gear icon
-                (⚙️)</strong> in the upper right, and choose <strong>See
-                all settings</strong>.</p></li>
-                <li><p>Click the <strong>Accounts and Import</strong>
-                tab.</p></li>
-                <li><p>Find the <em>Send mail as</em> line item and
-                click <strong>Add another email
-                address</strong>.</p></li>
-                <li><p>A small popup window will appear:</p>
-                <ul>
-                <li><p><strong>Name</strong>: Type the display name you
-                want recipients to see (e.g., your name or business
-                title).</p></li>
-                <li><p><strong>Email address</strong>: Type your exact
-                custom domain alias
-                (info@smart-home-edge-systems.us).</p></li>
-                <li><p><strong>Treat as an alias</strong>: Keep this
-                checkbox <strong>checked</strong>.</p></li>
-                </ul></li>
-                <li><p>Click <strong>Next Step</strong>.</p></li>
-                </ol>
-                <p><strong>Step 2: Configure Outbound Server
-                Settings</strong></p>
-                <p>In the next section of the popup configuration panel,
-                fill out the settings exactly as shown below to hook
-                into Google's relay pipeline:</p>
-                <ul>
-                <li><p><strong>SMTP Server</strong>:
-                smtp.gmail.com</p></li>
-                <li><p><strong>Port</strong>: 587</p></li>
-                <li><p><strong>Username</strong>: Enter your
-                <strong>full personal Gmail address</strong>
-                (edwin.m.barnes@gmail.com).</p></li>
-                <li><p><strong>Password</strong>: Paste the
-                <strong>16-character App Password</strong> you copied
-                during Step 1.</p></li>
-                <li><p><strong>Secured connection choice</strong>:
-                Choose <strong>Secured connection using
-                TLS</strong>.</p></li>
-                <li><p>Click <strong>Add Account</strong>.</p></li>
-                </ul>
-                <p><strong>Step 3: Verify and Lock it Down</strong></p>
-                <ol type="1">
-                <li><p>Google will send an automated verification email
-                with a code inside to your custom address.</p></li>
-                <li><p>Because your Cloudflare forwarding is already
-                live, this verification message will land right back in
-                your primary Gmail inbox within a minute.</p></li>
-                <li><p>Copy the numeric code from the body of that
-                email, paste it into the open popup window validation
-                field, and click <strong>Verify</strong>.</p></li>
-                <li><p>Back on your Gmail <strong>Accounts and
-                Import</strong> settings menu, locate the line beneath
-                <em>Send mail as</em> titled <em>When replying to a
-                message</em>.</p></li>
-                <li><p>Toggle this option to <strong>Reply from the same
-                address the message was sent to</strong>.</p></li>
-                </ol>
-                <p>Now, whenever anyone fires off a message to
-                info@smart-home-edge-systems.us, hitting reply inside
-                Gmail will automatically formulate your outbound
-                response from your professional domain name instead of
-                your personal address.</p>
-                <p>Would you like help setting up a <strong>custom email
-                signature</strong> specifically for your new info@
-                sending profile, or would you like to build an
-                <strong>automated vacation auto-responder</strong> for
-                it?</p>
-                <h1 id="nav-references">References</h1>
-                <blockquote>
-                <p><strong>🌐 Cloudflare &amp; DNS
-                Resources</strong></p>
-                </blockquote>
-                <ul>
-                <li><p><strong>Cloudflare Docs: Register a New
-                Domain</strong></p></li>
-                <li><p><a
-                href="https://developers.cloudflare.com/dns/manage-dns-records/"><strong>Cloudflare
-                Docs: Manage DNS Records</strong></a></p></li>
-                <li><p><strong><a
-                href="https://developers.cloudflare.com/email-service/configuration/domains/">Cloudflare
-                Docs: Domain Configuration for Email Service</a> [<a
-                href="https://developers.cloudflare.com/email-service/reference/troubleshooting/">1</a>,
-                <a
-                href="https://developers.cloudflare.com/email-service/configuration/domains/">2</a>]</strong></p></li>
-                </ul>
-                <blockquote>
-                <p><strong>🛠️ GitHub Pages Resources</strong></p>
-                </blockquote>
-                <ul>
-                <li><p><a
-                href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site"><strong>GitHub
-                Docs: Managing a Custom Domain for Your GitHub Pages
-                Site</strong></a></p></li>
-                <li><p><strong><a
-                href="https://docs.github.com/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site">GitHub
-                Docs: Configuring a Publishing Source for Your GitHub
-                Pages Site</a> [<a
-                href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site">1</a>]</strong></p></li>
-                </ul>
-                <blockquote>
-                <p><strong>✉️ Gmail &amp; Outbound Pipeline
-                Resources</strong></p>
-                </blockquote>
-                <ul>
-                <li><p><a
-                href="https://support.google.com/"><strong>Gmail Help:
-                Send Emails from an Alias or Custom
-                Address</strong></a></p></li>
-                <li><p><strong>Google Account Help: Sign in with App
-                Passwords</strong></p></li>
-                </ul>
-                <blockquote>
-                <p><strong>🐳 Self-Hosted &amp; Environment
-                Stack</strong></p>
-                </blockquote>
-                <ul>
-                <li><p><a
-                href="https://pve.proxmox.com/pve-docs/"><strong>Proxmox
-                VE Admin Guide: Virtual Environment
-                Documentation</strong></a></p></li>
-                <li><p><a
-                href="https://docs.pi-hole.net/"><strong>Pi-hole Docs:
-                Post-Install Configuration and DNS
-                Rules</strong></a></p></li>
-                <li><p><a
-                href="https://docs.docker.com/compose/"><strong>Docker
-                Docs: Multi-Container Orchestration via Docker
-                Compose</strong></a></p></li>
-                <li><p><a
-                href="https://ubuntu.com/server/docs"><strong>Linux/Ubuntu
-                Manuals: Network Configuration
-                Profiles</strong></a></p></li>
-                </ul>
-            </article>
-
-        </div>
-    </main>
-
-    <div id="footer-placeholder"></div>
-    <script src="/scripts/component-loader.js"></script>
+        Cloudflare DNS Configuration</h4>
+        <h3 id="nav-step-2-configure-your-custom-domain-in-github">Step
+        2: Configure Your Custom Domain in GitHub</h3>
+        <p>Now, inform GitHub that your repository should accept traffic
+        originating from your custom domain.</p>
+        <ol type="1">
+        <li><p>Log in to GitHub and open the repository hosting your web
+        page.</p></li>
+        <li><p>Click on the <strong>Settings</strong> tab located at the
+        top of your repository navigation bar.</p></li>
+        <li><p>Scroll down the left sidebar menu and click on
+        <strong>Pages</strong>.</p></li>
+        <li><p>Under the <strong>Custom domain</strong> section, type
+        your root domain (e.g., example.com) into the text box and click
+        <strong>Save</strong>.</p></li>
+        <li><p>GitHub will instantly create a file named CNAME in the
+        root of your main repository branch.</p></li>
+        <li><p>Wait a few minutes (1-15) for the <strong>DNS
+        check</strong> on the GitHub page to clear and the Enforce HTTPS
+        box to become available.</p></li>
+        </ol>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>The "Enforce HTTPS" checkbox on GitHub is grayed out for one
+        specific reason: <strong>GitHub hasn't finished provisioning
+        your SSL/TLS security certificate yet.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>When you change your DNS settings (like fixing that CNAME
+        record), GitHub has to talk to Let's Encrypt to issue a secure
+        certificate for your custom domain. Until that process
+        completes, it won't let you check that box.</p>
+        </div></li>
+        </ul>
+        <ol start="7" type="1">
+        <li>Once it successfully clears, check the box labeled
+        <strong>Enforce HTTPS</strong> to secure your live site.</li>
+        </ol>
+        <h3 id="nav-step-3.-enable-email-routing">Step 3. Enable Email
+        Routing</h3>
+        <p><strong>1. Set Up</strong> Enable Email Routing</p>
+        <ol type="1">
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Log in to your <a href="https://dash.cloudflare.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Cloudflare
+        Dashboard</span></a>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Select your <strong>domain</strong> from the list.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>On the left sidebar, click <strong>Email</strong> &gt;
+        <strong>Email Routing</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Click the blue <strong>Get Started</strong> button.</p>
+        </div></li>
+        </ol>
+        <p><strong>2. Set Up Your Destination Address</strong></p>
+        <ol type="1">
+        <li><p>Enter your <strong>Destination address</strong> (your
+        personal email, like yourname@gmail.com).</p></li>
+        <li><p>Click <strong>Save</strong>.</p></li>
+        <li><p>Check your personal inbox for a verification email from
+        Cloudflare and click the <strong>Verify email address</strong>
+        link.</p></li>
+        </ol>
+        <p><strong>3. Create a Routing Rule</strong></p>
+        <ol type="1">
+        <li><p>Go back to the <strong>Email Routing</strong> page in
+        Cloudflare.</p></li>
+        <li><p>Click the <strong>Routes</strong> tab at the top, then
+        click <strong>Create address</strong>.</p></li>
+        <li><p>In the <strong>Custom address</strong> field, type the
+        alias you want (e.g., hello or contact).</p></li>
+        <li><p>Under <strong>Action</strong>, select <strong>Forward
+        to</strong> and choose your verified destination email.</p></li>
+        <li><p>Click <strong>Save</strong>.</p></li>
+        </ol>
+        <p><strong>4. Test It Out</strong></p>
+        <p>To make sure it is working seamlessly:</p>
+        <ol type="1">
+        <li><p>Open a completely separate email account (like a personal
+        email or a work address).</p></li>
+        <li><p>Send a blank test email to your new custom domain address
+        (e.g., hello@smart-home-edge-systems.us).</p></li>
+        <li><p>Check your destination inbox (the destination address you
+        verified in Cloudflare earlier) to confirm the message arrives
+        safely.</p></li>
+        </ol>
+        <p>If it arrives, you are officially finished with the setup and
+        can completely ignore the top-left status warnings.</p>
+        <h3 id="nav-step-4.-custom-email-return-address-in-gmail">Step
+        4. Custom Email Return Address in Gmail</h3>
+        <p><strong>Step 1: Add Your Custom Address to Gmail</strong></p>
+        <ol type="1">
+        <li><p>Open <a href="https://mail.google.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Gmail</span></a> on your computer,
+        click the <strong>Settings gear icon (⚙️)</strong> in the upper
+        right, and choose <strong>See all settings</strong>.</p></li>
+        <li><p>Click the <strong>Accounts and Import</strong>
+        tab.</p></li>
+        <li><p>Find the <em>Send mail as</em> line item and click
+        <strong>Add another email address</strong>.</p></li>
+        <li><p>A small popup window will appear:</p>
+        <ul>
+        <li><p><strong>Name</strong>: Type the display name you want
+        recipients to see (e.g., your name or business title).</p></li>
+        <li><p><strong>Email address</strong>: Type your exact custom
+        domain alias (info@smart-home-edge-systems.us).</p></li>
+        <li><p><strong>Treat as an alias</strong>: Keep this checkbox
+        <strong>checked</strong>.</p></li>
+        </ul></li>
+        <li><p>Click <strong>Next Step</strong>.</p></li>
+        </ol>
+        <p><strong>Step 2: Configure Outbound Server
+        Settings</strong></p>
+        <p>In the next section of the popup configuration panel, fill
+        out the settings exactly as shown below to hook into Google's
+        relay pipeline:</p>
+        <ul>
+        <li><p><strong>SMTP Server</strong>: smtp.gmail.com</p></li>
+        <li><p><strong>Port</strong>: 587</p></li>
+        <li><p><strong>Username</strong>: Enter your <strong>full
+        personal Gmail address</strong>
+        (edwin.m.barnes@gmail.com).</p></li>
+        <li><p><strong>Password</strong>: Paste the <strong>16-character
+        App Password</strong> you copied during Step 1.</p></li>
+        <li><p><strong>Secured connection choice</strong>: Choose
+        <strong>Secured connection using TLS</strong>.</p></li>
+        <li><p>Click <strong>Add Account</strong>.</p></li>
+        </ul>
+        <p><strong>Step 3: Verify and Lock it Down</strong></p>
+        <ol type="1">
+        <li><p>Google will send an automated verification email with a
+        code inside to your custom address.</p></li>
+        <li><p>Because your Cloudflare forwarding is already live, this
+        verification message will land right back in your primary Gmail
+        inbox within a minute.</p></li>
+        <li><p>Copy the numeric code from the body of that email, paste
+        it into the open popup window validation field, and click
+        <strong>Verify</strong>.</p></li>
+        <li><p>Back on your Gmail <strong>Accounts and Import</strong>
+        settings menu, locate the line beneath <em>Send mail as</em>
+        titled <em>When replying to a message</em>.</p></li>
+        <li><p>Toggle this option to <strong>Reply from the same address
+        the message was sent to</strong>.</p></li>
+        </ol>
+        <p>Now, whenever anyone fires off a message to
+        info@smart-home-edge-systems.us, hitting reply inside Gmail will
+        automatically formulate your outbound response from your
+        professional domain name instead of your personal address.</p>
+        <p>Would you like help setting up a <strong>custom email
+        signature</strong> specifically for your new info@ sending
+        profile, or would you like to build an <strong>automated
+        vacation auto-responder</strong> for it?</p>
+        <h1 id="nav-references">References</h1>
+        <blockquote>
+        <p><strong>🌐 Cloudflare &amp; DNS Resources</strong></p>
+        </blockquote>
+        <ul>
+        <li><p><strong>Cloudflare Docs: Register a New
+        Domain</strong></p></li>
+        <li><p><a
+        href="https://developers.cloudflare.com/dns/manage-dns-records/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink"><strong>Cloudflare Docs: Manage
+        DNS Records</strong></span></a></p></li>
+        <li><p><strong><a
+        href="https://developers.cloudflare.com/email-service/configuration/domains/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Cloudflare Docs: Domain
+        Configuration for Email Service</span></a> [<a
+        href="https://developers.cloudflare.com/email-service/reference/troubleshooting/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">1</span></a>, <a
+        href="https://developers.cloudflare.com/email-service/configuration/domains/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">2</span></a>]</strong></p></li>
+        </ul>
+        <blockquote>
+        <p><strong>🛠️ GitHub Pages Resources</strong></p>
+        </blockquote>
+        <ul>
+        <li><p><a
+        href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink"><strong>GitHub Docs: Managing a
+        Custom Domain for Your GitHub Pages
+        Site</strong></span></a></p></li>
+        <li><p><strong><a
+        href="https://docs.github.com/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">GitHub Docs: Configuring a
+        Publishing Source for Your GitHub Pages Site</span></a> [<a
+        href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">1</span></a>]</strong></p></li>
+        </ul>
+        <blockquote>
+        <p><strong>✉️ Gmail &amp; Outbound Pipeline
+        Resources</strong></p>
+        </blockquote>
+        <ul>
+        <li><p><a href="https://support.google.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink"><strong>Gmail Help: Send Emails
+        from an Alias or Custom Address</strong></span></a></p></li>
+        <li><p><strong>Google Account Help: Sign in with App
+        Passwords</strong></p></li>
+        </ul>
+        <blockquote>
+        <p><strong>🐳 Self-Hosted &amp; Environment Stack</strong></p>
+        </blockquote>
+        <ul>
+        <li><p><a href="https://pve.proxmox.com/pve-docs/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink"><strong>Proxmox VE Admin Guide:
+        Virtual Environment Documentation</strong></span></a></p></li>
+        <li><p><a href="https://docs.pi-hole.net/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink"><strong>Pi-hole Docs: Post-Install
+        Configuration and DNS Rules</strong></span></a></p></li>
+        <li><p><a href="https://docs.docker.com/compose/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink"><strong>Docker Docs:
+        Multi-Container Orchestration via Docker
+        Compose</strong></span></a></p></li>
+        <li><p><a href="https://ubuntu.com/server/docs"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink"><strong>Linux/Ubuntu Manuals:
+        Network Configuration Profiles</strong></span></a></p></li>
+        </ul>
+      </article>
+    </div>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="/scripts/component-loader.js"></script>
 </body>
 </html>
+

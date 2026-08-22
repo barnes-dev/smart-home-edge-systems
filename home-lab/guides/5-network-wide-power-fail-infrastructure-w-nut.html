@@ -1,645 +1,671 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>5 Network Wide Power Fail Infrastructure W Nut</title>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
-    <script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5-network-wide-power-fail-infrastructure-w-nut</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+  <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-LLK7685ZGC');
-    </script>
-    <link rel="stylesheet" href="/styles/global.css">
+  </script>
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    .doc-layout {
+      display: grid;
+      grid-template-columns: 450px 1fr;
+      gap: 2.5rem;
+      margin-top: 2rem;
+      align-items: start;
+    }
+    [custom-style="TextBlock"], 
+    .TextBlock, 
+    .textblock, 
+    .code, 
+    .Code, 
+    span[data-custom-style="TextBlock"],
+    p[custom-style="TextBlock"] {
+        background: #1e1e1e !important;         /* Matches your dark code/box theme */
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Subtle dark-mode border */
+        border-left: 4px solid #3182ce !important;              /* Accent left border (or keep your preferred color) */
+        padding: 16px !important;               /* Creates internal breathing room */
+        line-height: 1.1 !important;           /* Keeps text lines tightly grouped */
+        display: block !important;              /* Forces the inline element to act like a box */
+        width: 100% !important;                 /* Spans the box structure across the viewport */
+        max-width: 850px !important;            /* Restricts maximum box width to look clean */
+        margin: 1.5rem 0 !important;            /* Vertical margins separate it from normal body text */
+        color: #eaf4ff !important;                     /* Matches your light text color */
+        border-radius: 6px !important;          /* Gives the box sleek, rounded corners */
+    }
+    .sidebar-toc {
+      position: sticky;
+      top: 2rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .sidebar-toc ul {
+      list-style: none;
+      padding-left: 1.25rem;
+      margin: 0;
+    }
+    .sidebar-toc > ul {
+      padding-left: 0;
+    }
+    .sidebar-toc li {
+      margin-bottom: 0.5rem;
+    }
+    .sidebar-toc a {
+      color: #bfdbfe;
+      text-decoration: none;
+      transition: color 0.2s;
+      font-size: 0.95rem;
+    }
+    .sidebar-toc a:hover {
+      color: #eaf4ff;
+      text-decoration: underline;
+    }
+    .document-content {
+      color: #eaf4ff;
+      line-height: 1.7;
+    }
+    .document-content pre {
+      background: #1e1e1e;
+      padding: 1.25rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    .document-content pre code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: #eaf4ff;
+      line-height: 1.5;
+    }
+    .document-content pre[class*="language-"]::before {
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-family: sans-serif;
+    }
+    .document-content pre.language-powershell::before { content: "POWERSHELL"; border-bottom: 1px solid #10b981; }
+    .document-content pre.language-css::before { content: "CSS"; border-bottom: 1px solid #3b82f6; }
+    .document-content pre.language-html::before { content: "HTML"; border-bottom: 1px solid #f97316; }
+    .document-content pre.language-yaml::before { content: "YAML"; border-bottom: 1px solid #a855f7; }
+    .document-content pre.language-plaintext::before { content: "TEXT"; }
     
-    <style>
-        .doc-layout {
-            display: grid;
-            /* Widened the left column to 450px (~4 inches) */
-            grid-template-columns: 450px 1fr;
-            gap: 2.5rem;
-            margin-top: 2rem;
-            align-items: start;
-        }
-        
-        .sidebar-toc {
-            position: sticky;
-            top: 2rem;
-            max-height: calc(100vh - 4rem);
-            overflow-y: auto;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    .document-content pre.language-powershell { border-left: 3px solid #10b981; }
+    .document-content pre.language-css { border-left: 3px solid #3b82f6; }
+    .document-content pre.language-html { border-left: 3px solid #f97316; }
+    .document-content pre.language-yaml { border-left: 3px solid #a855f7; }
 
-        /* Styling Pandoc's auto-generated list structure */
-        .sidebar-toc ul {
-            list-style: none;
-            padding-left: 1.25rem;
-            margin: 0;
-        }
-        .sidebar-toc > ul {
-            padding-left: 0;
-        }
-        .sidebar-toc li {
-            margin-bottom: 0.5rem;
-        }
-        .sidebar-toc a {
-            color: #bfdbfe;
-            text-decoration: none;
-            transition: color 0.2s;
-            font-size: 0.95rem;
-        }
-        .sidebar-toc a:hover {
-            color: #eaf4ff;
-            text-decoration: underline;
-        }
+    .document-content table {
+      width: auto;
+      max-width: 850px;
+      margin: 1.5rem 0;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      text-align: left;
+    }
+    .document-content th, .document-content td {
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .document-content td {
+      white-space: pre-wrap;
+    }
+    .document-content th {
+      background: rgba(191, 219, 254, 0.1);
+      color: #bfdbfe;
+      font-weight: 600;
+    }
+    .document-content img {
+      display: block;
+      margin-left: 0 !important;
+      margin-right: auto !important;
+      text-align: left;
+    }
+    .document-content p.caption, .document-content .caption, .document-content figcaption {
+      text-align: left !important;
+      margin-left: 0 !important;
+      margin-top: 0.5rem;
+      color: #94a3b8;
+    }
+    .document-content tr:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
 
-        .document-content {
-            color: #eaf4ff;
-            line-height: 1.7;
-        }
-        
-        /* Modernized Code block layout matching the script regex output */
-        .document-content pre {
-            background: #1e1e1e;
-            padding: 1.25rem;
-            border-radius: 6px;
-            overflow-x: auto;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 1.5rem 0;
-            position: relative;
-        }
+    /* ========================================================================== */
+    /* # COLLAPSIBLE DOWNLOAD BOX LAYOUT INTEGRATION                              */
+    /* ========================================================================== # */
+    .download-container {
+      margin: 1.5rem 0;
+      max-width: 850px;
+    }
+    .collapsible-download-box {
+      background: #1e1e1e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .collapsible-download-box[open] {
+      border: 1px solid rgba(191, 219, 254, 0.3);
+    }
+    .box-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      color: #bfdbfe;
+      background: rgba(191, 219, 254, 0.05);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .box-header::-webkit-details-marker {
+      display: none;
+    }
+    .box-header:hover {
+      background: rgba(191, 219, 254, 0.12);
+      color: #eaf4ff;
+    }
+    .folder-icon {
+      margin-right: 12px;
+      font-size: 1.1rem;
+    }
+    .box-body {
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.15);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      animation: expandReveal 0.2s ease-out;
+    }
+    .box-body p {
+      margin: 0 0 1rem 0;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+    .download-btn {
+      display: inline-block;
+      background: #3182ce;
+      color: #ffffff !important;
+      padding: 8px 16px;
+      text-decoration: none !important;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      transition: background 0.15s ease;
+    }
+    .download-btn:hover {
+      background: #2b6cb0;
+    }
+    @keyframes expandReveal {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-        .document-content pre code {
-            font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: #eaf4ff;
-            line-height: 1.5;
-        }
-
-        /* Codeblock Language Badges on top-right edge */
-        .document-content pre[class*="language-"]::before {
-            position: absolute;
-            top: 4px;
-            right: 8px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.35);
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            font-family: sans-serif;
-        }
-
-        .document-content pre.language-powershell::before { content: "POWERSHELL"; border-bottom: 1px solid #10b981; }
-        .document-content pre.language-css::before { content: "CSS"; border-bottom: 1px solid #3b82f6; }
-        .document-content pre.language-html::before { content: "HTML"; border-bottom: 1px solid #f97316; }
-        .document-content pre.language-yaml::before { content: "YAML"; border-bottom: 1px solid #a855f7; }
-        .document-content pre.language-plaintext::before { content: "TEXT"; }
-
-        /* Left border accent line linked to language profiles */
-        .document-content pre.language-powershell { border-left: 3px solid #10b981; }
-        .document-content pre.language-css { border-left: 3px solid #3b82f6; }
-        .document-content pre.language-html { border-left: 3px solid #f97316; }
-        .document-content pre.language-yaml { border-left: 3px solid #a855f7; }
-
-        /* CUSTOM TABLE SIZE & LEFT JUSTIFICATION */
-        .document-content table {
-            width: auto;
-            max-width: 850px;
-            margin: 1.5rem 0;
-            border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-            text-align: left;
-        }
-
-        .document-content th, 
-        .document-content td {
-            padding: 10px 16px;         
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Preserve tabs and spacing formatting inside table cells natively */
-        .document-content td {
-            white-space: pre-wrap;      
-        }
-
-        .document-content th {
-            background: rgba(191, 219, 254, 0.1); 
-            color: #bfdbfe;
-            font-weight: 600;
-        }
-
-        /* FORCE ALL IMAGES AND CAPTIONS TO BE LEFT ALIGNED */
-        .document-content img {
-            display: block;
-            margin-left: 0 !important;
-            margin-right: auto !important;
-            text-align: left;
-        }
-
-        .document-content p.caption,
-        .document-content .caption,
-        .document-content figcaption {
-            text-align: left !important;
-            margin-left: 0 !important;
-            margin-top: 0.5rem;
-            color: #94a3b8;
-        }
-
-        .document-content tr:hover {
-            background: rgba(255, 255, 255, 0.04); 
-        }
-
-        @media (max-width: 768px) {
-            .doc-layout {
-                grid-template-columns: 1fr;
-            }
-            .sidebar-toc {
-                position: relative;
-                top: 0;
-                max-height: none;
-                overflow-y: visible;
-            }
-            .document-content table {
-                width: 100%;            
-                display: block;
-                overflow-x: auto;       
-            }
-        }
-    </style>
+    @media (max-width: 768px) {
+      .doc-layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar-toc {
+        position: relative;
+        top: 0;
+        max-height: none;
+        overflow-y: visible;
+      }
+      .document-content table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="header-placeholder"></div>
+  <div id="header-placeholder"></div>
+  <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
+    <p style="margin-bottom: 1.5rem; text-align: left;">
+      <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">→Home Lab</a>
+      <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+      <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">→Back</a>
+      <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+      <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">→Gateway</a>
+    </p>
 
-    <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
-        
-        <p style="margin-bottom: 1.5rem; text-align: left;">
-            <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Home Lab</a>
-            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
-            <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Back</a>
-            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
-            <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Gateway</a>
-        </p>
+    <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">5-network-wide-power-fail-infrastructure-w-nut</h1>
+      <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
+      <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
+    </div>
 
-        <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-            <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">5
-Network Wide Power Fail Infrastructure W Nut</h1>
-            <h2 style="color: #bfdbfe; margin: 0 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
-            <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
-        </div>
-        
-        <div class="doc-layout">
-            
-            <aside class="sidebar-toc">
-                <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
-                <ul>
-                <li><a
-                href="#nav-configuring-a-a-network-wide-power-fail-infrastructure-using-network-ups-tool."
-                id="nav-toc-configuring-a-a-network-wide-power-fail-infrastructure-using-network-ups-tool.">Configuring
-                a a Network Wide Power Fail Infrastructure using Network
-                UPS Tool.</a></li>
-                <li><a href="#nav-ups-direct-connection-to-the-pve-host"
-                id="nav-toc-ups-direct-connection-to-the-pve-host">UPS
-                Direct Connection to the PVE Host</a>
-                <ul>
-                <li><a href="#nav-step-1-the-linux-network-strategy"
-                id="nav-toc-step-1-the-linux-network-strategy">Step 1:
-                The Linux Network Strategy</a></li>
-                <li><a
-                href="#nav-step-2-the-ups-core-logic-synology-standby-low-battery-shutdown"
-                id="nav-toc-step-2-the-ups-core-logic-synology-standby-low-battery-shutdown">Step
-                2: The UPS Core Logic (Synology Standby &amp; Low
-                Battery Shutdown)</a></li>
-                <li><a
-                href="#nav-step-3-the-unified-internet-recovery-script"
-                id="nav-toc-step-3-the-unified-internet-recovery-script">Step
-                3: The Unified Internet Recovery Script</a></li>
-                <li><a href="#nav-step-4-schedule-the-automated-check"
-                id="nav-toc-step-4-schedule-the-automated-check">Step 4:
-                Schedule the Automated Check</a></li>
-                <li><a
-                href="#nav-step-5-handle-the-smartthings-offline-safety-net"
-                id="nav-toc-step-5-handle-the-smartthings-offline-safety-net">Step
-                5: Handle the SmartThings "Offline" Safety Net</a></li>
-                </ul></li>
-                </ul>
-            </aside>
+    <div class="doc-layout">
+      <aside class="sidebar-toc">
+        <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
+        <ul>
+        <li><a
+        href="#nav-configuring-a-a-network-wide-power-fail-infrastructure-using-network-ups-tool."
+        id="nav-toc-configuring-a-a-network-wide-power-fail-infrastructure-using-network-ups-tool.">Configuring
+        a a Network Wide Power Fail Infrastructure using Network UPS
+        Tool.</a></li>
+        <li><a href="#nav-ups-direct-connection-to-the-pve-host"
+        id="nav-toc-ups-direct-connection-to-the-pve-host">UPS Direct
+        Connection to the PVE Host</a>
+        <ul>
+        <li><a href="#nav-step-1-the-linux-network-strategy"
+        id="nav-toc-step-1-the-linux-network-strategy">Step 1: The Linux
+        Network Strategy</a></li>
+        <li><a
+        href="#nav-step-2-the-ups-core-logic-synology-standby-low-battery-shutdown"
+        id="nav-toc-step-2-the-ups-core-logic-synology-standby-low-battery-shutdown">Step
+        2: The UPS Core Logic (Synology Standby &amp; Low Battery
+        Shutdown)</a></li>
+        <li><a href="#nav-step-3-the-unified-internet-recovery-script"
+        id="nav-toc-step-3-the-unified-internet-recovery-script">Step 3:
+        The Unified Internet Recovery Script</a></li>
+        <li><a href="#nav-step-4-schedule-the-automated-check"
+        id="nav-toc-step-4-schedule-the-automated-check">Step 4:
+        Schedule the Automated Check</a></li>
+        <li><a
+        href="#nav-step-5-handle-the-smartthings-offline-safety-net"
+        id="nav-toc-step-5-handle-the-smartthings-offline-safety-net">Step
+        5: Handle the SmartThings "Offline" Safety Net</a></li>
+        </ul></li>
+        </ul>
+      </aside>
 
-            <article class="document-content">
-                <h1
-                id="nav-configuring-a-a-network-wide-power-fail-infrastructure-using-network-ups-tool.">Configuring
-                a a Network Wide Power Fail Infrastructure using Network
-                UPS Tool.</h1>
-                <p>For a Network UPS Tools (NUT) deployment where the
-                UPS is physically connected via USB, to the main Promox
-                server you have two primary options within your Proxmox
-                VE topology.</p>
-                <p>Because the UPS is a critical infrastructure
-                component that dictates the shutdown sequence of your
-                <em>entire</em> physical host (including all your VMs
-                and LXCs), <strong>the ideal architecture is to install
-                the NUT server directly on the Proxmox Host (PVE Host,
-                192.168.86.250).</strong></p>
-                <h1 id="nav-ups-direct-connection-to-the-pve-host">UPS
-                Direct Connection to the PVE Host</h1>
-                <p>In this configuration, the physical USB cable goes
-                from the UPS into the Kamrui Mini PC, and the bare-metal
-                Proxmox Debian layer handles the driver
-                (usbhid-ups).</p>
-                <p><strong>Why this is better than creating a new
-                LxC:</strong></p>
-                <ul>
-                <li><p><strong>Fail-Safe Shutdowns:</strong> If the
-                battery runs critically low, the host has direct control
-                to gracefully stop your LXCs/VMs and then safely power
-                itself down. If the NUT server is inside a virtualized
-                container and that container crashes or hangs, the host
-                won't receive the shutdown signal.</p></li>
-                <li><p><strong>Network Independence:</strong> If your
-                internal virtual switch (vmbr0) or local routing
-                encounters an issue during a power event, the host can
-                still talk to the UPS locally over the USB bus without
-                needing network layers to stay up just to read its own
-                power status.</p></li>
-                <li><p><strong>Server-Client Topology:</strong> The PVE
-                host acts as the <strong>NUT Master (Server)</strong>.
-                It can then easily serve data across 192.168.86.0/24 to
-                <strong>NUT Slaves (Clients)</strong> like your Home
-                Assistant OS instance (VM 101) for dashboards and
-                automations.</p></li>
-                </ul>
-                <p>Here is the complete textual and structural layout of
-                your dual-UPS infrastructure.</p>
-                <p>This design separates your core computing layer
-                (Proxmox) from your network and storage dependencies,
-                ensuring your infrastructure stays alive and manageable
-                for as long as possible during a power event.</p>
-                <p><strong>🏢 UPS 1: The Compute Layer</strong></p>
-                <p><strong>Dedicated to:</strong> Proxmox VE Host
-                (Kamrui Mini PC)</p>
-                <ul>
-                <li><p><strong>Physical Data Link:</strong> A USB
-                communication cable connects directly from <strong>UPS
-                1</strong> into a USB port on the <strong>Proxmox
-                Host</strong>.</p></li>
-                <li><p><strong>Role:</strong> This UPS only has to power
-                the low-draw Mini PC. Because it isn't burdened by
-                spinning hard drives or power-hungry PoE cameras, it
-                provides a maximum runtime buffer for the Proxmox host
-                to execute its network watchdog scripts and manage the
-                cluster shutdown.</p></li>
-                <li><p><strong>Control Signaling:</strong></p>
-                <ul>
-                <li><p>The Proxmox Host runs the <strong>NUT Master
-                (Server)</strong> daemon. It monitors the battery status
-                of UPS 1 over the USB cable.</p></li>
-                <li><p>It shares this power status out over the local
-                network via Ethernet.</p></li>
-                </ul></li>
-                </ul>
-                <p><strong>🌐 UPS 2: The Infrastructure, Storage &amp;
-                Network Layer</strong></p>
-                <p><strong>Dedicated to:</strong> All supporting
-                equipment and network appliances.</p>
-                <ul>
-                <li><p><strong>Power Connections:</strong></p>
-                <ol type="1">
-                <li><p><strong>Internet Modem</strong> (Plugged into the
-                SmartThings Z-Wave Smart Plug ──► UPS 2 Battery
-                Outlets)</p></li>
-                <li><p><strong>Wi-Fi Router / EERO Nest Primary
-                Node</strong></p></li>
-                <li><p><strong>Core Network Switch</strong></p></li>
-                <li><p><strong>PoE Network Switches</strong> (Powering
-                your IP surveillance cameras)</p></li>
-                <li><p><strong>Synology NAS 1</strong> (Surveillance
-                Station storage)</p></li>
-                <li><p><strong>Synology NAS 2</strong> (NFS/Data
-                storage)</p></li>
-                <li><p><strong>SmartThings Hub</strong></p></li>
-                </ol></li>
-                <li><p><strong>Role:</strong> Keeps your entire local
-                network fabric, Wi-Fi mesh, smart home mesh, and data
-                storage fully active.</p></li>
-                <li><p><strong>Control Signaling:</strong></p>
-                <ul>
-                <li><p>The <strong>Synology NAS units</strong> are
-                configured as <strong>NUT Slaves
-                (Clients)</strong>.</p></li>
-                <li><p>They continuously poll the Proxmox Host
-                (192.168.86.250) over the local Ethernet
-                network.</p></li>
-                <li><p>Even though they are plugged into UPS 2 for
-                power, they listen to the shutdown command broadcast by
-                Proxmox. When Proxmox reports a power failure, the
-                Synologies execute their 2-to-5-minute countdown to
-                enter Safe Mode, saving their disk volumes from
-                corruption before UPS 2 can run out of juice.</p></li>
-                </ul></li>
-                </ul>
-                <p><strong>🔀 Physical Data &amp; Network Topology
-                Map</strong></p>
-                <p>text</p>
-                <p>======================= ELECTRICAL POWER LINES
-                =======================</p>
-                <p>[Wall Outlet A] ──► [ UPS 1 (Compute) ] ──► Kamrui
-                Mini PC (Proxmox Host)</p>
-                <p>│</p>
-                <p>[Wall Outlet B] ──► [ UPS 2 (Network) ] ──► Power
-                Strip / PDU</p>
-                <p>├──► SmartThings Z-Wave Plug ──► Internet Modem</p>
-                <p>├──► Wi-Fi Router / EERO Nodes</p>
-                <p>├──► Core Network Switch</p>
-                <p>├──► PoE Camera Switches</p>
-                <p>├──► Synology NAS (Surveillance)</p>
-                <p>├──► Synology NAS (NFS Data)</p>
-                <p>└──► SmartThings Hub</p>
-                <p>======================= LOGICAL AND DATA PATHS
-                =======================</p>
-                <p>[ UPS 1 ] ⚡───(USB Monitoring Cable)───► [ Proxmox
-                Host (192.168.86.250) ]</p>
-                <p>(NUT Master Service / Runs Script)</p>
-                <p>│</p>
-                <p>┌────────────────────────────────────────┴────────────────────────────────────────┐</p>
-                <p>▼ (Ethernet Path - local) ▼ (Wi-Fi Path -
-                internet)</p>
-                <p>[ Core Network Switch ] [ Wi-Fi Router / EERO Mesh
-                ]</p>
-                <p>│ │</p>
-                <p>├──► [ Synology NAS Units ] (NUT Slaves) └──► [
-                Internet / Cloud ]</p>
-                <p>│ └─► Listens for ONBATT signal ▲</p>
-                <p>│ └─► Enters Safe Mode in 2-5 mins │ (API
-                Commands)</p>
-                <p>│ │</p>
-                <p>└──► [ SmartThings Hub ] ───(Z-Wave Mesh)───► [
-                SmartThings Z-Wave Plug ] ──────────────┘</p>
-                <p>└─► Unaffected by local Wi-Fi drop └─► Cuts power to
-                Modem for 60s</p>
-                <p>Use code with caution.</p>
-                <p><strong>💡 Why This Dual Layout Works Best For Your
-                Script</strong></p>
-                <ol type="1">
-                <li><p><strong>Isolated Troubleshooting:</strong> When
-                your script detects a dropped internet connection on the
-                wlan0 interface, it cycles the SmartThings Z-Wave plug.
-                Because the <strong>SmartThings Hub</strong> and
-                <strong>Core Switch</strong> are on UPS 2, they remain
-                completely powered up and operational. The Z-Wave
-                command moves locally from the hub to the plug
-                seamlessly.</p></li>
-                <li><p><strong>Proxmox Safety:</strong> If the modem
-                power-cycle script runs while a true utility power
-                outage is occurring, your Proxmox server won't abruptly
-                lose power when the modem reboots, because Proxmox's
-                power supply is completely isolated on UPS 1.</p></li>
-                </ol>
-                <p><strong>How to structure it in your Network
-                Map</strong></p>
-                <p>If you go with the recommended
-                <strong>Host-as-Master</strong> approach, your
-                configuration won't require spinning up a new container
-                ID, keeping your 32GB RAM footprint exactly where it
-                is.</p>
-                <p>Here is how the data and shutdown signaling will flow
-                through your existing layout:</p>
-                <blockquote>
-                <p>[ Physical UPS ] ──(USB Cable)──► [ PROXMOX VE HOST
-                (192.168.86.250) ]</p>
-                <p>│ (Runs NUT Server / Master)</p>
-                <p>│</p>
-                <p>┌────────────────────┴────────────────────┐</p>
-                <p>▼ (LAN Broadcast) ▼ (LAN Broadcast)</p>
-                <p>├──► [ VM 101 ] HOME ASSISTANT [ Other Network Hosts
-                ]</p>
-                <p>│ (Runs NUT Client / Integration) (NAS, Desktops,
-                etc.)</p>
-                <p>│ - Triggers Smart Home Alerts - Graceful automated
-                shutdowns</p>
-                <p>│ - Logs Battery Runtime Metrics</p>
-                </blockquote>
-                <p><strong>Resource Impact:</strong></p>
-                <ul>
-                <li><strong>CPU/RAM:</strong> Negligible. The nut-server
-                daemon uses less than 10–20 MB of RAM and essentially 0%
-                CPU overhead, fitting perfectly within the <strong>2GB
-                RAM / 2 Threads</strong> overhead you already wisely
-                reserved for your Proxmox host.</li>
-                </ul>
-                <p>Promox NUT Server will tell synology to sleep, I want
-                it to shutdown on LL. i want it to poll wifi. *(Promox
-                has ethernet and wifi). Promox NUT will run a restart
-                script that cycles internet ( wifi ) and then wait 1
-                minute. Then it will cycle smartthings</p>
-                <p>This advanced, multi-network automation is completely
-                possible using your Linux machine as the central
-                coordinator. Since your Linux box has <strong>both
-                Ethernet and Wi-Fi</strong>, we can isolate the
-                networks: Ethernet handles your local infrastructure
-                (Synology and SmartThings), while Wi-Fi tests and
-                handles the internet recovery.</p>
-                <p>Here is the complete blueprint to orchestrate this
-                logic flow.</p>
-                <hr />
-                <h2 id="nav-step-1-the-linux-network-strategy">Step 1:
-                The Linux Network Strategy</h2>
-                <p>To make this reliable, you must ensure your Linux
-                routing table doesn't get confused by having two active
-                network interfaces.</p>
-                <ul>
-                <li><p><strong>Ethernet (eth0):</strong> Hardwired to
-                your local network switch. This interface must be
-                configured <strong>without a default gateway</strong> so
-                it only handles local IP traffic (talking to Synology,
-                SmartThings, and your UPS).</p></li>
-                <li><p><strong>Wi-Fi (wlan0):</strong> Connected to your
-                main Wi-Fi network. This interface must hold the
-                <strong>default gateway</strong>, forcing all external
-                internet traffic (pings to the outside world) to go
-                through the Wi-Fi chip.</p></li>
-                </ul>
-                <hr />
-                <h2
-                id="nav-step-2-the-ups-core-logic-synology-standby-low-battery-shutdown">Step
-                2: The UPS Core Logic (Synology Standby &amp; Low
-                Battery Shutdown)</h2>
-                <p>As configured earlier, your Linux server runs the NUT
-                master service.</p>
-                <ol type="1">
-                <li><p><strong>Synology Standby:</strong> In your
-                Synology DSM interface (<strong>Control Panel &gt;
-                Hardware &amp; Power &gt; UPS</strong>), set the
-                time-based countdown to a short window (e.g., <strong>2
-                to 5 minutes</strong>).</p>
-                <ul>
-                <li><em>When power drops, the Linux NUT server
-                broadcasts the power failure. The Synology countdown
-                triggers, safely unmounting its drives and slipping into
-                its low-power standby "Safe Mode."</em></li>
-                </ul></li>
-                <li><p><strong>Linux Low Battery Shutdown:</strong> Your
-                Linux server ignores the short timer and remains fully
-                operational on battery. It will continue running the
-                internet monitoring script below until the UPS battery
-                drops to its physical low-voltage threshold, at which
-                point the NUT daemon executes its native
-                SHUTDOWNCMD.</p></li>
-                </ol>
-                <hr />
-                <h2
-                id="nav-step-3-the-unified-internet-recovery-script">Step
-                3: The Unified Internet Recovery Script</h2>
-                <p>This script runs on your Linux box. It forces all
-                ping tests to route through your Wi-Fi interface. If the
-                internet fails, it drops your Wi-Fi connection to
-                attempt a local software reset, waits, and then
-                instructs your SmartThings Z-Wave plug to cycle.</p>
-                <ol type="1">
-                <li>Create the script file on your Linux machine:</li>
-                </ol>
-                <p>bash</p>
-                <p>sudo nano /usr/local/bin/network_watchdog.sh</p>
-                <p>Use code with caution.</p>
-                <ol start="2" type="1">
-                <li>Paste the following automated script. <em>Note:
-                Ensure you update your SmartThings API Token, Z-Wave
-                Plug Device ID, and your local Wi-Fi interface name
-                (usually wlan0).</em></li>
-                </ol>
-                <p>bash</p>
-                <p>#!/bin/bash</p>
-                <p># Configuration Parameters</p>
-                <p>TARGET_IP="8.8.8.8"</p>
-                <p>WIFI_INTERFACE="wlan0" # Change to your actual Linux
-                Wi-Fi interface name</p>
-                <p>ST_TOKEN="YOUR_SMARTTHINGS_BEARER_TOKEN"</p>
-                <p>ST_DEVICE_ID="YOUR_Z_WAVE_PLUG_DEVICE_ID"</p>
-                <p>echo "Executing Network Watchdog..."</p>
-                <p># 1. Force the ping to route EXCLUSIVELY through the
-                Wi-Fi interface</p>
-                <p>if ! ping -I "$WIFI_INTERFACE" -c 3 -W 5 "$TARGET_IP"
-                &gt; /dev/null 2&gt;&amp;1; then</p>
-                <p>echo "Internet failure detected on Wi-Fi
-                interface!"</p>
-                <p># 2. Cycle local Linux Wi-Fi interface first to clear
-                local software locks</p>
-                <p>echo "Restarting Linux Wi-Fi interface..."</p>
-                <p>sudo ip link set "$WIFI_INTERFACE" down</p>
-                <p>sleep 10</p>
-                <p>sudo ip link set "$WIFI_INTERFACE" up</p>
-                <p># Wait 45 seconds for Linux to reconnect to the Wi-Fi
-                access point</p>
-                <p>echo "Waiting for Wi-Fi reconnection..."</p>
-                <p>sleep 45</p>
-                <p># 3. Re-test internet after local Wi-Fi reset. If
-                still dead, proceed to hardware cycle.</p>
-                <p>if ! ping -I "$WIFI_INTERFACE" -c 3 -W 5 "$TARGET_IP"
-                &gt; /dev/null 2&gt;&amp;1; then</p>
-                <p>echo "Internet still dead. Initiating SmartThings
-                Z-Wave power cycle..."</p>
-                <p># 4. Turn off the SmartThings Z-Wave plug powering
-                your router/modem</p>
-                <p>curl -X POST -s -H "Authorization: Bearer $ST_TOKEN"
-                -H "Content-Type: application/json" \</p>
-                <p>-d '{"commands": [{"component": "main", "capability":
-                "switch", "command": "off"}]}' \</p>
-                <p>https://smartthings.com &gt; /dev/null</p>
-                <p># 5. Wait exactly 1 minute (60 seconds) as
-                requested</p>
-                <p>echo "Modem/Router powered off. Waiting 60
-                seconds..."</p>
-                <p>sleep 60</p>
-                <p># 6. Turn the SmartThings Z-Wave plug back ON</p>
-                <p>echo "Powering Modem/Router back on via
-                SmartThings..."</p>
-                <p>curl -X POST -s -H "Authorization: Bearer $ST_TOKEN"
-                -H "Content-Type: application/json" \</p>
-                <p>-d '{"commands": [{"component": "main", "capability":
-                "switch", "command": "on"}]}' \</p>
-                <p>https://smartthings.com &gt; /dev/null</p>
-                <p>echo "Power cycle complete. Allowing network time to
-                boot..."</p>
-                <p>else</p>
-                <p>echo "Local Linux Wi-Fi cycle resolved the issue.
-                Internet restored."</p>
-                <p>fi</p>
-                <p>else</p>
-                <p>echo "Internet connection on Wi-Fi is perfectly
-                healthy."</p>
-                <p>fi</p>
-                <p>Use code with caution.</p>
-                <ol start="3" type="1">
-                <li>Save and close the file (Ctrl+O, Enter, Ctrl+X),
-                then make it executable:</li>
-                </ol>
-                <p>bash</p>
-                <p>sudo chmod +x /usr/local/bin/network_watchdog.sh</p>
-                <p>Use code with caution.</p>
-                <hr />
-                <h2 id="nav-step-4-schedule-the-automated-check">Step 4:
-                Schedule the Automated Check</h2>
-                <p>To give your modem and router plenty of time to
-                finish booting up after a hard reset, configure this
-                script to run every 15 minutes.</p>
-                <ol type="1">
-                <li>Open your system's automation scheduler:</li>
-                </ol>
-                <p>bash</p>
-                <p>crontab -e</p>
-                <p>Use code with caution.</p>
-                <ol start="2" type="1">
-                <li>Add this execution rule to the very bottom of the
-                file:</li>
-                </ol>
-                <p>text</p>
-                <p>*/15 * * * * /usr/local/bin/network_watchdog.sh</p>
-                <p>Use code with caution.</p>
-                <hr />
-                <h2
-                id="nav-step-5-handle-the-smartthings-offline-safety-net">Step
-                5: Handle the SmartThings "Offline" Safety Net</h2>
-                <p>Because the SmartThings command travels over the
-                internet, a critical safety issue arises: <strong>If
-                your modem is completely locked up, the internet is
-                down, meaning the Linux box cannot send the "Turn ON"
-                command to SmartThings via the cloud API.</strong></p>
-                <p>To prevent your network from being permanently stuck
-                in an "OFF" state, you <strong>must change a hardware
-                parameter on your Z-Wave plug</strong>.</p>
-                <ol type="1">
-                <li><p>Open your SmartThings app and locate your Z-Wave
-                plug.</p></li>
-                <li><p>Go to its <strong>Settings / Device
-                Options</strong>.</p></li>
-                <li><p>Look for a setting called <strong>"Auto Turn-On
-                Timer"</strong> or <strong>"Auto-Off Disabled / Auto-On
-                Enabled"</strong> (varies by brand like Zooz or
-                Aeotec).</p></li>
-                <li><p>Set the plug to <strong>automatically turn itself
-                back ON after 60 seconds</strong> if it ever receives an
-                OFF command.</p></li>
-                </ol>
-                <p><em>By enabling this hardware-level feature on the
-                plug itself, the Linux box only needs to successfully
-                transmit the initial "OFF" command while the internet is
-                failing. Even if the internet cuts out immediately
-                after, the Z-Wave plug's internal firmware countdown
-                will guarantee your router turns back on 60 seconds
-                later.</em></p>
-                <hr />
-            </article>
-
-        </div>
-    </main>
-
-    <div id="footer-placeholder"></div>
-    <script src="/scripts/component-loader.js"></script>
+      <article class="document-content">
+        <h1
+        id="nav-configuring-a-a-network-wide-power-fail-infrastructure-using-network-ups-tool.">Configuring
+        a a Network Wide Power Fail Infrastructure using Network UPS
+        Tool.</h1>
+        <p>For a Network UPS Tools (NUT) deployment where the UPS is
+        physically connected via USB, to the main Promox server you have
+        two primary options within your Proxmox VE topology.</p>
+        <p>Because the UPS is a critical infrastructure component that
+        dictates the shutdown sequence of your <em>entire</em> physical
+        host (including all your VMs and LXCs), <strong>the ideal
+        architecture is to install the NUT server directly on the
+        Proxmox Host (PVE Host, 192.168.86.250).</strong></p>
+        <h1 id="nav-ups-direct-connection-to-the-pve-host">UPS Direct
+        Connection to the PVE Host</h1>
+        <p>In this configuration, the physical USB cable goes from the
+        UPS into the Kamrui Mini PC, and the bare-metal Proxmox Debian
+        layer handles the driver (usbhid-ups).</p>
+        <p><strong>Why this is better than creating a new
+        LxC:</strong></p>
+        <ul>
+        <li><p><strong>Fail-Safe Shutdowns:</strong> If the battery runs
+        critically low, the host has direct control to gracefully stop
+        your LXCs/VMs and then safely power itself down. If the NUT
+        server is inside a virtualized container and that container
+        crashes or hangs, the host won't receive the shutdown
+        signal.</p></li>
+        <li><p><strong>Network Independence:</strong> If your internal
+        virtual switch (vmbr0) or local routing encounters an issue
+        during a power event, the host can still talk to the UPS locally
+        over the USB bus without needing network layers to stay up just
+        to read its own power status.</p></li>
+        <li><p><strong>Server-Client Topology:</strong> The PVE host
+        acts as the <strong>NUT Master (Server)</strong>. It can then
+        easily serve data across 192.168.86.0/24 to <strong>NUT Slaves
+        (Clients)</strong> like your Home Assistant OS instance (VM 101)
+        for dashboards and automations.</p></li>
+        </ul>
+        <p>Here is the complete textual and structural layout of your
+        dual-UPS infrastructure.</p>
+        <p>This design separates your core computing layer (Proxmox)
+        from your network and storage dependencies, ensuring your
+        infrastructure stays alive and manageable for as long as
+        possible during a power event.</p>
+        <p><strong>🏢 UPS 1: The Compute Layer</strong></p>
+        <p><strong>Dedicated to:</strong> Proxmox VE Host (Kamrui Mini
+        PC)</p>
+        <ul>
+        <li><p><strong>Physical Data Link:</strong> A USB communication
+        cable connects directly from <strong>UPS 1</strong> into a USB
+        port on the <strong>Proxmox Host</strong>.</p></li>
+        <li><p><strong>Role:</strong> This UPS only has to power the
+        low-draw Mini PC. Because it isn't burdened by spinning hard
+        drives or power-hungry PoE cameras, it provides a maximum
+        runtime buffer for the Proxmox host to execute its network
+        watchdog scripts and manage the cluster shutdown.</p></li>
+        <li><p><strong>Control Signaling:</strong></p>
+        <ul>
+        <li><p>The Proxmox Host runs the <strong>NUT Master
+        (Server)</strong> daemon. It monitors the battery status of UPS
+        1 over the USB cable.</p></li>
+        <li><p>It shares this power status out over the local network
+        via Ethernet.</p></li>
+        </ul></li>
+        </ul>
+        <p><strong>🌐 UPS 2: The Infrastructure, Storage &amp; Network
+        Layer</strong></p>
+        <p><strong>Dedicated to:</strong> All supporting equipment and
+        network appliances.</p>
+        <ul>
+        <li><p><strong>Power Connections:</strong></p>
+        <ol type="1">
+        <li><p><strong>Internet Modem</strong> (Plugged into the
+        SmartThings Z-Wave Smart Plug ──► UPS 2 Battery
+        Outlets)</p></li>
+        <li><p><strong>Wi-Fi Router / EERO Nest Primary
+        Node</strong></p></li>
+        <li><p><strong>Core Network Switch</strong></p></li>
+        <li><p><strong>PoE Network Switches</strong> (Powering your IP
+        surveillance cameras)</p></li>
+        <li><p><strong>Synology NAS 1</strong> (Surveillance Station
+        storage)</p></li>
+        <li><p><strong>Synology NAS 2</strong> (NFS/Data
+        storage)</p></li>
+        <li><p><strong>SmartThings Hub</strong></p></li>
+        </ol></li>
+        <li><p><strong>Role:</strong> Keeps your entire local network
+        fabric, Wi-Fi mesh, smart home mesh, and data storage fully
+        active.</p></li>
+        <li><p><strong>Control Signaling:</strong></p>
+        <ul>
+        <li><p>The <strong>Synology NAS units</strong> are configured as
+        <strong>NUT Slaves (Clients)</strong>.</p></li>
+        <li><p>They continuously poll the Proxmox Host (192.168.86.250)
+        over the local Ethernet network.</p></li>
+        <li><p>Even though they are plugged into UPS 2 for power, they
+        listen to the shutdown command broadcast by Proxmox. When
+        Proxmox reports a power failure, the Synologies execute their
+        2-to-5-minute countdown to enter Safe Mode, saving their disk
+        volumes from corruption before UPS 2 can run out of
+        juice.</p></li>
+        </ul></li>
+        </ul>
+        <p><strong>🔀 Physical Data &amp; Network Topology
+        Map</strong></p>
+        <p>text</p>
+        <p>======================= ELECTRICAL POWER LINES
+        =======================</p>
+        <p>[Wall Outlet A] ──► [ UPS 1 (Compute) ] ──► Kamrui Mini PC
+        (Proxmox Host)</p>
+        <p>│</p>
+        <p>[Wall Outlet B] ──► [ UPS 2 (Network) ] ──► Power Strip /
+        PDU</p>
+        <p>├──► SmartThings Z-Wave Plug ──► Internet Modem</p>
+        <p>├──► Wi-Fi Router / EERO Nodes</p>
+        <p>├──► Core Network Switch</p>
+        <p>├──► PoE Camera Switches</p>
+        <p>├──► Synology NAS (Surveillance)</p>
+        <p>├──► Synology NAS (NFS Data)</p>
+        <p>└──► SmartThings Hub</p>
+        <p>======================= LOGICAL AND DATA PATHS
+        =======================</p>
+        <p>[ UPS 1 ] ⚡───(USB Monitoring Cable)───► [ Proxmox Host
+        (192.168.86.250) ]</p>
+        <p>(NUT Master Service / Runs Script)</p>
+        <p>│</p>
+        <p>┌────────────────────────────────────────┴────────────────────────────────────────┐</p>
+        <p>▼ (Ethernet Path - local) ▼ (Wi-Fi Path - internet)</p>
+        <p>[ Core Network Switch ] [ Wi-Fi Router / EERO Mesh ]</p>
+        <p>│ │</p>
+        <p>├──► [ Synology NAS Units ] (NUT Slaves) └──► [ Internet /
+        Cloud ]</p>
+        <p>│ └─► Listens for ONBATT signal ▲</p>
+        <p>│ └─► Enters Safe Mode in 2-5 mins │ (API Commands)</p>
+        <p>│ │</p>
+        <p>└──► [ SmartThings Hub ] ───(Z-Wave Mesh)───► [ SmartThings
+        Z-Wave Plug ] ──────────────┘</p>
+        <p>└─► Unaffected by local Wi-Fi drop └─► Cuts power to Modem
+        for 60s</p>
+        <p>Use code with caution.</p>
+        <p><strong>💡 Why This Dual Layout Works Best For Your
+        Script</strong></p>
+        <ol type="1">
+        <li><p><strong>Isolated Troubleshooting:</strong> When your
+        script detects a dropped internet connection on the wlan0
+        interface, it cycles the SmartThings Z-Wave plug. Because the
+        <strong>SmartThings Hub</strong> and <strong>Core
+        Switch</strong> are on UPS 2, they remain completely powered up
+        and operational. The Z-Wave command moves locally from the hub
+        to the plug seamlessly.</p></li>
+        <li><p><strong>Proxmox Safety:</strong> If the modem power-cycle
+        script runs while a true utility power outage is occurring, your
+        Proxmox server won't abruptly lose power when the modem reboots,
+        because Proxmox's power supply is completely isolated on UPS
+        1.</p></li>
+        </ol>
+        <p><strong>How to structure it in your Network Map</strong></p>
+        <p>If you go with the recommended
+        <strong>Host-as-Master</strong> approach, your configuration
+        won't require spinning up a new container ID, keeping your 32GB
+        RAM footprint exactly where it is.</p>
+        <p>Here is how the data and shutdown signaling will flow through
+        your existing layout:</p>
+        <blockquote>
+        <p>[ Physical UPS ] ──(USB Cable)──► [ PROXMOX VE HOST
+        (192.168.86.250) ]</p>
+        <p>│ (Runs NUT Server / Master)</p>
+        <p>│</p>
+        <p>┌────────────────────┴────────────────────┐</p>
+        <p>▼ (LAN Broadcast) ▼ (LAN Broadcast)</p>
+        <p>├──► [ VM 101 ] HOME ASSISTANT [ Other Network Hosts ]</p>
+        <p>│ (Runs NUT Client / Integration) (NAS, Desktops, etc.)</p>
+        <p>│ - Triggers Smart Home Alerts - Graceful automated
+        shutdowns</p>
+        <p>│ - Logs Battery Runtime Metrics</p>
+        </blockquote>
+        <p><strong>Resource Impact:</strong></p>
+        <ul>
+        <li><strong>CPU/RAM:</strong> Negligible. The nut-server daemon
+        uses less than 10–20 MB of RAM and essentially 0% CPU overhead,
+        fitting perfectly within the <strong>2GB RAM / 2
+        Threads</strong> overhead you already wisely reserved for your
+        Proxmox host.</li>
+        </ul>
+        <p>Promox NUT Server will tell synology to sleep, I want it to
+        shutdown on LL. i want it to poll wifi. *(Promox has ethernet
+        and wifi). Promox NUT will run a restart script that cycles
+        internet ( wifi ) and then wait 1 minute. Then it will cycle
+        smartthings</p>
+        <p>This advanced, multi-network automation is completely
+        possible using your Linux machine as the central coordinator.
+        Since your Linux box has <strong>both Ethernet and
+        Wi-Fi</strong>, we can isolate the networks: Ethernet handles
+        your local infrastructure (Synology and SmartThings), while
+        Wi-Fi tests and handles the internet recovery.</p>
+        <p>Here is the complete blueprint to orchestrate this logic
+        flow.</p>
+        <hr />
+        <h2 id="nav-step-1-the-linux-network-strategy">Step 1: The Linux
+        Network Strategy</h2>
+        <p>To make this reliable, you must ensure your Linux routing
+        table doesn't get confused by having two active network
+        interfaces.</p>
+        <ul>
+        <li><p><strong>Ethernet (eth0):</strong> Hardwired to your local
+        network switch. This interface must be configured
+        <strong>without a default gateway</strong> so it only handles
+        local IP traffic (talking to Synology, SmartThings, and your
+        UPS).</p></li>
+        <li><p><strong>Wi-Fi (wlan0):</strong> Connected to your main
+        Wi-Fi network. This interface must hold the <strong>default
+        gateway</strong>, forcing all external internet traffic (pings
+        to the outside world) to go through the Wi-Fi chip.</p></li>
+        </ul>
+        <hr />
+        <h2
+        id="nav-step-2-the-ups-core-logic-synology-standby-low-battery-shutdown">Step
+        2: The UPS Core Logic (Synology Standby &amp; Low Battery
+        Shutdown)</h2>
+        <p>As configured earlier, your Linux server runs the NUT master
+        service.</p>
+        <ol type="1">
+        <li><p><strong>Synology Standby:</strong> In your Synology DSM
+        interface (<strong>Control Panel &gt; Hardware &amp; Power &gt;
+        UPS</strong>), set the time-based countdown to a short window
+        (e.g., <strong>2 to 5 minutes</strong>).</p>
+        <ul>
+        <li><em>When power drops, the Linux NUT server broadcasts the
+        power failure. The Synology countdown triggers, safely
+        unmounting its drives and slipping into its low-power standby
+        "Safe Mode."</em></li>
+        </ul></li>
+        <li><p><strong>Linux Low Battery Shutdown:</strong> Your Linux
+        server ignores the short timer and remains fully operational on
+        battery. It will continue running the internet monitoring script
+        below until the UPS battery drops to its physical low-voltage
+        threshold, at which point the NUT daemon executes its native
+        SHUTDOWNCMD.</p></li>
+        </ol>
+        <hr />
+        <h2 id="nav-step-3-the-unified-internet-recovery-script">Step 3:
+        The Unified Internet Recovery Script</h2>
+        <p>This script runs on your Linux box. It forces all ping tests
+        to route through your Wi-Fi interface. If the internet fails, it
+        drops your Wi-Fi connection to attempt a local software reset,
+        waits, and then instructs your SmartThings Z-Wave plug to
+        cycle.</p>
+        <ol type="1">
+        <li>Create the script file on your Linux machine:</li>
+        </ol>
+        <p>bash</p>
+        <p>sudo nano /usr/local/bin/network_watchdog.sh</p>
+        <p>Use code with caution.</p>
+        <ol start="2" type="1">
+        <li>Paste the following automated script. <em>Note: Ensure you
+        update your SmartThings API Token, Z-Wave Plug Device ID, and
+        your local Wi-Fi interface name (usually wlan0).</em></li>
+        </ol>
+        <p>bash</p>
+        <p>#!/bin/bash</p>
+        <p># Configuration Parameters</p>
+        <p>TARGET_IP="8.8.8.8"</p>
+        <p>WIFI_INTERFACE="wlan0" # Change to your actual Linux Wi-Fi
+        interface name</p>
+        <p>ST_TOKEN="YOUR_SMARTTHINGS_BEARER_TOKEN"</p>
+        <p>ST_DEVICE_ID="YOUR_Z_WAVE_PLUG_DEVICE_ID"</p>
+        <p>echo "Executing Network Watchdog..."</p>
+        <p># 1. Force the ping to route EXCLUSIVELY through the Wi-Fi
+        interface</p>
+        <p>if ! ping -I "$WIFI_INTERFACE" -c 3 -W 5 "$TARGET_IP" &gt;
+        /dev/null 2&gt;&amp;1; then</p>
+        <p>echo "Internet failure detected on Wi-Fi interface!"</p>
+        <p># 2. Cycle local Linux Wi-Fi interface first to clear local
+        software locks</p>
+        <p>echo "Restarting Linux Wi-Fi interface..."</p>
+        <p>sudo ip link set "$WIFI_INTERFACE" down</p>
+        <p>sleep 10</p>
+        <p>sudo ip link set "$WIFI_INTERFACE" up</p>
+        <p># Wait 45 seconds for Linux to reconnect to the Wi-Fi access
+        point</p>
+        <p>echo "Waiting for Wi-Fi reconnection..."</p>
+        <p>sleep 45</p>
+        <p># 3. Re-test internet after local Wi-Fi reset. If still dead,
+        proceed to hardware cycle.</p>
+        <p>if ! ping -I "$WIFI_INTERFACE" -c 3 -W 5 "$TARGET_IP" &gt;
+        /dev/null 2&gt;&amp;1; then</p>
+        <p>echo "Internet still dead. Initiating SmartThings Z-Wave
+        power cycle..."</p>
+        <p># 4. Turn off the SmartThings Z-Wave plug powering your
+        router/modem</p>
+        <p>curl -X POST -s -H "Authorization: Bearer $ST_TOKEN" -H
+        "Content-Type: application/json" \</p>
+        <p>-d '{"commands": [{"component": "main", "capability":
+        "switch", "command": "off"}]}' \</p>
+        <p>https://smartthings.com &gt; /dev/null</p>
+        <p># 5. Wait exactly 1 minute (60 seconds) as requested</p>
+        <p>echo "Modem/Router powered off. Waiting 60 seconds..."</p>
+        <p>sleep 60</p>
+        <p># 6. Turn the SmartThings Z-Wave plug back ON</p>
+        <p>echo "Powering Modem/Router back on via SmartThings..."</p>
+        <p>curl -X POST -s -H "Authorization: Bearer $ST_TOKEN" -H
+        "Content-Type: application/json" \</p>
+        <p>-d '{"commands": [{"component": "main", "capability":
+        "switch", "command": "on"}]}' \</p>
+        <p>https://smartthings.com &gt; /dev/null</p>
+        <p>echo "Power cycle complete. Allowing network time to
+        boot..."</p>
+        <p>else</p>
+        <p>echo "Local Linux Wi-Fi cycle resolved the issue. Internet
+        restored."</p>
+        <p>fi</p>
+        <p>else</p>
+        <p>echo "Internet connection on Wi-Fi is perfectly healthy."</p>
+        <p>fi</p>
+        <p>Use code with caution.</p>
+        <ol start="3" type="1">
+        <li>Save and close the file (Ctrl+O, Enter, Ctrl+X), then make
+        it executable:</li>
+        </ol>
+        <p>bash</p>
+        <p>sudo chmod +x /usr/local/bin/network_watchdog.sh</p>
+        <p>Use code with caution.</p>
+        <hr />
+        <h2 id="nav-step-4-schedule-the-automated-check">Step 4:
+        Schedule the Automated Check</h2>
+        <p>To give your modem and router plenty of time to finish
+        booting up after a hard reset, configure this script to run
+        every 15 minutes.</p>
+        <ol type="1">
+        <li>Open your system's automation scheduler:</li>
+        </ol>
+        <p>bash</p>
+        <p>crontab -e</p>
+        <p>Use code with caution.</p>
+        <ol start="2" type="1">
+        <li>Add this execution rule to the very bottom of the file:</li>
+        </ol>
+        <p>text</p>
+        <p>*/15 * * * * /usr/local/bin/network_watchdog.sh</p>
+        <p>Use code with caution.</p>
+        <hr />
+        <h2
+        id="nav-step-5-handle-the-smartthings-offline-safety-net">Step
+        5: Handle the SmartThings "Offline" Safety Net</h2>
+        <p>Because the SmartThings command travels over the internet, a
+        critical safety issue arises: <strong>If your modem is
+        completely locked up, the internet is down, meaning the Linux
+        box cannot send the "Turn ON" command to SmartThings via the
+        cloud API.</strong></p>
+        <p>To prevent your network from being permanently stuck in an
+        "OFF" state, you <strong>must change a hardware parameter on
+        your Z-Wave plug</strong>.</p>
+        <ol type="1">
+        <li><p>Open your SmartThings app and locate your Z-Wave
+        plug.</p></li>
+        <li><p>Go to its <strong>Settings / Device
+        Options</strong>.</p></li>
+        <li><p>Look for a setting called <strong>"Auto Turn-On
+        Timer"</strong> or <strong>"Auto-Off Disabled / Auto-On
+        Enabled"</strong> (varies by brand like Zooz or
+        Aeotec).</p></li>
+        <li><p>Set the plug to <strong>automatically turn itself back ON
+        after 60 seconds</strong> if it ever receives an OFF
+        command.</p></li>
+        </ol>
+        <p><em>By enabling this hardware-level feature on the plug
+        itself, the Linux box only needs to successfully transmit the
+        initial "OFF" command while the internet is failing. Even if the
+        internet cuts out immediately after, the Z-Wave plug's internal
+        firmware countdown will guarantee your router turns back on 60
+        seconds later.</em></p>
+        <hr />
+      </article>
+    </div>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="/scripts/component-loader.js"></script>
 </body>
 </html>
+

@@ -1,1881 +1,1773 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Setting Up Pihole</title>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
-    <script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setting up PiHole</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+  <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-LLK7685ZGC');
-    </script>
-    <link rel="stylesheet" href="/styles/global.css">
+  </script>
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    .doc-layout {
+      display: grid;
+      grid-template-columns: 450px 1fr;
+      gap: 2.5rem;
+      margin-top: 2rem;
+      align-items: start;
+    }
+    [custom-style="TextBlock"], 
+    .TextBlock, 
+    .textblock, 
+    .code, 
+    .Code, 
+    span[data-custom-style="TextBlock"],
+    p[custom-style="TextBlock"] {
+        background: #1e1e1e !important;         /* Matches your dark code/box theme */
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Subtle dark-mode border */
+        border-left: 4px solid #3182ce !important;              /* Accent left border (or keep your preferred color) */
+        padding: 16px !important;               /* Creates internal breathing room */
+        line-height: 1.1 !important;           /* Keeps text lines tightly grouped */
+        display: block !important;              /* Forces the inline element to act like a box */
+        width: 100% !important;                 /* Spans the box structure across the viewport */
+        max-width: 850px !important;            /* Restricts maximum box width to look clean */
+        margin: 1.5rem 0 !important;            /* Vertical margins separate it from normal body text */
+        color: #eaf4ff !important;                     /* Matches your light text color */
+        border-radius: 6px !important;          /* Gives the box sleek, rounded corners */
+    }
+    .sidebar-toc {
+      position: sticky;
+      top: 2rem;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .sidebar-toc ul {
+      list-style: none;
+      padding-left: 1.25rem;
+      margin: 0;
+    }
+    .sidebar-toc > ul {
+      padding-left: 0;
+    }
+    .sidebar-toc li {
+      margin-bottom: 0.5rem;
+    }
+    .sidebar-toc a {
+      color: #bfdbfe;
+      text-decoration: none;
+      transition: color 0.2s;
+      font-size: 0.95rem;
+    }
+    .sidebar-toc a:hover {
+      color: #eaf4ff;
+      text-decoration: underline;
+    }
+    .document-content {
+      color: #eaf4ff;
+      line-height: 1.7;
+    }
+    .document-content pre {
+      background: #1e1e1e;
+      padding: 1.25rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    .document-content pre code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: #eaf4ff;
+      line-height: 1.5;
+    }
+    .document-content pre[class*="language-"]::before {
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-family: sans-serif;
+    }
+    .document-content pre.language-powershell::before { content: "POWERSHELL"; border-bottom: 1px solid #10b981; }
+    .document-content pre.language-css::before { content: "CSS"; border-bottom: 1px solid #3b82f6; }
+    .document-content pre.language-html::before { content: "HTML"; border-bottom: 1px solid #f97316; }
+    .document-content pre.language-yaml::before { content: "YAML"; border-bottom: 1px solid #a855f7; }
+    .document-content pre.language-plaintext::before { content: "TEXT"; }
     
-    <style>
-        .doc-layout {
-            display: grid;
-            /* Widened the left column to 450px (~4 inches) */
-            grid-template-columns: 450px 1fr;
-            gap: 2.5rem;
-            margin-top: 2rem;
-            align-items: start;
-        }
-        
-        .sidebar-toc {
-            position: sticky;
-            top: 2rem;
-            max-height: calc(100vh - 4rem);
-            overflow-y: auto;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    .document-content pre.language-powershell { border-left: 3px solid #10b981; }
+    .document-content pre.language-css { border-left: 3px solid #3b82f6; }
+    .document-content pre.language-html { border-left: 3px solid #f97316; }
+    .document-content pre.language-yaml { border-left: 3px solid #a855f7; }
 
-        /* Styling Pandoc's auto-generated list structure */
-        .sidebar-toc ul {
-            list-style: none;
-            padding-left: 1.25rem;
-            margin: 0;
-        }
-        .sidebar-toc > ul {
-            padding-left: 0;
-        }
-        .sidebar-toc li {
-            margin-bottom: 0.5rem;
-        }
-        .sidebar-toc a {
-            color: #bfdbfe;
-            text-decoration: none;
-            transition: color 0.2s;
-            font-size: 0.95rem;
-        }
-        .sidebar-toc a:hover {
-            color: #eaf4ff;
-            text-decoration: underline;
-        }
+    .document-content table {
+      width: auto;
+      max-width: 850px;
+      margin: 1.5rem 0;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      text-align: left;
+    }
+    .document-content th, .document-content td {
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .document-content td {
+      white-space: pre-wrap;
+    }
+    .document-content th {
+      background: rgba(191, 219, 254, 0.1);
+      color: #bfdbfe;
+      font-weight: 600;
+    }
+    .document-content img {
+      display: block;
+      margin-left: 0 !important;
+      margin-right: auto !important;
+      text-align: left;
+    }
+    .document-content p.caption, .document-content .caption, .document-content figcaption {
+      text-align: left !important;
+      margin-left: 0 !important;
+      margin-top: 0.5rem;
+      color: #94a3b8;
+    }
+    .document-content tr:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
 
-        .document-content {
-            color: #eaf4ff;
-            line-height: 1.7;
-        }
-        
-        /* Modernized Code block layout matching the script regex output */
-        .document-content pre {
-            background: #1e1e1e;
-            padding: 1.25rem;
-            border-radius: 6px;
-            overflow-x: auto;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 1.5rem 0;
-            position: relative;
-        }
+    /* ========================================================================== */
+    /* # COLLAPSIBLE DOWNLOAD BOX LAYOUT INTEGRATION                              */
+    /* ========================================================================== # */
+    .download-container {
+      margin: 1.5rem 0;
+      max-width: 850px;
+    }
+    .collapsible-download-box {
+      background: #1e1e1e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .collapsible-download-box[open] {
+      border: 1px solid rgba(191, 219, 254, 0.3);
+    }
+    .box-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      color: #bfdbfe;
+      background: rgba(191, 219, 254, 0.05);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .box-header::-webkit-details-marker {
+      display: none;
+    }
+    .box-header:hover {
+      background: rgba(191, 219, 254, 0.12);
+      color: #eaf4ff;
+    }
+    .folder-icon {
+      margin-right: 12px;
+      font-size: 1.1rem;
+    }
+    .box-body {
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.15);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      animation: expandReveal 0.2s ease-out;
+    }
+    .box-body p {
+      margin: 0 0 1rem 0;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+    .download-btn {
+      display: inline-block;
+      background: #3182ce;
+      color: #ffffff !important;
+      padding: 8px 16px;
+      text-decoration: none !important;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      transition: background 0.15s ease;
+    }
+    .download-btn:hover {
+      background: #2b6cb0;
+    }
+    @keyframes expandReveal {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-        .document-content pre code {
-            font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: #eaf4ff;
-            line-height: 1.5;
-        }
-
-        /* Codeblock Language Badges on top-right edge */
-        .document-content pre[class*="language-"]::before {
-            position: absolute;
-            top: 4px;
-            right: 8px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.35);
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            font-family: sans-serif;
-        }
-
-        .document-content pre.language-powershell::before { content: "POWERSHELL"; border-bottom: 1px solid #10b981; }
-        .document-content pre.language-css::before { content: "CSS"; border-bottom: 1px solid #3b82f6; }
-        .document-content pre.language-html::before { content: "HTML"; border-bottom: 1px solid #f97316; }
-        .document-content pre.language-yaml::before { content: "YAML"; border-bottom: 1px solid #a855f7; }
-        .document-content pre.language-plaintext::before { content: "TEXT"; }
-
-        /* Left border accent line linked to language profiles */
-        .document-content pre.language-powershell { border-left: 3px solid #10b981; }
-        .document-content pre.language-css { border-left: 3px solid #3b82f6; }
-        .document-content pre.language-html { border-left: 3px solid #f97316; }
-        .document-content pre.language-yaml { border-left: 3px solid #a855f7; }
-
-        /* CUSTOM TABLE SIZE & LEFT JUSTIFICATION */
-        .document-content table {
-            width: auto;
-            max-width: 850px;
-            margin: 1.5rem 0;
-            border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-            text-align: left;
-        }
-
-        .document-content th, 
-        .document-content td {
-            padding: 10px 16px;         
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Preserve tabs and spacing formatting inside table cells natively */
-        .document-content td {
-            white-space: pre-wrap;      
-        }
-
-        .document-content th {
-            background: rgba(191, 219, 254, 0.1); 
-            color: #bfdbfe;
-            font-weight: 600;
-        }
-
-        /* FORCE ALL IMAGES AND CAPTIONS TO BE LEFT ALIGNED */
-        .document-content img {
-            display: block;
-            margin-left: 0 !important;
-            margin-right: auto !important;
-            text-align: left;
-        }
-
-        .document-content p.caption,
-        .document-content .caption,
-        .document-content figcaption {
-            text-align: left !important;
-            margin-left: 0 !important;
-            margin-top: 0.5rem;
-            color: #94a3b8;
-        }
-
-        .document-content tr:hover {
-            background: rgba(255, 255, 255, 0.04); 
-        }
-
-        @media (max-width: 768px) {
-            .doc-layout {
-                grid-template-columns: 1fr;
-            }
-            .sidebar-toc {
-                position: relative;
-                top: 0;
-                max-height: none;
-                overflow-y: visible;
-            }
-            .document-content table {
-                width: 100%;            
-                display: block;
-                overflow-x: auto;       
-            }
-        }
-    </style>
+    @media (max-width: 768px) {
+      .doc-layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar-toc {
+        position: relative;
+        top: 0;
+        max-height: none;
+        overflow-y: visible;
+      }
+      .document-content table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="header-placeholder"></div>
+  <div id="header-placeholder"></div>
+  <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
+    <p style="margin-bottom: 1.5rem; text-align: left;">
+      <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">→Home Lab</a>
+      <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+      <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">→Back</a>
+      <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+      <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">→Gateway</a>
+    </p>
 
-    <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
-        
-        <p style="margin-bottom: 1.5rem; text-align: left;">
-            <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Home Lab</a>
-            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
-            <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Back</a>
-            <span style="color: #64748b; margin: 0 0.75rem;">|</span>
-            <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Gateway</a>
-        </p>
+    <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Setting
+up PiHole</h1>
+      <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
+      <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
+    </div>
 
-        <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-            <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Setting
-Up Pihole</h1>
-            <h2 style="color: #bfdbfe; margin: 0 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
-            <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
-        </div>
-        
-        <div class="doc-layout">
-            
-            <aside class="sidebar-toc">
-                <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
-                <ul>
-                <li><a href="#nav-setting-up-pihole"
-                id="nav-toc-setting-up-pihole">Setting up
-                PiHole</a></li>
-                <li><a href="#nav-domain-cloudflare-github-pages-setup"
-                id="nav-toc-domain-cloudflare-github-pages-setup"><strong>Domain,
-                Cloudflare, GitHub Pages Setup</strong></a>
-                <ul>
-                <li><a href="#nav-cloudflare"
-                id="nav-toc-cloudflare">Cloudflare</a></li>
-                <li><a
-                href="#nav-connecting-it-to-your-github-repositories"
-                id="nav-toc-connecting-it-to-your-github-repositories">Connecting
-                it to your Github Repositories</a>
-                <ul>
-                <li><a href="#nav-step-1-tell-github-your-domain-name"
-                id="nav-toc-step-1-tell-github-your-domain-name">🛠️ Step
-                1: Tell GitHub Your Domain Name</a></li>
-                <li><a
-                href="#nav-step-2-route-the-traffic-in-cloudflare-dns-records"
-                id="nav-toc-step-2-route-the-traffic-in-cloudflare-dns-records">🛠️
-                Step 2: Route the Traffic in Cloudflare (DNS
-                Records)</a></li>
-                <li><a
-                href="#nav-step-3-match-the-ssltls-security-settings"
-                id="nav-toc-step-3-match-the-ssltls-security-settings">🛠️
-                Step 3: Match the SSL/TLS Security Settings</a></li>
-                <li><a href="#nav-step-4-enforce-https-on-github"
-                id="nav-toc-step-4-enforce-https-on-github">🛠️ Step 4:
-                Enforce HTTPS on GitHub</a></li>
-                <li><a href="#nav-testing-your-site"
-                id="nav-toc-testing-your-site">🎉 Testing Your
-                Site</a></li>
-                <li><a
-                href="#nav-pointing-your-domain-name-to-your-home-lab"
-                id="nav-toc-pointing-your-domain-name-to-your-home-lab">Pointing
-                your domain name to your Home Lab</a></li>
-                <li><a href="#nav-how-to-set-it-up-in-cloudflare"
-                id="nav-toc-how-to-set-it-up-in-cloudflare">How to set
-                it up in Cloudflare:</a></li>
-                <li><a href="#nav-how-to-set-it-up-in-github"
-                id="nav-toc-how-to-set-it-up-in-github">How to set it up
-                in GitHub:</a></li>
-                <li><a
-                href="#nav-option-1-using-docker-or-an-lxc-container-cloudflare-ddns"
-                id="nav-toc-option-1-using-docker-or-an-lxc-container-cloudflare-ddns">Option
-                1: Using Docker or an LXC Container
-                (Cloudflare-DDNS)</a></li>
-                <li><a href="#nav-option-2-built-in-router-settings"
-                id="nav-toc-option-2-built-in-router-settings">Option 2:
-                Built-in Router Settings</a></li>
-                <li><a href="#nav-option-3-home-assistant-integration"
-                id="nav-toc-option-3-home-assistant-integration">Option
-                3: Home Assistant Integration</a></li>
-                <li><a href="#nav-pointing-to-a-twingate-connection"
-                id="nav-toc-pointing-to-a-twingate-connection">Pointing
-                to a Twingate Connection</a></li>
-                <li><a
-                href="#nav-here-is-exactly-how-it-works-and-how-to-set-it-up"
-                id="nav-toc-here-is-exactly-how-it-works-and-how-to-set-it-up">Here
-                is exactly how it works and how to set it up:</a></li>
-                <li><a
-                href="#nav-in-your-cloudflare-dns-the-dummy-record"
-                id="nav-toc-in-your-cloudflare-dns-the-dummy-record">1.
-                In Your Cloudflare DNS (The "Dummy" Record)</a></li>
-                <li><a
-                href="#nav-in-your-twingate-admin-console-define-the-resource"
-                id="nav-toc-in-your-twingate-admin-console-define-the-resource">2.
-                In Your Twingate Admin Console (Define the
-                Resource)</a></li>
-                <li><a
-                href="#nav-in-your-local-home-network-the-connector"
-                id="nav-toc-in-your-local-home-network-the-connector">3.
-                In Your Local Home Network (The Connector)</a></li>
-                </ul></li>
-                </ul></li>
-                </ul>
-            </aside>
+    <div class="doc-layout">
+      <aside class="sidebar-toc">
+        <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
+        <ul>
+        <li><a href="#nav-setting-up-pihole"
+        id="nav-toc-setting-up-pihole">Setting up PiHole</a></li>
+        <li><a href="#nav-domain-cloudflare-github-pages-setup"
+        id="nav-toc-domain-cloudflare-github-pages-setup"><strong>Domain,
+        Cloudflare, GitHub Pages Setup</strong></a>
+        <ul>
+        <li><a href="#nav-cloudflare"
+        id="nav-toc-cloudflare">Cloudflare</a></li>
+        <li><a href="#nav-connecting-it-to-your-github-repositories"
+        id="nav-toc-connecting-it-to-your-github-repositories">Connecting
+        it to your Github Repositories</a>
+        <ul>
+        <li><a href="#nav-step-1-tell-github-your-domain-name"
+        id="nav-toc-step-1-tell-github-your-domain-name">🛠️ Step 1: Tell
+        GitHub Your Domain Name</a></li>
+        <li><a
+        href="#nav-step-2-route-the-traffic-in-cloudflare-dns-records"
+        id="nav-toc-step-2-route-the-traffic-in-cloudflare-dns-records">🛠️
+        Step 2: Route the Traffic in Cloudflare (DNS Records)</a></li>
+        <li><a href="#nav-step-3-match-the-ssltls-security-settings"
+        id="nav-toc-step-3-match-the-ssltls-security-settings">🛠️ Step
+        3: Match the SSL/TLS Security Settings</a></li>
+        <li><a href="#nav-step-4-enforce-https-on-github"
+        id="nav-toc-step-4-enforce-https-on-github">🛠️ Step 4: Enforce
+        HTTPS on GitHub</a></li>
+        <li><a href="#nav-testing-your-site"
+        id="nav-toc-testing-your-site">🎉 Testing Your Site</a></li>
+        <li><a href="#nav-pointing-your-domain-name-to-your-home-lab"
+        id="nav-toc-pointing-your-domain-name-to-your-home-lab">Pointing
+        your domain name to your Home Lab</a></li>
+        <li><a href="#nav-how-to-set-it-up-in-cloudflare"
+        id="nav-toc-how-to-set-it-up-in-cloudflare">How to set it up in
+        Cloudflare:</a></li>
+        <li><a href="#nav-how-to-set-it-up-in-github"
+        id="nav-toc-how-to-set-it-up-in-github">How to set it up in
+        GitHub:</a></li>
+        <li><a
+        href="#nav-option-1-using-docker-or-an-lxc-container-cloudflare-ddns"
+        id="nav-toc-option-1-using-docker-or-an-lxc-container-cloudflare-ddns">Option
+        1: Using Docker or an LXC Container (Cloudflare-DDNS)</a></li>
+        <li><a href="#nav-option-2-built-in-router-settings"
+        id="nav-toc-option-2-built-in-router-settings">Option 2:
+        Built-in Router Settings</a></li>
+        <li><a href="#nav-option-3-home-assistant-integration"
+        id="nav-toc-option-3-home-assistant-integration">Option 3: Home
+        Assistant Integration</a></li>
+        <li><a href="#nav-pointing-to-a-twingate-connection"
+        id="nav-toc-pointing-to-a-twingate-connection">Pointing to a
+        Twingate Connection</a></li>
+        <li><a
+        href="#nav-here-is-exactly-how-it-works-and-how-to-set-it-up"
+        id="nav-toc-here-is-exactly-how-it-works-and-how-to-set-it-up">Here
+        is exactly how it works and how to set it up:</a></li>
+        <li><a href="#nav-in-your-cloudflare-dns-the-dummy-record"
+        id="nav-toc-in-your-cloudflare-dns-the-dummy-record">1. In Your
+        Cloudflare DNS (The "Dummy" Record)</a></li>
+        <li><a
+        href="#nav-in-your-twingate-admin-console-define-the-resource"
+        id="nav-toc-in-your-twingate-admin-console-define-the-resource">2.
+        In Your Twingate Admin Console (Define the Resource)</a></li>
+        <li><a href="#nav-in-your-local-home-network-the-connector"
+        id="nav-toc-in-your-local-home-network-the-connector">3. In Your
+        Local Home Network (The Connector)</a></li>
+        </ul></li>
+        </ul></li>
+        </ul>
+      </aside>
 
-            <article class="document-content">
-                <h1 id="nav-setting-up-pihole">Setting up PiHole</h1>
-                <h1
-                id="nav-domain-cloudflare-github-pages-setup"><strong>Domain,
-                Cloudflare, GitHub Pages Setup</strong></h1>
-                <p>Buying the name directly from
-                <strong>Cloudflare</strong> is the smartest, most
-                streamlined path.</p>
-                <p>While Cloudflare used to only accept transfers of
-                existing domains, they now allow you to register
-                <strong>brand-new</strong> domains directly on their
-                platform.</p>
-                <p>Skipping IONOS entirely and starting right inside
-                Cloudflare has massive benefits for your project.</p>
-                <p><strong>⚖️ IONOS vs. Cloudflare (Direct)</strong></p>
-                <table style="width:97%;">
-                <colgroup>
-                <col style="width: 20%" />
-                <col style="width: 41%" />
-                <col style="width: 35%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th style="text-align: left;">Feature</th>
-                <th style="text-align: left;">IONOS (Promo
-                Strategy)</th>
-                <th style="text-align: left;">Cloudflare (Direct
-                Strategy)</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                <td style="text-align: left;"><strong>Year 1
-                Cost</strong></td>
-                <td
-                style="text-align: left;"><strong>~$1.00</strong></td>
-                <td
-                style="text-align: left;"><strong>~$10.46</strong></td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>Year 2+
-                Cost</strong></td>
-                <td style="text-align: left;"><strong>~$20.00 /
-                year</strong></td>
-                <td style="text-align: left;"><strong>~$10.46 /
-                year</strong> (Flat wholesale price)</td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>Upsells /
-                Gotchas</strong></td>
-                <td style="text-align: left;">High (Tons of checkboxes
-                for trials)</td>
-                <td
-                style="text-align: left;"><strong>Zero</strong> (They
-                never upsell)</td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>Setup
-                Friction</strong></td>
-                <td style="text-align: left;">Moderate (Must manually
-                copy nameservers)</td>
-                <td
-                style="text-align: left;"><strong>None</strong> (It's
-                pre-configured)</td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>WHOIS
-                Privacy</strong></td>
-                <td style="text-align: left;">Free, but watch out for
-                expired trials</td>
-                <td style="text-align: left;"><strong>Free
-                forever</strong> by default</td>
-                </tr>
-                </tbody>
-                </table>
-                <p><strong>🎯 Why Buying Directly from Cloudflare is
-                Better</strong></p>
-                <p><strong>1. You Avoid the "Promo Trap"</strong></p>
-                <p>IONOS lures you in with that $1.00 first year, but
-                they more than make up for it by charging roughly double
-                the wholesale price on every single renewal after that.
-                If you keep your website for 3 years:</p>
-                <ul>
-                <li><p><strong>IONOS path:</strong></p></li>
-                <li><p><strong>Cloudflare path:</strong> Starting with
-                Cloudflare saves you money in the long run.</p></li>
-                </ul>
-                <p>Medium</p>
-                <p><strong>2. Radical Simplicity</strong></p>
-                <p>If you buy from Cloudflare, <strong>Step 2 of the
-                previous guide is completely eliminated.</strong> You do
-                not have to log into IONOS, unlock nameservers, or copy
-                codes back and forth. The domain is born inside
-                Cloudflare, automatically configured with the correct
-                security settings from second one.</p>
-                <p><strong>3. No Hidden Add-on Fees</strong></p>
-                <p>Cloudflare operates their domain registry "at-cost"
-                as a utility to get people onto their network. They pass
-                the exact price charged by the .com registry (Verisign)
-                straight to you with absolutely zero markup. Privacy
-                protection (hiding your home address and phone number
-                from scammers) is permanently included for free.</p>
-                <p>Cloudflare</p>
-                <p><strong>🗺️ Your New, Shortened Setup
-                Process</strong></p>
-                <p>Cloudflare</p>
-                <p>If you buy directly from Cloudflare, your overall
-                workflow drops down to just three major steps:</p>
-                <ol type="1">
-                <li><p><strong>Register the Name:</strong> Log into
-                Cloudflare, go to <strong>Domain Registration</strong>,
-                search for your .com, and buy it for roughly
-                <strong>$10.46</strong>.</p></li>
-                <li><p><strong>Build Your Site:</strong> Create your
-                public repository on GitHub named yourusername.github.io
-                and add your index.html file.</p></li>
-                <li><p><strong>Bridge the Two:</strong> Add your custom
-                domain to GitHub Pages settings, then jump back to
-                Cloudflare DNS and add those same 4 IP records (A
-                records) and the www CNAME record pointing to
-                GitHub.</p></li>
-                </ol>
-                <p>You cut out the third-party middleman entirely, keep
-                your billing in one single clean dashboard, and secure
-                the lowest possible permanent renewal rate right out of
-                the gate.</p>
-                <p>What domain name endings are the cheapest for
-                cloudfare</p>
-                <p>Because Cloudflare sells domains
-                <strong>"at-cost"</strong> (passing the exact registry
-                wholesale price straight to you with zero markup), the
-                cheapest domain extensions on Cloudflare are simply the
-                ones whose global registries charge the least.</p>
-                <p>Cloudflare</p>
-                <p>The baseline wholesale price for a standard
-                <strong>.com</strong> on Cloudflare is roughly
-                <strong>$9.77 to $10.46 per year</strong> (including the
-                tiny mandatory ICANN fee).</p>
-                <p>Gist - GitHub</p>
-                <p>If you want to go even lower than a .com, several
-                solid domain extensions cost significantly less.</p>
-                <p><strong>📉 The Cheapest Domain Extensions on
-                Cloudflare</strong></p>
-                <table style="width:98%;">
-                <colgroup>
-                <col style="width: 27%" />
-                <col style="width: 30%" />
-                <col style="width: 39%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th style="text-align: left;">Domain Ending (TLD)</th>
-                <th style="text-align: left;">Approximate Annual Cost
-                (Registration &amp; Renewal)</th>
-                <th style="text-align: left;">Best Used For</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                <td
-                style="text-align: left;"><strong>.uk</strong> / <strong>.co.uk</strong></td>
-                <td style="text-align: left;"><strong>~$4.75 /
-                year</strong></td>
-                <td style="text-align: left;">UK-focused sites (note:
-                anyone can buy them, but it implies a UK presence)</td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>.us</strong></td>
-                <td style="text-align: left;"><strong>~$6.50 /
-                year</strong></td>
-                <td style="text-align: left;">US-based projects or
-                individuals</td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>.org</strong></td>
-                <td style="text-align: left;"><strong>~$9.95 /
-                year</strong></td>
-                <td style="text-align: left;">Non-profits, clubs,
-                communities, or open-source projects</td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>.net</strong></td>
-                <td style="text-align: left;"><strong>~$10.10 /
-                year</strong></td>
-                <td style="text-align: left;">Infrastructure,
-                networking, or general fallback</td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>.dev</strong></td>
-                <td style="text-align: left;"><strong>~$10.20 /
-                year</strong></td>
-                <td style="text-align: left;">Development, tech
-                portfolios, coding projects</td>
-                </tr>
-                </tbody>
-                </table>
-                <p><strong>⚠️ A Major Warning on "Ultra-Cheap"
-                Extensions (like .xyz, .top, .site)</strong></p>
-                <p>If you look at traditional registrars, they often
-                sell extensions like .xyz, .site, .top, or .online for
-                <strong>$0.99 for the first year</strong>.</p>
-                <p>However, because Cloudflare does not offer
-                promotional loss-leader pricing, <strong>these
-                extensions are not the cheapest on
-                Cloudflare.</strong></p>
-                <ul>
-                <li><p>The global registry wholesale cost to renew
-                extensions like .xyz or .site is actually around
-                <strong>$10 to $13 per year</strong>.</p></li>
-                <li><p>On Cloudflare, you will pay that full $10–$13
-                wholesale rate starting from year one, making a standard
-                .com or .org cheaper or identical in price
-                anyway.</p></li>
-                </ul>
-                <p><strong>💡 Recommendation</strong></p>
-                <p>If you want a highly recognized, globally trusted
-                extension with the absolute best long-term value on
-                Cloudflare, <strong>sticking with .com (or .org if it's
-                for a community project) at ~$10/year is your best
-                bet.</strong> It avoids any weird formatting and looks
-                professional out of the gate.</p>
-                <p>If you want to skip the traditional .com, .org, or
-                .net names, the cheapest top-level domains (TLDs)
-                available directly on Cloudflare belong to specialized
-                extensions that have incredibly low wholesale baseline
-                rates.</p>
-                <p>Because Cloudflare passes the raw registry costs
-                straight to you without a retail markup, you can get
-                several distinct options for <strong>under $5 to $7 a
-                year</strong>.</p>
-                <p><strong>📉 The Absolute Cheapest TLDs on
-                Cloudflare</strong></p>
-                <p>These specific extensions have the lowest ongoing
-                cost on the platform, usually ranging between
-                <strong>$4.00 and $7.00 per year</strong> (including the
-                standard ICANN fee):</p>
-                <table style="width:98%;">
-                <colgroup>
-                <col style="width: 36%" />
-                <col style="width: 19%" />
-                <col style="width: 42%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th style="text-align: left;"><strong>TLD
-                Extension</strong></th>
-                <th style="text-align: left;"><strong>Approx. Annual
-                Cost (Reg &amp; Renewal)</strong></th>
-                <th style="text-align: left;"><strong>Best Match
-                For</strong></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                <td style="text-align: left;"><strong>.win</strong></td>
-                <td style="text-align: left;"><strong>~$4.16 /
-                year</strong></td>
-                <td style="text-align: left;">Gaming sites, personal
-                achievements, competitions</td>
-                </tr>
-                <tr>
-                <td
-                style="text-align: left;"><strong>.bid</strong> / <strong>.loan</strong></td>
-                <td style="text-align: left;"><strong>~$4.96 /
-                year</strong></td>
-                <td style="text-align: left;">Financial tracking,
-                auctions, portfolio mockups</td>
-                </tr>
-                <tr>
-                <td
-                style="text-align: left;"><strong>.download</strong> / <strong>.stream</strong></td>
-                <td style="text-align: left;"><strong>~$4.96 /
-                year</strong></td>
-                <td style="text-align: left;">File repositories, media
-                hosting, scripts, open-source code</td>
-                </tr>
-                <tr>
-                <td
-                style="text-align: left;"><strong>.date</strong> / <strong>.party</strong></td>
-                <td style="text-align: left;"><strong>~$4.96 /
-                year</strong></td>
-                <td style="text-align: left;">Event tracking, calendars,
-                social hobby groups</td>
-                </tr>
-                <tr>
-                <td
-                style="text-align: left;"><strong>.click</strong> / <strong>.link</strong></td>
-                <td style="text-align: left;"><strong>~$5.00 - $7.00 /
-                year</strong></td>
-                <td style="text-align: left;">Clean, highly versatile
-                utility shortcuts or personal link trees</td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>.us</strong></td>
-                <td style="text-align: left;"><strong>~$6.48 /
-                year</strong></td>
-                <td style="text-align: left;">Individuals or entities
-                with a presence in the United States</td>
-                </tr>
-                <tr>
-                <td
-                style="text-align: left;"><strong>.work</strong></td>
-                <td style="text-align: left;"><strong>~$6.50 /
-                year</strong></td>
-                <td style="text-align: left;">Professional resumes,
-                portfolio sites, project tracking</td>
-                </tr>
-                </tbody>
-                </table>
-                <p><strong>💡 A Quick Strategy Checklist for Your
-                Project</strong></p>
-                <p>When picking an ultra-cheap domain for a developer
-                site or a personal tech tool, three details matter
-                most:</p>
-                <ul>
-                <li><p><strong>Look at .link or .click for general
-                use:</strong> If you want an inexpensive, clean-looking
-                option that isn't tied to a specific theme like gaming
-                or finance, .link looks excellent for housing personal
-                projects or code portfolios.</p></li>
-                <li><p><strong>Availability is much higher:</strong>
-                Finding an available short, clean name is vastly easier
-                on a .link or .win extension than it is on a congested
-                .com.</p></li>
-                <li><p><strong>The Price is Stable:</strong> Because
-                Cloudflare does not inflate the price in year two with a
-                hidden renewal fee, whatever low price you see when you
-                search the domain in your Cloudflare dashboard is the
-                exact price you'll lock in for years to come.</p></li>
-                </ul>
-                <h3 id="nav-cloudflare">Cloudflare</h3>
-                <p>Registering a .us domain name directly through
-                Cloudflare is an easy, highly automated process.
-                However, because .us is the country-code top-level
-                domain (ccTLD) for the United States, the registry
-                enforces <strong>two strict rules</strong> that differ
-                from a standard .com:</p>
-                <ol type="1">
-                <li><p><strong>The Nexus Requirement:</strong> You must
-                explicitly certify that you are a U.S. citizen,
-                resident, or U.S.-based entity.</p></li>
-                <li><p><strong>Public WHOIS Contact Data:</strong> By
-                strict rule of the National Telecommunications and
-                Information Administration (NTIA), <strong>privacy
-                redaction is completely prohibited on .us
-                domains.</strong> Your contact information (name, city,
-                state, country) will be viewable in the public domain
-                database.</p></li>
-                </ol>
-                <p>If you are comfortable with those registry rules,
-                here is the exact step-by-step process to buy it.</p>
-                <p><strong>🛠️ Step 1: Create and Verify Your Cloudflare
-                Account</strong></p>
-                <ol type="1">
-                <li><p>Head to <a
-                href="https://www.cloudflare.com/">Cloudflare</a> and
-                click <strong>Sign Up</strong>.</p></li>
-                <li><p>Enter your email address and create a secure
-                password.</p></li>
-                <li><p>Check your email inbox for a verification message
-                from Cloudflare, and click the link inside to activate
-                your account.</p></li>
-                </ol>
-                <p><strong>🛠️ Step 2: Search for and Purchase Your
-                Domain</strong></p>
-                <ol type="1">
-                <li><p>Log into your fresh Cloudflare
-                dashboard.</p></li>
-                <li><p>Look at the left-side navigation menu and click
-                on <strong>Domain Registration</strong> &gt;
-                <strong>Register Domains</strong>.</p></li>
-                <li><p>Type your preferred name with the .us ending into
-                the search box.</p></li>
-                <li><p>If it is available, it will display the "at-cost"
-                wholesale price (around <strong>$6.50/year</strong>).
-                Click the <strong>Purchase</strong> button next to
-                it.</p></li>
-                <li><p>Select how many years you want to lease the
-                domain for (default is 1 year, and auto-renew is turned
-                on automatically so you don’t accidentally lose
-                it).</p></li>
-                </ol>
-                <p><strong>🛠️ Step 3: Complete the Required Contact
-                Details &amp; US Nexus Forms</strong></p>
-                <p>This is where the unique steps for a .us domain
-                happen. Cloudflare will prompt you to fill out a
-                standard form, followed by specific compliance
-                questions:</p>
-                <p><strong>1. General Contact Info</strong></p>
-                <p>Fill out your legal first name, last name, phone
-                number, and physical mailing address. Note: Ensure this
-                matches a valid U.S. address.</p>
-                <p><strong>2. Choose Your Nexus Category</strong></p>
-                <p>The registry requires you to choose a category that
-                legally states your connection to the United States. You
-                will select from a dropdown list:</p>
-                <ul>
-                <li><p><strong>Nexus Category 1 (C11):</strong> A
-                natural person who is a United States Citizen.</p></li>
-                <li><p><strong>Nexus Category 1 (C12):</strong> A
-                natural person who is a permanent resident of the United
-                States.</p></li>
-                <li><p><strong>Nexus Category 2 (C21):</strong> A
-                U.S.-based organization, LLC, or corporation formed
-                within one of the 50 states.</p></li>
-                </ul>
-                <p><strong>3. State Your Application
-                Purpose</strong></p>
-                <p>Select an option from the dropdown explaining what
-                the domain will be used for:</p>
-                <ul>
-                <li><p>Personal use</p></li>
-                <li><p>For-profit business</p></li>
-                <li><p>Non-profit business or organization</p></li>
-                </ul>
-                <p><strong>🛠️ Step 4: Add Payment and
-                Finalize</strong></p>
-                <ol type="1">
-                <li><p>Provide a credit card or your preferred valid
-                billing profile to pay the initial registration
-                fee.</p></li>
-                <li><p>Review the standard Domain Registration
-                Agreement.</p></li>
-                <li><p>Click <strong>Complete
-                Purchase</strong>.</p></li>
-                </ol>
-                <p>The domain will be registered instantly. Because it
-                was born inside Cloudflare, it bypasses the need to
-                configure custom nameservers. Your domain is fully ready
-                to connect immediately to your GitHub Pages A and CNAME
-                records from your Cloudflare dashboard!</p>
-                <h2
-                id="nav-connecting-it-to-your-github-repositories">Connecting
-                it to your Github Repositories</h2>
-                <p>Now that your .us domain is safely registered
-                directly inside Cloudflare, connecting it to GitHub
-                Pages is highly streamlined.</p>
-                <p>Here is the step-by-step process to link your
-                Cloudflare domain to your GitHub code.</p>
-                <h3 id="nav-step-1-tell-github-your-domain-name">🛠️ Step
-                1: Tell GitHub Your Domain Name</h3>
-                <p>First, you need to configure your GitHub repository
-                to expect incoming traffic from your new .us domain.</p>
-                <ol type="1">
-                <li><p>Log into <strong>GitHub</strong> and open the
-                public repository you created for your website (it
-                should be named yourusername.github.io).</p></li>
-                <li><p>Click on the <strong>Settings</strong> tab at the
-                top of the repository page.</p></li>
-                <li><p>On the left-side menu, scroll down to the
-                <strong>Code and automation</strong> section and click
-                on <strong>Pages</strong>.</p></li>
-                <li><p>Under the <strong>Custom domain</strong> section,
-                type your exact domain name (e.g.,
-                yourdomain.us).</p></li>
-                <li><p>Click <strong>Save</strong>.</p></li>
-                </ol>
-                <p>📝 Note: GitHub will automatically create a new file
-                named CNAME inside your main repository code. Do not
-                delete this file, as it tells GitHub which domain
-                belongs to your account.</p>
-                <h3
-                id="nav-step-2-route-the-traffic-in-cloudflare-dns-records">🛠️
-                Step 2: Route the Traffic in Cloudflare (DNS
-                Records)</h3>
-                <p>Right now, your domain is registered, but it doesn't
-                know where to send people. You need to tell Cloudflare
-                to point your domain directly to GitHub’s global
-                servers.</p>
-                <ol type="1">
-                <li><p>Log into your <strong>Cloudflare
-                Dashboard</strong> and click on your newly registered
-                .us domain.</p></li>
-                <li><p>In the left-side navigation menu, click on
-                <strong>DNS</strong> &gt;
-                <strong>Records</strong>.</p></li>
-                <li><p>You will see a table of default records. You need
-                to add <strong>4 "A" Records</strong> and <strong>1
-                "CNAME" Record</strong>.</p></li>
-                </ol>
-                <p>Click <strong>Add Record</strong> for each of the
-                following 5 entries:</p>
-                <table style="width:98%;">
-                <colgroup>
-                <col style="width: 14%" />
-                <col style="width: 9%" />
-                <col style="width: 30%" />
-                <col style="width: 41%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th style="text-align: left;">Type</th>
-                <th style="text-align: left;">Name</th>
-                <th style="text-align: left;">Target / IP Address</th>
-                <th style="text-align: left;">Proxy Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                <td style="text-align: left;"><strong>A</strong></td>
-                <td style="text-align: left;">@</td>
-                <td style="text-align: left;">185.199.108.153</td>
-                <td style="text-align: left;">Proxied (Orange Cloud
-                icon)</td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>A</strong></td>
-                <td style="text-align: left;">@</td>
-                <td style="text-align: left;">185.199.109.153</td>
-                <td style="text-align: left;">Proxied (Orange Cloud
-                icon)</td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>A</strong></td>
-                <td style="text-align: left;">@</td>
-                <td style="text-align: left;">185.199.110.153</td>
-                <td style="text-align: left;">Proxied (Orange Cloud
-                icon)</td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>A</strong></td>
-                <td style="text-align: left;">@</td>
-                <td style="text-align: left;">185.199.111.153</td>
-                <td style="text-align: left;">Proxied (Orange Cloud
-                icon)</td>
-                </tr>
-                <tr>
-                <td
-                style="text-align: left;"><strong>CNAME</strong></td>
-                <td style="text-align: left;">www</td>
-                <td
-                style="text-align: left;">yourusername.github.io</td>
-                <td style="text-align: left;">Proxied (Orange Cloud
-                icon)</td>
-                </tr>
-                </tbody>
-                </table>
-                <p>💡 Quick Tips: * The @ symbol is just a shortcut that
-                tells Cloudflare you are targeting your root domain
-                (yourdomain.us).</p>
-                <ul>
-                <li>Be sure to change yourusername.github.io to your
-                actual GitHub username website link.</li>
-                </ul>
-                <h3
-                id="nav-step-3-match-the-ssltls-security-settings">🛠️
-                Step 3: Match the SSL/TLS Security Settings</h3>
-                <p>Because Cloudflare sits as a protective shield
-                between your visitors and GitHub, you need to make sure
-                Cloudflare uses the correct level of encryption.</p>
-                <ol type="1">
-                <li><p>While still in your Cloudflare dashboard, look at
-                the left menu and click on <strong>SSL/TLS</strong> &gt;
-                <strong>Overview</strong>.</p></li>
-                <li><p>Change the encryption mode from "Flexible" to
-                <strong>Full</strong> (or <strong>Full
-                (strict)</strong>).</p></li>
-                </ol>
-                <p>This configuration prevents a "too many redirects"
-                error loop, ensuring Cloudflare and GitHub talk to each
-                other over a completely secure connection.</p>
-                <h3 id="nav-step-4-enforce-https-on-github">🛠️ Step 4:
-                Enforce HTTPS on GitHub</h3>
-                <ol type="1">
-                <li><p>Go back to your <strong>GitHub
-                repository</strong> &gt; <strong>Settings</strong> &gt;
-                <strong>Pages</strong>.</p></li>
-                <li><p>Refresh the page. You will see a message under
-                your custom domain saying "DNS check in progress" or
-                "DNS check successful."</p></li>
-                <li><p>Once the DNS check completes (usually takes 5 to
-                15 minutes), check the box that says <strong>Enforce
-                HTTPS</strong>.</p></li>
-                </ol>
-                <h3 id="nav-testing-your-site">🎉 Testing Your Site</h3>
-                <p>Open a brand-new browser window or use your phone,
-                type in your domain yourdomain.us (and
-                www.yourdomain.us), and press enter. You should
-                instantly see the index.html file you created in your
-                GitHub repository, complete with a secure padlock icon
-                in the URL bar!</p>
-                <h3
-                id="nav-pointing-your-domain-name-to-your-home-lab">Pointing
-                your domain name to your Home Lab</h3>
-                <p>You can either use a <strong>Subdomain</strong>
-                (e.g., project1.yourdomain.us) or a
-                <strong>Subdirectory</strong> (e.g.,
-                yourdomain.us/project1).</p>
-                <p>Here is how both options work so you can choose the
-                best path for your setup:</p>
-                <p><strong>🧭 Option A: Use a Subdomain (Recommended
-                &amp; Easiest)</strong></p>
-                <p>Example: project1.yourdomain.us points to an entirely
-                different server, while www.yourdomain.us stays on
-                GitHub.</p>
-                <p>This is the cleanest approach because it is handled
-                entirely inside your <strong>Cloudflare DNS
-                dashboard</strong>. You leave your existing GitHub
-                records completely alone and just add a new line item
-                for the new location.</p>
-                <h3 id="nav-how-to-set-it-up-in-cloudflare">How to set
-                it up in Cloudflare:</h3>
-                <ol type="1">
-                <li><p>Log into Cloudflare and open your domain's
-                <strong>DNS</strong> &gt; <strong>Records</strong>
-                tab.</p></li>
-                <li><p>Click <strong>Add Record</strong>.</p></li>
-                <li><p>Set the <strong>Name</strong> field to exactly
-                project1 (instead of using the @ or www
-                symbols).</p></li>
-                <li><p>Point it to your destination:</p>
-                <ul>
-                <li><p><strong>If the other location is an external web
-                hosting server or a home lab IP:</strong> Select Type
-                <strong>A</strong> and paste the target destination's IP
-                address.</p></li>
-                <li><p><strong>If the other location is another cloud
-                service (like a second GitHub account, a Notion page, or
-                a different hosting provider):</strong> Select Type
-                <strong>CNAME</strong> and type the destination's target
-                URL.</p></li>
-                </ul></li>
-                <li><p>Click <strong>Save</strong>.</p></li>
-                </ol>
-                <p>Now, traffic splitting is active: any requests for
-                your main site hit GitHub, while requests for project1.
-                instantly route to your alternative location.</p>
-                <p><strong>📂 Option B: Use a Subdirectory (Great for
-                GitHub Projects)</strong></p>
-                <p>Example: Keeping everything under
-                yourdomain.us/project1.</p>
-                <p>If your "different location" is simply
-                <strong>another project repository inside your same
-                GitHub account</strong>, you don't even need to touch
-                Cloudflare! GitHub handles this automatically using its
-                folder structures.</p>
-                <h3 id="nav-how-to-set-it-up-in-github">How to set it up
-                in GitHub:</h3>
-                <ol type="1">
-                <li><p>Create a <strong>second, separate public
-                repository</strong> on your GitHub account for this
-                project (e.g., name the repository project1).</p></li>
-                <li><p>Put an index.html file inside this new
-                repository.</p></li>
-                <li><p>Go to that specific repository's
-                <strong>Settings</strong> &gt; <strong>Pages</strong>
-                tab.</p></li>
-                <li><p>Under "Build and deployment", choose your
-                <strong>main</strong> branch and click
-                <strong>Save</strong>.</p></li>
-                <li><p><strong>CRITICAL:</strong> Do not add anything to
-                the "Custom Domain" box in this second repository. Leave
-                it completely blank.</p></li>
-                </ol>
-                <p>Because your primary repository
-                (yourusername.github.io) already claims ownership of
-                yourdomain.us, GitHub automatically maps any secondary
-                active GitHub Pages repositories as subdirectories. Your
-                new project will instantly go live at
-                yourdomain.us/project1.</p>
-                <p><strong>🔀 What if the alternative location is a
-                completely separate company server, but you insist on
-                using yourdomain.us/project1?</strong></p>
-                <p>If you want a subdirectory (/project1) to pull files
-                from a non-GitHub server, standard DNS records cannot do
-                this on their own.</p>
-                <p>To achieve that, you would use a free feature inside
-                Cloudflare called <strong>Cloudflare Workers</strong>. A
-                Worker acts as a mini proxy script sitting at the edge
-                of the internet. It watches incoming traffic, and if a
-                user types in /project1, it secretly fetches the website
-                data from your alternate server and serves it to the
-                user under your main domain name.</p>
-                <p>Which style of link layout matches what you are
-                trying to build for your project?</p>
-                <p>Project1.domain.us can my ip be dynamic</p>
-                <p>Yes, your IP address can absolutely be dynamic! This
-                is a very common setup, especially if
-                project1.yourdomain.us is pointing to a home lab, a home
-                server, or a residential internet connection where your
-                internet service provider (ISP) changes your public IP
-                address every few weeks or whenever your router
-                reboots.</p>
-                <p>To make this work without your website link breaking
-                when your IP changes, you use a setup called
-                <strong>DDNS (Dynamic DNS)</strong>.</p>
-                <p>Since your domain is on Cloudflare, you don't need to
-                pay for any third-party DDNS services. Cloudflare has a
-                powerful, free API that allows a small script running on
-                your local network to automatically update your DNS
-                record the second your home IP changes.</p>
-                <p><strong>🏗️ How Cloudflare Handles a Dynamic
-                IP</strong></p>
-                <p>Instead of you manually editing the IP address in
-                your Cloudflare dashboard every time it changes, the
-                process becomes fully automated:</p>
-                <p>[ Your Home Server ] ---&gt; Checks its current
-                public IP</p>
-                <p>|</p>
-                <p>└---&gt; Detects an IP change!</p>
-                <p>|</p>
-                <p>└---&gt; Sends an API call to Cloudflare</p>
-                <p>|</p>
-                <p>└---&gt; [ Cloudflare DNS ] instantly updates
-                project1.yourdomain.us</p>
-                <ol type="1">
-                <li><p>You create an initial record for project1 in
-                Cloudflare pointing to whatever your IP is right
-                now.</p></li>
-                <li><p>A lightweight client/script runs inside your
-                local network.</p></li>
-                <li><p>Every few minutes, that script checks your
-                current public IP. If it detects a change, it
-                automatically pings Cloudflare's API and updates the
-                record instantly.</p></li>
-                </ol>
-                <p><strong>🛠️ The Easiest Ways to Set It Up</strong></p>
-                <p>Depending on what hardware or software you run on
-                your local network, you have a few excellent, free ways
-                to automate this update:</p>
-                <h3
-                id="nav-option-1-using-docker-or-an-lxc-container-cloudflare-ddns">Option
-                1: Using Docker or an LXC Container
-                (Cloudflare-DDNS)</h3>
-                <p>If you run a home server environment (like Proxmox,
-                Unraid, or TrueNAS), the gold standard is a lightweight
-                container called
-                <strong>oznu/cloudflare-ddns</strong>.</p>
-                <ul>
-                <li><p>You simply deploy the container, pass it your
-                Cloudflare API Token, and tell it your zone domain
-                (yourdomain.us) and subdomain (project1).</p></li>
-                <li><p>It runs quietly in the background using less than
-                10MB of RAM and checks your IP on a loop.</p></li>
-                </ul>
-                <h3 id="nav-option-2-built-in-router-settings">Option 2:
-                Built-in Router Settings</h3>
-                <p>Many prosumer or custom routers (like those running
-                pfSense, OPNSense, Ubiquiti UniFi, or OpenWrt) have a
-                built-in "Dynamic DNS" section.</p>
-                <ol type="1">
-                <li><p>You select <strong>Cloudflare</strong> from the
-                provider dropdown list.</p></li>
-                <li><p>You input your Cloudflare Account Email and an
-                API Token.</p></li>
-                <li><p>Your router handles the updates directly at the
-                gateway level.</p></li>
-                </ol>
-                <h3 id="nav-option-3-home-assistant-integration">Option
-                3: Home Assistant Integration</h3>
-                <p>If you happen to use <strong>Home Assistant</strong>
-                to coordinate local devices or servers, it has an
-                official, native <strong>Cloudflare
-                integration</strong>.</p>
-                <ul>
-                <li>You authenticate it via an API token, check a box
-                for your subdomain, and Home Assistant will monitor your
-                network connection and keep Cloudflare perfectly
-                updated.</li>
-                </ul>
-                <p><strong>🔒 Bonus: The Power of the Cloudflare Proxy
-                (The "Orange Cloud")</strong></p>
-                <p>When you set up your project1 record in Cloudflare,
-                make sure the <strong>Proxy Status</strong> is turned
-                <strong>ON</strong> (the orange cloud icon is
-                checked).</p>
-                <p>This gives you a massive security advantage for a
-                home network: when someone visits
-                project1.yourdomain.us, they only see Cloudflare’s
-                secure public IP addresses. Cloudflare masks your
-                residential dynamic IP entirely, shielding your home
-                network configuration, open ports, and location from the
-                public internet.</p>
-                <h3 id="nav-pointing-to-a-twingate-connection">Pointing
-                to a Twingate Connection</h3>
-                <p>Using project1.yourdomain.us with
-                <strong>Twingate</strong>! In fact, this is exactly what
-                Twingate is designed for, and it is a brilliant way to
-                handle a home lab or private server because it provides
-                the ultimate layer of security.</p>
-                <p>When you use Twingate, <strong>you don't even need to
-                open any ports on your home router, and you don't have
-                to keep updating a dynamic public IP
-                address.</strong></p>
-                <h3
-                id="nav-here-is-exactly-how-it-works-and-how-to-set-it-up">Here
-                is exactly how it works and how to set it up:</h3>
-                <p><strong>🔒 The Magic of the Twingate + Custom Domain
-                Combo</strong></p>
-                <p>Normally, a public DNS name points to a public IP
-                address. But because Twingate handles traffic via an
-                encrypted tunnel, your subdomain doesn't actually need
-                to point to a real public IP at all.</p>
-                <p>Instead, the <strong>Twingate Client</strong> running
-                on your phone or laptop will intercept any traffic going
-                to project1.yourdomain.us and securely route it through
-                the Twingate Connector inside your home network.</p>
-                <p><strong>🛠️ Step-by-Step Setup Process</strong></p>
-                <h3 id="nav-in-your-cloudflare-dns-the-dummy-record">1.
-                In Your Cloudflare DNS (The "Dummy" Record)</h3>
-                <p>Because Twingate will intercept this traffic locally
-                on your devices, the public record in Cloudflare just
-                needs to exist so your browser recognizes it as a valid
-                address.</p>
-                <ul>
-                <li><p>Go to Cloudflare DNS and add an <strong>A
-                record</strong> for project1.</p></li>
-                <li><p>Point it to a non-routable, dummy private IP
-                address like 192.168.1.1 or 10.0.0.1.</p></li>
-                <li><p>Leave the Proxy status <strong>Off</strong> (DNS
-                Only / Grey Cloud) for this specific record.</p></li>
-                </ul>
-                <p>(Don't worry—nobody on the public internet will be
-                able to access your network through this dummy IP. It
-                simply acts as a placeholder).</p>
-                <h3
-                id="nav-in-your-twingate-admin-console-define-the-resource">2.
-                In Your Twingate Admin Console (Define the
-                Resource)</h3>
-                <p>Next, you need to tell Twingate to look out for this
-                specific name.</p>
-                <ol type="1">
-                <li><p>Log into your <strong>Twingate Admin
-                Dashboard</strong>.</p></li>
-                <li><p>Navigate to <strong>Remote Networks</strong> and
-                select the network where your home server/connector
-                lives.</p></li>
-                <li><p>Click <strong>Add Resource</strong>.</p></li>
-                <li><p>Set the Resource Type to
-                <strong>DNS</strong>.</p></li>
-                <li><p>In the <strong>DNS Name</strong> field, type your
-                exact subdomain: project1.yourdomain.us.</p></li>
-                <li><p>Define the <strong>Ports</strong> you want to
-                allow (e.g., 80, 443 for web traffic, or leave it
-                unrestricted depending on your security
-                preference).</p></li>
-                <li><p>Assign this resource to a <strong>Group</strong>
-                (like "Everyone" or a custom admin group) so your
-                account has permission to access it.</p></li>
-                </ol>
-                <h3 id="nav-in-your-local-home-network-the-connector">3.
-                In Your Local Home Network (The Connector)</h3>
-                <p>Make sure your local <strong>Twingate
-                Connector</strong> (the lightweight Docker container or
-                LXC container running on your local machine) is online
-                and can locally resolve or route to whatever service
-                project1 is supposed to hit.</p>
-                <p><strong>🚀 How It Works in Everyday Use</strong></p>
-                <ul>
-                <li><p><strong>When you are away from home and turn your
-                Twingate Client ON:</strong> You type
-                project1.yourdomain.us into your browser. The Twingate
-                client recognizes that name, hijacks the traffic, sends
-                it through the secure tunnel straight to your home
-                connector, and seamlessly drops you onto your private
-                page.</p></li>
-                <li><p><strong>To anyone else on the internet:</strong>
-                If a random user or bot tries to go to
-                project1.yourdomain.us, the lookup will just point them
-                to that useless local dummy IP (192.168.1.1), and the
-                connection will safely time out.</p></li>
-                </ul>
-                <p>This gives you a beautifully clean, memorable .us
-                custom URL for your home projects without exposing a
-                single hair of your actual network to the public
-                internet!</p>
-                <p>If I have all of this set up and I know I can't run
-                Twin Gate if I'm at home because my router doesn't allow
-                me to route traffic back into my house. How do I access
-                my home lab when I'm at home?</p>
-                <p>This is a very common issue known as <strong>NAT
-                Loopback</strong> (or NAT Hairpinning). Many consumer
-                and ISP-supplied routers block you from typing your
-                public domain name while sitting inside your house
-                because they don't know how to route that traffic out to
-                the internet and back into themselves.</p>
-                <p>Since you are already using Cloudflare, you have a
-                few ways to solve this. Because you use
-                <strong>Twingate</strong>, there's an even cleaner trick
-                built right into how it handles your home network.</p>
-                <p>Here are the three best ways to access your home lab
-                seamlessly while sitting on your couch:</p>
-                <p><strong>🛠️ Solution 1: Use Twingate's "Local Bypass"
-                (The Cleanest Fix)</strong></p>
-                <p>Twingate is smart. If your laptop or phone is
-                connected to your home Wi-Fi, it doesn't actually need
-                to send your traffic across the country through an
-                encrypted tunnel just to talk to a server sitting 10
-                feet away from you.</p>
-                <p>Twingate handles this using a feature called
-                <strong>Local Network Bypass</strong>.</p>
-                <p>[ Your Laptop on Home Wi-Fi ]</p>
-                <p>|</p>
-                <p>|---&gt; Sees you are on your Home SSID</p>
-                <p>|</p>
-                <p>└---&gt; Bypasses the encrypted tunnel</p>
-                <p>|</p>
-                <p>└---&gt; Routes straight to your local server IP</p>
-                <p><strong>How to set it up:</strong></p>
-                <ol type="1">
-                <li><p>Log into your <strong>Twingate Admin
-                Console</strong>.</p></li>
-                <li><p>Go to <strong>Settings</strong> &gt;
-                <strong>Networks</strong> (or look under your
-                Client/Device settings depending on your dashboard
-                version).</p></li>
-                <li><p>Look for <strong>Local Network Bypass</strong> or
-                <strong>Trusted Networks</strong>.</p></li>
-                <li><p>Add your home Wi-Fi network's name
-                (SSID).</p></li>
-                </ol>
-                <p>When your Twingate client sees you are securely
-                connected to your home Wi-Fi, it will automatically step
-                out of the way. It will seamlessly let your device talk
-                directly to your local servers over your LAN, completely
-                bypassing the router's loopback restriction.</p>
-                <p><strong>🛠️ Solution 2: Set Up Local DNS split-horizon
-                (The Network Fix)</strong></p>
-                <p>If you don't want to rely on the Twingate client
-                being active when you are at home, you can use a
-                <strong>Split-Horizon DNS</strong> strategy. This means
-                when you are away from home, your domain points to the
-                internet; when you are at home, your domain points
-                directly to your server's private network IP.</p>
-                <p>If you run a local DNS server like a
-                <strong>Pi-hole</strong>, <strong>AdGuard Home</strong>,
-                or have a prosumer router (like pfSense/Ubiquiti), you
-                can easily override the public internet records
-                locally.</p>
-                <p><strong>How to set it up in Pi-hole:</strong></p>
-                <ol type="1">
-                <li><p>Log into your Pi-hole admin dashboard.</p></li>
-                <li><p>Go to <strong>Local DNS</strong> &gt; <strong>DNS
-                Records</strong>.</p></li>
-                <li><p>In the <strong>Domain</strong> box, type your
-                subdomain: project1.yourdomain.us.</p></li>
-                <li><p>In the <strong>IP Address</strong> box, type the
-                actual private local IP of your home lab server (e.g.,
-                192.168.1.100).</p></li>
-                <li><p>Click <strong>Add</strong>.</p></li>
-                </ol>
-                <p><strong>Why this works:</strong> When you are home,
-                your laptop asks your Pi-hole "Where is
-                project1.yourdomain.us?" Your Pi-hole instantly answers
-                with the direct local IP address (192.168.1.100),
-                bypassing your router's broken NAT loopback entirely.
-                When you leave the house and disconnect from your Wi-Fi,
-                your device goes back to using public DNS, and Twingate
-                takes over smoothly.</p>
-                <p><strong>🛠️ Solution 3: The Bookmarks Method (The
-                Low-Tech Fallback)</strong></p>
-                <p>If you just want a quick fallback without altering
-                your network settings, you can simply keep a separate
-                folder in your web browser's bookmarks bar labeled
-                <strong>Home Lab - LAN</strong>.</p>
-                <p>Inside that folder, save the direct local network IP
-                addresses and port numbers of your services:</p>
-                <ul>
-                <li>Instead of booking project1.yourdomain.us, use
-                http://192.168.1.100:8080</li>
-                </ul>
-                <p>While it isn't as elegant as typing your clean .us
-                domain name, it completely circumvents the router
-                because your browser bypasses the domain lookup process
-                entirely and connects node-to-node across your local
-                network switches.</p>
-                <p>For option one, do I have to have Twin Gate running
-                on my phone all the time?</p>
-                <p>No, you do not have to leave Twingate running on your
-                phone all the time.</p>
-                <p>Twingate is designed to be incredibly flexible, and
-                you can manage this in two different ways depending on
-                how automated you want the experience to be.</p>
-                <p><strong>🖐️ Option A: The "On-Demand" Switch
-                (Manual)</strong></p>
-                <p>You can leave the Twingate app turned
-                <strong>OFF</strong> completely while you are going
-                about your day.</p>
-                <ul>
-                <li><p><strong>When you're at home:</strong> You just
-                connect to your home Wi-Fi and open your home lab using
-                your local bookmarks or your local Pi-hole DNS setup. No
-                Twingate needed.</p></li>
-                <li><p><strong>When you leave the house:</strong> If you
-                suddenly need to check on project1.yourdomain.us, you
-                simply open the Twingate app on your phone, flip the big
-                toggle switch to <strong>On</strong>, do what you need
-                to do in your browser, and then switch it right back
-                <strong>Off</strong>.</p></li>
-                </ul>
-                <p>Because Twingate connects almost instantly (unlike
-                traditional, sluggish VPNs), toggling it on and off
-                manually takes only a couple of seconds.</p>
-                <p><strong>🤖 Option B: "Always-On" with Wi-Fi
-                Automation (Set It and Forget It)</strong></p>
-                <p>If you want to leave the Twingate app active in the
-                background without it burning through your battery or
-                routing your home traffic unnecessarily, you can use the
-                <strong>Always-On</strong> feature combined with your
-                phone's built-in network settings.</p>
-                <p><strong>On iOS (Apple):</strong></p>
-                <p>The Twingate iOS app supports Apple’s native
-                <strong>On-Demand VPN</strong> rules.</p>
-                <ol type="1">
-                <li><p>Open your iPhone <strong>Settings</strong> &gt;
-                <strong>VPN &amp; Device Management</strong> &gt;
-                <strong>VPN</strong>.</p></li>
-                <li><p>Tap the (i) icon next to Twingate.</p></li>
-                <li><p>You can configure a rule that says: "Disconnect
-                VPN when connected to my Home Wi-Fi SSID."</p></li>
-                </ol>
-                <p><strong>On Android:</strong></p>
-                <p>The Twingate Android app has an
-                <strong>Always-On</strong> mode, but you can couple it
-                with the <strong>Local Network Bypass</strong> feature
-                we looked at earlier in your Twingate Admin console.</p>
-                <ul>
-                <li>The app stays active, but the moment it detects your
-                home Wi-Fi network name, it goes completely "dormant"
-                and lets your phone talk directly to your local router.
-                The second you disconnect from your home Wi-Fi and drop
-                onto cellular data, Twingate wakes up instantly and
-                secures the connection.</li>
-                </ul>
-                <p><strong>Summary</strong></p>
-                <p>If you don't want another background app running on
-                your phone, just keep it turned off and treat it like a
-                secure digital key—only turning it on when you are away
-                from home and specifically need to access your
-                server!</p>
-                <p>Can I still log in to .us domain names if I'm at
-                international?</p>
-                <p>Yes, you can absolutely access, log into, and manage
-                your .us domain name from anywhere in the world.</p>
-                <p>There are no geographical internet blocks that
-                prevent a .us domain from working when you are traveling
-                internationally. Whether you are sitting in a coffee
-                shop in Amsterdam, cruising the Danube River, or
-                anywhere else globally, your website will load
-                perfectly, and your Twingate connection will still route
-                back to your home lab exactly the same way.</p>
-                <p>However, because .us is tied to United States
-                regulations, there are <strong>two travel-specific
-                details</strong> to keep in mind regarding your
-                setup:</p>
-                <p><strong>1. Cloudflare Admin Access vs. Website
-                Access</strong></p>
-                <ul>
-                <li><p><strong>Your Website
-                (project1.yourdomain.us):</strong> Anyone across the
-                globe can visit the URL. It behaves like any standard
-                website.</p></li>
-                <li><p><strong>Your Cloudflare/GitHub Accounts:</strong>
-                If you plan to log into your Cloudflare Dashboard or
-                GitHub account while abroad to change code or modify DNS
-                settings, security systems will notice you are logging
-                in from a foreign country.</p></li>
-                </ul>
-                <p>🔐 <strong>Tip:</strong> Make sure you have your
-                Two-Factor Authentication (2FA) apps, backup codes, or
-                authenticator set up on your phone before you leave the
-                country. If Cloudflare or GitHub challenges your login
-                because you are on an international network, you'll need
-                your 2FA app to prove it's you.</p>
-                <p><strong>2. Twingate Handling International
-                Latency</strong></p>
-                <p>When you are traveling internationally and turn on
-                your Twingate client to look at your home lab, your
-                request has to travel all the way across the ocean, into
-                your home router, and back.</p>
-                <p>Twingate handles this incredibly well because it uses
-                a decentralized global architecture, but you might
-                notice a slight, split-second delay (latency) when
-                loading heavy pages compared to when you are using it
-                domestically.</p>
-                <p><strong>3. The One Main Rule: Keep Your US Nexus
-                Valid</strong></p>
-                <p>The registry doesn't care where you are physically
-                standing when you use or manage the domain. The only
-                strict rule is that the <strong>owner identity</strong>
-                attached to the domain must remain valid.</p>
-                <p>As long as you maintain your permanent United States
-                citizenship, residency, or U.S.-based entity status
-                (which you declared during the registration process),
-                you are completely compliant with the law, no matter
-                where your travel itinerary takes you.</p>
-                <p>Why would I want my own private Pi-hole DNS server on
-                my local network?</p>
-                <p>A <strong>Pi-hole</strong> is one of the most
-                powerful, rewarding additions you can make to a home
-                network or home lab.</p>
-                <p>At its core, a Pi-hole acts as a <strong>private,
-                local DNS sinkhole</strong>. Instead of letting your
-                computers, phones, and smart devices talk directly to
-                public internet DNS servers (like Google or your ISP),
-                you route all your network's traffic through the Pi-hole
-                first.</p>
-                <p>Here is exactly why you would want one running on
-                your local network:</p>
-                <p><strong>1. Network-Wide Ad and Tracker
-                Blocking</strong></p>
-                <p>Traditional ad-blockers are browser extensions (like
-                uBlock Origin) that you have to install on every single
-                laptop or computer. They don't work on mobile apps,
-                smart TVs, or smart home devices.</p>
-                <p>Because a Pi-hole sits at the network level, it
-                blocks ads <strong>before they even download to your
-                devices</strong>.</p>
-                <ul>
-                <li><p><strong>App-Level Blocking:</strong> It blocks
-                ads inside mobile apps, mobile games, and streaming
-                devices (like Roku or Fire TV).</p></li>
-                <li><p><strong>Smart TV Privacy:</strong> It stops smart
-                TVs (like Samsung or LG) from constantly uploading
-                "telemetry" data (logs tracking what you watch) back to
-                corporate servers.</p></li>
-                <li><p><strong>Saves Bandwidth:</strong> Because ads,
-                videos, and heavy tracking scripts are dropped at the
-                door, your overall internet connection feels faster and
-                uses less data.</p></li>
-                </ul>
-                <p><strong>2. Total Privacy and Data
-                Control</strong></p>
-                <p>When you use a standard router setup, your Internet
-                Service Provider (ISP) logs every single website domain
-                you look up. They often package and sell this browsing
-                habit data to advertisers.</p>
-                <ul>
-                <li><p>With a Pi-hole, your local DNS queries stay
-                completely private inside your own walls.</p></li>
-                <li><p>You can pair your Pi-hole with
-                <strong>Unbound</strong> (a local recursive DNS
-                resolver) or configure it to use <strong>DNS-over-HTTPS
-                (DoH)</strong>. This encrypts your external lookups,
-                meaning your ISP can no longer spy on the specific
-                domain names you are visiting.</p></li>
-                </ul>
-                <p><strong>3. Local Domain Names for Your Home
-                Lab</strong></p>
-                <p>If you run local services (like a network storage
-                drive, a Home Assistant setup, media containers, or
-                development dashboards), remembering random IP addresses
-                like 192.168.1.145:8123 is a massive headache.</p>
-                <p>As we discussed earlier with split-horizon setups, a
-                Pi-hole has a <strong>Local DNS</strong> menu. You can
-                map easy-to-remember, clean domain names directly to
-                your local machines:</p>
-                <ul>
-                <li><p>homeassistant.local ➡️ 192.168.1.145</p></li>
-                <li><p>nas.local ➡️ 192.168.1.50</p></li>
-                </ul>
-                <p>This works seamlessly for any device connected to
-                your home Wi-Fi without needing a public domain
-                registrar.</p>
-                <p><strong>4. Deep Network Visibility &amp;
-                Troubleshooting</strong></p>
-                <p>The Pi-hole dashboard gives you a real-time,
-                bird's-eye view of your entire home network's health and
-                behavior.</p>
-                <ul>
-                <li><p>You can see exactly which smart home devices are
-                "chatty" or acting suspiciously (e.g., a smart lightbulb
-                trying to ping a server in another country 10,000 times
-                a night).</p></li>
-                <li><p>If a device on your network is infected with
-                malware or spyware trying to call home to a known
-                malicious domain, the Pi-hole automatically intercepts
-                the request, blocks it, and alerts you in the query
-                log.</p></li>
-                </ul>
-                <p><strong>⚙️ How It Works (The "Sinkhole"
-                Concept)</strong></p>
-                <p>When you type a website name into your browser, your
-                device asks the Pi-hole for the IP address.</p>
-                <ol type="1">
-                <li><p><strong>If the domain is safe:</strong> The
-                Pi-hole fetches the real IP address and lets the page
-                load instantly.</p></li>
-                <li><p><strong>If the domain belongs to an ad server or
-                tracker:</strong> The Pi-hole deliberately lies. It
-                gives your browser a blank, non-existent address
-                (0.0.0.0). Your browser simply thinks the ad doesn't
-                exist, leaves the ad space blank or collapses it, and
-                moves on to loading the rest of your clean
-                webpage.</p></li>
-                </ol>
-                <p>It takes very little processing power to run, making
-                it a perfect project to spin up as a lightweight LXC
-                container or Docker container inside a home
-                environment.</p>
-                <p>Since many web pages today require that ads get
-                loaded and they know if you're running an ad blocker Pi
-                hole. And is there a way that I can redirect all that
-                advertising traffic to a local web server that's showing
-                pictures that I select.</p>
-                <p>That is a highly creative and classic home lab idea!
-                It sounds amazing in theory: instead of seeing a broken
-                blank box or an anti-adblock warning, you replace the ad
-                space with a picture of your family, a custom dashboard,
-                or a rotating gallery of your choice.</p>
-                <p>However, while you can technically build this,
-                <strong>the security architecture of the modern internet
-                will completely block the images from
-                displaying.</strong> Here is a direct look at why this
-                happens, why it triggers ad-block detection, and what
-                you can actually do instead.</p>
-                <p><strong>🛑 Why the Internet's Security Blocks This
-                (HTTPS &amp; SSL)</strong></p>
-                <p>Ten to fifteen years ago, when the web used
-                unencrypted HTTP traffic, your idea was totally doable.
-                Today, nearly 100% of web and advertising traffic uses
-                <strong>HTTPS (secure encryption)</strong>. This
-                introduces a barrier called the <strong>SSL/TLS
-                Certificate Check</strong>.</p>
-                <p>Here is what happens if you try to redirect an ad
-                network (like doubleclick.net) to your local web
-                server:</p>
-                <ol type="1">
-                <li><p>Your browser tries to load a webpage. The page
-                contains a script pulling an ad from
-                https://doubleclick.net/ad.gif.</p></li>
-                <li><p>Your Pi-hole intercepts the request and redirects
-                it to your local server's IP address (e.g.,
-                192.168.1.50).</p></li>
-                <li><p>Your browser arrives at your local server and
-                says: "Great, give me the secure encrypted data for
-                doubleclick.net."</p></li>
-                <li><p>Your local server can't do that. It only owns a
-                security certificate for your local machine—it cannot
-                legally sign a certificate for Google or
-                DoubleClick.</p></li>
-                <li><p>Your browser detects this mismatched certificate,
-                instantly throws a massive <strong>SSL Certificate Error
-                (Privacy Warning)</strong>, and refuses to load the
-                image or the rest of the webpage for security
-                reasons.</p></li>
-                </ol>
-                <p>Because your local server cannot impersonate the
-                encrypted identity of the ad company, the browser blocks
-                the connection entirely.</p>
-                <p><strong>🕵️‍♂️ How Websites Know You Are Using a
-                Pi-hole</strong></p>
-                <p>You mentioned that websites seem to "know" you are
-                running a Pi-hole. This actually happens through a
-                clever trick called <strong>Bait Scripts</strong>, and
-                redirecting the traffic wouldn't fool them.</p>
-                <p>Web developers don't check your network topology to
-                see if a Pi-hole is present. Instead, they write a
-                simple piece of JavaScript code on their website that
-                behaves like this:</p>
-                <p>[ Web Page Loads ]</p>
-                <p>|</p>
-                <p>├---&gt; Runs a tiny file named "ads.js" (The
-                Bait)</p>
-                <p>|</p>
-                <p>└---&gt; Check: Did "ads.js" successfully load?</p>
-                <p>|</p>
-                <p>├──&gt; YES: User is not blocking ads. Show
-                website.</p>
-                <p>└──&gt; NO (Blocked by Pi-hole): User is ad-blocking!
-                Pop up warning.</p>
-                <p>Even if you successfully redirected that ads.js file
-                to your local server, the code inside your custom
-                picture wouldn't match the specific JavaScript functions
-                the website was looking for. The website's check would
-                still fail, and it would still show you the "Please
-                disable your ad blocker" wall.</p>
-                <p><strong>💡 What You Can Do Instead</strong></p>
-                <p>If your ultimate goal is to get around those annoying
-                anti-adblock popups while keeping your network clean,
-                the standard best practice is to use a <strong>Two-Layer
-                Blocking Strategy</strong>:</p>
-                <p><strong>Layer 1: Keep the Pi-hole for Network
-                Hygiene</strong></p>
-                <p>Leave your Pi-hole running exactly as it is. It is
-                still doing massive work behind the scenes blocking
-                telemetry, background trackers, smart TV spying, and
-                hidden mobile app ads that don't rely on browser-level
-                bait scripts.</p>
-                <p><strong>Layer 2: Pair it with a Browser Extension
-                (uBlock Origin)</strong></p>
-                <p>Install a highly advanced, open-source browser
-                extension like <strong>uBlock Origin</strong> on your
-                computers and laptops.</p>
-                <p>While the Pi-hole blocks the connection at the
-                network level, browser extensions can look at the actual
-                code of the webpage in real time. uBlock Origin includes
-                specific filters called <strong>Anti-Adblock
-                Defusers</strong>. When it detects a website trying to
-                run a bait script to catch your Pi-hole, it instantly
-                modifies the webpage's code on the fly, tricking the
-                site into believing the ad loaded perfectly.</p>
-                <p><strong>Want to build the photo gallery
-                anyway?</strong></p>
-                <p>If you still want a local server displaying your
-                favorite pictures or custom dashboards, the best way to
-                enjoy it is to host it as a dedicated local home portal
-                (like a custom Home Assistant dashboard or a personal
-                intranet page) and set it as your browser's default
-                homepage!</p>
-                <p>Will the Ublock Origin allow you to view all websites
-                or are there still some that fail?</p>
-                <p>The short answer is <strong>no, it is not a 100%
-                perfect silver bullet.</strong> While it is widely
-                considered the best ad-blocking tool available, there
-                will still be occasional websites that fail or slip
-                through.</p>
-                <p>The success of <strong>uBlock Origin</strong> depends
-                heavily on an "arms race" between ad-block developers
-                and major tech platforms. Two crucial factors dictate
-                whether a site will fail:</p>
-                <p><strong>1. The Browser You Use (The Biggest
-                Shift)</strong></p>
-                <p>Google updated Chrome's extension framework to
-                <strong>Manifest V3</strong>. This change fundamentally
-                crippled the underlying technology that classic ad
-                blockers use to intercept network traffic in real
-                time.</p>
-                <p>AdLock+ 1</p>
-                <ul>
-                <li><strong>On Google Chrome (and Microsoft
-                Edge):</strong> The original, full-power uBlock Origin
-                can no longer run. The developer released a streamlined
-                version called <strong>uBlock Origin Lite</strong> to
-                comply with Google's new rules. However, because it
-                lacks the ability to inject dynamic code snippet filters
-                ("scriptlets"), it is far more vulnerable to
-                anti-adblock walls, and websites are much more likely to
-                fail or show empty broken boxes.</li>
-                </ul>
-                <p>AdBlock Tester</p>
-                <ul>
-                <li><strong>On Mozilla Firefox (and Brave
-                Browser):</strong> Firefox and Brave intentionally
-                preserved the advanced network capabilities Google
-                removed. On these browsers, the <strong>full-strength,
-                classic uBlock Origin</strong> still works flawlessly,
-                allowing it to actively defuse complex anti-adblock
-                code.</li>
-                </ul>
-                <p>AdBlock Tester</p>
-                <p><strong>2. The Sites That Actively Fight
-                Back</strong></p>
-                <p>Even using the full version of uBlock Origin on
-                Firefox, a tiny fraction of websites can still give you
-                trouble due to how they serve their content:</p>
-                <p><strong>YouTube and Twitch (The Constant Arms
-                Race)</strong></p>
-                <p>Platforms like YouTube and Twitch are locked in a
-                daily battle against ad blockers. YouTube frequently
-                tests <strong>Server-Side Ad Insertion (SSAI)</strong>—a
-                method where the advertisement is baked directly into
-                the video stream itself at the server level, rather than
-                being pulled from a separate ad server.</p>
-                <p>SuperchargeBrowser</p>
-                <ul>
-                <li><p>When they launch a new variant of this tech,
-                uBlock Origin might fail for a few hours or
-                days.</p></li>
-                <li><p>The uBlock volunteer community usually updates
-                their filter lists within 24 to 48 hours to bypass it
-                again, requiring you to clear and update your extension
-                cache to restore functionality.</p></li>
-                </ul>
-                <p><strong>Strict Paywalls and Financial/News
-                Sites</strong></p>
-                <p>Certain high-tier news publications (like The New
-                York Times or The Wall Street Journal) or highly
-                aggressive streaming sites use heavy server-side checks.
-                If their script fails to verify that an ad or a tracking
-                token was successfully processed, they will lock down
-                the entire page and replace it with a hard wall.</p>
-                <p><strong>🛠️ The Ultimate "Bulletproof"
-                Strategy</strong></p>
-                <p>To achieve the closest thing possible to an ad-free,
-                failure-proof setup, home lab enthusiasts typically use
-                a <strong>three-layered approach</strong>:</p>
-                <ol type="1">
-                <li><strong>The Infrastructure Layer (Pi-hole):</strong>
-                Handles the background noise—blocking tracking
-                telemetry, smart TV spying, and background mobile app
-                traffic across the whole house.</li>
-                </ol>
-                <p>AdLock</p>
-                <ol start="2" type="1">
-                <li><p><strong>The Browser Layer (Firefox + Full uBlock
-                Origin):</strong> Handles standard web browsing,
-                dynamically rewriting webpage code on the fly to trick
-                anti-adblock scripts on 99% of regular
-                websites.</p></li>
-                <li><p><strong>The System Layer (Optional Apps like
-                AdGuard Desktop):</strong> If you absolutely must use
-                Chrome for specific projects, running a system-level
-                desktop ad blocker bypasses browser extension
-                limitations entirely by filtering traffic at the network
-                adapter level before it even reaches Chrome.</p></li>
-                </ol>
-                <p>AdBlock Tester</p>
-                <p>Explain this AdGuard desktop.</p>
-                <p><strong>AdGuard Desktop</strong> (available for
-                Windows and Mac) is a standalone computer program that
-                shifts ad-blocking out of your web browser and moves it
-                directly down into your computer's operating system.</p>
-                <p>AdGuard</p>
-                <p>It acts like a hyper-local firewall on your actual
-                machine, filtering internet traffic at the network
-                adapter level before it even reaches Chrome, Edge,
-                Firefox, or any other app.</p>
-                <p><strong>⚙️ How It Works (The Local
-                Proxy)</strong></p>
-                <p>Instead of running as a browser extension, AdGuard
-                Desktop installs a local network driver on your
-                computer.</p>
-                <p>[ Internet Traffic ]</p>
-                <p>|</p>
-                <p>▼</p>
-                <p>[ AdGuard Desktop Program ] ---&gt; Scans traffic
-                &amp; strips out ads/trackers</p>
-                <p>|</p>
-                <p>▼</p>
-                <p>[ Your Web Browsers / PC Apps ] ---&gt; Loads 100%
-                clean, ad-free code</p>
-                <p>When your browser requests a webpage, AdGuard catches
-                that traffic first. It strips out the ad code, counters,
-                and tracking scripts locally using its own background
-                processing engine. By the time the webpage code lands
-                inside your browser, the ads are already gone.</p>
-                <p>AdGuard</p>
-                <p><strong>🎯 Why Use It? (The Manifest V3
-                Bypass)</strong></p>
-                <p>Because Google updated Chrome's extension system
-                (<strong>Manifest V3</strong>), standard extensions are
-                severely restricted in how they block network
-                traffic.</p>
-                <p>AdGuard Desktop completely bypasses these browser
-                rules. Because it operates outside of Chrome, Google’s
-                extensions changes cannot touch it. It retains full,
-                uncompromised power to inject code snippets, block
-                complex network requests, and defuse anti-adblock
-                scripts on Chrome, Edge, or any Chromium-based
-                browser.</p>
-                <p><strong>🚀 Key Advantages Over Extensions and
-                Pi-hole</strong></p>
-                <p><strong>1. It Blocks Ads Inside Non-Browser
-                Apps</strong></p>
-                <p>Because it filters your entire computer's network
-                traffic, it blocks advertising and tracking inside
-                desktop apps, too. If you use desktop apps like Spotify,
-                Skype, Discord, torrent clients, or standalone games
-                that feature banner ads, AdGuard scrubs those ads out
-                automatically.</p>
-                <p>AdGuard</p>
-                <p><strong>2. Cosmetic Page Filtering (No Broken
-                Boxes)</strong></p>
-                <p>A Pi-hole blocks an ad's connection, which often
-                leaves behind a broken white box, a gray square, or a
-                "Failed to load image" placeholder that ruins a
-                webpage's layout. AdGuard Desktop uses <strong>cosmetic
-                filtering</strong> to dynamically rewrite the page's
-                HTML/CSS structure, collapsing those empty spaces so
-                pages look completely seamless.</p>
-                <p>AdGuard</p>
-                <p><strong>3. Stealth Tracking Protection</strong></p>
-                <p>It includes a robust "Stealth Mode" that modifies
-                your browser data on the fly before it hits the
-                internet. It can automatically strip tracking parameters
-                from URLs (like the long strings of text after a
-                ?utm_source= tag when you copy a link), hide your
-                browser user-agent, and block third-party cookies across
-                the board.</p>
-                <p>How-To Geek</p>
-                <p><strong>📊 Summary: Where It Fits in Your
-                Setup</strong></p>
-                <p>AdGuard</p>
-                <p>Think of AdGuard Desktop as the precision,
-                brute-force layer of a complete setup:</p>
-                <ul>
-                <li><p><strong>Pi-hole:</strong> Cleans up your entire
-                house network-wide (Smart TVs, mobile apps, IoT devices)
-                by blocking connections.</p></li>
-                <li><p><strong>AdGuard Desktop:</strong> Cleans up your
-                primary workstation/laptop with pixel-perfect precision,
-                bypassing browser extension limits to completely
-                eliminate anti-adblock prompts and cosmetic
-                blemishes.</p></li>
-                </ul>
-                <p>(Note: Unlike the open-source Pi-hole or uBlock
-                Origin extension, the full AdGuard Desktop program is a
-                paid software utility, though they offer a standard
-                14-day trial if you want to test how it plays with your
-                specific browser configuration).</p>
-                <p>How much does AdGuard Desktop cost?</p>
-                <p>AdGuard Desktop's pricing varies depending on whether
-                you buy a recurring subscription, a flat-rate lifetime
-                license directly from AdGuard, or take advantage of a
-                standard third-party deal.</p>
-                <p>The application uses a unified license, meaning
-                buying a license for the "Desktop" app also allows you
-                to use it on your mobile devices (Android/iOS) up to
-                your device cap.</p>
-                <p><strong>🏷️ Standard Retail Pricing (Direct from
-                AdGuard)</strong></p>
-                <p>If you purchase directly from the official AdGuard
-                website, you can choose between an annual billing cycle
-                or a one-time lifetime payment:</p>
-                <table style="width:97%;">
-                <colgroup>
-                <col style="width: 18%" />
-                <col style="width: 20%" />
-                <col style="width: 28%" />
-                <col style="width: 30%" />
-                </colgroup>
-                <thead>
-                <tr>
-                <th style="text-align: left;">Plan Type</th>
-                <th style="text-align: left;">Covered Devices</th>
-                <th style="text-align: left;">Yearly Subscription</th>
-                <th style="text-align: left;">One-Time Lifetime
-                License</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                <td style="text-align: left;"><strong>Personal
-                Plan</strong></td>
-                <td style="text-align: left;">Up to <strong>3
-                devices</strong></td>
-                <td style="text-align: left;"><strong>$29.88 /
-                year</strong> ($2.49/mo)</td>
-                <td
-                style="text-align: left;"><strong>$79.99</strong></td>
-                </tr>
-                <tr>
-                <td style="text-align: left;"><strong>Family
-                Plan</strong></td>
-                <td style="text-align: left;">Up to <strong>9
-                devices</strong></td>
-                <td style="text-align: left;"><strong>$65.88 /
-                year</strong> ($5.49/mo)</td>
-                <td
-                style="text-align: left;"><strong>$169.99</strong></td>
-                </tr>
-                </tbody>
-                </table>
-                <p><strong>🛍️ The "Home Lab Strategy" (Third-Party
-                Deals)</strong></p>
-                <p>Before you buy directly from their main store page,
-                there is an open secret in the tech community: AdGuard
-                officially partners with third-party deal networks (like
-                <strong>StackSocial</strong>,
-                <strong>Y组合/Joyus</strong>, or major tech outlets like
-                <strong>Mashable Shops</strong>) to offer massive,
-                permanent discounts on their Lifetime Licenses.</p>
-                <p>If you check these discount outlets, you can almost
-                always find the exact same official lifetime licenses
-                for a fraction of the cost:</p>
-                <ul>
-                <li><strong>Personal Lifetime License (3
-                Devices):</strong> Usually on sale for
-                <strong>~$11.00</strong> (one-time payment).</li>
-                </ul>
-                <p>AdLock</p>
-                <ul>
-                <li><strong>Family Lifetime License (9
-                Devices):</strong> Usually on sale for
-                <strong>~$15.00</strong> (one-time payment).</li>
-                </ul>
-                <p>AdBlock Tester+ 1</p>
-                <p><strong>How the Third-Party Deal Works:</strong></p>
-                <p>If you buy it from a site like StackSocial, they
-                immediately email you a digital license code. You take
-                that code, log into your official <strong>AdGuard
-                Account dashboard</strong>, paste the code into your
-                account settings, and it instantly activates your 3 or 9
-                device license slots. From that point on, you manage
-                your devices right inside the official AdGuard app just
-                like a full-price retail customer.</p>
-                <p>If you decide to try it out, they provide a fully
-                functional <strong>14-day free trial</strong> directly
-                on the AdGuard website so you can install the desktop
-                client, test out the network driver, and see how cleanly
-                it processes your web pages before spending a single
-                dollar.</p>
-                <p>AllAboutCookies.org</p>
-                <p><a href="https://policies.google.com/privacy">Google
-                Privacy PolicyOpens in a new window</a><a
-                href="https://policies.google.com/terms">Google Terms of
-                ServiceOpens in a new window</a><a
-                href="https://support.google.com/gemini?p=privacy_notice">Your
-                privacy &amp; Gemini AppsOpens in a new window</a></p>
-                <p>Gemini may display inaccurate info, including about
-                people, so double-check its responses.</p>
-            </article>
-
-        </div>
-    </main>
-
-    <div id="footer-placeholder"></div>
-    <script src="/scripts/component-loader.js"></script>
+      <article class="document-content">
+        <h1 id="nav-setting-up-pihole">Setting up PiHole</h1>
+        <h1
+        id="nav-domain-cloudflare-github-pages-setup"><strong>Domain,
+        Cloudflare, GitHub Pages Setup</strong></h1>
+        <p>Buying the name directly from <strong>Cloudflare</strong> is
+        the smartest, most streamlined path.</p>
+        <p>While Cloudflare used to only accept transfers of existing
+        domains, they now allow you to register
+        <strong>brand-new</strong> domains directly on their
+        platform.</p>
+        <p>Skipping IONOS entirely and starting right inside Cloudflare
+        has massive benefits for your project.</p>
+        <p><strong>⚖️ IONOS vs. Cloudflare (Direct)</strong></p>
+        <table style="width:97%;">
+        <colgroup>
+        <col style="width: 20%" />
+        <col style="width: 41%" />
+        <col style="width: 35%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;">Feature</th>
+        <th style="text-align: left;">IONOS (Promo Strategy)</th>
+        <th style="text-align: left;">Cloudflare (Direct Strategy)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>Year 1 Cost</strong></td>
+        <td style="text-align: left;"><strong>~$1.00</strong></td>
+        <td style="text-align: left;"><strong>~$10.46</strong></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Year 2+ Cost</strong></td>
+        <td style="text-align: left;"><strong>~$20.00 /
+        year</strong></td>
+        <td style="text-align: left;"><strong>~$10.46 /
+        year</strong> (Flat wholesale price)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Upsells /
+        Gotchas</strong></td>
+        <td style="text-align: left;">High (Tons of checkboxes for
+        trials)</td>
+        <td style="text-align: left;"><strong>Zero</strong> (They never
+        upsell)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Setup
+        Friction</strong></td>
+        <td style="text-align: left;">Moderate (Must manually copy
+        nameservers)</td>
+        <td style="text-align: left;"><strong>None</strong> (It's
+        pre-configured)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>WHOIS
+        Privacy</strong></td>
+        <td style="text-align: left;">Free, but watch out for expired
+        trials</td>
+        <td style="text-align: left;"><strong>Free forever</strong> by
+        default</td>
+        </tr>
+        </tbody>
+        </table>
+        <p><strong>🎯 Why Buying Directly from Cloudflare is
+        Better</strong></p>
+        <p><strong>1. You Avoid the "Promo Trap"</strong></p>
+        <p>IONOS lures you in with that $1.00 first year, but they more
+        than make up for it by charging roughly double the wholesale
+        price on every single renewal after that. If you keep your
+        website for 3 years:</p>
+        <ul>
+        <li><p><strong>IONOS path:</strong></p></li>
+        <li><p><strong>Cloudflare path:</strong> Starting with
+        Cloudflare saves you money in the long run.</p></li>
+        </ul>
+        <p>Medium</p>
+        <p><strong>2. Radical Simplicity</strong></p>
+        <p>If you buy from Cloudflare, <strong>Step 2 of the previous
+        guide is completely eliminated.</strong> You do not have to log
+        into IONOS, unlock nameservers, or copy codes back and forth.
+        The domain is born inside Cloudflare, automatically configured
+        with the correct security settings from second one.</p>
+        <p><strong>3. No Hidden Add-on Fees</strong></p>
+        <p>Cloudflare operates their domain registry "at-cost" as a
+        utility to get people onto their network. They pass the exact
+        price charged by the .com registry (Verisign) straight to you
+        with absolutely zero markup. Privacy protection (hiding your
+        home address and phone number from scammers) is permanently
+        included for free.</p>
+        <p>Cloudflare</p>
+        <p><strong>🗺️ Your New, Shortened Setup Process</strong></p>
+        <p>Cloudflare</p>
+        <p>If you buy directly from Cloudflare, your overall workflow
+        drops down to just three major steps:</p>
+        <ol type="1">
+        <li><p><strong>Register the Name:</strong> Log into Cloudflare,
+        go to <strong>Domain Registration</strong>, search for your
+        .com, and buy it for roughly <strong>$10.46</strong>.</p></li>
+        <li><p><strong>Build Your Site:</strong> Create your public
+        repository on GitHub named yourusername.github.io and add your
+        index.html file.</p></li>
+        <li><p><strong>Bridge the Two:</strong> Add your custom domain
+        to GitHub Pages settings, then jump back to Cloudflare DNS and
+        add those same 4 IP records (A records) and the www CNAME record
+        pointing to GitHub.</p></li>
+        </ol>
+        <p>You cut out the third-party middleman entirely, keep your
+        billing in one single clean dashboard, and secure the lowest
+        possible permanent renewal rate right out of the gate.</p>
+        <p>What domain name endings are the cheapest for cloudfare</p>
+        <p>Because Cloudflare sells domains <strong>"at-cost"</strong>
+        (passing the exact registry wholesale price straight to you with
+        zero markup), the cheapest domain extensions on Cloudflare are
+        simply the ones whose global registries charge the least.</p>
+        <p>Cloudflare</p>
+        <p>The baseline wholesale price for a standard
+        <strong>.com</strong> on Cloudflare is roughly <strong>$9.77 to
+        $10.46 per year</strong> (including the tiny mandatory ICANN
+        fee).</p>
+        <p>Gist - GitHub</p>
+        <p>If you want to go even lower than a .com, several solid
+        domain extensions cost significantly less.</p>
+        <p><strong>📉 The Cheapest Domain Extensions on
+        Cloudflare</strong></p>
+        <table style="width:98%;">
+        <colgroup>
+        <col style="width: 27%" />
+        <col style="width: 30%" />
+        <col style="width: 39%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;">Domain Ending (TLD)</th>
+        <th style="text-align: left;">Approximate Annual Cost
+        (Registration &amp; Renewal)</th>
+        <th style="text-align: left;">Best Used For</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td
+        style="text-align: left;"><strong>.uk</strong> / <strong>.co.uk</strong></td>
+        <td style="text-align: left;"><strong>~$4.75 /
+        year</strong></td>
+        <td style="text-align: left;">UK-focused sites (note: anyone can
+        buy them, but it implies a UK presence)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>.us</strong></td>
+        <td style="text-align: left;"><strong>~$6.50 /
+        year</strong></td>
+        <td style="text-align: left;">US-based projects or
+        individuals</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>.org</strong></td>
+        <td style="text-align: left;"><strong>~$9.95 /
+        year</strong></td>
+        <td style="text-align: left;">Non-profits, clubs, communities,
+        or open-source projects</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>.net</strong></td>
+        <td style="text-align: left;"><strong>~$10.10 /
+        year</strong></td>
+        <td style="text-align: left;">Infrastructure, networking, or
+        general fallback</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>.dev</strong></td>
+        <td style="text-align: left;"><strong>~$10.20 /
+        year</strong></td>
+        <td style="text-align: left;">Development, tech portfolios,
+        coding projects</td>
+        </tr>
+        </tbody>
+        </table>
+        <p><strong>⚠️ A Major Warning on "Ultra-Cheap" Extensions (like
+        .xyz, .top, .site)</strong></p>
+        <p>If you look at traditional registrars, they often sell
+        extensions like .xyz, .site, .top, or .online for <strong>$0.99
+        for the first year</strong>.</p>
+        <p>However, because Cloudflare does not offer promotional
+        loss-leader pricing, <strong>these extensions are not the
+        cheapest on Cloudflare.</strong></p>
+        <ul>
+        <li><p>The global registry wholesale cost to renew extensions
+        like .xyz or .site is actually around <strong>$10 to $13 per
+        year</strong>.</p></li>
+        <li><p>On Cloudflare, you will pay that full $10–$13 wholesale
+        rate starting from year one, making a standard .com or .org
+        cheaper or identical in price anyway.</p></li>
+        </ul>
+        <p><strong>💡 Recommendation</strong></p>
+        <p>If you want a highly recognized, globally trusted extension
+        with the absolute best long-term value on Cloudflare,
+        <strong>sticking with .com (or .org if it's for a community
+        project) at ~$10/year is your best bet.</strong> It avoids any
+        weird formatting and looks professional out of the gate.</p>
+        <p>If you want to skip the traditional .com, .org, or .net
+        names, the cheapest top-level domains (TLDs) available directly
+        on Cloudflare belong to specialized extensions that have
+        incredibly low wholesale baseline rates.</p>
+        <p>Because Cloudflare passes the raw registry costs straight to
+        you without a retail markup, you can get several distinct
+        options for <strong>under $5 to $7 a year</strong>.</p>
+        <p><strong>📉 The Absolute Cheapest TLDs on
+        Cloudflare</strong></p>
+        <p>These specific extensions have the lowest ongoing cost on the
+        platform, usually ranging between <strong>$4.00 and $7.00 per
+        year</strong> (including the standard ICANN fee):</p>
+        <table style="width:98%;">
+        <colgroup>
+        <col style="width: 36%" />
+        <col style="width: 19%" />
+        <col style="width: 42%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>TLD
+        Extension</strong></th>
+        <th style="text-align: left;"><strong>Approx. Annual Cost (Reg
+        &amp; Renewal)</strong></th>
+        <th style="text-align: left;"><strong>Best Match
+        For</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>.win</strong></td>
+        <td style="text-align: left;"><strong>~$4.16 /
+        year</strong></td>
+        <td style="text-align: left;">Gaming sites, personal
+        achievements, competitions</td>
+        </tr>
+        <tr>
+        <td
+        style="text-align: left;"><strong>.bid</strong> / <strong>.loan</strong></td>
+        <td style="text-align: left;"><strong>~$4.96 /
+        year</strong></td>
+        <td style="text-align: left;">Financial tracking, auctions,
+        portfolio mockups</td>
+        </tr>
+        <tr>
+        <td
+        style="text-align: left;"><strong>.download</strong> / <strong>.stream</strong></td>
+        <td style="text-align: left;"><strong>~$4.96 /
+        year</strong></td>
+        <td style="text-align: left;">File repositories, media hosting,
+        scripts, open-source code</td>
+        </tr>
+        <tr>
+        <td
+        style="text-align: left;"><strong>.date</strong> / <strong>.party</strong></td>
+        <td style="text-align: left;"><strong>~$4.96 /
+        year</strong></td>
+        <td style="text-align: left;">Event tracking, calendars, social
+        hobby groups</td>
+        </tr>
+        <tr>
+        <td
+        style="text-align: left;"><strong>.click</strong> / <strong>.link</strong></td>
+        <td style="text-align: left;"><strong>~$5.00 - $7.00 /
+        year</strong></td>
+        <td style="text-align: left;">Clean, highly versatile utility
+        shortcuts or personal link trees</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>.us</strong></td>
+        <td style="text-align: left;"><strong>~$6.48 /
+        year</strong></td>
+        <td style="text-align: left;">Individuals or entities with a
+        presence in the United States</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>.work</strong></td>
+        <td style="text-align: left;"><strong>~$6.50 /
+        year</strong></td>
+        <td style="text-align: left;">Professional resumes, portfolio
+        sites, project tracking</td>
+        </tr>
+        </tbody>
+        </table>
+        <p><strong>💡 A Quick Strategy Checklist for Your
+        Project</strong></p>
+        <p>When picking an ultra-cheap domain for a developer site or a
+        personal tech tool, three details matter most:</p>
+        <ul>
+        <li><p><strong>Look at .link or .click for general use:</strong>
+        If you want an inexpensive, clean-looking option that isn't tied
+        to a specific theme like gaming or finance, .link looks
+        excellent for housing personal projects or code
+        portfolios.</p></li>
+        <li><p><strong>Availability is much higher:</strong> Finding an
+        available short, clean name is vastly easier on a .link or .win
+        extension than it is on a congested .com.</p></li>
+        <li><p><strong>The Price is Stable:</strong> Because Cloudflare
+        does not inflate the price in year two with a hidden renewal
+        fee, whatever low price you see when you search the domain in
+        your Cloudflare dashboard is the exact price you'll lock in for
+        years to come.</p></li>
+        </ul>
+        <h3 id="nav-cloudflare">Cloudflare</h3>
+        <p>Registering a .us domain name directly through Cloudflare is
+        an easy, highly automated process. However, because .us is the
+        country-code top-level domain (ccTLD) for the United States, the
+        registry enforces <strong>two strict rules</strong> that differ
+        from a standard .com:</p>
+        <ol type="1">
+        <li><p><strong>The Nexus Requirement:</strong> You must
+        explicitly certify that you are a U.S. citizen, resident, or
+        U.S.-based entity.</p></li>
+        <li><p><strong>Public WHOIS Contact Data:</strong> By strict
+        rule of the National Telecommunications and Information
+        Administration (NTIA), <strong>privacy redaction is completely
+        prohibited on .us domains.</strong> Your contact information
+        (name, city, state, country) will be viewable in the public
+        domain database.</p></li>
+        </ol>
+        <p>If you are comfortable with those registry rules, here is the
+        exact step-by-step process to buy it.</p>
+        <p><strong>🛠️ Step 1: Create and Verify Your Cloudflare
+        Account</strong></p>
+        <ol type="1">
+        <li><p>Head to <a href="https://www.cloudflare.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Cloudflare</span></a> and click
+        <strong>Sign Up</strong>.</p></li>
+        <li><p>Enter your email address and create a secure
+        password.</p></li>
+        <li><p>Check your email inbox for a verification message from
+        Cloudflare, and click the link inside to activate your
+        account.</p></li>
+        </ol>
+        <p><strong>🛠️ Step 2: Search for and Purchase Your
+        Domain</strong></p>
+        <ol type="1">
+        <li><p>Log into your fresh Cloudflare dashboard.</p></li>
+        <li><p>Look at the left-side navigation menu and click on
+        <strong>Domain Registration</strong> &gt; <strong>Register
+        Domains</strong>.</p></li>
+        <li><p>Type your preferred name with the .us ending into the
+        search box.</p></li>
+        <li><p>If it is available, it will display the "at-cost"
+        wholesale price (around <strong>$6.50/year</strong>). Click the
+        <strong>Purchase</strong> button next to it.</p></li>
+        <li><p>Select how many years you want to lease the domain for
+        (default is 1 year, and auto-renew is turned on automatically so
+        you don’t accidentally lose it).</p></li>
+        </ol>
+        <p><strong>🛠️ Step 3: Complete the Required Contact Details
+        &amp; US Nexus Forms</strong></p>
+        <p>This is where the unique steps for a .us domain happen.
+        Cloudflare will prompt you to fill out a standard form, followed
+        by specific compliance questions:</p>
+        <p><strong>1. General Contact Info</strong></p>
+        <p>Fill out your legal first name, last name, phone number, and
+        physical mailing address. Note: Ensure this matches a valid U.S.
+        address.</p>
+        <p><strong>2. Choose Your Nexus Category</strong></p>
+        <p>The registry requires you to choose a category that legally
+        states your connection to the United States. You will select
+        from a dropdown list:</p>
+        <ul>
+        <li><p><strong>Nexus Category 1 (C11):</strong> A natural person
+        who is a United States Citizen.</p></li>
+        <li><p><strong>Nexus Category 1 (C12):</strong> A natural person
+        who is a permanent resident of the United States.</p></li>
+        <li><p><strong>Nexus Category 2 (C21):</strong> A U.S.-based
+        organization, LLC, or corporation formed within one of the 50
+        states.</p></li>
+        </ul>
+        <p><strong>3. State Your Application Purpose</strong></p>
+        <p>Select an option from the dropdown explaining what the domain
+        will be used for:</p>
+        <ul>
+        <li><p>Personal use</p></li>
+        <li><p>For-profit business</p></li>
+        <li><p>Non-profit business or organization</p></li>
+        </ul>
+        <p><strong>🛠️ Step 4: Add Payment and Finalize</strong></p>
+        <ol type="1">
+        <li><p>Provide a credit card or your preferred valid billing
+        profile to pay the initial registration fee.</p></li>
+        <li><p>Review the standard Domain Registration
+        Agreement.</p></li>
+        <li><p>Click <strong>Complete Purchase</strong>.</p></li>
+        </ol>
+        <p>The domain will be registered instantly. Because it was born
+        inside Cloudflare, it bypasses the need to configure custom
+        nameservers. Your domain is fully ready to connect immediately
+        to your GitHub Pages A and CNAME records from your Cloudflare
+        dashboard!</p>
+        <h2
+        id="nav-connecting-it-to-your-github-repositories">Connecting it
+        to your Github Repositories</h2>
+        <p>Now that your .us domain is safely registered directly inside
+        Cloudflare, connecting it to GitHub Pages is highly
+        streamlined.</p>
+        <p>Here is the step-by-step process to link your Cloudflare
+        domain to your GitHub code.</p>
+        <h3 id="nav-step-1-tell-github-your-domain-name">🛠️ Step 1: Tell
+        GitHub Your Domain Name</h3>
+        <p>First, you need to configure your GitHub repository to expect
+        incoming traffic from your new .us domain.</p>
+        <ol type="1">
+        <li><p>Log into <strong>GitHub</strong> and open the public
+        repository you created for your website (it should be named
+        yourusername.github.io).</p></li>
+        <li><p>Click on the <strong>Settings</strong> tab at the top of
+        the repository page.</p></li>
+        <li><p>On the left-side menu, scroll down to the <strong>Code
+        and automation</strong> section and click on
+        <strong>Pages</strong>.</p></li>
+        <li><p>Under the <strong>Custom domain</strong> section, type
+        your exact domain name (e.g., yourdomain.us).</p></li>
+        <li><p>Click <strong>Save</strong>.</p></li>
+        </ol>
+        <p>📝 Note: GitHub will automatically create a new file named
+        CNAME inside your main repository code. Do not delete this file,
+        as it tells GitHub which domain belongs to your account.</p>
+        <h3
+        id="nav-step-2-route-the-traffic-in-cloudflare-dns-records">🛠️
+        Step 2: Route the Traffic in Cloudflare (DNS Records)</h3>
+        <p>Right now, your domain is registered, but it doesn't know
+        where to send people. You need to tell Cloudflare to point your
+        domain directly to GitHub’s global servers.</p>
+        <ol type="1">
+        <li><p>Log into your <strong>Cloudflare Dashboard</strong> and
+        click on your newly registered .us domain.</p></li>
+        <li><p>In the left-side navigation menu, click on
+        <strong>DNS</strong> &gt; <strong>Records</strong>.</p></li>
+        <li><p>You will see a table of default records. You need to add
+        <strong>4 "A" Records</strong> and <strong>1 "CNAME"
+        Record</strong>.</p></li>
+        </ol>
+        <p>Click <strong>Add Record</strong> for each of the following 5
+        entries:</p>
+        <table style="width:98%;">
+        <colgroup>
+        <col style="width: 14%" />
+        <col style="width: 9%" />
+        <col style="width: 30%" />
+        <col style="width: 41%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;">Type</th>
+        <th style="text-align: left;">Name</th>
+        <th style="text-align: left;">Target / IP Address</th>
+        <th style="text-align: left;">Proxy Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>A</strong></td>
+        <td style="text-align: left;">@</td>
+        <td style="text-align: left;">185.199.108.153</td>
+        <td style="text-align: left;">Proxied (Orange Cloud icon)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>A</strong></td>
+        <td style="text-align: left;">@</td>
+        <td style="text-align: left;">185.199.109.153</td>
+        <td style="text-align: left;">Proxied (Orange Cloud icon)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>A</strong></td>
+        <td style="text-align: left;">@</td>
+        <td style="text-align: left;">185.199.110.153</td>
+        <td style="text-align: left;">Proxied (Orange Cloud icon)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>A</strong></td>
+        <td style="text-align: left;">@</td>
+        <td style="text-align: left;">185.199.111.153</td>
+        <td style="text-align: left;">Proxied (Orange Cloud icon)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>CNAME</strong></td>
+        <td style="text-align: left;">www</td>
+        <td style="text-align: left;">yourusername.github.io</td>
+        <td style="text-align: left;">Proxied (Orange Cloud icon)</td>
+        </tr>
+        </tbody>
+        </table>
+        <p>💡 Quick Tips: * The @ symbol is just a shortcut that tells
+        Cloudflare you are targeting your root domain
+        (yourdomain.us).</p>
+        <ul>
+        <li>Be sure to change yourusername.github.io to your actual
+        GitHub username website link.</li>
+        </ul>
+        <h3 id="nav-step-3-match-the-ssltls-security-settings">🛠️ Step
+        3: Match the SSL/TLS Security Settings</h3>
+        <p>Because Cloudflare sits as a protective shield between your
+        visitors and GitHub, you need to make sure Cloudflare uses the
+        correct level of encryption.</p>
+        <ol type="1">
+        <li><p>While still in your Cloudflare dashboard, look at the
+        left menu and click on <strong>SSL/TLS</strong> &gt;
+        <strong>Overview</strong>.</p></li>
+        <li><p>Change the encryption mode from "Flexible" to
+        <strong>Full</strong> (or <strong>Full
+        (strict)</strong>).</p></li>
+        </ol>
+        <p>This configuration prevents a "too many redirects" error
+        loop, ensuring Cloudflare and GitHub talk to each other over a
+        completely secure connection.</p>
+        <h3 id="nav-step-4-enforce-https-on-github">🛠️ Step 4: Enforce
+        HTTPS on GitHub</h3>
+        <ol type="1">
+        <li><p>Go back to your <strong>GitHub repository</strong> &gt;
+        <strong>Settings</strong> &gt; <strong>Pages</strong>.</p></li>
+        <li><p>Refresh the page. You will see a message under your
+        custom domain saying "DNS check in progress" or "DNS check
+        successful."</p></li>
+        <li><p>Once the DNS check completes (usually takes 5 to 15
+        minutes), check the box that says <strong>Enforce
+        HTTPS</strong>.</p></li>
+        </ol>
+        <h3 id="nav-testing-your-site">🎉 Testing Your Site</h3>
+        <p>Open a brand-new browser window or use your phone, type in
+        your domain yourdomain.us (and www.yourdomain.us), and press
+        enter. You should instantly see the index.html file you created
+        in your GitHub repository, complete with a secure padlock icon
+        in the URL bar!</p>
+        <h3 id="nav-pointing-your-domain-name-to-your-home-lab">Pointing
+        your domain name to your Home Lab</h3>
+        <p>You can either use a <strong>Subdomain</strong> (e.g.,
+        project1.yourdomain.us) or a <strong>Subdirectory</strong>
+        (e.g., yourdomain.us/project1).</p>
+        <p>Here is how both options work so you can choose the best path
+        for your setup:</p>
+        <p><strong>🧭 Option A: Use a Subdomain (Recommended &amp;
+        Easiest)</strong></p>
+        <p>Example: project1.yourdomain.us points to an entirely
+        different server, while www.yourdomain.us stays on GitHub.</p>
+        <p>This is the cleanest approach because it is handled entirely
+        inside your <strong>Cloudflare DNS dashboard</strong>. You leave
+        your existing GitHub records completely alone and just add a new
+        line item for the new location.</p>
+        <h3 id="nav-how-to-set-it-up-in-cloudflare">How to set it up in
+        Cloudflare:</h3>
+        <ol type="1">
+        <li><p>Log into Cloudflare and open your domain's
+        <strong>DNS</strong> &gt; <strong>Records</strong> tab.</p></li>
+        <li><p>Click <strong>Add Record</strong>.</p></li>
+        <li><p>Set the <strong>Name</strong> field to exactly project1
+        (instead of using the @ or www symbols).</p></li>
+        <li><p>Point it to your destination:</p>
+        <ul>
+        <li><p><strong>If the other location is an external web hosting
+        server or a home lab IP:</strong> Select Type <strong>A</strong>
+        and paste the target destination's IP address.</p></li>
+        <li><p><strong>If the other location is another cloud service
+        (like a second GitHub account, a Notion page, or a different
+        hosting provider):</strong> Select Type <strong>CNAME</strong>
+        and type the destination's target URL.</p></li>
+        </ul></li>
+        <li><p>Click <strong>Save</strong>.</p></li>
+        </ol>
+        <p>Now, traffic splitting is active: any requests for your main
+        site hit GitHub, while requests for project1. instantly route to
+        your alternative location.</p>
+        <p><strong>📂 Option B: Use a Subdirectory (Great for GitHub
+        Projects)</strong></p>
+        <p>Example: Keeping everything under yourdomain.us/project1.</p>
+        <p>If your "different location" is simply <strong>another
+        project repository inside your same GitHub account</strong>, you
+        don't even need to touch Cloudflare! GitHub handles this
+        automatically using its folder structures.</p>
+        <h3 id="nav-how-to-set-it-up-in-github">How to set it up in
+        GitHub:</h3>
+        <ol type="1">
+        <li><p>Create a <strong>second, separate public
+        repository</strong> on your GitHub account for this project
+        (e.g., name the repository project1).</p></li>
+        <li><p>Put an index.html file inside this new
+        repository.</p></li>
+        <li><p>Go to that specific repository's
+        <strong>Settings</strong> &gt; <strong>Pages</strong>
+        tab.</p></li>
+        <li><p>Under "Build and deployment", choose your
+        <strong>main</strong> branch and click
+        <strong>Save</strong>.</p></li>
+        <li><p><strong>CRITICAL:</strong> Do not add anything to the
+        "Custom Domain" box in this second repository. Leave it
+        completely blank.</p></li>
+        </ol>
+        <p>Because your primary repository (yourusername.github.io)
+        already claims ownership of yourdomain.us, GitHub automatically
+        maps any secondary active GitHub Pages repositories as
+        subdirectories. Your new project will instantly go live at
+        yourdomain.us/project1.</p>
+        <p><strong>🔀 What if the alternative location is a completely
+        separate company server, but you insist on using
+        yourdomain.us/project1?</strong></p>
+        <p>If you want a subdirectory (/project1) to pull files from a
+        non-GitHub server, standard DNS records cannot do this on their
+        own.</p>
+        <p>To achieve that, you would use a free feature inside
+        Cloudflare called <strong>Cloudflare Workers</strong>. A Worker
+        acts as a mini proxy script sitting at the edge of the internet.
+        It watches incoming traffic, and if a user types in /project1,
+        it secretly fetches the website data from your alternate server
+        and serves it to the user under your main domain name.</p>
+        <p>Which style of link layout matches what you are trying to
+        build for your project?</p>
+        <p>Project1.domain.us can my ip be dynamic</p>
+        <p>Yes, your IP address can absolutely be dynamic! This is a
+        very common setup, especially if project1.yourdomain.us is
+        pointing to a home lab, a home server, or a residential internet
+        connection where your internet service provider (ISP) changes
+        your public IP address every few weeks or whenever your router
+        reboots.</p>
+        <p>To make this work without your website link breaking when
+        your IP changes, you use a setup called <strong>DDNS (Dynamic
+        DNS)</strong>.</p>
+        <p>Since your domain is on Cloudflare, you don't need to pay for
+        any third-party DDNS services. Cloudflare has a powerful, free
+        API that allows a small script running on your local network to
+        automatically update your DNS record the second your home IP
+        changes.</p>
+        <p><strong>🏗️ How Cloudflare Handles a Dynamic IP</strong></p>
+        <p>Instead of you manually editing the IP address in your
+        Cloudflare dashboard every time it changes, the process becomes
+        fully automated:</p>
+        <p>[ Your Home Server ] ---&gt; Checks its current public IP</p>
+        <p>|</p>
+        <p>└---&gt; Detects an IP change!</p>
+        <p>|</p>
+        <p>└---&gt; Sends an API call to Cloudflare</p>
+        <p>|</p>
+        <p>└---&gt; [ Cloudflare DNS ] instantly updates
+        project1.yourdomain.us</p>
+        <ol type="1">
+        <li><p>You create an initial record for project1 in Cloudflare
+        pointing to whatever your IP is right now.</p></li>
+        <li><p>A lightweight client/script runs inside your local
+        network.</p></li>
+        <li><p>Every few minutes, that script checks your current public
+        IP. If it detects a change, it automatically pings Cloudflare's
+        API and updates the record instantly.</p></li>
+        </ol>
+        <p><strong>🛠️ The Easiest Ways to Set It Up</strong></p>
+        <p>Depending on what hardware or software you run on your local
+        network, you have a few excellent, free ways to automate this
+        update:</p>
+        <h3
+        id="nav-option-1-using-docker-or-an-lxc-container-cloudflare-ddns">Option
+        1: Using Docker or an LXC Container (Cloudflare-DDNS)</h3>
+        <p>If you run a home server environment (like Proxmox, Unraid,
+        or TrueNAS), the gold standard is a lightweight container called
+        <strong>oznu/cloudflare-ddns</strong>.</p>
+        <ul>
+        <li><p>You simply deploy the container, pass it your Cloudflare
+        API Token, and tell it your zone domain (yourdomain.us) and
+        subdomain (project1).</p></li>
+        <li><p>It runs quietly in the background using less than 10MB of
+        RAM and checks your IP on a loop.</p></li>
+        </ul>
+        <h3 id="nav-option-2-built-in-router-settings">Option 2:
+        Built-in Router Settings</h3>
+        <p>Many prosumer or custom routers (like those running pfSense,
+        OPNSense, Ubiquiti UniFi, or OpenWrt) have a built-in "Dynamic
+        DNS" section.</p>
+        <ol type="1">
+        <li><p>You select <strong>Cloudflare</strong> from the provider
+        dropdown list.</p></li>
+        <li><p>You input your Cloudflare Account Email and an API
+        Token.</p></li>
+        <li><p>Your router handles the updates directly at the gateway
+        level.</p></li>
+        </ol>
+        <h3 id="nav-option-3-home-assistant-integration">Option 3: Home
+        Assistant Integration</h3>
+        <p>If you happen to use <strong>Home Assistant</strong> to
+        coordinate local devices or servers, it has an official, native
+        <strong>Cloudflare integration</strong>.</p>
+        <ul>
+        <li>You authenticate it via an API token, check a box for your
+        subdomain, and Home Assistant will monitor your network
+        connection and keep Cloudflare perfectly updated.</li>
+        </ul>
+        <p><strong>🔒 Bonus: The Power of the Cloudflare Proxy (The
+        "Orange Cloud")</strong></p>
+        <p>When you set up your project1 record in Cloudflare, make sure
+        the <strong>Proxy Status</strong> is turned <strong>ON</strong>
+        (the orange cloud icon is checked).</p>
+        <p>This gives you a massive security advantage for a home
+        network: when someone visits project1.yourdomain.us, they only
+        see Cloudflare’s secure public IP addresses. Cloudflare masks
+        your residential dynamic IP entirely, shielding your home
+        network configuration, open ports, and location from the public
+        internet.</p>
+        <h3 id="nav-pointing-to-a-twingate-connection">Pointing to a
+        Twingate Connection</h3>
+        <p>Using project1.yourdomain.us with <strong>Twingate</strong>!
+        In fact, this is exactly what Twingate is designed for, and it
+        is a brilliant way to handle a home lab or private server
+        because it provides the ultimate layer of security.</p>
+        <p>When you use Twingate, <strong>you don't even need to open
+        any ports on your home router, and you don't have to keep
+        updating a dynamic public IP address.</strong></p>
+        <h3
+        id="nav-here-is-exactly-how-it-works-and-how-to-set-it-up">Here
+        is exactly how it works and how to set it up:</h3>
+        <p><strong>🔒 The Magic of the Twingate + Custom Domain
+        Combo</strong></p>
+        <p>Normally, a public DNS name points to a public IP address.
+        But because Twingate handles traffic via an encrypted tunnel,
+        your subdomain doesn't actually need to point to a real public
+        IP at all.</p>
+        <p>Instead, the <strong>Twingate Client</strong> running on your
+        phone or laptop will intercept any traffic going to
+        project1.yourdomain.us and securely route it through the
+        Twingate Connector inside your home network.</p>
+        <p><strong>🛠️ Step-by-Step Setup Process</strong></p>
+        <h3 id="nav-in-your-cloudflare-dns-the-dummy-record">1. In Your
+        Cloudflare DNS (The "Dummy" Record)</h3>
+        <p>Because Twingate will intercept this traffic locally on your
+        devices, the public record in Cloudflare just needs to exist so
+        your browser recognizes it as a valid address.</p>
+        <ul>
+        <li><p>Go to Cloudflare DNS and add an <strong>A record</strong>
+        for project1.</p></li>
+        <li><p>Point it to a non-routable, dummy private IP address like
+        192.168.1.1 or 10.0.0.1.</p></li>
+        <li><p>Leave the Proxy status <strong>Off</strong> (DNS Only /
+        Grey Cloud) for this specific record.</p></li>
+        </ul>
+        <p>(Don't worry—nobody on the public internet will be able to
+        access your network through this dummy IP. It simply acts as a
+        placeholder).</p>
+        <h3
+        id="nav-in-your-twingate-admin-console-define-the-resource">2.
+        In Your Twingate Admin Console (Define the Resource)</h3>
+        <p>Next, you need to tell Twingate to look out for this specific
+        name.</p>
+        <ol type="1">
+        <li><p>Log into your <strong>Twingate Admin
+        Dashboard</strong>.</p></li>
+        <li><p>Navigate to <strong>Remote Networks</strong> and select
+        the network where your home server/connector lives.</p></li>
+        <li><p>Click <strong>Add Resource</strong>.</p></li>
+        <li><p>Set the Resource Type to <strong>DNS</strong>.</p></li>
+        <li><p>In the <strong>DNS Name</strong> field, type your exact
+        subdomain: project1.yourdomain.us.</p></li>
+        <li><p>Define the <strong>Ports</strong> you want to allow
+        (e.g., 80, 443 for web traffic, or leave it unrestricted
+        depending on your security preference).</p></li>
+        <li><p>Assign this resource to a <strong>Group</strong> (like
+        "Everyone" or a custom admin group) so your account has
+        permission to access it.</p></li>
+        </ol>
+        <h3 id="nav-in-your-local-home-network-the-connector">3. In Your
+        Local Home Network (The Connector)</h3>
+        <p>Make sure your local <strong>Twingate Connector</strong> (the
+        lightweight Docker container or LXC container running on your
+        local machine) is online and can locally resolve or route to
+        whatever service project1 is supposed to hit.</p>
+        <p><strong>🚀 How It Works in Everyday Use</strong></p>
+        <ul>
+        <li><p><strong>When you are away from home and turn your
+        Twingate Client ON:</strong> You type project1.yourdomain.us
+        into your browser. The Twingate client recognizes that name,
+        hijacks the traffic, sends it through the secure tunnel straight
+        to your home connector, and seamlessly drops you onto your
+        private page.</p></li>
+        <li><p><strong>To anyone else on the internet:</strong> If a
+        random user or bot tries to go to project1.yourdomain.us, the
+        lookup will just point them to that useless local dummy IP
+        (192.168.1.1), and the connection will safely time out.</p></li>
+        </ul>
+        <p>This gives you a beautifully clean, memorable .us custom URL
+        for your home projects without exposing a single hair of your
+        actual network to the public internet!</p>
+        <p>If I have all of this set up and I know I can't run Twin Gate
+        if I'm at home because my router doesn't allow me to route
+        traffic back into my house. How do I access my home lab when I'm
+        at home?</p>
+        <p>This is a very common issue known as <strong>NAT
+        Loopback</strong> (or NAT Hairpinning). Many consumer and
+        ISP-supplied routers block you from typing your public domain
+        name while sitting inside your house because they don't know how
+        to route that traffic out to the internet and back into
+        themselves.</p>
+        <p>Since you are already using Cloudflare, you have a few ways
+        to solve this. Because you use <strong>Twingate</strong>,
+        there's an even cleaner trick built right into how it handles
+        your home network.</p>
+        <p>Here are the three best ways to access your home lab
+        seamlessly while sitting on your couch:</p>
+        <p><strong>🛠️ Solution 1: Use Twingate's "Local Bypass" (The
+        Cleanest Fix)</strong></p>
+        <p>Twingate is smart. If your laptop or phone is connected to
+        your home Wi-Fi, it doesn't actually need to send your traffic
+        across the country through an encrypted tunnel just to talk to a
+        server sitting 10 feet away from you.</p>
+        <p>Twingate handles this using a feature called <strong>Local
+        Network Bypass</strong>.</p>
+        <p>[ Your Laptop on Home Wi-Fi ]</p>
+        <p>|</p>
+        <p>|---&gt; Sees you are on your Home SSID</p>
+        <p>|</p>
+        <p>└---&gt; Bypasses the encrypted tunnel</p>
+        <p>|</p>
+        <p>└---&gt; Routes straight to your local server IP</p>
+        <p><strong>How to set it up:</strong></p>
+        <ol type="1">
+        <li><p>Log into your <strong>Twingate Admin
+        Console</strong>.</p></li>
+        <li><p>Go to <strong>Settings</strong> &gt;
+        <strong>Networks</strong> (or look under your Client/Device
+        settings depending on your dashboard version).</p></li>
+        <li><p>Look for <strong>Local Network Bypass</strong> or
+        <strong>Trusted Networks</strong>.</p></li>
+        <li><p>Add your home Wi-Fi network's name (SSID).</p></li>
+        </ol>
+        <p>When your Twingate client sees you are securely connected to
+        your home Wi-Fi, it will automatically step out of the way. It
+        will seamlessly let your device talk directly to your local
+        servers over your LAN, completely bypassing the router's
+        loopback restriction.</p>
+        <p><strong>🛠️ Solution 2: Set Up Local DNS split-horizon (The
+        Network Fix)</strong></p>
+        <p>If you don't want to rely on the Twingate client being active
+        when you are at home, you can use a <strong>Split-Horizon
+        DNS</strong> strategy. This means when you are away from home,
+        your domain points to the internet; when you are at home, your
+        domain points directly to your server's private network IP.</p>
+        <p>If you run a local DNS server like a
+        <strong>Pi-hole</strong>, <strong>AdGuard Home</strong>, or have
+        a prosumer router (like pfSense/Ubiquiti), you can easily
+        override the public internet records locally.</p>
+        <p><strong>How to set it up in Pi-hole:</strong></p>
+        <ol type="1">
+        <li><p>Log into your Pi-hole admin dashboard.</p></li>
+        <li><p>Go to <strong>Local DNS</strong> &gt; <strong>DNS
+        Records</strong>.</p></li>
+        <li><p>In the <strong>Domain</strong> box, type your subdomain:
+        project1.yourdomain.us.</p></li>
+        <li><p>In the <strong>IP Address</strong> box, type the actual
+        private local IP of your home lab server (e.g.,
+        192.168.1.100).</p></li>
+        <li><p>Click <strong>Add</strong>.</p></li>
+        </ol>
+        <p><strong>Why this works:</strong> When you are home, your
+        laptop asks your Pi-hole "Where is project1.yourdomain.us?" Your
+        Pi-hole instantly answers with the direct local IP address
+        (192.168.1.100), bypassing your router's broken NAT loopback
+        entirely. When you leave the house and disconnect from your
+        Wi-Fi, your device goes back to using public DNS, and Twingate
+        takes over smoothly.</p>
+        <p><strong>🛠️ Solution 3: The Bookmarks Method (The Low-Tech
+        Fallback)</strong></p>
+        <p>If you just want a quick fallback without altering your
+        network settings, you can simply keep a separate folder in your
+        web browser's bookmarks bar labeled <strong>Home Lab -
+        LAN</strong>.</p>
+        <p>Inside that folder, save the direct local network IP
+        addresses and port numbers of your services:</p>
+        <ul>
+        <li>Instead of booking project1.yourdomain.us, use
+        http://192.168.1.100:8080</li>
+        </ul>
+        <p>While it isn't as elegant as typing your clean .us domain
+        name, it completely circumvents the router because your browser
+        bypasses the domain lookup process entirely and connects
+        node-to-node across your local network switches.</p>
+        <p>For option one, do I have to have Twin Gate running on my
+        phone all the time?</p>
+        <p>No, you do not have to leave Twingate running on your phone
+        all the time.</p>
+        <p>Twingate is designed to be incredibly flexible, and you can
+        manage this in two different ways depending on how automated you
+        want the experience to be.</p>
+        <p><strong>🖐️ Option A: The "On-Demand" Switch
+        (Manual)</strong></p>
+        <p>You can leave the Twingate app turned <strong>OFF</strong>
+        completely while you are going about your day.</p>
+        <ul>
+        <li><p><strong>When you're at home:</strong> You just connect to
+        your home Wi-Fi and open your home lab using your local
+        bookmarks or your local Pi-hole DNS setup. No Twingate
+        needed.</p></li>
+        <li><p><strong>When you leave the house:</strong> If you
+        suddenly need to check on project1.yourdomain.us, you simply
+        open the Twingate app on your phone, flip the big toggle switch
+        to <strong>On</strong>, do what you need to do in your browser,
+        and then switch it right back <strong>Off</strong>.</p></li>
+        </ul>
+        <p>Because Twingate connects almost instantly (unlike
+        traditional, sluggish VPNs), toggling it on and off manually
+        takes only a couple of seconds.</p>
+        <p><strong>🤖 Option B: "Always-On" with Wi-Fi Automation (Set
+        It and Forget It)</strong></p>
+        <p>If you want to leave the Twingate app active in the
+        background without it burning through your battery or routing
+        your home traffic unnecessarily, you can use the
+        <strong>Always-On</strong> feature combined with your phone's
+        built-in network settings.</p>
+        <p><strong>On iOS (Apple):</strong></p>
+        <p>The Twingate iOS app supports Apple’s native
+        <strong>On-Demand VPN</strong> rules.</p>
+        <ol type="1">
+        <li><p>Open your iPhone <strong>Settings</strong> &gt;
+        <strong>VPN &amp; Device Management</strong> &gt;
+        <strong>VPN</strong>.</p></li>
+        <li><p>Tap the (i) icon next to Twingate.</p></li>
+        <li><p>You can configure a rule that says: "Disconnect VPN when
+        connected to my Home Wi-Fi SSID."</p></li>
+        </ol>
+        <p><strong>On Android:</strong></p>
+        <p>The Twingate Android app has an <strong>Always-On</strong>
+        mode, but you can couple it with the <strong>Local Network
+        Bypass</strong> feature we looked at earlier in your Twingate
+        Admin console.</p>
+        <ul>
+        <li>The app stays active, but the moment it detects your home
+        Wi-Fi network name, it goes completely "dormant" and lets your
+        phone talk directly to your local router. The second you
+        disconnect from your home Wi-Fi and drop onto cellular data,
+        Twingate wakes up instantly and secures the connection.</li>
+        </ul>
+        <p><strong>Summary</strong></p>
+        <p>If you don't want another background app running on your
+        phone, just keep it turned off and treat it like a secure
+        digital key—only turning it on when you are away from home and
+        specifically need to access your server!</p>
+        <p>Can I still log in to .us domain names if I'm at
+        international?</p>
+        <p>Yes, you can absolutely access, log into, and manage your .us
+        domain name from anywhere in the world.</p>
+        <p>There are no geographical internet blocks that prevent a .us
+        domain from working when you are traveling internationally.
+        Whether you are sitting in a coffee shop in Amsterdam, cruising
+        the Danube River, or anywhere else globally, your website will
+        load perfectly, and your Twingate connection will still route
+        back to your home lab exactly the same way.</p>
+        <p>However, because .us is tied to United States regulations,
+        there are <strong>two travel-specific details</strong> to keep
+        in mind regarding your setup:</p>
+        <p><strong>1. Cloudflare Admin Access vs. Website
+        Access</strong></p>
+        <ul>
+        <li><p><strong>Your Website (project1.yourdomain.us):</strong>
+        Anyone across the globe can visit the URL. It behaves like any
+        standard website.</p></li>
+        <li><p><strong>Your Cloudflare/GitHub Accounts:</strong> If you
+        plan to log into your Cloudflare Dashboard or GitHub account
+        while abroad to change code or modify DNS settings, security
+        systems will notice you are logging in from a foreign
+        country.</p></li>
+        </ul>
+        <p>🔐 <strong>Tip:</strong> Make sure you have your Two-Factor
+        Authentication (2FA) apps, backup codes, or authenticator set up
+        on your phone before you leave the country. If Cloudflare or
+        GitHub challenges your login because you are on an international
+        network, you'll need your 2FA app to prove it's you.</p>
+        <p><strong>2. Twingate Handling International
+        Latency</strong></p>
+        <p>When you are traveling internationally and turn on your
+        Twingate client to look at your home lab, your request has to
+        travel all the way across the ocean, into your home router, and
+        back.</p>
+        <p>Twingate handles this incredibly well because it uses a
+        decentralized global architecture, but you might notice a
+        slight, split-second delay (latency) when loading heavy pages
+        compared to when you are using it domestically.</p>
+        <p><strong>3. The One Main Rule: Keep Your US Nexus
+        Valid</strong></p>
+        <p>The registry doesn't care where you are physically standing
+        when you use or manage the domain. The only strict rule is that
+        the <strong>owner identity</strong> attached to the domain must
+        remain valid.</p>
+        <p>As long as you maintain your permanent United States
+        citizenship, residency, or U.S.-based entity status (which you
+        declared during the registration process), you are completely
+        compliant with the law, no matter where your travel itinerary
+        takes you.</p>
+        <p>Why would I want my own private Pi-hole DNS server on my
+        local network?</p>
+        <p>A <strong>Pi-hole</strong> is one of the most powerful,
+        rewarding additions you can make to a home network or home
+        lab.</p>
+        <p>At its core, a Pi-hole acts as a <strong>private, local DNS
+        sinkhole</strong>. Instead of letting your computers, phones,
+        and smart devices talk directly to public internet DNS servers
+        (like Google or your ISP), you route all your network's traffic
+        through the Pi-hole first.</p>
+        <p>Here is exactly why you would want one running on your local
+        network:</p>
+        <p><strong>1. Network-Wide Ad and Tracker Blocking</strong></p>
+        <p>Traditional ad-blockers are browser extensions (like uBlock
+        Origin) that you have to install on every single laptop or
+        computer. They don't work on mobile apps, smart TVs, or smart
+        home devices.</p>
+        <p>Because a Pi-hole sits at the network level, it blocks ads
+        <strong>before they even download to your devices</strong>.</p>
+        <ul>
+        <li><p><strong>App-Level Blocking:</strong> It blocks ads inside
+        mobile apps, mobile games, and streaming devices (like Roku or
+        Fire TV).</p></li>
+        <li><p><strong>Smart TV Privacy:</strong> It stops smart TVs
+        (like Samsung or LG) from constantly uploading "telemetry" data
+        (logs tracking what you watch) back to corporate
+        servers.</p></li>
+        <li><p><strong>Saves Bandwidth:</strong> Because ads, videos,
+        and heavy tracking scripts are dropped at the door, your overall
+        internet connection feels faster and uses less data.</p></li>
+        </ul>
+        <p><strong>2. Total Privacy and Data Control</strong></p>
+        <p>When you use a standard router setup, your Internet Service
+        Provider (ISP) logs every single website domain you look up.
+        They often package and sell this browsing habit data to
+        advertisers.</p>
+        <ul>
+        <li><p>With a Pi-hole, your local DNS queries stay completely
+        private inside your own walls.</p></li>
+        <li><p>You can pair your Pi-hole with <strong>Unbound</strong>
+        (a local recursive DNS resolver) or configure it to use
+        <strong>DNS-over-HTTPS (DoH)</strong>. This encrypts your
+        external lookups, meaning your ISP can no longer spy on the
+        specific domain names you are visiting.</p></li>
+        </ul>
+        <p><strong>3. Local Domain Names for Your Home Lab</strong></p>
+        <p>If you run local services (like a network storage drive, a
+        Home Assistant setup, media containers, or development
+        dashboards), remembering random IP addresses like
+        192.168.1.145:8123 is a massive headache.</p>
+        <p>As we discussed earlier with split-horizon setups, a Pi-hole
+        has a <strong>Local DNS</strong> menu. You can map
+        easy-to-remember, clean domain names directly to your local
+        machines:</p>
+        <ul>
+        <li><p>homeassistant.local ➡️ 192.168.1.145</p></li>
+        <li><p>nas.local ➡️ 192.168.1.50</p></li>
+        </ul>
+        <p>This works seamlessly for any device connected to your home
+        Wi-Fi without needing a public domain registrar.</p>
+        <p><strong>4. Deep Network Visibility &amp;
+        Troubleshooting</strong></p>
+        <p>The Pi-hole dashboard gives you a real-time, bird's-eye view
+        of your entire home network's health and behavior.</p>
+        <ul>
+        <li><p>You can see exactly which smart home devices are "chatty"
+        or acting suspiciously (e.g., a smart lightbulb trying to ping a
+        server in another country 10,000 times a night).</p></li>
+        <li><p>If a device on your network is infected with malware or
+        spyware trying to call home to a known malicious domain, the
+        Pi-hole automatically intercepts the request, blocks it, and
+        alerts you in the query log.</p></li>
+        </ul>
+        <p><strong>⚙️ How It Works (The "Sinkhole" Concept)</strong></p>
+        <p>When you type a website name into your browser, your device
+        asks the Pi-hole for the IP address.</p>
+        <ol type="1">
+        <li><p><strong>If the domain is safe:</strong> The Pi-hole
+        fetches the real IP address and lets the page load
+        instantly.</p></li>
+        <li><p><strong>If the domain belongs to an ad server or
+        tracker:</strong> The Pi-hole deliberately lies. It gives your
+        browser a blank, non-existent address (0.0.0.0). Your browser
+        simply thinks the ad doesn't exist, leaves the ad space blank or
+        collapses it, and moves on to loading the rest of your clean
+        webpage.</p></li>
+        </ol>
+        <p>It takes very little processing power to run, making it a
+        perfect project to spin up as a lightweight LXC container or
+        Docker container inside a home environment.</p>
+        <p>Since many web pages today require that ads get loaded and
+        they know if you're running an ad blocker Pi hole. And is there
+        a way that I can redirect all that advertising traffic to a
+        local web server that's showing pictures that I select.</p>
+        <p>That is a highly creative and classic home lab idea! It
+        sounds amazing in theory: instead of seeing a broken blank box
+        or an anti-adblock warning, you replace the ad space with a
+        picture of your family, a custom dashboard, or a rotating
+        gallery of your choice.</p>
+        <p>However, while you can technically build this, <strong>the
+        security architecture of the modern internet will completely
+        block the images from displaying.</strong> Here is a direct look
+        at why this happens, why it triggers ad-block detection, and
+        what you can actually do instead.</p>
+        <p><strong>🛑 Why the Internet's Security Blocks This (HTTPS
+        &amp; SSL)</strong></p>
+        <p>Ten to fifteen years ago, when the web used unencrypted HTTP
+        traffic, your idea was totally doable. Today, nearly 100% of web
+        and advertising traffic uses <strong>HTTPS (secure
+        encryption)</strong>. This introduces a barrier called the
+        <strong>SSL/TLS Certificate Check</strong>.</p>
+        <p>Here is what happens if you try to redirect an ad network
+        (like doubleclick.net) to your local web server:</p>
+        <ol type="1">
+        <li><p>Your browser tries to load a webpage. The page contains a
+        script pulling an ad from
+        https://doubleclick.net/ad.gif.</p></li>
+        <li><p>Your Pi-hole intercepts the request and redirects it to
+        your local server's IP address (e.g., 192.168.1.50).</p></li>
+        <li><p>Your browser arrives at your local server and says:
+        "Great, give me the secure encrypted data for
+        doubleclick.net."</p></li>
+        <li><p>Your local server can't do that. It only owns a security
+        certificate for your local machine—it cannot legally sign a
+        certificate for Google or DoubleClick.</p></li>
+        <li><p>Your browser detects this mismatched certificate,
+        instantly throws a massive <strong>SSL Certificate Error
+        (Privacy Warning)</strong>, and refuses to load the image or the
+        rest of the webpage for security reasons.</p></li>
+        </ol>
+        <p>Because your local server cannot impersonate the encrypted
+        identity of the ad company, the browser blocks the connection
+        entirely.</p>
+        <p><strong>🕵️‍♂️ How Websites Know You Are Using a
+        Pi-hole</strong></p>
+        <p>You mentioned that websites seem to "know" you are running a
+        Pi-hole. This actually happens through a clever trick called
+        <strong>Bait Scripts</strong>, and redirecting the traffic
+        wouldn't fool them.</p>
+        <p>Web developers don't check your network topology to see if a
+        Pi-hole is present. Instead, they write a simple piece of
+        JavaScript code on their website that behaves like this:</p>
+        <p>[ Web Page Loads ]</p>
+        <p>|</p>
+        <p>├---&gt; Runs a tiny file named "ads.js" (The Bait)</p>
+        <p>|</p>
+        <p>└---&gt; Check: Did "ads.js" successfully load?</p>
+        <p>|</p>
+        <p>├──&gt; YES: User is not blocking ads. Show website.</p>
+        <p>└──&gt; NO (Blocked by Pi-hole): User is ad-blocking! Pop up
+        warning.</p>
+        <p>Even if you successfully redirected that ads.js file to your
+        local server, the code inside your custom picture wouldn't match
+        the specific JavaScript functions the website was looking for.
+        The website's check would still fail, and it would still show
+        you the "Please disable your ad blocker" wall.</p>
+        <p><strong>💡 What You Can Do Instead</strong></p>
+        <p>If your ultimate goal is to get around those annoying
+        anti-adblock popups while keeping your network clean, the
+        standard best practice is to use a <strong>Two-Layer Blocking
+        Strategy</strong>:</p>
+        <p><strong>Layer 1: Keep the Pi-hole for Network
+        Hygiene</strong></p>
+        <p>Leave your Pi-hole running exactly as it is. It is still
+        doing massive work behind the scenes blocking telemetry,
+        background trackers, smart TV spying, and hidden mobile app ads
+        that don't rely on browser-level bait scripts.</p>
+        <p><strong>Layer 2: Pair it with a Browser Extension (uBlock
+        Origin)</strong></p>
+        <p>Install a highly advanced, open-source browser extension like
+        <strong>uBlock Origin</strong> on your computers and
+        laptops.</p>
+        <p>While the Pi-hole blocks the connection at the network level,
+        browser extensions can look at the actual code of the webpage in
+        real time. uBlock Origin includes specific filters called
+        <strong>Anti-Adblock Defusers</strong>. When it detects a
+        website trying to run a bait script to catch your Pi-hole, it
+        instantly modifies the webpage's code on the fly, tricking the
+        site into believing the ad loaded perfectly.</p>
+        <p><strong>Want to build the photo gallery anyway?</strong></p>
+        <p>If you still want a local server displaying your favorite
+        pictures or custom dashboards, the best way to enjoy it is to
+        host it as a dedicated local home portal (like a custom Home
+        Assistant dashboard or a personal intranet page) and set it as
+        your browser's default homepage!</p>
+        <p>Will the Ublock Origin allow you to view all websites or are
+        there still some that fail?</p>
+        <p>The short answer is <strong>no, it is not a 100% perfect
+        silver bullet.</strong> While it is widely considered the best
+        ad-blocking tool available, there will still be occasional
+        websites that fail or slip through.</p>
+        <p>The success of <strong>uBlock Origin</strong> depends heavily
+        on an "arms race" between ad-block developers and major tech
+        platforms. Two crucial factors dictate whether a site will
+        fail:</p>
+        <p><strong>1. The Browser You Use (The Biggest
+        Shift)</strong></p>
+        <p>Google updated Chrome's extension framework to
+        <strong>Manifest V3</strong>. This change fundamentally crippled
+        the underlying technology that classic ad blockers use to
+        intercept network traffic in real time.</p>
+        <p>AdLock+ 1</p>
+        <ul>
+        <li><strong>On Google Chrome (and Microsoft Edge):</strong> The
+        original, full-power uBlock Origin can no longer run. The
+        developer released a streamlined version called <strong>uBlock
+        Origin Lite</strong> to comply with Google's new rules. However,
+        because it lacks the ability to inject dynamic code snippet
+        filters ("scriptlets"), it is far more vulnerable to
+        anti-adblock walls, and websites are much more likely to fail or
+        show empty broken boxes.</li>
+        </ul>
+        <p>AdBlock Tester</p>
+        <ul>
+        <li><strong>On Mozilla Firefox (and Brave Browser):</strong>
+        Firefox and Brave intentionally preserved the advanced network
+        capabilities Google removed. On these browsers, the
+        <strong>full-strength, classic uBlock Origin</strong> still
+        works flawlessly, allowing it to actively defuse complex
+        anti-adblock code.</li>
+        </ul>
+        <p>AdBlock Tester</p>
+        <p><strong>2. The Sites That Actively Fight Back</strong></p>
+        <p>Even using the full version of uBlock Origin on Firefox, a
+        tiny fraction of websites can still give you trouble due to how
+        they serve their content:</p>
+        <p><strong>YouTube and Twitch (The Constant Arms
+        Race)</strong></p>
+        <p>Platforms like YouTube and Twitch are locked in a daily
+        battle against ad blockers. YouTube frequently tests
+        <strong>Server-Side Ad Insertion (SSAI)</strong>—a method where
+        the advertisement is baked directly into the video stream itself
+        at the server level, rather than being pulled from a separate ad
+        server.</p>
+        <p>SuperchargeBrowser</p>
+        <ul>
+        <li><p>When they launch a new variant of this tech, uBlock
+        Origin might fail for a few hours or days.</p></li>
+        <li><p>The uBlock volunteer community usually updates their
+        filter lists within 24 to 48 hours to bypass it again, requiring
+        you to clear and update your extension cache to restore
+        functionality.</p></li>
+        </ul>
+        <p><strong>Strict Paywalls and Financial/News Sites</strong></p>
+        <p>Certain high-tier news publications (like The New York Times
+        or The Wall Street Journal) or highly aggressive streaming sites
+        use heavy server-side checks. If their script fails to verify
+        that an ad or a tracking token was successfully processed, they
+        will lock down the entire page and replace it with a hard
+        wall.</p>
+        <p><strong>🛠️ The Ultimate "Bulletproof" Strategy</strong></p>
+        <p>To achieve the closest thing possible to an ad-free,
+        failure-proof setup, home lab enthusiasts typically use a
+        <strong>three-layered approach</strong>:</p>
+        <ol type="1">
+        <li><strong>The Infrastructure Layer (Pi-hole):</strong> Handles
+        the background noise—blocking tracking telemetry, smart TV
+        spying, and background mobile app traffic across the whole
+        house.</li>
+        </ol>
+        <p>AdLock</p>
+        <ol start="2" type="1">
+        <li><p><strong>The Browser Layer (Firefox + Full uBlock
+        Origin):</strong> Handles standard web browsing, dynamically
+        rewriting webpage code on the fly to trick anti-adblock scripts
+        on 99% of regular websites.</p></li>
+        <li><p><strong>The System Layer (Optional Apps like AdGuard
+        Desktop):</strong> If you absolutely must use Chrome for
+        specific projects, running a system-level desktop ad blocker
+        bypasses browser extension limitations entirely by filtering
+        traffic at the network adapter level before it even reaches
+        Chrome.</p></li>
+        </ol>
+        <p>AdBlock Tester</p>
+        <p>Explain this AdGuard desktop.</p>
+        <p><strong>AdGuard Desktop</strong> (available for Windows and
+        Mac) is a standalone computer program that shifts ad-blocking
+        out of your web browser and moves it directly down into your
+        computer's operating system.</p>
+        <p>AdGuard</p>
+        <p>It acts like a hyper-local firewall on your actual machine,
+        filtering internet traffic at the network adapter level before
+        it even reaches Chrome, Edge, Firefox, or any other app.</p>
+        <p><strong>⚙️ How It Works (The Local Proxy)</strong></p>
+        <p>Instead of running as a browser extension, AdGuard Desktop
+        installs a local network driver on your computer.</p>
+        <p>[ Internet Traffic ]</p>
+        <p>|</p>
+        <p>▼</p>
+        <p>[ AdGuard Desktop Program ] ---&gt; Scans traffic &amp;
+        strips out ads/trackers</p>
+        <p>|</p>
+        <p>▼</p>
+        <p>[ Your Web Browsers / PC Apps ] ---&gt; Loads 100% clean,
+        ad-free code</p>
+        <p>When your browser requests a webpage, AdGuard catches that
+        traffic first. It strips out the ad code, counters, and tracking
+        scripts locally using its own background processing engine. By
+        the time the webpage code lands inside your browser, the ads are
+        already gone.</p>
+        <p>AdGuard</p>
+        <p><strong>🎯 Why Use It? (The Manifest V3 Bypass)</strong></p>
+        <p>Because Google updated Chrome's extension system
+        (<strong>Manifest V3</strong>), standard extensions are severely
+        restricted in how they block network traffic.</p>
+        <p>AdGuard Desktop completely bypasses these browser rules.
+        Because it operates outside of Chrome, Google’s extensions
+        changes cannot touch it. It retains full, uncompromised power to
+        inject code snippets, block complex network requests, and defuse
+        anti-adblock scripts on Chrome, Edge, or any Chromium-based
+        browser.</p>
+        <p><strong>🚀 Key Advantages Over Extensions and
+        Pi-hole</strong></p>
+        <p><strong>1. It Blocks Ads Inside Non-Browser Apps</strong></p>
+        <p>Because it filters your entire computer's network traffic, it
+        blocks advertising and tracking inside desktop apps, too. If you
+        use desktop apps like Spotify, Skype, Discord, torrent clients,
+        or standalone games that feature banner ads, AdGuard scrubs
+        those ads out automatically.</p>
+        <p>AdGuard</p>
+        <p><strong>2. Cosmetic Page Filtering (No Broken
+        Boxes)</strong></p>
+        <p>A Pi-hole blocks an ad's connection, which often leaves
+        behind a broken white box, a gray square, or a "Failed to load
+        image" placeholder that ruins a webpage's layout. AdGuard
+        Desktop uses <strong>cosmetic filtering</strong> to dynamically
+        rewrite the page's HTML/CSS structure, collapsing those empty
+        spaces so pages look completely seamless.</p>
+        <p>AdGuard</p>
+        <p><strong>3. Stealth Tracking Protection</strong></p>
+        <p>It includes a robust "Stealth Mode" that modifies your
+        browser data on the fly before it hits the internet. It can
+        automatically strip tracking parameters from URLs (like the long
+        strings of text after a ?utm_source= tag when you copy a link),
+        hide your browser user-agent, and block third-party cookies
+        across the board.</p>
+        <p>How-To Geek</p>
+        <p><strong>📊 Summary: Where It Fits in Your Setup</strong></p>
+        <p>AdGuard</p>
+        <p>Think of AdGuard Desktop as the precision, brute-force layer
+        of a complete setup:</p>
+        <ul>
+        <li><p><strong>Pi-hole:</strong> Cleans up your entire house
+        network-wide (Smart TVs, mobile apps, IoT devices) by blocking
+        connections.</p></li>
+        <li><p><strong>AdGuard Desktop:</strong> Cleans up your primary
+        workstation/laptop with pixel-perfect precision, bypassing
+        browser extension limits to completely eliminate anti-adblock
+        prompts and cosmetic blemishes.</p></li>
+        </ul>
+        <p>(Note: Unlike the open-source Pi-hole or uBlock Origin
+        extension, the full AdGuard Desktop program is a paid software
+        utility, though they offer a standard 14-day trial if you want
+        to test how it plays with your specific browser
+        configuration).</p>
+        <p>How much does AdGuard Desktop cost?</p>
+        <p>AdGuard Desktop's pricing varies depending on whether you buy
+        a recurring subscription, a flat-rate lifetime license directly
+        from AdGuard, or take advantage of a standard third-party
+        deal.</p>
+        <p>The application uses a unified license, meaning buying a
+        license for the "Desktop" app also allows you to use it on your
+        mobile devices (Android/iOS) up to your device cap.</p>
+        <p><strong>🏷️ Standard Retail Pricing (Direct from
+        AdGuard)</strong></p>
+        <p>If you purchase directly from the official AdGuard website,
+        you can choose between an annual billing cycle or a one-time
+        lifetime payment:</p>
+        <table style="width:97%;">
+        <colgroup>
+        <col style="width: 18%" />
+        <col style="width: 20%" />
+        <col style="width: 28%" />
+        <col style="width: 30%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;">Plan Type</th>
+        <th style="text-align: left;">Covered Devices</th>
+        <th style="text-align: left;">Yearly Subscription</th>
+        <th style="text-align: left;">One-Time Lifetime License</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>Personal
+        Plan</strong></td>
+        <td style="text-align: left;">Up to <strong>3
+        devices</strong></td>
+        <td style="text-align: left;"><strong>$29.88 /
+        year</strong> ($2.49/mo)</td>
+        <td style="text-align: left;"><strong>$79.99</strong></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Family Plan</strong></td>
+        <td style="text-align: left;">Up to <strong>9
+        devices</strong></td>
+        <td style="text-align: left;"><strong>$65.88 /
+        year</strong> ($5.49/mo)</td>
+        <td style="text-align: left;"><strong>$169.99</strong></td>
+        </tr>
+        </tbody>
+        </table>
+        <p><strong>🛍️ The "Home Lab Strategy" (Third-Party
+        Deals)</strong></p>
+        <p>Before you buy directly from their main store page, there is
+        an open secret in the tech community: AdGuard officially
+        partners with third-party deal networks (like
+        <strong>StackSocial</strong>, <strong>Y组合/Joyus</strong>, or
+        major tech outlets like <strong>Mashable Shops</strong>) to
+        offer massive, permanent discounts on their Lifetime
+        Licenses.</p>
+        <p>If you check these discount outlets, you can almost always
+        find the exact same official lifetime licenses for a fraction of
+        the cost:</p>
+        <ul>
+        <li><strong>Personal Lifetime License (3 Devices):</strong>
+        Usually on sale for <strong>~$11.00</strong> (one-time
+        payment).</li>
+        </ul>
+        <p>AdLock</p>
+        <ul>
+        <li><strong>Family Lifetime License (9 Devices):</strong>
+        Usually on sale for <strong>~$15.00</strong> (one-time
+        payment).</li>
+        </ul>
+        <p>AdBlock Tester+ 1</p>
+        <p><strong>How the Third-Party Deal Works:</strong></p>
+        <p>If you buy it from a site like StackSocial, they immediately
+        email you a digital license code. You take that code, log into
+        your official <strong>AdGuard Account dashboard</strong>, paste
+        the code into your account settings, and it instantly activates
+        your 3 or 9 device license slots. From that point on, you manage
+        your devices right inside the official AdGuard app just like a
+        full-price retail customer.</p>
+        <p>If you decide to try it out, they provide a fully functional
+        <strong>14-day free trial</strong> directly on the AdGuard
+        website so you can install the desktop client, test out the
+        network driver, and see how cleanly it processes your web pages
+        before spending a single dollar.</p>
+        <p>AllAboutCookies.org</p>
+        <p><span class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink"><a
+        href="https://policies.google.com/privacy">Google Privacy
+        PolicyOpens in a new window</a><a
+        href="https://policies.google.com/terms">Google Terms of
+        ServiceOpens in a new window</a><a
+        href="https://support.google.com/gemini?p=privacy_notice">Your
+        privacy &amp; Gemini AppsOpens in a new window</a></span></p>
+        <p>Gemini may display inaccurate info, including about people,
+        so double-check its responses.</p>
+      </article>
+    </div>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="/scripts/component-loader.js"></script>
 </body>
 </html>
+

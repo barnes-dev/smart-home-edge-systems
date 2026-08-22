@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4 Building Your Own Webpage</title>
+  <title>4-building-your-own-webpage</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -19,6 +19,25 @@
       gap: 2.5rem;
       margin-top: 2rem;
       align-items: start;
+    }
+    [custom-style="TextBlock"], 
+    .TextBlock, 
+    .textblock, 
+    .code, 
+    .Code, 
+    span[data-custom-style="TextBlock"],
+    p[custom-style="TextBlock"] {
+        background: #1e1e1e !important;         /* Matches your dark code/box theme */
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Subtle dark-mode border */
+        border-left: 4px solid #3182ce !important;              /* Accent left border (or keep your preferred color) */
+        padding: 16px !important;               /* Creates internal breathing room */
+        line-height: 1.1 !important;           /* Keeps text lines tightly grouped */
+        display: block !important;              /* Forces the inline element to act like a box */
+        width: 100% !important;                 /* Spans the box structure across the viewport */
+        max-width: 850px !important;            /* Restricts maximum box width to look clean */
+        margin: 1.5rem 0 !important;            /* Vertical margins separate it from normal body text */
+        color: #eaf4ff !important;                     /* Matches your light text color */
+        border-radius: 6px !important;          /* Gives the box sleek, rounded corners */
     }
     .sidebar-toc {
       position: sticky;
@@ -230,8 +249,7 @@
     </p>
 
     <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">4
-Building Your Own Webpage</h1>
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">4-building-your-own-webpage</h1>
       <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
       <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
     </div>
@@ -248,10 +266,20 @@ Building Your Own Webpage</h1>
         tools directory</strong></a>
         <ul>
         <li><a href="#nav-code-web-tools-directory-structure"
-        id="nav-toc-code-web-tools-directory-structure">Code : Web Tools
+        id="nav-toc-code-web-tools-directory-structure">
+
+            $CodeIndex++
+
+            "Code ${CodeIndex}:"
+         Web Tools
         directory structure</a></li>
         <li><a href="#nav-code-new-webtools-directory-structure"
-        id="nav-toc-code-new-webtools-directory-structure">Code : New
+        id="nav-toc-code-new-webtools-directory-structure">
+
+            $CodeIndex++
+
+            "Code ${CodeIndex}:"
+         New
         WebTools directory structure</a></li>
         </ul></li>
         </ul></li>
@@ -270,7 +298,12 @@ Building Your Own Webpage</h1>
         your website in VS Code</a>
         <ul>
         <li><a href="#nav-code-new-webtools-directory-structure-1"
-        id="nav-toc-code-new-webtools-directory-structure-1">Code : New
+        id="nav-toc-code-new-webtools-directory-structure-1">
+
+            $CodeIndex++
+
+            "Code ${CodeIndex}:"
+         New
         WebTools directory structure</a></li>
         </ul></li>
         <li><a href="#nav-lets-build-your-web-pages"
@@ -278,7 +311,12 @@ Building Your Own Webpage</h1>
         Pages</a>
         <ul>
         <li><a href="#nav-code-final-copilot-command"
-        id="nav-toc-code-final-copilot-command">Code : Final CoPilot
+        id="nav-toc-code-final-copilot-command">
+
+            $CodeIndex++
+
+            "Code ${CodeIndex}:"
+         Final CoPilot
         Command</a></li>
         </ul></li>
         <li><a href="#nav-executing-the-copilot-command"
@@ -334,7 +372,7 @@ Building Your Own Webpage</h1>
       <article class="document-content">
         <figure>
         <img
-        src="../assets/figures/4-building-your-own-webpage/Figure-1-Theyarewatchingyou.png"
+        src="../assets/figures/4-building-your-own-webpage/media/image1.png"
         style="width:6.5in;height:3.54545in"
         alt=": They are watching you!" />
         <figcaption aria-hidden="true">: They are watching
@@ -360,12 +398,15 @@ Building Your Own Webpage</h1>
         you have, you lost.</strong></p>
         <p><strong>Lets set up our repository first. Open up VS Code
         (reference the <a
-        href="../../smart-home-edge-systems/home-lab/guides/instructions-for-using-vscode.html">VS
-        Code procedure</a>) and open the repository you created in the
-        <a
-        href="../../smart-home-edge-systems/home-lab/guides/home-lab-dns-procedure.html">DNS
-        procedure</a>. You should see the readme that was created when
-        you completed these.</strong></p>
+        href="../../smart-home-edge-systems/home-lab/guides/instructions-for-using-vscode.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">VS Code procedure</span></a>) and
+        open the repository you created in the <a
+        href="../../smart-home-edge-systems/home-lab/guides/home-lab-dns-procedure.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">DNS procedure</span></a>. You
+        should see the readme that was created when you completed
+        these.</strong></p>
         <p><strong>Now, on your local machine, when you connect to
         GitHub Desktop it copied some files over to your local machine.
         Locate that path by looking in GitHub Desktop</strong></p>
@@ -391,13 +432,17 @@ Building Your Own Webpage</h1>
         <p><strong>In this directory is my repository called
         <em>smart-home-edge-systems/</em></strong> which is mounted via
         GitHub Desktop to my repository. This was done in the <a
-        href="../../smart-home-edge-systems/home-lab/guides/home-lab-dns-procedure.html"><strong><em>home-lab-dns-procedure</em></strong></a></p>
+        href="../../smart-home-edge-systems/home-lab/guides/home-lab-dns-procedure.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink"><strong><em>home-lab-dns-procedure</em></strong></span></a></p>
         <p><strong>In order to start building your website we have
         created a set of tools that will help you set up and maintain
         your site.</strong></p>
         <p><strong>Download these tools via the <a
-        href="../../smart-home-edge-systems/home-lab/assets/archives/WebTools.zip">WebTools.zip
-        file</a></strong></p>
+        href="../../smart-home-edge-systems/home-lab/assets/archives/WebTools.zip"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">WebTools.zip
+        file</span></a></strong></p>
         <p><strong>Uncompress this file into a folder just above your
         repository. I placed the tools folder from the zip file
         under</strong></p>
@@ -786,7 +831,12 @@ Building Your Own Webpage</h1>
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-code-web-tools-directory-structure">Code 1: Web Tools
+        <h4 id="nav-code-web-tools-directory-structure">
+
+            $CodeIndex++
+
+            "Code ${CodeIndex}:"
+         Web Tools
         directory structure</h4>
         <p>This same directory is where my GitHub repository is
         located.</p>
@@ -2178,7 +2228,12 @@ Building Your Own Webpage</h1>
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-code-new-webtools-directory-structure">Code 2: New
+        <h4 id="nav-code-new-webtools-directory-structure">
+
+            $CodeIndex++
+
+            "Code ${CodeIndex}:"
+         New
         WebTools directory structure</h4>
         <p>In VS Code you can browse around and see various things. Most
         of these files are empty at this time and we can help you get
@@ -2225,7 +2280,7 @@ Building Your Own Webpage</h1>
         completed the following steps:</p>
         <figure>
         <img
-        src="../assets/figures/4-building-your-own-webpage/Figure-2-MainPage.png"
+        src="../assets/figures/4-building-your-own-webpage/media/image2.png"
         style="width:6.49471in;height:3.54545in" alt=": Main Page!" />
         <figcaption aria-hidden="true">: Main Page!</figcaption>
         </figure>
@@ -2233,7 +2288,7 @@ Building Your Own Webpage</h1>
         this:</strong></p>
         <figure>
         <img
-        src="../assets/figures/4-building-your-own-webpage/Figure-3-IntermediatePage.png"
+        src="../assets/figures/4-building-your-own-webpage/media/image3.png"
         style="width:6.34711in;height:3.54545in"
         alt=": Intermediate Page!" />
         <figcaption aria-hidden="true">: Intermediate Page!</figcaption>
@@ -2242,7 +2297,7 @@ Building Your Own Webpage</h1>
         look like this</strong></p>
         <figure>
         <img
-        src="../assets/figures/4-building-your-own-webpage/Figure-4-LowerLevelMainContent.png"
+        src="../assets/figures/4-building-your-own-webpage/media/image4.png"
         style="width:6.49471in;height:3.54545in"
         alt=": Lower Level (Main Content)!" />
         <figcaption aria-hidden="true">: Lower Level (Main
@@ -2264,66 +2319,175 @@ Building Your Own Webpage</h1>
         </colgroup>
         <thead>
         <tr>
-        <th><p>Here are the commands and prompts you can use in your
-        chat assistant (like</p>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Here are the commands and prompts you can use in your chat
+        assistant (like</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Continue) to build this website structure and its core files
         from</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>scratch.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Step 1: Create the Directory and File Structure (Terminal
         Commands)</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Run these commands in your terminal to create all the folders
         and empty placeholder</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>files at the root of your project:</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Run</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p># Create the folder structure</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>mkdir -p styles scripts home-lab home-assistant voice media
         storage surveillance</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>3d-printing r-d marketing</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p># Create the core root files</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>touch index.html 404.html robots.txt sitemap.xml CNAME</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p># Create basic style and script files</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>touch styles/global.css scripts/component-loader.js</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>Step 2: The Prompt to Feed into Your Chat Assistant</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>Copy and paste the following prompt into your chat sidebar
         (referencing your</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>index.html</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>if it's already open, or just pasting this description) to
         have it generate the</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>generic code for all files:</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>Apply</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>I want to build a clean, dark-themed dashboard website based
         on the following</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>index.html structure. Please write generic, fully functional,
         and modern code for</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>the following files:</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>1. **index.html**: A grid-based homepage with 9 card sections
         linking to sub-hubs</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>(Home Lab, Home Assistant, Voice, Media, Storage,
         Surveillance, 3D Printing, R&amp;D,</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>Marketing). Keep the CSS in a style tag or link to
         `/styles/global.css`.</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>2. **404.html**: A custom dark-themed 404 error page matching
         the global aesthetic</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>with a "Go Back Home" button.</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>3. **styles/global.css**: Universal styles including the dark
         background (#07111f),</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>custom scrollbars, and generic responsive design rules.</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>4. **scripts/component-loader.js**: A lightweight JS script
         to load shared headers</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>or footers dynamically (using placeholders like &lt;div</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>id="header-placeholder"&gt;&lt;/div&gt;).</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>5. **robots.txt**: Standard search engine crawler guidelines
         allowing all bots to</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>crawl the site, pointing to the sitemap.</p>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
         <p>6. **sitemap.xml**: A basic sitemap listing the homepage, 404
         page, and sub-hub</p>
-        <p>index links.</p></th>
+        </div>
+        <div class="custom-style-Plain Text Plain Text"
+        data-custom-style="Plain Text">
+        <p>index links.</p>
+        </div></th>
         </tr>
         </thead>
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-code-new-webtools-directory-structure-1">Code 3: New
+        <h4 id="nav-code-new-webtools-directory-structure-1">
+
+            $CodeIndex++
+
+            "Code ${CodeIndex}:"
+         New
         WebTools directory structure</h4>
         <p>Since we have completed step one of that procedure by running
         the script earlier we are almost there. Let me show you an
@@ -2340,132 +2504,262 @@ Building Your Own Webpage</h1>
         </colgroup>
         <thead>
         <tr>
-        <th><p>I am starting a brand new, dark-themed static website
-        from scratch. Please write the complete, clean, and responsive
-        code for all the files across my workspace directories using the
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>I am starting a brand new, dark-themed static website from
+        scratch. Please write the complete, clean, and responsive code
+        for all the files across my workspace directories using the
         styling and layouts specified below.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>### 🎨 GLOBAL VISUAL THEME</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Background Color**: Deep dark blue/navy `#07111f`</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Typography Font**: Modern sans-serif (Arial, Helvetica,
         or system UI fonts)</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Primary Text**: Off-white `#eaf4ff`</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Accent Light Blue**: `#60a5fa`</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Secondary Dark Blue / Highlights**: `#1d4ed8`</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Muted Links / Accents**: `#bfdbfe`</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Cards**: Semi-transparent dark background `rgba(255, 255,
         255, 0.06)`, subtle border `1px solid rgba(255, 255, 255,
         0.12)`, rounded corners `14px`, and modern padding.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>---</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>### 📁 1. ROOT UTILITY &amp; UTILS FILES</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>* **styles/global.css**: Universal styles, custom scrollbars,
         root-level layout variables, and responsive flexbox/grid helper
         utility classes.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>* **scripts/component-loader.js**: Simple vanilla JS script
         to load shared headers/footers into "#header-placeholder" and
         "#footer-placeholder" elements dynamically.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>* **404.html**: A matching dark-themed 404 error page with a
         back-to-home button.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>* **robots.txt** &amp; **sitemap.xml**: Search engine crawler
         instructions and URL indexes referencing all root and
         sub-pages.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>---</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>### 💻 2. ROOT PORTAL INDEX PAGE</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>* **index.html**: A dashboard portal containing a 3-column
         responsive grid with 9 aesthetic cards pointing to each sub-hub
         directory. The cards should be:</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- Home Lab, Home Assistant, Voice, Media, Storage,
         Surveillance, 3D Printing, R&amp;D, and Marketing.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>---</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>### 📂 3. SUB-HUB PAGES (2-Column Layout)</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Apply this page template to the `/index.html` file of the 9
         main sub-folders (`/home-lab`, `/home-assistant`, `/voice`,
         etc.).</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Header &amp; Navigation**: Top breadcrumb path (e.g.,
         "Home &gt; Home Lab") and a back-to-home link.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Main Layout (2-Column)**:</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Left Column**: Exactly 2 vertically stacked horizontal
         content cards.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Right Column**: Exactly 2 vertically stacked horizontal
         content cards.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Footer**: Consistent placeholder.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Links**: Include styled links within these sub-hub
         portals to navigate to its respective local `/guides/index.html`
         and `/reference/index.html`.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Domain Content**: Populate cards with relevant terms
         (e.g., for *Home Lab*: Hypervisor Nodes and Network Architecture
         on Left; Active Containers and Provisioning Logs on Right).</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>---</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>### 📖 4. SUB-SUB-HUB PAGES: GUIDES &amp; REFERENCE (Specific
         PDF-focused Layout)</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Generate standard template pages for the `guides/index.html`
         and `reference/index.html` folders inside each of the 9 main
         hubs.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Each page must feature:</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>1. **Header**: Title and top navigation breadcrumbs (e.g.,
         "Home &gt; Home Lab &gt; Guides") and a clear `&lt; Back` button
         to return to the parent sub-hub directory.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>2. **Body Layout (Two Columns)**:</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Left Column**:</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Card 1 (Top)**: Description Block. Text description of
         the folder contents (e.g., "System setup manuals, operation
         runbooks, and implementation procedures.").</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Card 2 (Bottom)**: Material Block. A horizontal card
         highlighting essential resources or quick-reference
         materials.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- **Right Column (2x2 Grid)**:</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- A grid of exactly 4 vertical blocks (2 columns wide, 2 rows
         deep) pointing to specific downloadable `.pdf` files.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>- Each card block should contain a PDF icon or label (e.g.,
         "📄"), a title (e.g., "Setup Protocol PDF", "Architecture Cheat
         Sheet PDF", "Operational Guide PDF", "Configuration Manual
         PDF"), and a direct link to the mock document files.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>3. **Footer**: Matching theme placeholder.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Please output the code blocks for all files with their
         targeted destination</p>
-        <p>paths clearly marked.</p></th>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
+        <p>paths clearly marked.</p>
+        </div></th>
         </tr>
         </thead>
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-code-final-copilot-command">Code 4: Final CoPilot
+        <h4 id="nav-code-final-copilot-command">
+
+            $CodeIndex++
+
+            "Code ${CodeIndex}:"
+         Final CoPilot
         Command</h4>
         <ul>
-        <li><p>To execute this command I told Continue Chat the basic
-        color scheme I wanted.</p></li>
-        <li><p>In Iteration 1 I told it to build the foundation root
-        files needed to run the website.</p></li>
-        <li><p>In Iteration 2 I told it to build the foundation root
-        page.</p></li>
-        <li><p>In Iteration 3 I told it to build the first layer
-        pages.</p></li>
-        <li><p>In the final Iteration 4 I told it to build the second
-        layer pages.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>To execute this command I told Continue Chat the basic color
+        scheme I wanted.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>In Iteration 1 I told it to build the foundation root files
+        needed to run the website.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>In Iteration 2 I told it to build the foundation root
+        page.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>In Iteration 3 I told it to build the first layer pages.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>In the final Iteration 4 I told it to build the second layer
+        pages.</p>
+        </div></li>
         </ul>
         <h1 id="nav-executing-the-copilot-command">Executing the CoPilot
         Command</h1>
         <h2 id="nav-step-1-generate-the-website-with-copilot-edits">Step
         1: Generate the Website with Copilot Edits</h2>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Open VS Code.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Look at the bottom-right column and locate the input box
         labeled "Describe what to build".</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Paste the command from your Final CoPilot Command box into
         that cell and press Enter.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>Once the generation is complete, a prompt will appear asking
         you to review the changes. Click Accept.</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p><em>Result:</em> You now have a functional base website.</p>
+        </div>
         <h2 id="nav-step-2-preview-your-website-locally">Step 2: Preview
         Your Website Locally</h2>
         <ol type="1">
-        <li><p>Navigate to the <strong>Explorer</strong> window in VS
-        Code (the icon in the top-left corner that looks like a stack of
-        documents).</p></li>
-        <li><p>Locate and select the root-level index.html file to open
-        it in the editor.</p></li>
-        <li><p>Look at the bottom-right status bar of VS Code and click
-        the <strong>Go Live</strong> button.</p></li>
-        <li><p><em>Result:</em> This will launch your default web
-        browser and display your new starting webpage.</p></li>
+        <li><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Navigate to the <strong>Explorer</strong> window in VS Code
+        (the icon in the top-left corner that looks like a stack of
+        documents).</p>
+        </div></li>
+        <li><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Locate and select the root-level index.html file to open it
+        in the editor.</p>
+        </div></li>
+        <li><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Look at the bottom-right status bar of VS Code and click the
+        <strong>Go Live</strong> button.</p>
+        </div></li>
+        <li><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p><em>Result:</em> This will launch your default web browser
+        and display your new starting webpage.</p>
+        </div></li>
         </ol>
         <h2 id="nav-step-3-making-further-iterative-changes">Step 3:
         Making Further Iterative Changes</h2>
@@ -2473,27 +2767,40 @@ Building Your Own Webpage</h1>
         workflow between <strong>Continue</strong> (to formulate complex
         prompts) and <strong>Copilot</strong> (to execute the code):</p>
         <ol type="1">
-        <li><p><strong>Draft in Continue:</strong> Use the
+        <li><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p><strong>Draft in Continue:</strong> Use the
         <strong>Continue</strong> extension to build up and refine the
         specific changes you want to make. Ask Continue: <em>"Tell me
         what I need to tell Copilot to make all of these
-        changes."</em></p></li>
-        <li><p><strong>Execute in Copilot:</strong> Take the optimized
+        changes."</em></p>
+        </div></li>
+        <li><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p><strong>Execute in Copilot:</strong> Take the optimized
         prompt response provided by Continue, copy it, paste it directly
-        into the <strong>Copilot Chat</strong> box, and execute
-        it.</p></li>
-        <li><p><em>(Alternative)</em>: You can also edit files directly
-        or prompt Copilot directly if the change is
-        straightforward.</p></li>
+        into the <strong>Copilot Chat</strong> box, and execute it.</p>
+        </div></li>
+        <li><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p><em>(Alternative)</em>: You can also edit files directly or
+        prompt Copilot directly if the change is straightforward.</p>
+        </div></li>
         </ol>
         <h2 id="nav-step-4-save-and-publish-your-progress">Step 4: Save
         and Publish Your Progress</h2>
         <ol type="1">
-        <li><p>Once you are satisfied with the look and functionality of
+        <li><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Once you are satisfied with the look and functionality of
         your website, switch over to the <strong>GitHub Desktop</strong>
-        application.</p></li>
-        <li><p>Commit your new files and click <strong>Push</strong> to
-        sync your changes to your remote repository.</p></li>
+        application.</p>
+        </div></li>
+        <li><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Commit your new files and click <strong>Push</strong> to sync
+        your changes to your remote repository.</p>
+        </div></li>
         </ol>
         <h1
         id="nav-creating-your-sub-pages-using-microsoft-word.">Creating
@@ -2608,9 +2915,13 @@ Building Your Own Webpage</h1>
               </div>
             
         <p>Open PowerShell and navigate to your project directory:</p>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>PowerShell</p>
+        </div>
+        <div class="custom-style-Code Code" data-custom-style="Code">
         <p>cd "C:\Users\me\Documents\Proxmox\Published
         Documents\home-lab-project"</p>
+        </div>
         <p>The automation workflow executes two major Pandoc operations
         behind the scenes:</p>
         <p>Command 1: Convert Word to Markdown</p>
