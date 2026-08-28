@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1-home-lab-install-procedure</title>
+  <title>Home Lab Install Procedure</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,13 +13,33 @@
   </script>
   <link rel="stylesheet" href="/styles/global.css">
   <style>
+    /* Prevent outer window scrolling and lock viewport bounds */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; 
+    }
+
+    /* Main container takes up the exact remaining window height */
+    main.app-main {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      box-sizing: border-box;
+      padding: 1.5rem 1.5rem;
+      max-width: 100%;
+    }
+
+    /* Doc layout fills whatever vertical space is left below the title banner */
     .doc-layout {
       display: grid;
       grid-template-columns: 450px 1fr;
       gap: 2.5rem;
-      margin-top: 2rem;
       align-items: start;
+      flex: 1;
+      min-height: 0; /* Crucial for grid children to shrink and scroll properly */
     }
+    
     [custom-style="TextBlock"], 
     .TextBlock, 
     .textblock, 
@@ -27,27 +47,28 @@
     .Code, 
     span[data-custom-style="TextBlock"],
     p[custom-style="TextBlock"] {
-        background: #1e1e1e !important;         /* Matches your dark code/box theme */
-        border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Subtle dark-mode border */
-        border-left: 4px solid #3182ce !important;              /* Accent left border (or keep your preferred color) */
-        padding: 16px !important;               /* Creates internal breathing room */
-        line-height: 1.1 !important;           /* Keeps text lines tightly grouped */
-        display: block !important;              /* Forces the inline element to act like a box */
-        width: 100% !important;                 /* Spans the box structure across the viewport */
-        max-width: 850px !important;            /* Restricts maximum box width to look clean */
-        margin: 1.5rem 0 !important;            /* Vertical margins separate it from normal body text */
-        color: #eaf4ff !important;                     /* Matches your light text color */
-        border-radius: 6px !important;          /* Gives the box sleek, rounded corners */
+        background: #1e1e1e !important;         
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+        border-left: 4px solid #3182ce !important;             
+        padding: 16px !important;               
+        line-height: 1.1 !important;            
+        display: block !important;              
+        width: 100% !important;                 
+        max-width: 850px !important;            
+        margin: 1.5rem 0 !important;            
+        color: #eaf4ff !important;                   
+        border-radius: 6px !important;          
     }
+
+    /* Left Column (TOC) Independent Scroll */
     .sidebar-toc {
-      position: sticky;
-      top: 2rem;
-      max-height: calc(100vh - 4rem);
+      height: 100%;
       overflow-y: auto;
       background: rgba(255, 255, 255, 0.05);
       padding: 1.5rem;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
     }
     .sidebar-toc ul {
       list-style: none;
@@ -70,9 +91,15 @@
       color: #eaf4ff;
       text-decoration: underline;
     }
+
+    /* Right Column (Document Content) Independent Scroll */
     .document-content {
+      height: 100%;
+      overflow-y: auto;
       color: #eaf4ff;
       line-height: 1.7;
+      padding-right: 1rem; 
+      box-sizing: border-box;
     }
     .document-content pre {
       background: #1e1e1e;
@@ -220,13 +247,18 @@
     }
 
     @media (max-width: 768px) {
-      .doc-layout {
-        grid-template-columns: 1fr;
+      html, body {
+        overflow: auto; /* Re-enable window scrolling on mobile */
       }
-      .sidebar-toc {
-        position: relative;
-        top: 0;
-        max-height: none;
+      main.app-main {
+        height: auto;
+      }
+      .doc-layout {
+        display: block;
+        height: auto;
+      }
+      .sidebar-toc, .document-content {
+        height: auto;
         overflow-y: visible;
       }
       .document-content table {
@@ -239,8 +271,8 @@
 </head>
 <body>
   <div id="header-placeholder"></div>
-  <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
-    <p style="margin-bottom: 1.5rem; text-align: left;">
+  <main class="app-main">
+    <p style="margin-bottom: 1rem; text-align: left; flex-shrink: 0;">
       <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">→Home Lab</a>
       <span style="color: #64748b; margin: 0 0.75rem;">|</span>
       <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">→Back</a>
@@ -248,8 +280,9 @@
       <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">→Gateway</a>
     </p>
 
-    <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">1-home-lab-install-procedure</h1>
+    <div class="title-banner" style="text-align: left; margin-bottom: 1.5rem; flex-shrink: 0;">
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Home
+Lab Install Procedure</h1>
       <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
       <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
     </div>
@@ -394,12 +427,16 @@
         <li><a href="#nav-home-assistant-os-vm-101"
         id="nav-toc-home-assistant-os-vm-101">Home Assistant OS (VM
         101)</a></li>
+        <li><a
+        href="#nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip"
+        id="nav-toc-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">Pi-Hole
+        Limits (Ensuring it uses the temporary staging IP)</a></li>
         <li><a href="#nav-ollama-llm-engine-lxc-103"
         id="nav-toc-ollama-llm-engine-lxc-103">Ollama LLM Engine (LXC
         103)</a></li>
-        <li><a href="#nav-advanced-intel-oneapi-sycl-tuning-flags"
-        id="nav-toc-advanced-intel-oneapi-sycl-tuning-flags">Advanced
-        Intel oneAPI &amp; SYCL Tuning Flags</a></li>
+        <li><a href="#nav-advanced-intelone-api-sycl-tuning-flags"
+        id="nav-toc-advanced-intelone-api-sycl-tuning-flags">Advanced
+        Intelone API &amp; SYCL Tuning Flags</a></li>
         <li><a href="#nav-wyoming-docker-lxc-104"
         id="nav-toc-wyoming-docker-lxc-104">Wyoming Docker (LXC
         104)</a></li>
@@ -429,12 +466,13 @@
       </aside>
 
       <article class="document-content">
-        <p><img src="../figures/image1.png"
-        style="width:6.5in;height:3.12361in" /></p>
-        <div class="custom-style-caption caption"
-        data-custom-style="caption">
-        <p>Figure 1: A Generic Home Lab</p>
-        </div>
+        <figure>
+        <img src="../figures/image1.png"
+        style="width:6.5in;height:3.12361in"
+        alt="Figure 1: A Generic Home Lab" />
+        <figcaption aria-hidden="true">Figure 2: A Generic Home
+        Lab</figcaption>
+        </figure>
         <h1 id="nav-introduction">Introduction</h1>
         <h2 id="nav-why-build-a-home-lab">Why Build a Home Lab<span
         class="custom-style-annotation reference annotation reference"
@@ -492,15 +530,13 @@
         Configuration</h3>
         <p>A Home Lab self-contained in an inexpensive single
         mini-computer.</p>
-        <p><img src="../figures/image2.png"
-        style="width:6.5in;height:3.54861in" /></p>
-        <div class="custom-style-caption caption"
-        data-custom-style="caption">
-        <p>Figure 2: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
-        Network Diagram<span
-        class="custom-style-annotation reference annotation reference"
-        data-custom-style="annotation reference"></span></p>
-        </div>
+        <figure>
+        <img src="../figures/image2.png"
+        style="width:6.5in;height:3.54861in"
+        alt="Figure 3: Proxmox VE 9.2.3 / Minicomputer Architecture &amp; Network Diagram" />
+        <figcaption aria-hidden="true">Figure 4: Proxmox VE 9.2.3 /
+        Minicomputer Architecture &amp; Network Diagram</figcaption>
+        </figure>
         <p>Note: If you want to use this information in an AI window –
         select this section into your chat window to reference the
         entire configuration<span
@@ -819,8 +855,7 @@
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span>.</p>
         <table>
-        <caption>Code 6: PiHole Install Parameters and
-        Response</caption>
+        <caption>Code 6: PiHole Install Parameters and Response</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -885,62 +920,20 @@
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
         <p>Please set MAC address to BC:24:11:AA:BB:01, IP Address to
-        192.168.86.251/24, and gateway to 192.168.86.1</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🆔 Virtual Machine ID: 101</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📦 Machine Type: q35</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>💾 Disk Size: 32G</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🏠 Hostname: haos-17.3</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🖥️ CPU Model: KVM64 |</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🧠 CPU Cores: 2</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🛠️ RAM Size: 4096 |</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🌉 Bridge: vmbr0</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🔗 MAC Address: 02:93:F8:A8:3A:88</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🏷️ VLAN: Default |</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>⚙️ Interface MTU Size: Default |</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🌐 Start VM when completed: yes</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🚀 Creating a Homeassistant OS VM using the above default
+        192.168.86.251/24, and gateway to 192.168.86.1<br />
+        🆔 Virtual Machine ID: 101<br />
+        📦 Machine Type: q35<br />
+        💾 Disk Size: 32G<br />
+        🏠 Hostname: haos-17.3<br />
+        🖥️ CPU Model: KVM64  | 🧠 CPU Cores: 2<br />
+        🛠️ RAM Size: 4096  | 🌉 Bridge: vmbr0<br />
+        🔗 MAC Address: 02:93:F8:A8:3A:88<br />
+        🏷️ VLAN: Default  | ⚙️ Interface MTU Size: Default  | 🌐 Start
+        VM when completed: yes<br />
+        🚀 Creating a Homeassistant OS VM using the above default
         settings</p>
         </div></th>
         </tr>
@@ -984,85 +977,25 @@
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🧩 Using Advanced Install on node Promox</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>💡 PVE Version 9.2.3 (Kernel: 7.0.6-2-pve)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🖥️ Operating System: debian |</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🌟 Version: 13</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📦 Container Type: Unprivileged</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🆔 Container ID: 102</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🏠 Hostname: nginxproxymanager</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>💾 Disk Size: 8 GB</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🧠 CPU Cores: 2</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🛠️ RAM Size: 1024 MiB |</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🌉 Bridge: vmbr0</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📡 IPv4: 192.168.86.252/24</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📡 IPv6: none</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🗂️ FUSE Support: no |</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📦 Nesting: Enabled</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📦 Keyctl: Enabled</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🎮 GPU Passthrough: no</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>💡 Timezone: America/Denver</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🔍 Verbose Mode: yes</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🚀 Creating an LXC of Nginx Proxy Manager using the above
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>🧩 Using Advanced Install on node Promox<br />
+        💡 PVE Version 9.2.3 (Kernel: 7.0.6-2-pve)<br />
+        🖥️ Operating System: debian  | 🌟 Version: 13<br />
+        📦 Container Type: Unprivileged<br />
+        🆔 Container ID: 102<br />
+        🏠 Hostname: nginxproxymanager<br />
+        💾 Disk Size: 8 GB<br />
+        🧠 CPU Cores: 2<br />
+        🛠️ RAM Size: 1024 MiB  | 🌉 Bridge: vmbr0<br />
+        📡 IPv4: 192.168.86.252/24<br />
+        📡 IPv6: none<br />
+        🗂️ FUSE Support: no  | 📦 Nesting: Enabled<br />
+        📦 Keyctl: Enabled<br />
+        🎮 GPU Passthrough: no<br />
+        💡 Timezone: America/Denver<br />
+        🔍 Verbose Mode: yes<br />
+        🚀 Creating an LXC of Nginx Proxy Manager using the above
         advanced settings</p>
         </div></th>
         </tr>
@@ -1101,8 +1034,7 @@
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span>.</p>
         <table style="width:96%;">
-        <caption>Code 12: Ollama Install Parameters and
-        Response</caption>
+        <caption>Code 12: Ollama Install Parameters and Response</caption>
         <colgroup>
         <col style="width: 95%" />
         </colgroup>
@@ -1158,8 +1090,8 @@
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>1. Load the Primary Voice &amp; Conversation Agent<br />
         • ollama pull qwen2.5:7b<br />
         2. Load the Complex Automation &amp; Code Sandbox Agent<br />
@@ -1285,94 +1217,28 @@
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🧩 Using Advanced Install on node Promox</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>💡 PVE Version 9.2.2 (Kernel: 7.0.2-6-pve)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🖥️ Operating System: debian |</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🌟 Version: 13</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📦 Container Type: Unprivileged</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🆔 Container ID: 104</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🏠 Hostname: wyoming-docker</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>💾 Disk Size: 10 GB</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🧠 CPU Cores: 4</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🛠️ RAM Size: 2048 MiB |</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🌉 Bridge: vmbr0</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📡 IPv4: 192.168.86.249/24</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📡 IPv6: none</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🗂️ FUSE Support: yes |</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📡 TUN/TAP Support: yes</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📦 Nesting: Enabled</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>📦 Keyctl: Enabled</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🎮 GPU Passthrough: no</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>💡 Timezone: America/Denver</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🔍 Verbose Mode: no</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>💡 If you installed Portainer, access it at the following
-        URL:</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>🌐 https://192.168.86.249:9443</p>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>🧩 Using Advanced Install on node Promox<br />
+        💡 PVE Version 9.2.2 (Kernel: 7.0.2-6-pve)<br />
+        🖥️ Operating System: debian  | 🌟 Version: 13<br />
+        📦 Container Type: Unprivileged<br />
+        🆔 Container ID: 104<br />
+        🏠 Hostname: wyoming-docker<br />
+        💾 Disk Size: 10 GB<br />
+        🧠 CPU Cores: 4<br />
+        🛠️ RAM Size: 2048 MiB  | 🌉 Bridge: vmbr0<br />
+        📡 IPv4: 192.168.86.249/24<br />
+        📡 IPv6: none<br />
+        🗂️ FUSE Support: yes  | 📡 TUN/TAP Support: yes<br />
+        📦 Nesting: Enabled<br />
+        📦 Keyctl: Enabled<br />
+        🎮 GPU Passthrough: no<br />
+        💡 Timezone: America/Denver<br />
+        🔍 Verbose Mode: no<br />
+        💡 If you installed Portainer, access it at the following
+        URL:<br />
+        🌐 https://192.168.86.249:9443</p>
         </div></th>
         </tr>
         </thead>
@@ -1656,8 +1522,7 @@
         <p>Paste the following configuration, making sure to replace
         paths and voices with your preferences:</p>
         <table>
-        <caption>Code 22: Twingate Connector Install
-        Parameters</caption>
+        <caption>Code 22: Twingate Connector Install Parameters</caption>
         <colgroup>
         <col style="width: 101%" />
         </colgroup>
@@ -1773,10 +1638,7 @@
         sessions.</p>
         <p><strong>Sets a System-Wide Fallback</strong>: Appends the
         variable to /etc/profile to capture system-wide processes,
-        automation tasks, and alternative shell instances.<a
-        href="https://jurf.github.io/2020/03/24/vscode-toolbox/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">(Fiala, 2020)</span></a></p>
+        automation tasks, and alternative shell instances.</p>
               <div class="download-container">
                   <details class="collapsible-download-box">
                       <summary class="box-header">
@@ -1945,10 +1807,9 @@
         <tbody>
         </tbody>
         </table>
-        <div class="custom-style-Code Code" data-custom-style="Code">
-        <p>Pi-Hole Limits (Ensuring it uses the temporary staging
-        IP)</p>
-        </div>
+        <h4
+        id="nav-pi-hole-limits-ensuring-it-uses-the-temporary-staging-ip">Pi-Hole
+        Limits (Ensuring it uses the temporary staging IP)</h4>
         <table>
         <caption>Code 26: PiHolePost.sh</caption>
         <colgroup>
@@ -1958,20 +1819,12 @@
         <tr>
         <th><div class="custom-style-Code Code"
         data-custom-style="Code">
-        <p>&gt;&gt;&gt; BASH Script start</p>
-        </div>
-        <div class="custom-style-Code Code" data-custom-style="Code">
-        <p>pct set 100 --cores 1 --memory 512 --net0
-        name=eth0,bridge=vmbr0,ip=192.168.86.249/24,gw=192.168.86.1</p>
-        </div>
-        <div class="custom-style-Code Code" data-custom-style="Code">
-        <p>pct restart 102</p>
-        </div>
-        <div class="custom-style-Code Code" data-custom-style="Code">
-        <p>pct restart 100</p>
-        </div>
-        <div class="custom-style-Code Code" data-custom-style="Code">
-        <p>&gt;&gt;&gt; BASH Script end</p>
+        <p>&gt;&gt;&gt; BASH Script start<br />
+        pct set 100 --cores 1 --memory 512 --net0
+        name=eth0,bridge=vmbr0,ip=192.168.86.249/24,gw=192.168.86.1<br />
+        pct restart 102<br />
+        pct restart 100<br />
+        &gt;&gt;&gt; BASH Script end</p>
         </div></th>
         </tr>
         </thead>
@@ -2015,8 +1868,8 @@
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-advanced-intel-oneapi-sycl-tuning-flags">Advanced
-        Intel oneAPI &amp; SYCL Tuning Flags</h4>
+        <h4 id="nav-advanced-intelone-api-sycl-tuning-flags">Advanced
+        Intelone API &amp; SYCL Tuning Flags</h4>
         <p>Append these environment flags directly to your Ollama
         service definition file (usually found
         at /etc/systemd/system/ollama.service.d/override.conf or
@@ -2127,22 +1980,10 @@
                   </details>
               </div>
             
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Log into your Proxmox Host Shell.</p>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Create the script file:</p>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>vi /root/backup_all_configs.sh</p>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Paste the following code:</p>
-        </div>
         <table>
         <caption>Code 29: backup_all_configs.sh</caption>
         <colgroup>
@@ -2209,24 +2050,12 @@
         <tbody>
         </tbody>
         </table>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Save and exit (ESC, :wq, Enter).</p>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Make the script executable:</p>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>chmod +x /root/backup_all_configs.sh</p>
-        </div>
         <p>Execute it at any time to output a fresh, timestamped config
         snapshot to your host storage directory:</p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>/var/lib/vz/dump/config_backups/</p>
-        </div>
         <h2
         id="nav-tools-to-verify-installation-and-functionality">Tools to
         verify Installation and functionality</h2>
@@ -2251,7 +2080,7 @@
         <th><div class="custom-style-Code Code"
         data-custom-style="Code">
         <p><strong>#!/bin/</strong>bash<br />
-        <strong>declare</strong> -A nodes=(<br />
+        declare -A nodes=(<br />
         ["Wyoming Docker"]="192.168.86.248"<br />
         ["Pi-hole"]="192.168.86.249"<br />
         ["Home Assistant"]="192.168.86.251"<br />
@@ -2674,4 +2503,3 @@
   <script src="/scripts/component-loader.js"></script>
 </body>
 </html>
-
