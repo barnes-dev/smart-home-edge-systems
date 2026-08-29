@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2-instructions-for-using-vscode</title>
+  <title>Instructions For Using Vscode</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,13 +13,33 @@
   </script>
   <link rel="stylesheet" href="/styles/global.css">
   <style>
+    /* Prevent outer window scrolling and lock viewport bounds */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; 
+    }
+
+    /* Main container takes up the exact remaining window height */
+    main.app-main {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      box-sizing: border-box;
+      padding: 1.5rem 1.5rem;
+      max-width: 100%;
+    }
+
+    /* Doc layout fills whatever vertical space is left below the title banner */
     .doc-layout {
       display: grid;
       grid-template-columns: 450px 1fr;
       gap: 2.5rem;
-      margin-top: 2rem;
       align-items: start;
+      flex: 1;
+      min-height: 0; /* Crucial for grid children to shrink and scroll properly */
     }
+    
     [custom-style="TextBlock"], 
     .TextBlock, 
     .textblock, 
@@ -27,27 +47,28 @@
     .Code, 
     span[data-custom-style="TextBlock"],
     p[custom-style="TextBlock"] {
-        background: #1e1e1e !important;         /* Matches your dark code/box theme */
-        border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Subtle dark-mode border */
-        border-left: 4px solid #3182ce !important;              /* Accent left border (or keep your preferred color) */
-        padding: 16px !important;               /* Creates internal breathing room */
-        line-height: 1.1 !important;           /* Keeps text lines tightly grouped */
-        display: block !important;              /* Forces the inline element to act like a box */
-        width: 100% !important;                 /* Spans the box structure across the viewport */
-        max-width: 850px !important;            /* Restricts maximum box width to look clean */
-        margin: 1.5rem 0 !important;            /* Vertical margins separate it from normal body text */
-        color: #eaf4ff !important;                     /* Matches your light text color */
-        border-radius: 6px !important;          /* Gives the box sleek, rounded corners */
+        background: #1e1e1e !important;         
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+        border-left: 4px solid #3182ce !important;             
+        padding: 16px !important;               
+        line-height: 1.1 !important;            
+        display: block !important;              
+        width: 100% !important;                 
+        max-width: 850px !important;            
+        margin: 1.5rem 0 !important;            
+        color: #eaf4ff !important;                   
+        border-radius: 6px !important;          
     }
+
+    /* Left Column (TOC) Independent Scroll */
     .sidebar-toc {
-      position: sticky;
-      top: 2rem;
-      max-height: calc(100vh - 4rem);
+      height: 100%;
       overflow-y: auto;
       background: rgba(255, 255, 255, 0.05);
       padding: 1.5rem;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
     }
     .sidebar-toc ul {
       list-style: none;
@@ -70,9 +91,15 @@
       color: #eaf4ff;
       text-decoration: underline;
     }
+
+    /* Right Column (Document Content) Independent Scroll */
     .document-content {
+      height: 100%;
+      overflow-y: auto;
       color: #eaf4ff;
       line-height: 1.7;
+      padding-right: 1rem; 
+      box-sizing: border-box;
     }
     .document-content pre {
       background: #1e1e1e;
@@ -220,13 +247,18 @@
     }
 
     @media (max-width: 768px) {
-      .doc-layout {
-        grid-template-columns: 1fr;
+      html, body {
+        overflow: auto; /* Re-enable window scrolling on mobile */
       }
-      .sidebar-toc {
-        position: relative;
-        top: 0;
-        max-height: none;
+      main.app-main {
+        height: auto;
+      }
+      .doc-layout {
+        display: block;
+        height: auto;
+      }
+      .sidebar-toc, .document-content {
+        height: auto;
         overflow-y: visible;
       }
       .document-content table {
@@ -239,8 +271,8 @@
 </head>
 <body>
   <div id="header-placeholder"></div>
-  <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
-    <p style="margin-bottom: 1.5rem; text-align: left;">
+  <main class="app-main">
+    <p style="margin-bottom: 1rem; text-align: left; flex-shrink: 0;">
       <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">→Home Lab</a>
       <span style="color: #64748b; margin: 0 0.75rem;">|</span>
       <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">→Back</a>
@@ -248,8 +280,9 @@
       <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">→Gateway</a>
     </p>
 
-    <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">2-instructions-for-using-vscode</h1>
+    <div class="title-banner" style="text-align: left; margin-bottom: 1.5rem; flex-shrink: 0;">
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Instructions
+For Using Vscode</h1>
       <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
       <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
     </div>
@@ -258,14 +291,6 @@
       <aside class="sidebar-toc">
         <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
         <ul>
-        <li><a href="#nav-figure-1-vs-code-main-screen"
-        id="nav-toc-figure-1-vs-code-main-screen">
-
-            $FigureIndex++
-
-            "Figure ${FigureIndex}:"
-         VS Code Main
-        Screen</a></li>
         <li><a href="#nav-introduction"
         id="nav-toc-introduction">Introduction</a>
         <ul>
@@ -283,26 +308,7 @@
         Native Remote and Containerized Development</a></li>
         <li><a href="#nav-uniformity-across-all-operating-systems"
         id="nav-toc-uniformity-across-all-operating-systems">4.
-        Uniformity Across All Operating Systems</a>
-        <ul>
-        <li><a
-        href="#nav-table-2-summary-comparison-of-heavy-ides-over-vs-code"
-        id="nav-toc-table-2-summary-comparison-of-heavy-ides-over-vs-code">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         Summary Comparison of Heavy IDEs over VS Code</a></li>
-        <li><a
-        href="#nav-table-3-essential-keyboard-shortcuts-cheat-sheet"
-        id="nav-toc-table-3-essential-keyboard-shortcuts-cheat-sheet">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         <strong>Essential Keyboard Shortcuts (Cheat
-        Sheet)</strong></a></li>
-        </ul></li>
+        Uniformity Across All Operating Systems</a></li>
         <li><a href="#nav-the-core-extensions-installation-stack"
         id="nav-toc-the-core-extensions-installation-stack"><span
         class="custom-style-Heading 3 Char Heading 3 Char"
@@ -310,33 +316,7 @@
         Installation Stack</a></li>
         <li><a href="#nav-core-vs-code-environments-concepts"
         id="nav-toc-core-vs-code-environments-concepts">6. Core VS Code
-        Environments &amp; Concepts</a>
-        <ul>
-        <li><a href="#nav-table-4-pulling-ollama-models"
-        id="nav-toc-table-4-pulling-ollama-models">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-        
-        <strong>Pulling Ollama Models</strong></a></li>
-        <li><a href="#nav-table-4-hooking-your-ollama-models"
-        id="nav-toc-table-4-hooking-your-ollama-models">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-        
-        <strong>Hooking your Ollama Models</strong></a></li>
-        <li><a href="#nav-table-4-global-settings"
-        id="nav-toc-table-4-global-settings">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         <strong>Global
-        Settings</strong></a></li>
-        </ul></li>
+        Environments &amp; Concepts</a></li>
         </ul></li>
         <li><a href="#nav-adding-the-power-to-vs-code"
         id="nav-toc-adding-the-power-to-vs-code">Adding the Power to VS
@@ -348,76 +328,64 @@
         <li><a href="#nav-advanced-human-ai-workflows"
         id="nav-toc-advanced-human-ai-workflows">Advanced Human-AI
         Workflows</a></li>
+        <li><a href="#nav-ai-is-a-wonderland-in-itself"
+        id="nav-toc-ai-is-a-wonderland-in-itself">AI is a wonderland in
+        itself</a></li>
+        <li><a
+        href="#nav-ai-is-a-wonderland-by-itself.-dont-trust-everything-you-see."
+        id="nav-toc-ai-is-a-wonderland-by-itself.-dont-trust-everything-you-see.">AI
+        is a Wonderland by itself. Don’t trust everything you
+        see.</a></li>
+        </ul></li>
         <li><a href="#nav-advanced-file-maintenance-global-automation"
         id="nav-toc-advanced-file-maintenance-global-automation">Advanced
         File Maintenance &amp; Global Automation</a>
         <ul>
-        <li><a href="#nav-table-4-file-maintenance-and-automation"
-        id="nav-toc-table-4-file-maintenance-and-automation">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-        
-        <strong>File Maintenance and Automation</strong></a></li>
-        </ul></li>
         <li><a href="#nav-fluid-version-control-shell-mastery"
         id="nav-toc-fluid-version-control-shell-mastery">Fluid Version
         Control &amp; Shell Mastery</a></li>
+        <li><a href="#nav-the-built-in-git-workflow"
+        id="nav-toc-the-built-in-git-workflow">The Built-in Git
+        Workflow</a>
+        <ul>
+        <li><a href="#nav-deep-trajectory-audits-via-git-history"
+        id="nav-toc-deep-trajectory-audits-via-git-history">Deep
+        Trajectory Audits via Git History</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-multi-shell-management-bash-powershell"
+        id="nav-toc-multi-shell-management-bash-powershell">Multi-Shell
+        Management (Bash &amp; PowerShell)</a>
+        <ul>
+        <li><a
+        href="#nav-advanced-setups-utilize-the-best-terminal-engine-for-the-task."
+        id="nav-toc-advanced-setups-utilize-the-best-terminal-engine-for-the-task.">Advanced
+        setups utilize the best terminal engine for the task.</a></li>
         <li><a href="#nav-remote-operations-clean-workspaces"
         id="nav-toc-remote-operations-clean-workspaces">Remote
-        Operations &amp; Clean Workspaces</a>
-        <ul>
-        <li><a href="#nav-table-4-remote-ssh-setup"
-        id="nav-toc-table-4-remote-ssh-setup">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         <strong>Remote
-        SSH setup</strong></a></li>
-        </ul></li>
+        Operations &amp; Clean Workspaces</a></li>
         <li><a href="#nav-remote-explorer-utility"
-        id="nav-toc-remote-explorer-utility">Remote Explorer
-        Utility</a></li>
+        id="nav-toc-remote-explorer-utility">Remote Explorer Utility</a>
+        <ul>
         <li><a href="#nav-debugging-testing-workspaces"
         id="nav-toc-debugging-testing-workspaces">Debugging &amp;
         Testing Workspaces</a></li>
+        </ul></li>
         </ul></li>
         <li><a
         href="#nav-harnessing-the-modern-development-workspace-an-advanced-technical-white-paper-on-visual-studio-code-optimization"
         id="nav-toc-harnessing-the-modern-development-workspace-an-advanced-technical-white-paper-on-visual-studio-code-optimization">Harnessing
         the Modern Development Workspace: An Advanced Technical White
-        Paper on Visual Studio Code Optimization</a>
-        <ul>
+        Paper on Visual Studio Code Optimization</a></li>
         <li><a
         href="#nav-core-environmental-architecture-global-automation"
         id="nav-toc-core-environmental-architecture-global-automation">Core
         Environmental Architecture &amp; Global Automation</a>
         <ul>
-        <li><a href="#nav-table-4-raw-payload-settings"
-        id="nav-toc-table-4-raw-payload-settings">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         <strong>Raw
-        Payload Settings</strong></a></li>
-        </ul></li>
         <li><a
         href="#nav-local-first-ai-integration-continue-ollama-pipeline"
         id="nav-toc-local-first-ai-integration-continue-ollama-pipeline">Local-First
-        AI Integration (Continue + Ollama Pipeline)</a>
-        <ul>
-        <li><a href="#nav-table-4-architectural-blueprint"
-        id="nav-toc-table-4-architectural-blueprint">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-        
-        <strong>Architectural Blueprint</strong></a></li>
-        </ul></li>
+        AI Integration (Continue + Ollama Pipeline)</a></li>
         <li><a href="#nav-tactical-ai-workflows-commands"
         id="nav-toc-tactical-ai-workflows-commands">Tactical AI
         Workflows &amp; Commands</a></li>
@@ -431,17 +399,7 @@
         Tool Integration &amp; Language Frameworks</a></li>
         <li><a href="#nav-multi-shell-terminal-topology"
         id="nav-toc-multi-shell-terminal-topology">Multi-Shell Terminal
-        Topology</a>
-        <ul>
-        <li><a href="#nav-table-4-side-by-side-workflow"
-        id="nav-toc-table-4-side-by-side-workflow">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         <strong>Side
-        by Side Workflow</strong></a></li>
-        </ul></li>
+        Topology</a></li>
         <li><a
         href="#nav-precision-script-diagnostics-python-environment-optimization"
         id="nav-toc-precision-script-diagnostics-python-environment-optimization">Precision
@@ -454,12 +412,7 @@
         Troubleshooting &amp; Validation Protocols</a>
         <ul>
         <li><a href="#nav-table-4-troubleshooting-vs-code"
-        id="nav-toc-table-4-troubleshooting-vs-code">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-        
+        id="nav-toc-table-4-troubleshooting-vs-code">Table 1:
         <strong>Troubleshooting VS Code</strong></a></li>
         </ul></li>
         </ul></li>
@@ -483,7 +436,25 @@
         <li><a
         href="#nav-step-by-step-advanced-source-control-script-environments"
         id="nav-toc-step-by-step-advanced-source-control-script-environments">Step-by-Step:
-        Advanced Source Control &amp; Script Environments</a></li>
+        Advanced Source Control &amp; Script Environments</a>
+        <ul>
+        <li><a
+        href="#nav-step-4.1-managing-production-assets-via-the-source-control-panel"
+        id="nav-toc-step-4.1-managing-production-assets-via-the-source-control-panel">Step
+        4.1: Managing Production Assets via the Source Control
+        Panel</a></li>
+        <li><a href="#nav-step-4.2-running-a-visual-git-history-audit"
+        id="nav-toc-step-4.2-running-a-visual-git-history-audit">Step
+        4.2: Running a Visual Git History Audit</a></li>
+        <li><a
+        href="#nav-step-4.3-configuring-isolated-python-working-interpreters"
+        id="nav-toc-step-4.3-configuring-isolated-python-working-interpreters">Step
+        4.3: Configuring isolated Python Working Interpreters</a></li>
+        <li><a
+        href="#nav-step-4.4-deploying-live-server-for-site-maintenance"
+        id="nav-toc-step-4.4-deploying-live-server-for-site-maintenance">Step
+        4.4: Deploying Live Server for Site Maintenance</a></li>
+        </ul></li>
         </ul></li>
         <li><a href="#nav-diagnostics-automated-validation-testing"
         id="nav-toc-diagnostics-automated-validation-testing">Diagnostics
@@ -511,22 +482,48 @@
         Ollama</a></li>
         </ul></li>
         <li><a href="#nav-executive-summary"
-        id="nav-toc-executive-summary">Executive Summary</a></li>
+        id="nav-toc-executive-summary">Executive Summary</a>
+        <ul>
+        <li><a href="#nav-my-workflow-exixts-of-the-following-layout"
+        id="nav-toc-my-workflow-exixts-of-the-following-layout">My
+        Workflow exixts of the following Layout:</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a
+        href="#nav-sources-and-further-reading-for-the-vs-code-document"
+        id="nav-toc-sources-and-further-reading-for-the-vs-code-document">Sources
+        and Further Reading for the VS Code document</a>
+        <ul>
+        <li><a href="#nav-primary-sources"
+        id="nav-toc-primary-sources">Primary sources</a></li>
+        <li><a href="#nav-extension-documentation"
+        id="nav-toc-extension-documentation">Extension
+        documentation</a></li>
+        <li><a href="#nav-ai-and-local-model-tooling"
+        id="nav-toc-ai-and-local-model-tooling">AI and local-model
+        tooling</a></li>
+        <li><a href="#nav-further-reading"
+        id="nav-toc-further-reading">Further reading</a></li>
+        <li><a href="#nav-suggested-document-ready-version"
+        id="nav-toc-suggested-document-ready-version">Suggested
+        document-ready version</a></li>
+        <li><a href="#nav-sources"
+        id="nav-toc-sources">Sources:</a></li>
+        <li><a href="#nav-further-reading-1"
+        id="nav-toc-further-reading-1">Further reading:</a></li>
+        <li><a href="#nav-summary" id="nav-toc-summary">Summary</a></li>
         </ul></li>
         </ul>
       </aside>
 
       <article class="document-content">
-        <p><img
-        src="../assets/figures/2-instructions-for-using-vscode/media/image1.png"
-        style="width:5.6476in;height:3.25in" /></p>
-        <h4 id="nav-figure-1-vs-code-main-screen">
-
-            $FigureIndex++
-
-            "Figure ${FigureIndex}:"
-         VS Code Main
-        Screen</h4>
+        <figure>
+        <img src="2-instructions-for-using-vscode/media/image1.png"
+        style="width:5.6476in;height:3.25in"
+        alt="Figure 1: VS Code Main Screen" />
+        <figcaption aria-hidden="true">Figure 2: VS Code Main
+        Screen</figcaption>
+        </figure>
         <h1 id="nav-introduction">Introduction</h1>
         <h2 id="nav-vs-code">VS Code?</h2>
         <p>A home lab needs tools to develop and manage its internal
@@ -556,8 +553,6 @@
         RAM consumption. On the other end of the spectrum, basic text
         editors (like Notepad++ or Sublime Text) are lightweight but
         lack deep programming intelligence.</p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Why VS Code Wins: It uses a lean, modular architecture. Out
         of the box, it acts as a lightning-fast text editor. However, it
         features a highly optimized Extension Marketplace. You only
@@ -565,35 +560,26 @@
         need for your current project. If you are writing a simple HTML
         page, your editor stays lightweight; if you transition to
         Python, you turn on Python intelligence with a single click.</p>
-        </div>
         <h3 id="nav-unmatched-ecosystem-and-future-proofing">2.
         Unmatched Ecosystem and Future-Proofing</h3>
         <p>Because VS Code is open-source and backed by Microsoft, it
         has cultivated the largest developer ecosystem in the world.</p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Universal Language Support: In a dedicated IDE like PyCharm,
         you are largely locked into Python. If your project suddenly
         requires a JavaScript frontend, a SQL database, and some Bash
         scripts, a specialized IDE can struggle. VS Code handles
         multi-language polyglot projects seamlessly.</p>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Cutting-Edge Tooling First: When breakthrough development
         tools are created—such as Continue and Ollama for local AI
         execution, or advanced cloud-dev spaces—the creators almost
         always build their first and most stable plugins for VS Code.
         You get access to the future of development months before
         proprietary IDEs implement them.</p>
-        </div>
         <h3 id="nav-native-remote-and-containerized-development">3.
         Native Remote and Containerized Development</h3>
         <p>In modern workflows, running code directly on your local
         laptop is becoming obsolete due to security risks and hardware
         limitations.</p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Why VS Code Wins: Traditional IDEs often require you to
         download your entire project locally to index files. VS Code’s
         Remote - SSH and Dev Containers architecture works differently:
@@ -603,26 +589,24 @@
         container. This allows you to edit files on a massive cloud
         server with the exact same speed and fluidity as editing a file
         on your desktop.</p>
-        </div>
         <h3 id="nav-uniformity-across-all-operating-systems">4.
         Uniformity Across All Operating Systems</h3>
         <p>If you work in a team or use multiple computers, platform
         consistency matters. Xcode only runs on macOS; certain
         enterprise IDEs run poorly outside of Windows.</p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Why VS Code Wins: VS Code behaves identically whether you are
         on Windows, macOS, or Linux. Your custom keyboard shortcuts,
         user interface themes, global automation scripts, and extensions
         sync perfectly across all your devices via your GitHub or
         Microsoft account. You never have to re-learn an interface when
         switching operating systems.</p>
-        </div>
-        <table style="width:97%;">
+        <table style="width:98%;">
+        <caption>Table 2: Summary Comparison of Heavy IDEs over VS
+        Code</caption>
         <colgroup>
-        <col style="width: 21%" />
-        <col style="width: 38%" />
-        <col style="width: 38%" />
+        <col style="width: 15%" />
+        <col style="width: 41%" />
+        <col style="width: 41%" />
         </colgroup>
         <thead>
         <tr>
@@ -667,18 +651,13 @@
         </tr>
         </tbody>
         </table>
-        <h4
-        id="nav-table-2-summary-comparison-of-heavy-ides-over-vs-code">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         Summary Comparison of Heavy IDEs over VS Code</h4>
-        <table style="width:97%;">
+        <table style="width:98%;">
+        <caption>Table 3: Essential Keyboard Shortcuts (Cheat
+        Sheet)</caption>
         <colgroup>
-        <col style="width: 46%" />
-        <col style="width: 25%" />
-        <col style="width: 25%" />
+        <col style="width: 40%" />
+        <col style="width: 28%" />
+        <col style="width: 28%" />
         </colgroup>
         <thead>
         <tr>
@@ -741,14 +720,6 @@
         </tr>
         </tbody>
         </table>
-        <h4
-        id="nav-table-3-essential-keyboard-shortcuts-cheat-sheet">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         <strong>Essential Keyboard Shortcuts (Cheat
-        Sheet)</strong></h4>
         <h3 id="nav-the-core-extensions-installation-stack"><span
         class="custom-style-Heading 3 Char Heading 3 Char"
         data-custom-style="Heading 3 Char">5.</span> The Core Extensions
@@ -838,13 +809,10 @@
         </div></li>
         </ul>
         <p><strong>Integrated Terminal</strong></p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Use multiple shells simultaneously by clicking the + dropdown
         in the terminal panel. You can easily switch between Bash,
         PowerShell, or command prompts depending on the operating system
         environment.</p>
-        </div>
         <p><strong>Debugging &amp; Testing</strong></p>
         <ul>
         <li><div class="custom-style-List Paragraph List Paragraph"
@@ -863,11 +831,8 @@
         </ul>
         <p><strong>2. Comprehensive Extension Configuration
         Guide</strong></p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>To install any of these plugins, open the Extensions View
         (Ctrl + Shift + X), search for the name, and click Install.</p>
-        </div>
         <p><strong>Live Server</strong></p>
         <ul>
         <li><div class="custom-style-List Paragraph List Paragraph"
@@ -947,12 +912,9 @@
         </ul>
         <p><strong>3. Advanced Setup: AI Autocomplete &amp; Chat with
         Continue + Ollama</strong></p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Continue is a leading open-source AI code assistant extension
         that allows you to bring your own local or cloud models for code
         generation, inline chat, and autocomplete.</p>
-        </div>
         <ol type="1">
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
@@ -969,544 +931,171 @@
         models we will be using with these commands:</p>
         </div></li>
         </ul>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>Bash</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p># Language &amp; Coding Models</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>ollama run gemma3:4b</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>ollama run phi4:mini</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>ollama run qwen2.5-coder:7b</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>ollama run qwen2.5-coder:1.5b</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p># Embeddings Model (For codebase index indexing / RAG)</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>ollama pull nomic-embed-text</p>
-        </blockquote>
-        </div>
-        <h4 id="nav-table-4-pulling-ollama-models">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-        
-        <strong>Pulling Ollama Models</strong></h4>
+        <table>
+        <caption>Code 1: VSCodeOllamaAgentsInstall.sh</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Bash<br />
+        # Language &amp; Coding Models<br />
+        ollama run gemma3:4b<br />
+        ollama run phi4:mini<br />
+        ollama run qwen2.5-coder:7b<br />
+        ollama run qwen2.5-coder:1.5b<br />
+        # Embeddings Model (For codebase index indexing / RAG)<br />
+        ollama pull nomic-embed-text</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
         <ol start="2" type="1">
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
-        <p>Configure Continue (config.json)</p>
+        <p>Set up the Continue Main Config.yaml</p>
         </div></li>
         </ol>
         <ul>
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
-        <p>Open the Continue extension settings or locate its global
-        config file at ~/.continue/config.json. Replace or append to the
-        configuration using the structure below to hook up your local
-        Ollama models along with cloud-based Gemini keys:</p>
-        </div></li>
-        <li></li>
-        </ul>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>JSON</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>{</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"models": [</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>{</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"title": "Gemma 3 4B",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"provider": "ollama",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"model": "gemma3:4b"</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>},</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>{</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"title": "Phi 4 Mini",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"provider": "ollama",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"model": "phi4:mini"</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>},</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>{</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"title": "Qwen 2.5 Coder 7B",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"provider": "ollama",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"model": "qwen2.5-coder:7b"</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>},</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>{</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"title": "Gemini 3.5 Flash",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"provider": "gemini",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"model": "gemini-3.5-flash",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"apiKey": "YOUR_GEMINI_API_KEY"</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>},</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>{</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"title": "Gemini 3.1 Flash Lite",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"provider": "gemini",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"model": "gemini-3.1-flash-lite",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"apiKey": "YOUR_GEMINI_API_KEY"</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>}</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>],</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"tabAutocompleteModel": {</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"title": "Qwen 2.5 Coder 1.5B",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"provider": "ollama",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"model": "qwen2.5-coder:1.5b"</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>},</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"embeddingsProvider": {</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"provider": "ollama",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"model": "nomic-embed-text"</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>}</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>}</p>
-        </blockquote>
-        </div>
-        <h4 id="nav-table-4-hooking-your-ollama-models">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-        
-        <strong>Hooking your Ollama Models</strong></h4>
-        <ol start="3" type="1">
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>Using Chat &amp; Autocomplete with Continue</p>
-        </div></li>
-        </ol>
-        <ul>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p><strong>Inline Chat / Generation:</strong> Highlight a block
-        of code and press Ctrl + I (or Cmd + I). Type your instructions
-        (e.g., "add error handling") to generate inline edits
-        directly.</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p><strong>Sidebar Chat Panel:</strong> Press Ctrl + L (or Cmd +
-        L) to feed highlighted code snippets straight into the Continue
-        chat window where you can choose between models (like Gemini 3.5
-        Flash for complex logic or Gemma 3 for local exploration).</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p><strong>Autocomplete:</strong> As you type, the configured
-        tabAutocompleteModel (Qwen 2.5 Coder 1.5B) will provide gray
-        inline code suggestions. Press Tab to accept them.</p>
+        <p>Then we will configure how Continue uses these models. Inside
+        of VSCode Select Continue Icon (left side looks like a round
+        circle). Then select Configs and Main Config. Replace the
+        config.yaml with the following yaml code. The config was
+        converted from JSON to YAML in one of the latest versions.</p>
         </div></li>
         </ul>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>5. Recommended Settings for Generic Use &amp; Site
-        Maintenance</p>
-        </div>
-        <ul>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>To open your global settings profile in a code-editable
-        format, open the Command Palette (Ctrl + Shift + P) and select
-        <strong>Preferences: Open User Settings (JSON)</strong>. Add
-        these configuration enhancements to stabilize generic text
-        editing, scripting, and site file maintenance</p>
-        </div></li>
-        <li></li>
-        </ul>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>JSON</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>{</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>// Layout and Editing Smoothness</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.wordWrap": "on",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.minimap.enabled": false,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.smoothScrolling": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.cursorBlinking": "smooth",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.formatOnSave": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>// File and Trim Utilities for clean site deployment</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.trimTrailingWhitespace": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.insertFinalNewline": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.autoSave": "afterDelay",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.autoSaveDelay": 1000,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>// Terminal optimization across Platforms</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"terminal.integrated.scrollback": 10000,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"terminal.integrated.copyOnSelection": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>// Exclude cluttered files from clogging workspace
-        searches</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"search.exclude": {</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/node_modules": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/dist": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/.git": true</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>}</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>}</p>
-        </blockquote>
-        </div>
-        <h4 id="nav-table-4-global-settings">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         <strong>Global
-        Settings</strong></h4>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>Additional Essential Plugins</p>
-        </div>
-        <ul>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p><strong>Prettier - Code Formatter:</strong> Enforces a
-        consistent style guide automatically across your HTML, CSS,
-        JavaScript, and Markdown configurations.</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p><strong>Path Intellisense:</strong> Autocompletes filenames
-        and directory paths in your statements natively as you link
-        local site assets.</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p><strong>Error Lens:</strong> Highlights errors and warning
-        strings inline directly on the active code line so you don't
-        have to keep checking the logs panel.</p>
-        </div></li>
-        </ul>
+        <table>
+        <caption>Code 2: VSCode Config Json</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>name: Continue Config<br />
+        version: 1.0.0<br />
+        schema: v1<br />
+        <br />
+        autocompleteOptions:<br />
+        debounceDelay: 400<br />
+        modelTimeout: 5000<br />
+        <br />
+        models:<br />
+        # --- openrouter.ai Models ---<br />
+        - name: "NVIDIA Nemotron 3 Ultra (OpenRouter Free)"<br />
+        provider: "openai"<br />
+        model: "nvidia/nemotron-3-ultra-550b-a55b:free"<br />
+        apiBase: "https://openrouter.ai/api/v1"<br />
+        apiKey: "Insert Youor API Key Here"<br />
+        roles:<br />
+        - chat<br />
+        - edit<br />
+        <br />
+        - name: "OpenRouter Dynamic Free Tier"<br />
+        provider: "openai"<br />
+        model: "openrouter/free"<br />
+        apiBase: "https://openrouter.ai/api/v1"<br />
+        apiKey: "Insert Your API Key Here"<br />
+        roles:<br />
+        - chat<br />
+        - edit<br />
+        <br />
+        # --- Ollama Chat Models ---<br />
+        - name: Slow - Gemma 3 4B (ollama)<br />
+        provider: ollama<br />
+        model: gemma3:4b<br />
+        apiBase: http://192.168.86.253:11434<br />
+        roles:<br />
+        - chat<br />
+        <br />
+        - name: Slow - Phi 4 Mini (ollama)<br />
+        provider: ollama<br />
+        model: phi4-mini:latest<br />
+        apiBase: http://192.168.86.253:11434<br />
+        roles:<br />
+        - chat<br />
+        <br />
+        # --- Tab Autocomplete Model ---<br />
+        - name: Qwen 2.5 Coder 1.5B<br />
+        provider: ollama<br />
+        model: qwen2.5-coder:1.5b<br />
+        apiBase: http://192.168.86.253:11434<br />
+        roles:<br />
+        - autocomplete<br />
+        <br />
+        # --- Embeddings Model ---<br />
+        - name: Nomic Embed Text<br />
+        provider: ollama<br />
+        model: nomic-embed-text:latest<br />
+        apiBase: http://192.168.86.253:11434<br />
+        roles:<br />
+        - embed<br />
+        <br />
+        # --- Gemini Frontier Models ---<br />
+        - name: Gemini 3.5 Flash<br />
+        provider: openai<br />
+        model: gemini-3.5-flash<br />
+        apiBase:
+        "https://generativelanguage.googleapis.com/v1beta/openai"<br />
+        apiKey: "Insert you API Key Here"<br />
+        env:<br />
+        projectId: "projects/454067035620"<br />
+        region: "us-central1"<br />
+        roles:<br />
+        - chat<br />
+        - edit<br />
+        <br />
+        - name: Gemini 3.1 Flash Lite<br />
+        provider: openai<br />
+        model: gemini-3.1-flash-lite<br />
+        apiBase:
+        "https://generativelanguage.googleapis.com/v1beta/openai"<br />
+        apiKey: "Insert you API Key Here"<br />
+        env:<br />
+        projectId: "projects/454067035620"<br />
+        region: "us-central1"<br />
+        roles:<br />
+        - chat<br />
+        - edit<br />
+        <br />
+        # --- Global Context Providers for Multi-File Management
+        ---<br />
+        contextProviders:<br />
+        - name: codebase<br />
+        params: {}<br />
+        - name: folder<br />
+        params: {}<br />
+        - name: terminal<br />
+        params: {}<br />
+        - name: diff<br />
+        params: {}</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p>This yaml will use Web Based Servers for the heavy lifting
+        while using lighter local servers for simple stuff. For generic
+        coding questions I use gemini-3.5-flash. You can also use Gemini
+        in any open Chrome Window by going to <a
+        href="https://gemini.google.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://gemini.google.com/</span></a>
+        You will need to obtain free API Keys from <a
+        href="https://openrouter.ai"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://openrouter.ai</span></a>
+        and from <a href="https://cloud.google.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://cloud.google.com/</span></a></p>
         <h2 id="nav-adding-the-power-to-vs-code">Adding the Power to VS
         Code</h2>
         <p>To transition from using VS Code as a basic text editor to
@@ -1535,7 +1124,10 @@
         ask "How do I fix this error?" Type @ to pull open the context
         list. Select @codebase to automatically analyze your whole
         project, or @terminal to automatically inject the last failing
-        command line error directly into the AI prompt.</p>
+        command line error directly into the AI prompt. Some AI agents
+        will require you to paste in the file for review instead of
+        using the codebase words. Copilot wants to use the # sign for
+        example.</p>
         </div></li>
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
@@ -1557,9 +1149,218 @@
         before accepting it with a click.</p>
         </div></li>
         </ul>
+        <p>AI is like Alice in Wonderland.  </p>
+        <p>AI will produce huge blocks of code that is error-prone while
+        other models will delete blocks of code. This is standard
+        software debugging practices, where software developers will
+        insert code or comments in outputs to find specific errors in
+        the code. Others will delete questionable blocks in an attempt
+        to find different errors.</p>
+        <p>I have found that some AI models, while they're increasing
+        the size of code increases the number of tokens required for
+        each query. Therefore, costing the user more money. By deleting
+        tokens, it costs the user more money because of the extra debug
+        attempts that are necessary finding and recreating missing
+        code.</p>
+        <p>Other free models seem to do a great job at writing small
+        blocks or small functions. But they will not insert themselves
+        into your code. You have to do it yourself. Because of this you
+        have to check, double check, and triple check the functions they
+        write to make sure they're going to work in your code and make
+        sure that in deleting anything you do it wisely and make sure
+        you have backups.</p>
+        <p>In order to implement any changes you have to understand the
+        code. Because of this, you need to instruct AI using all the
+        different model types to generate massive amounts of
+        documentation to support flow charts, code blocks variable names
+        and uses. That way you can read new code and understand the
+        output from AI to make sure that the changes they make are
+        adequate.</p>
+        <p>AI has a tendency to forget. And when it forgets a variable
+        name, it make up a new one. When it makes it up, it introduces
+        errors in your code as well as disconnects in your code. You
+        have to question everything then reinstruct AI to fix the
+        mistakes it generates.</p>
+        <p>It will also drop or truncate the blocks that they send you
+        due to IO issues or lack of memory. Therefore, when it sends you
+        a block, it may be incomplete. AI may tell you to replace a
+        block with new updates and it's only partially complete.</p>
+        <p>All of this increases the amount of debug time. Therefore, by
+        increasing the number of tokens required to work the project
+        and, in the end, it will keep asking you to put another coin in
+        the slot.</p>
+        <p>AI is a money-making business and that by using AI it in
+        itself will tend to write functions or objects that increase the
+        number of tokens. Therefore, increasing the amount you need AI.
+        Thus, you are going down the rabbit hole.</p>
+        <p>You will find that down various rabbit holes of debugging,
+        where it tries one thing. Then, another then another and it
+        forgets its original tries. Therefore, trying to do something
+        again, and in the process, it drops data making things worse.
+        It's kind of like if I keep trying something eventually, I will
+        get it right.</p>
+        <p>AI is great for taking an idea and converting that idea into
+        code, but that code doesn't always work and may not correctly
+        align with your existing code. Usually, it's poorly written, and
+        it's not standardized. It is still up to the user to correct the
+        bugs, make it error prone, simplify the code, document, and make
+        it meet certain coding standards. Then you must research the
+        edge cases. Because AI doesn't know an edge case exists.</p>
+        <table>
+        <caption>Code 3: AI Is Like Alice in Wonderland</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>AI is like Alice in Wonderland.<br />
+        One pill makes you larger<br />
+        And one pill makes you small<br />
+        And the ones that mother gives you<br />
+        Don't do anything at all<br />
+        Go ask Alice<br />
+        When she's ten feet tall<br />
+        And if you go chasing rabbits<br />
+        And you know you're going to fall<br />
+        Tell 'em a hookah-smoking caterpillar<br />
+        Has given you the call<br />
+        He called Alice<br />
+        When she was just small<br />
+        When the men on the chessboard<br />
+        Get up and tell you where to go<br />
+        And you've just had some kind of mushroom<br />
+        And your mind is moving low<br />
+        Go ask Alice<br />
+        I think she'll know<br />
+        When logic and proportion<br />
+        Have fallen sloppy dead<br />
+        And the White Knight is talking backwards<br />
+        And the Red Queen's off with her head<br />
+        Remember what the dormouse said<br />
+        Feed your head<br />
+        Feed your head<br />
+        Source: Musixmatch<br />
+        Songwriters: Grace Wing Slick</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3 id="nav-ai-is-a-wonderland-in-itself">AI is a wonderland in
+        itself</h3>
+        <p>But don’t trust what you see. It will help you but make sure
+        you know what it is producing</p>
+        <p>AI will produce huge blocks of code that is error-prone while
+        other models will delete blocks of code. This is standard
+        software debugging practices, where software developers will
+        insert code or comments in outputs to find specific errors in
+        the code. Others will delete questionable blocks in an attempt
+        to find different errors.</p>
+        <p>I have found that some AI models, while they're increasing
+        the size of code increases the number of tokens required for
+        each query. Therefore, costing the user more money. By deleting
+        tokens, it costs the user more money because of the extra debug
+        attempts that are necessary finding and recreating missing
+        code.</p>
+        <p>Other free models seem to do a great job at writing small
+        blocks or small functions. But they will not insert themselves
+        into your code. You have to do it yourself. Because of this you
+        have to check, double check, and triple check the functions they
+        write to make sure they're going to work in your code and make
+        sure that in deleting anything you do it wisely and make sure
+        you have backups.</p>
+        <p>In order to implement any changes you have to understand the
+        code. Because of this, you need to instruct AI using all the
+        different model types to generate massive amounts of
+        documentation to support flow charts, code blocks variable names
+        and uses. That way you can read new code and understand the
+        output from AI to make sure that the changes they make are
+        adequate.</p>
+        <p>AI has a tendency to forget. And when it forgets a variable
+        name, it make up a new one. When it makes it up, it introduces
+        errors in your code as well as disconnects in your code. You
+        have to question everything then reinstruct AI to fix the
+        mistakes it generates.</p>
+        <p>It will also drop or truncate the blocks that they send you
+        due to IO issues or lack of memory. Therefore, when it sends you
+        a block, it may be incomplete. AI may tell you to replace a
+        block with new updates and it's only partially complete.</p>
+        <p>All of this increases the amount of debug time. Therefore, by
+        increasing the number of tokens required to work the project
+        and, in the end, it will keep asking you to put another coin in
+        the slot.</p>
+        <p>AI is a money-making business and that by using AI it in
+        itself will tend to write functions or objects that increase the
+        number of tokens. Therefore, increasing the amount you need AI.
+        Thus, you are going down the rabbit hole.</p>
+        <p>You will find that down various rabbit holes of debugging,
+        where it tries one thing. Then, another then another and it
+        forgets its original tries. Therefore, trying to do something
+        again, and in the process, it drops data making things worse.
+        It's kind of like if I keep trying something eventually, I will
+        get it right.</p>
+        <p>AI is great for taking an idea and converting that idea into
+        code, but that code doesn't always work and may not correctly
+        align with your existing code. Usually, it's poorly written, and
+        it's not standardized. It is still up to the user to correct the
+        bugs, make it error prone, simplify the code, document, and make
+        it meet certain coding standards. Then you must research the
+        edge cases. Because AI doesn't know an edge case exists.</p>
         <h3
+        id="nav-ai-is-a-wonderland-by-itself.-dont-trust-everything-you-see.">AI
+        is a Wonderland by itself. Don’t trust everything you see.</h3>
+        <table>
+        <caption>Code 4: AI Is a Wonderland</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Alice in Wonderland<br />
+        How do you get to Wonderland<br />
+        Over the hill or under land<br />
+        Or just behind the tree<br />
+        When clouds go rolling by<br />
+        They roll away and leave the sky<br />
+        Where is the land beyond the eye<br />
+        That people cannot see<br />
+        Where can it be<br />
+        Where do stars go<br />
+        Where is the crescent moon<br />
+        They must be somewhere in the sunny afternoon<br />
+        Alice in Wonderland<br />
+        Where is the path to Wonderland<br />
+        Over the hill or here or there<br />
+        I wonder where<br />
+        Source: Musixmatch<br />
+        Songwriters: Sammy Cahn / Sammy Fain<br />
+        Main Title (Alice in Wonderland) lyrics © Walt Disney Music
+        Company</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p>We all think there is more to life and AI will show us what
+        the future brings and what will we become. It will introduce new
+        ideas, new concepts without us having to do anything, just
+        accept this new way of life. But in the end Wonderland is right
+        in front of us. We don't need AI to show us the way. AI can help
+        us along the path, provide new tools but the ideas are ours to
+        create. AI will not get us there on its own, we have to do it
+        ourselves checking every step along the way. Where we will end
+        up and I hope it is not down the rabbit hole.</p>
+        <p>And remember what Alice said. Fill Your Head. Fill your head
+        with ideas and knowledge. Then let AI take you there.</p>
+        <h2
         id="nav-advanced-file-maintenance-global-automation">Advanced
-        File Maintenance &amp; Global Automation</h3>
+        File Maintenance &amp; Global Automation</h2>
         <p>Advanced editing is about eliminating "janitorial"
         actions—manually formatting files, deleting stray spaces, or
         running cleanups right before deploying changes to a live site.
@@ -1568,162 +1369,95 @@
         <p>Open your Command Palette (Ctrl + Shift + P or Cmd + Shift +
         P), type Preferences: <strong>Open User Settings
         (JSON)</strong>, and merge these keys:</p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>JSON</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>{</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>// Automation on Save</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.formatOnSave": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.trimTrailingWhitespace": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.insertFinalNewline": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.autoSave": "afterDelay",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.autoSaveDelay": 2000,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>// Speed and Visual Scannability</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.minimap.enabled": false,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.wordWrap": "on",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.smoothScrolling": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.cursorBlinking": "smooth",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"search.followSymlinks": false,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"search.exclude": {</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/node_modules": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/dist": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/.git": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/.continue": true</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>}</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>}</p>
-        </blockquote>
-        </div>
-        <h4 id="nav-table-4-file-maintenance-and-automation">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-        
-        <strong>File Maintenance and Automation</strong></h4>
-        <ul>
+        <table>
+        <caption>Code 5: VSCode User Settings.txt</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>{<br />
+        "arduino.useArduinoCli": true,<br />
+        "cmake.showOptionsMovedNotification": false,<br />
+        "remote.SSH.remotePlatform": {<br />
+        "homeassistant": "linux",<br />
+        "proxmox-server": "linux"<br />
+        },<br />
+        "editor.minimap.enabled": false,<br />
+        "chat.viewSessions.orientation": "stacked",<br />
+        "continue.enableNextEdit": false,<br />
+        "editor.wordWrap": "on",<br />
+        <br />
+        "liveServer.settings.donotShowInfoMsg": true,<br />
+        "liveServer.settings.donotVerifyTags": true,<br />
+        "github.copilot.enable": {<br />
+        "*": false,<br />
+        "plaintext": false,<br />
+        "markdown": false,<br />
+        "scminput": false,<br />
+        "html": false<br />
+        },<br />
+        "github.copilot.nextEditSuggestions.eagerness": "low",<br />
+        "github.copilot.nextEditSuggestions.enabled": false,<br />
+        "security.workspace.trust.untrustedFiles": "open",<br />
+        "editor.accessibilitySupport": "off",<br />
+        "redhat.telemetry.enabled": true,<br />
+        "yaml.customTags": [<br />
+        "!secret",<br />
+        "!include"<br />
+        ]<br />
+        // Automation on Save<br />
+        "editor.defaultFormatter": "esbenp.prettier-vscode",<br />
+        "editor.formatOnSave": true,<br />
+        "terminal.integrated.scrollback": 10000,<br />
+        "terminal.integrated.copyOnSelection": true,<br />
+        "files.trimTrailingWhitespace": true,<br />
+        "files.insertFinalNewline": true,<br />
+        "files.autoSave": "afterDelay",<br />
+        "files.autoSaveDelay": 2000,<br />
+        <br />
+        // Speed and Visual Scannability<br />
+        "editor.smoothScrolling": true,<br />
+        "editor.cursorBlinking": "smooth",<br />
+        "search.followSymlinks": false,<br />
+        "search.exclude": {<br />
+        "**/node_modules": true,<br />
+        "**/dist": true,<br />
+        "**/.git": true,<br />
+        "**/.continue": true,<br />
+        "**/.venv": true<br />
+        }<br />
+        }</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <ol type="1">
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
-        <p><strong>What di=oes this do for you? editor.formatOnSave +
-        Prettier:</strong> When paired with the
-        <strong>Prettier</strong> extension, VS Code intercepts your
+        <p>What does this do for you? editor.formatOnSave + Prettier:
+        When paired with the Prettier extension, VS Code intercepts your
         save trigger, rewrites all layout indentations perfectly, and
         formats tags cleanly.</p>
         </div></li>
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
-        <p><strong>files.trimTrailingWhitespace:</strong> Deletes any
-        invisible trailing spaces at the end of lines. Stray spaces can
-        cause massive, noisy text differences when shipping files to
-        version control repositories.</p>
+        <p>files.trimTrailingWhitespace: Deletes any invisible trailing
+        spaces at the end of lines. Stray spaces can cause massive,
+        noisy text differences when shipping files to version control
+        repositories.</p>
         </div></li>
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
-        <p><strong>search.exclude:</strong> Prevents massive build
-        directories (node_modules) from bloating your global text
-        searches, rendering file indexing instantaneous.</p>
+        <p>search.exclude: Prevents massive build directories
+        (node_modules) from bloating your global text searches,
+        rendering file indexing instantaneous.</p>
         </div></li>
-        </ul>
+        </ol>
         <h3 id="nav-fluid-version-control-shell-mastery">Fluid Version
         Control &amp; Shell Mastery</h3>
         <p>Advanced Git tracking shouldn't mean jumping out of your
@@ -1731,10 +1465,8 @@
         piece of code. Combining native staging tools with visual
         logging histories allows you to debug historical codebase drift
         right alongside your open text tabs.</p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p><strong>The Built-in Git Workflow</strong></p>
-        </div>
+        <h3 id="nav-the-built-in-git-workflow">The Built-in Git
+        Workflow</h3>
         <ol type="1">
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
@@ -1760,7 +1492,8 @@
         locally.</p>
         </div></li>
         </ol>
-        <p><strong>Deep Trajectory Audits via Git History</strong></p>
+        <h4 id="nav-deep-trajectory-audits-via-git-history">Deep
+        Trajectory Audits via Git History</h4>
         <ul>
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
@@ -1777,10 +1510,11 @@
         into production.</p>
         </div></li>
         </ul>
-        <p><strong>Multi-Shell Management (Bash &amp;
-        PowerShell)</strong></p>
-        <p>Advanced setups utilize the best terminal engine for the
-        task.</p>
+        <h2 id="nav-multi-shell-management-bash-powershell">Multi-Shell
+        Management (Bash &amp; PowerShell)</h2>
+        <h3
+        id="nav-advanced-setups-utilize-the-best-terminal-engine-for-the-task.">Advanced
+        setups utilize the best terminal engine for the task.</h3>
         <ul>
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
@@ -1802,8 +1536,6 @@
         </ul>
         <h3 id="nav-remote-operations-clean-workspaces">Remote
         Operations &amp; Clean Workspaces</h3>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Running code environments directly on your personal computer
         can slow down your system and clutter your hard drive. Using
         remote connection hooks allows you to run high-performance web
@@ -1811,69 +1543,46 @@
         isolated cloud server or separate machine entirely, while using
         your local VS Code window as an incredibly fast visual
         interface.</p>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>Remote SSH &amp; Editing Setup</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>Install the Remote - SSH extension pack.</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>Click the green icon at the absolute bottom-left corner of
-        your VS Code layout frame (Open a Remote Window).</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>Select Connect to Host..., and type your target server string
-        (e.g., root@192.168.1.50).</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>VS Code securely establishes a tunnel connection,
-        re-initializes its core engine on the server, and refreshes.</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>When you go to File &gt; Open Folder, you are now exploring
-        the remote server's file storage layer. Editing text files,
+        <table>
+        <caption>Code 6: VSCode Remote SSH</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Remote SSH &amp; Editing Setup<br />
+        Install the Remote - SSH extension pack.<br />
+        Click the green icon at the absolute bottom-left corner of your
+        VS Code layout frame (Open a Remote Window).<br />
+        Select Connect to Host..., and type your target server string
+        (e.g., root@192.168.1.50).<br />
+        VS Code securely establishes a tunnel connection, re-initializes
+        its core engine on the server, and refreshes.<br />
+        When you go to File &gt; Open Folder, you are now exploring the
+        remote server's file storage layer. Editing text files,
         executing files via the terminal, or testing layouts happens
         entirely on the remote platform in real time.</p>
-        </blockquote>
-        </div>
-        <h4 id="nav-table-4-remote-ssh-setup">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         <strong>Remote
-        SSH setup</strong></h4>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
         <h3 id="nav-remote-explorer-utility">Remote Explorer
         Utility</h3>
+        <p>Use the <strong>Remote Explorer</strong> icon (Activity Bar
+        on the left) to view your remote machines.</p>
         <ul>
-        <li><p>Use the <strong>Remote Explorer</strong> icon (Activity
-        Bar on the left) to view your remote machines.</p></li>
-        <li><p>You can forward server application ports easily. If your
+        <li>You can forward server application ports easily. If your
         remote backend is running a local web address framework on port
         8000, add it under the <strong>Ports</strong> forwarding panel.
         You can then view the live application on your local computer's
-        browser at http://localhost:8000.</p></li>
+        browser at http://localhost:8000.</li>
         </ul>
-        <h3 id="nav-debugging-testing-workspaces">Debugging &amp;
-        Testing Workspaces</h3>
+        <h4 id="nav-debugging-testing-workspaces">Debugging &amp;
+        Testing Workspaces</h4>
         <ul>
         <li><p><strong>Breakpoints:</strong> Click just to the left of
         your code line numbers to drop a glowing red marker.</p></li>
@@ -1900,224 +1609,15 @@
         context over SSH, and tuning workspace automation systems, you
         can eliminate operational overhead, ensure absolute data
         sovereignty, and maximize code velocity.</p>
-        <h3
+        <h2
         id="nav-core-environmental-architecture-global-automation">Core
-        Environmental Architecture &amp; Global Automation</h3>
+        Environmental Architecture &amp; Global Automation</h2>
         <p>To build an advanced workspace, you must eliminate manual
         "janitorial" tasks—such as trailing whitespace remediation,
         manual layout alignment, and directory searching overhead. VS
         Code manages these configurations globally via a underlying
-        settings.json profile.</p>
-        <p><strong>Step-by-Step Implementation: Overhauling Global
-        Behavior</strong></p>
-        <ol type="1">
-        <li><p>Launch VS Code. Open the central <strong>Command
-        Palette</strong> using the global access key:</p>
-        <ul>
-        <li><p><strong>Windows/Linux:</strong> Ctrl + Shift + P</p></li>
-        <li><p><strong>macOS:</strong> Cmd + Shift + P</p></li>
-        </ul></li>
-        <li><p>Begin typing Preferences: Open User Settings (JSON).
-        Select this item from the filtered dropdown to open the raw
-        payload settings.</p></li>
-        <li><p>Replace or intelligently merge your existing JSON
-        configuration object with the highly tuned parameters detailed
-        below:</p></li>
-        </ol>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>JSON</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>{</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.wordWrap": "on",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.minimap.enabled": false,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.smoothScrolling": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.cursorBlinking": "smooth",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.formatOnSave": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.defaultFormatter": "esbenp.prettier-vscode",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.trimTrailingWhitespace": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.insertFinalNewline": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.autoSave": "afterDelay",</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"files.autoSaveDelay": 2000,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"terminal.integrated.scrollback": 10000,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"terminal.integrated.copyOnSelection": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"search.followSymlinks": false,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"search.exclude": {</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/node_modules": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/dist": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/.git": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/.continue": true,</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"**/.venv": true</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>}</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>}</p>
-        </blockquote>
-        </div>
-        <h4 id="nav-table-4-raw-payload-settings">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         <strong>Raw
-        Payload Settings</strong></h4>
-        <p><strong>Technical Rationale:</strong></p>
-        <ul>
-        <li><p><strong>editor.formatOnSave +
-        editor.defaultFormatter:</strong> By anchoring your workspace to
-        Prettier, VS Code intercepts the file buffer write sequence. It
-        parses the document AST (Abstract Syntax Tree) and automatically
-        forces consistent indentation, tag enclosures, and line-breaks.
-        This eliminates stylistic differences in version control
-        tracking.</p></li>
-        <li><p><strong>files.trimTrailingWhitespace &amp;
-        files.insertFinalNewline:</strong> Invisible spaces at the end
-        of lines create messy git diff logs. Forcing a trailing newline
-        ensures text files comply with POSIX standards, preventing shell
-        compilation utilities from breaking when scanning
-        scripts.</p></li>
-        <li><p><strong>search.exclude Tuning:</strong> Large project
-        trees like JavaScript node_modules or Python .venv contain
-        millions of lines of dependency code. Excluding these structures
-        shifts file-indexing routines directly into memory, rendering
-        global keyword lookups instantly responsive.</p></li>
-        </ul>
-        <p>💡 <strong>Pro-Tip:</strong> If you maintain different
-        formatting profiles for various technologies, you can isolate
-        settings by language blocks within the same JSON file. For
-        example:</p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>JSON</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"[xml]": {</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>"editor.defaultFormatter": "DotJoshJohnson.xml"</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>}</p>
-        </blockquote>
-        </div>
+        settings.json profile. These settings were configured above when
+        you edited your config.yaml</p>
         <h3
         id="nav-local-first-ai-integration-continue-ollama-pipeline">Local-First
         AI Integration (Continue + Ollama Pipeline)</h3>
@@ -2129,162 +1629,50 @@
         dual-engine environment. This enables the use of lightning-fast
         local models for background line autocomplete, alongside premium
         cloud models for deep reasoning tasks.</p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>+--------------------------------------------------------------------------+</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| VS CODE WORKSPACE |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| +------------------------------------+
-        +-------------------------+ |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| | Continue Chat | | Inline Autocomplete | |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| | (Ctrl + L / Ctrl + I) | | (Tab-to-Accept) | |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| +------------------------------------+
-        +-------------------------+ |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>+---------------------+-----------------------------------+----------------+</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>v v</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>+---------------------+-----------------------------------+----------------+</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| CONTINUE ORCHESTRATION LAYER |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| (~/.continue/config.yaml) |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>+---------------------+-----------------------------------+----------------+</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>(Local IPC / Network Requests) (Cloud API Requests)</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>v v</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>+---------------------+-------------------+
-        +---------+----------------+</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| OLLAMA ENGINE | | GOOGLE GEMINI API |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| | | |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| [qwen2.5-coder] [nomic-embed-text] | | [gemini-3.5-flash]
-        |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| [gemma3] [phi4-mini] | | [gemini-3.1-flash-lite] |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>+-----------------------------------------+
+        <table>
+        <caption>Code 7: VSCode Architectural Blueprint</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>+--------------------------------------------------------------------------+<br />
+        | VS CODE WORKSPACE |<br />
+        | |<br />
+        | +------------------------------------+
+        +-------------------------+ |<br />
+        | | Continue Chat | | Inline Autocomplete | |<br />
+        | | (Ctrl + L / Ctrl + I) | | (Tab-to-Accept) |<br />
+        | +------------------------------------+
+        +-------------------------+ |<br />
+        +---------------------+-----------------------------------+----------------+<br />
+        | |<br />
+        v v<br />
+        +---------------------+-----------------------------------+----------------+<br />
+        | CONTINUE ORCHESTRATION LAYER |<br />
+        | (~/.continue/config.yaml) |<br />
+        +---------------------+-----------------------------------+----------------+<br />
+        | |<br />
+        (Local IPC / Network Requests) (Cloud API Requests)<br />
+        | |<br />
+        v v<br />
+        +---------------------+-------------------+
+        +---------+----------------+<br />
+        | OLLAMA ENGINE | | GOOGLE GEMINI API |<br />
+        | | | |<br />
+        | [qwen2.5-coder] [nomic-embed-text] | | [gemini-3.5-flash]
+        |<br />
+        | [gemma3] [phi4-mini] | | [gemini-3.1-flash-lite] |<br />
+        +-----------------------------------------+
         +--------------------------+</p>
-        </blockquote>
-        </div>
-        <h4 id="nav-table-4-architectural-blueprint">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-        
-        <strong>Architectural Blueprint</strong></h4>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
         <h3 id="nav-tactical-ai-workflows-commands">Tactical AI
         Workflows &amp; Commands</h3>
         <ul>
@@ -2363,64 +1751,32 @@
         on one side, while running platform automation scripts inside
         PowerShell on the other.</p></li>
         </ol>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>+-----------------------------------+-----------------------------------+</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| TERMINAL 1: BASH | TERMINAL 2: POWERSHELL |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| | |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| $ tail -f /var/log/nginx/error.log| PS C:\&gt;
-        .\deploy-site-assets.ps1 |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| 2026/07/05 17:29:12 [error] ... | [INFO] Copying static
-        targets... |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| 2026/07/05 17:30:05 [error] ... | [SUCCESS] Pipeline
-        complete. |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>| | |</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>+-----------------------------------+-----------------------------------+</p>
-        </blockquote>
-        </div>
-        <h4 id="nav-table-4-side-by-side-workflow">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-         <strong>Side
-        by Side Workflow</strong></h4>
+        <table>
+        <caption>Code 8: VSCode Split Terminal</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>+-----------------------------------+-----------------------------------+<br />
+        | TERMINAL 1: BASH | TERMINAL 2: POWERSHELL |<br />
+        | | |<br />
+        | $ tail -f /var/log/nginx/error.log| PS C:\&gt;
+        .\deploy-site-assets.ps1 |<br />
+        | 2026/07/05 17:29:12 [error] ... | [INFO] Copying static
+        targets... |<br />
+        | 2026/07/05 17:30:05 [error] ... | [SUCCESS] Pipeline complete.
+        |<br />
+        | | |<br />
+        +-----------------------------------+-----------------------------------+</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
         <h3
         id="nav-precision-script-diagnostics-python-environment-optimization">Precision
         Script Diagnostics (Python Environment Optimization)</h3>
@@ -2462,11 +1818,11 @@
         <p>When building an advanced development environment,
         configurations can sometimes conflict. Use this matrix to
         quickly resolve common issues:</p>
-        <table style="width:97%;">
+        <table style="width:99%;">
         <colgroup>
+        <col style="width: 18%" />
         <col style="width: 25%" />
-        <col style="width: 26%" />
-        <col style="width: 46%" />
+        <col style="width: 55%" />
         </colgroup>
         <thead>
         <tr>
@@ -2507,12 +1863,7 @@
         </tr>
         </tbody>
         </table>
-        <h4 id="nav-table-4-troubleshooting-vs-code">
-
-            $TableIndex++
-
-            "Table ${TableIndex}:"
-        
+        <h4 id="nav-table-4-troubleshooting-vs-code">Table 4:
         <strong>Troubleshooting VS Code</strong></h4>
         <h2 id="nav-testing-your-vs-code-environment">Testing your VS
         Code Environment</h2>
@@ -2559,13 +1910,22 @@
         <li><p>Generate an RSA cryptographic keypair by
         running:</p></li>
         </ol>
-        <p>Bash</p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
+        <table>
+        <caption>Code 9: Generate Ssh Rsa Key</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>ssh-keygen -t rsa -b 4096 -C "vs-code-remote-key"</p>
-        </blockquote>
-        </div>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
         <p>(Press Enter through all prompts to accept the default file
         paths and leave the passphrase blank).</p>
         <ol start="3" type="1">
@@ -2578,13 +1938,23 @@
         </ul></li>
         </ol>
         <p>PowerShell</p>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
+        <table>
+        <caption>Code 10: Push Public Key</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>cat ~/.ssh/id_rsa.pub | ssh username@remote-server-ip "mkdir
         -p ~/.ssh &amp;&amp; cat &gt;&gt; ~/.ssh/authorized_keys"</p>
-        </blockquote>
-        </div>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
         <p><strong>Step 3.2: Setting Up VS Code Remote SSH
         Mapping</strong></p>
         <ol type="1">
@@ -2613,18 +1983,22 @@
         <li><p>Spin up a temporary Python web server instance on port
         8000:</p></li>
         </ol>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>Bash</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
+        <table>
+        <caption>Code 11: Temp Python Server</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
         <p>python3 -m http.server 8000</p>
-        </blockquote>
-        </div>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
         <ol start="3" type="1">
         <li><p>Look at the sidebar layout panel on the left. Click on
         the <strong>Remote Explorer</strong> icon (it looks like a
@@ -2641,8 +2015,10 @@
         <h3
         id="nav-step-by-step-advanced-source-control-script-environments">Step-by-Step:
         Advanced Source Control &amp; Script Environments</h3>
-        <p><strong>Step 4.1: Managing Production Assets via the Source
-        Control Panel</strong></p>
+        <h4
+        id="nav-step-4.1-managing-production-assets-via-the-source-control-panel">Step
+        4.1: Managing Production Assets via the Source Control
+        Panel</h4>
         <ol type="1">
         <li><p>Open a project folder containing a Git repository (File
         &gt; Open Folder).</p></li>
@@ -2661,8 +2037,8 @@
         <li><p>Press Ctrl + Enter (or Cmd + Enter on Mac) to commit the
         changes safely to your local history.</p></li>
         </ol>
-        <p><strong>Step 4.2: Running a Visual Git History
-        Audit</strong></p>
+        <h4 id="nav-step-4.2-running-a-visual-git-history-audit">Step
+        4.2: Running a Visual Git History Audit</h4>
         <ol type="1">
         <li><p>Open the Command Palette (Ctrl + Shift + P).</p></li>
         <li><p>Type Git History: View History and hit Enter.</p></li>
@@ -2675,26 +2051,32 @@
         displays a side-by-side color-coded comparison showing exactly
         what was added, modified, or deleted in that commit.</p></li>
         </ol>
-        <p><strong>Step 4.3: Configuring isolated Python Working
-        Interpreters</strong></p>
+        <h4
+        id="nav-step-4.3-configuring-isolated-python-working-interpreters">Step
+        4.3: Configuring isolated Python Working Interpreters</h4>
         <ol type="1">
         <li><p>Open a workspace directory that contains a Python
         project.</p></li>
         <li><p>Initialize an isolated virtual environment using your
         terminal pane (Ctrl + ` ):</p></li>
         </ol>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>Bash</p>
-        </blockquote>
-        </div>
-        <div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <blockquote>
-        <p>python -m venv .venv</p>
-        </blockquote>
-        </div>
+        <table>
+        <caption>Code 12: Isolate Python Enviornment</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Bash<br />
+        python -m venv .venv</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
         <ol start="3" type="1">
         <li><p>Open the Command Palette (Ctrl + Shift + P).</p></li>
         <li><p>Type Python: Select Interpreter and hit Enter.</p></li>
@@ -2705,8 +2087,9 @@
         incorrect warning paths, and the Python version updates in the
         bottom right corner of your status bar.</p></li>
         </ol>
-        <p><strong>Step 4.4: Deploying Live Server for Site
-        Maintenance</strong></p>
+        <h4
+        id="nav-step-4.4-deploying-live-server-for-site-maintenance">Step
+        4.4: Deploying Live Server for Site Maintenance</h4>
         <ol type="1">
         <li><p>Open an HTML project folder via File &gt; Open
         Folder.</p></li>
@@ -2853,6 +2236,221 @@
         systems, you can eliminate operational overhead, ensure absolute
         data sovereignty, and maximize code velocity.</strong></p></li>
         </ul>
+        <h3 id="nav-my-workflow-exixts-of-the-following-layout">My
+        Workflow exixts of the following Layout:</h3>
+        <ol type="1">
+        <li><p><strong>I use VSCode for LiveServer, Bulk Tool
+        Configurations and file manipulation. Kinda like an over
+        glorified explorer. VSCode is used for initial Code Generation
+        and will autocorrect code for you while creating new
+        projects</strong></p></li>
+        <li><p><strong>I Use GitDesktop for Git development and
+        publishing. Some things like Repository Creation MUST be done
+        view the website. Then imported into Gi
+        Desktop.</strong></p></li>
+        <li><p><strong>I use Notepad ++ for code and file editing due to
+        its code formatting utilities and file formats. Once the Code is
+        developed, I use Notepad for minor corrections and
+        editing.</strong></p></li>
+        <li><p><strong>I use Google Chrome and Gemini for AI generics.
+        VSCode does code generation while Chrome can assist in questions
+        to ask Continue or CoPilot.</strong></p></li>
+        </ol>
+        <h1
+        id="nav-sources-and-further-reading-for-the-vs-code-document">Sources
+        and Further Reading for the VS Code document</h1>
+        <p>Below is a clean bibliography-style list that matches the
+        document’s content and likely origins.</p>
+        <h2 id="nav-primary-sources">Primary sources</h2>
+        <ul>
+        <li><p>Microsoft. Visual Studio Code documentation. <a
+        href="https://code.visualstudio.com/docs"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs</span></a></p></li>
+        <li><p>Microsoft. Getting Started with VS Code. <a
+        href="https://code.visualstudio.com/docs/getstarted/introvideos"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/getstarted/introvideos</span></a></p></li>
+        <li><p>Microsoft. User Interface. <a
+        href="https://code.visualstudio.com/docs/getstarted/userinterface"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/getstarted/userinterface</span></a></p></li>
+        <li><p>Microsoft. Settings in VS Code. <a
+        href="https://code.visualstudio.com/docs/getstarted/settings"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/getstarted/settings</span></a></p></li>
+        <li><p>Microsoft. Keyboard shortcuts for Windows. <a
+        href="https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows</span></a></p></li>
+        <li><p>Microsoft. Remote Development with SSH. <a
+        href="https://code.visualstudio.com/docs/remote/ssh"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/remote/ssh</span></a></p></li>
+        <li><p>Microsoft. Python in VS Code. <a
+        href="https://code.visualstudio.com/docs/python/python-tutorial"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/python/python-tutorial</span></a></p></li>
+        <li><p>Microsoft. Source Control in VS Code. <a
+        href="https://code.visualstudio.com/docs/sourcecontrol/overview"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/sourcecontrol/overview</span></a></p></li>
+        <li><p>Microsoft. Debugging in VS Code. <a
+        href="https://code.visualstudio.com/docs/editor/debugging"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/editor/debugging</span></a></p></li>
+        </ul>
+        <h2 id="nav-extension-documentation">Extension
+        documentation</h2>
+        <ul>
+        <li><p>Live Server extension. <a
+        href="https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer</span></a></p></li>
+        <li><p>Remote - SSH extension pack. <a
+        href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack</span></a></p></li>
+        <li><p>Git History extension. <a
+        href="https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory</span></a></p></li>
+        <li><p>XML Tools extension. <a
+        href="https://marketplace.visualstudio.com/items?itemName=DotJoshJohnsson.xml"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://marketplace.visualstudio.com/items?itemName=DotJoshJohnsson.xml</span></a></p></li>
+        <li><p>Python extension by Microsoft. <a
+        href="https://marketplace.visualstudio.com/items?itemName=ms-python.python"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://marketplace.visualstudio.com/items?itemName=ms-python.python</span></a></p></li>
+        </ul>
+        <h2 id="nav-ai-and-local-model-tooling">AI and local-model
+        tooling</h2>
+        <ul>
+        <li><p>Continue documentation. <a
+        href="https://docs.continue.dev/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://docs.continue.dev/</span></a></p></li>
+        <li><p>Continue homepage. <a href="https://continue.dev/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://continue.dev/</span></a></p></li>
+        <li><p>Ollama documentation. <a href="https://ollama.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://ollama.com/</span></a></p></li>
+        <li><p>Ollama GitHub repository. <a
+        href="https://github.com/ollama/ollama"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://github.com/ollama/ollama</span></a></p></li>
+        </ul>
+        <h2 id="nav-further-reading">Further reading</h2>
+        <ul>
+        <li><p>Microsoft. Remote Development overview. <a
+        href="https://code.visualstudio.com/docs/remote/remote-overview"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/remote/remote-overview</span></a></p></li>
+        <li><p>Microsoft. Development Containers. <a
+        href="https://code.visualstudio.com/docs/remote/containers"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/remote/containers</span></a></p></li>
+        <li><p>GitHub Copilot documentation. <a
+        href="https://docs.github.com/en/copilot"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://docs.github.com/en/copilot</span></a></p></li>
+        <li><p>Git documentation. <a
+        href="https://git-scm.com/doc"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://git-scm.com/doc</span></a></p></li>
+        <li><p>MDN Web Docs. Getting started with the web. <a
+        href="https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web</span></a></p></li>
+        <li><p>Microsoft Learn: PowerShell. <a
+        href="https://learn.microsoft.com/en-us/powershell/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://learn.microsoft.com/en-us/powershell/</span></a></p></li>
+        <li><p>GNU Bash manual. <a
+        href="https://www.gnu.org/software/bash/manual/bash.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.gnu.org/software/bash/manual/bash.html</span></a></p></li>
+        </ul>
+        <hr />
+        <h2 id="nav-suggested-document-ready-version">Suggested
+        document-ready version</h2>
+        <p>You could also place this directly into the document as a
+        “Sources” section:</p>
+        <h2 id="nav-sources">Sources:</h2>
+        <ul>
+        <li><p>Microsoft Visual Studio Code documentation: <a
+        href="https://code.visualstudio.com/docs"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs</span></a></p></li>
+        <li><p>VS Code Remote Development with SSH: <a
+        href="https://code.visualstudio.com/docs/remote/ssh"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/remote/ssh</span></a></p></li>
+        <li><p>VS Code Python documentation: <a
+        href="https://code.visualstudio.com/docs/python/python-tutorial"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/python/python-tutorial</span></a></p></li>
+        <li><p>VS Code Source Control documentation: <a
+        href="https://code.visualstudio.com/docs/sourcecontrol/overview"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/sourcecontrol/overview</span></a></p></li>
+        <li><p>Live Server extension: <a
+        href="https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer</span></a></p></li>
+        <li><p>Remote - SSH extension pack: <a
+        href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack</span></a></p></li>
+        <li><p>Continue documentation: <a
+        href="https://docs.continue.dev/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://docs.continue.dev/</span></a></p></li>
+        <li><p>Ollama documentation: <a href="https://ollama.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://ollama.com/</span></a></p></li>
+        </ul>
+        <h2 id="nav-further-reading-1">Further reading:</h2>
+        <ul>
+        <li><p>Development Containers: <a
+        href="https://code.visualstudio.com/docs/remote/containers"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://code.visualstudio.com/docs/remote/containers</span></a></p></li>
+        <li><p>GitHub Copilot: <a
+        href="https://docs.github.com/en/copilot"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://docs.github.com/en/copilot</span></a></p></li>
+        <li><p>Git docs: <a href="https://git-scm.com/doc"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://git-scm.com/doc</span></a></p></li>
+        <li><p>MDN Web Docs: <a
+        href="https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web</span></a></p></li>
+        </ul>
+        <h2 id="nav-summary">Summary</h2>
+        <p>The document appears to be a practical blend of:</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Microsoft VS Code official docs</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>extension marketplace docs</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Continue and Ollama documentation</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>general workflow advice for remote dev, Git, Python, and
+        static-site editing</p>
+        </div></li>
+        </ul>
       </article>
     </div>
   </main>
@@ -2860,4 +2458,3 @@
   <script src="/scripts/component-loader.js"></script>
 </body>
 </html>
-
