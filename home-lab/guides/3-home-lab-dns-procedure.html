@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3-home-lab-dns-procedure</title>
+  <title>Home Lab Dns Procedure</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,13 +13,33 @@
   </script>
   <link rel="stylesheet" href="/styles/global.css">
   <style>
+    /* Prevent outer window scrolling and lock viewport bounds */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; 
+    }
+
+    /* Main container takes up the exact remaining window height */
+    main.app-main {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      box-sizing: border-box;
+      padding: 1.5rem 1.5rem;
+      max-width: 100%;
+    }
+
+    /* Doc layout fills whatever vertical space is left below the title banner */
     .doc-layout {
       display: grid;
       grid-template-columns: 450px 1fr;
       gap: 2.5rem;
-      margin-top: 2rem;
       align-items: start;
+      flex: 1;
+      min-height: 0; /* Crucial for grid children to shrink and scroll properly */
     }
+    
     [custom-style="TextBlock"], 
     .TextBlock, 
     .textblock, 
@@ -27,27 +47,28 @@
     .Code, 
     span[data-custom-style="TextBlock"],
     p[custom-style="TextBlock"] {
-        background: #1e1e1e !important;         /* Matches your dark code/box theme */
-        border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Subtle dark-mode border */
-        border-left: 4px solid #3182ce !important;              /* Accent left border (or keep your preferred color) */
-        padding: 16px !important;               /* Creates internal breathing room */
-        line-height: 1.1 !important;           /* Keeps text lines tightly grouped */
-        display: block !important;              /* Forces the inline element to act like a box */
-        width: 100% !important;                 /* Spans the box structure across the viewport */
-        max-width: 850px !important;            /* Restricts maximum box width to look clean */
-        margin: 1.5rem 0 !important;            /* Vertical margins separate it from normal body text */
-        color: #eaf4ff !important;                     /* Matches your light text color */
-        border-radius: 6px !important;          /* Gives the box sleek, rounded corners */
+        background: #1e1e1e !important;         
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+        border-left: 4px solid #3182ce !important;             
+        padding: 16px !important;               
+        line-height: 1.1 !important;            
+        display: block !important;              
+        width: 100% !important;                 
+        max-width: 850px !important;            
+        margin: 1.5rem 0 !important;            
+        color: #eaf4ff !important;                   
+        border-radius: 6px !important;          
     }
+
+    /* Left Column (TOC) Independent Scroll */
     .sidebar-toc {
-      position: sticky;
-      top: 2rem;
-      max-height: calc(100vh - 4rem);
+      height: 100%;
       overflow-y: auto;
       background: rgba(255, 255, 255, 0.05);
       padding: 1.5rem;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
     }
     .sidebar-toc ul {
       list-style: none;
@@ -70,9 +91,15 @@
       color: #eaf4ff;
       text-decoration: underline;
     }
+
+    /* Right Column (Document Content) Independent Scroll */
     .document-content {
+      height: 100%;
+      overflow-y: auto;
       color: #eaf4ff;
       line-height: 1.7;
+      padding-right: 1rem; 
+      box-sizing: border-box;
     }
     .document-content pre {
       background: #1e1e1e;
@@ -220,13 +247,18 @@
     }
 
     @media (max-width: 768px) {
-      .doc-layout {
-        grid-template-columns: 1fr;
+      html, body {
+        overflow: auto; /* Re-enable window scrolling on mobile */
       }
-      .sidebar-toc {
-        position: relative;
-        top: 0;
-        max-height: none;
+      main.app-main {
+        height: auto;
+      }
+      .doc-layout {
+        display: block;
+        height: auto;
+      }
+      .sidebar-toc, .document-content {
+        height: auto;
         overflow-y: visible;
       }
       .document-content table {
@@ -239,8 +271,8 @@
 </head>
 <body>
   <div id="header-placeholder"></div>
-  <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
-    <p style="margin-bottom: 1.5rem; text-align: left;">
+  <main class="app-main">
+    <p style="margin-bottom: 1rem; text-align: left; flex-shrink: 0;">
       <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">→Home Lab</a>
       <span style="color: #64748b; margin: 0 0.75rem;">|</span>
       <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">→Back</a>
@@ -248,8 +280,9 @@
       <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">→Gateway</a>
     </p>
 
-    <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">3-home-lab-dns-procedure</h1>
+    <div class="title-banner" style="text-align: left; margin-bottom: 1.5rem; flex-shrink: 0;">
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Home
+Lab Dns Procedure</h1>
       <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
       <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
     </div>
@@ -262,34 +295,34 @@
         id="nav-toc-basic-home-lab-configuration">Basic Home Lab
         Configuration</a>
         <ul>
-        <li><a
-        href="#nav-a-home-lab-self-contained-in-a-single-mini-computer."
-        id="nav-toc-a-home-lab-self-contained-in-a-single-mini-computer.">A
-        Home Lab self-contained in a single mini-computer.</a>
+        <li><a href="#nav-recommended-design-architecture"
+        id="nav-toc-recommended-design-architecture">Recommended Design
+        Architecture</a>
+        <ul>
+        <li><a href="#nav-basic-home-lab-configuration-1"
+        id="nav-toc-basic-home-lab-configuration-1">Basic Home Lab
+        Configuration</a>
         <ul>
         <li><a
         href="#nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram"
-        id="nav-toc-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">
-
-            $FigureIndex++
-
-            "Figure ${FigureIndex}:"
-         Proxmox VE 9.2.3 / Minicomputer Architecture &amp; Network
+        id="nav-toc-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure 1: Proxmox VE 9.2.3 / Minicomputer Architecture &amp; Network
         Diagram<span
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span></a></li>
-        <li><a href="#nav-code-barnes-home-lab-configuration"
-        id="nav-toc-code-barnes-home-lab-configuration">
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         Barnes
-        Home Lab Configuration</a></li>
+        </ul></li>
+        </ul></li>
         </ul></li>
         <li><a href="#nav-setting-up-a-domain-name"
         id="nav-toc-setting-up-a-domain-name">Setting up a Domain
         Name</a>
+        <ul>
+        <li><a
+        href="#nav-reserve-your-spot-now-if-you-think-you-want-to-present-an-image-to-the-external-world."
+        id="nav-toc-reserve-your-spot-now-if-you-think-you-want-to-present-an-image-to-the-external-world."><span
+        class="custom-style-Heading 1 Char Heading 1 Char"
+        data-custom-style="Heading 1 Char">Reserve your spot now if you
+        think you want to present an image to the external
+        world.</span></a>
         <ul>
         <li><a href="#nav-step-1-register-your-new-domain"
         id="nav-toc-step-1-register-your-new-domain">Step 1: Register
@@ -304,7 +337,13 @@
         <ul>
         <li><a href="#nav-step-1-create-a-public-repository"
         id="nav-toc-step-1-create-a-public-repository">Step 1: Create a
-        Public Repository</a></li>
+        Public Repository</a>
+        <ul>
+        <li><a
+        href="#nav-create-2-additional-repositories-at-this-time."
+        id="nav-toc-create-2-additional-repositories-at-this-time.">Create
+        2 additional Repositories at this time.</a></li>
+        </ul></li>
         <li><a href="#nav-step-2-upload-your-files"
         id="nav-toc-step-2-upload-your-files">Step 2: Upload Your
         Files</a></li>
@@ -313,11 +352,22 @@
         Pages</a></li>
         <li><a href="#nav-step-4-install-github-desltop"
         id="nav-toc-step-4-install-github-desltop">Step 4: Install
-        Github Desltop</a></li>
-        <li><a href="#nav-step-5-share-your-files-and-site"
-        id="nav-toc-step-5-share-your-files-and-site">Step 5: Share Your
-        Files and Site</a></li>
+        Github Desltop</a>
+        <ul>
+        <li><a href="#nav-step-1-install-and-authenticate"
+        id="nav-toc-step-1-install-and-authenticate">Step 1: Install and
+        Authenticate</a></li>
+        <li><a href="#nav-step-2-connect-your-repository"
+        id="nav-toc-step-2-connect-your-repository">Step 2: Connect Your
+        Repository</a></li>
+        <li><a href="#nav-step-3-syncing-your-changes-going-forward"
+        id="nav-toc-step-3-syncing-your-changes-going-forward">Step 3:
+        Syncing Your Changes Going Forward</a></li>
         </ul></li>
+        </ul></li>
+        <li><a href="#nav-share-your-files-and-site"
+        id="nav-toc-share-your-files-and-site">Share Your Files and
+        Site</a></li>
         <li><a href="#nav-pointing-cloudfare-to-git-hub"
         id="nav-toc-pointing-cloudfare-to-git-hub">Pointing Cloudfare to
         Git Hub</a>
@@ -326,55 +376,263 @@
         id="nav-toc-step-1-configure-dns-records-in-cloudflare">Step 1:
         Configure DNS Records in Cloudflare</a>
         <ul>
-        <li><a href="#nav-figure-cloudflare-dns-configuration"
-        id="nav-toc-figure-cloudflare-dns-configuration">
-
-            $FigureIndex++
-
-            "Figure ${FigureIndex}:"
-        
+        <li><a href="#nav-figure-2-cloudflare-dns-configuration"
+        id="nav-toc-figure-2-cloudflare-dns-configuration">Figure 2:
         Cloudflare DNS Configuration</a></li>
         </ul></li>
         <li><a href="#nav-step-2-configure-your-custom-domain-in-github"
         id="nav-toc-step-2-configure-your-custom-domain-in-github">Step
         2: Configure Your Custom Domain in GitHub</a></li>
-        <li><a href="#nav-step-3.-enable-email-routing"
-        id="nav-toc-step-3.-enable-email-routing">Step 3. Enable Email
-        Routing</a></li>
-        <li><a href="#nav-step-4.-custom-email-return-address-in-gmail"
-        id="nav-toc-step-4.-custom-email-return-address-in-gmail">Step
-        4. Custom Email Return Address in Gmail</a></li>
         </ul></li>
         </ul></li>
-        <li><a href="#nav-references"
-        id="nav-toc-references">References</a></li>
+        <li><a href="#nav-configuring-email-for-your-new-domain"
+        id="nav-toc-configuring-email-for-your-new-domain">Configuring
+        email for your new Domain</a>
+        <ul>
+        <li><a href="#nav-setting-up-email-routing-in-cloudfare"
+        id="nav-toc-setting-up-email-routing-in-cloudfare">Setting up
+        email routing in Cloudfare</a>
+        <ul>
+        <li><a href="#nav-how-email-addressing-works-in-cloudflare"
+        id="nav-toc-how-email-addressing-works-in-cloudflare">How Email
+        Addressing Works in Cloudflare</a>
+        <ul>
+        <li><a href="#nav-individual-custom-addresses-explicit-rules"
+        id="nav-toc-individual-custom-addresses-explicit-rules">1.
+        Individual Custom Addresses (Explicit Rules)</a></li>
+        <li><a href="#nav-catch-all-address-wildcard"
+        id="nav-toc-catch-all-address-wildcard">2. Catch-All Address
+        (Wildcard)</a></li>
+        </ul></li>
+        <li><a href="#nav-step-by-step-adding-a-new-address-rule"
+        id="nav-toc-step-by-step-adding-a-new-address-rule">Step-by-Step:
+        Adding a New Address Rule</a></li>
+        <li><a href="#nav-key-limits-to-keep-in-mind"
+        id="nav-toc-key-limits-to-keep-in-mind">Key Limits to Keep in
+        Mind</a></li>
+        </ul></li>
+        <li><a href="#nav-setting-up-purelymail"
+        id="nav-toc-setting-up-purelymail">Setting up Purelymail</a>
+        <ul>
+        <li><a href="#nav-key-features-capabilities"
+        id="nav-toc-key-features-capabilities">Key Features &amp;
+        Capabilities</a></li>
+        <li><a href="#nav-how-it-solves-your-outlook-problem"
+        id="nav-toc-how-it-solves-your-outlook-problem">How It Solves
+        Your Outlook Problem</a></li>
+        <li><a
+        href="#nav-step-1-add-domain-create-mailbox-in-purelymail"
+        id="nav-toc-step-1-add-domain-create-mailbox-in-purelymail">Step
+        1: Add Domain &amp; Create Mailbox in Purelymail</a></li>
+        <li><a href="#nav-step-2-configure-dns-records-in-cloudflare"
+        id="nav-toc-step-2-configure-dns-records-in-cloudflare">Step 2:
+        Configure DNS Records in Cloudflare</a></li>
+        <li><a
+        href="#nav-step-3-connect-purelymail-to-new-microsoft-outlook"
+        id="nav-toc-step-3-connect-purelymail-to-new-microsoft-outlook">Step
+        3: Connect Purelymail to New Microsoft Outlook</a>
+        <ul>
+        <li><a href="#nav-imap-incoming-mail-server"
+        id="nav-toc-imap-incoming-mail-server">IMAP (Incoming Mail
+        Server):</a></li>
+        <li><a href="#nav-smtp-outgoing-mail-server"
+        id="nav-toc-smtp-outgoing-mail-server">SMTP (Outgoing Mail
+        Server):</a></li>
+        <li><a href="#nav-how-sending-replying-will-work"
+        id="nav-toc-how-sending-replying-will-work">How Sending &amp;
+        Replying Will Work</a></li>
+        </ul></li>
+        <li><a href="#nav-email-aliases-in-purelymail"
+        id="nav-toc-email-aliases-in-purelymail">Email Aliases in
+        Purelymail</a>
+        <ul>
+        <li><a href="#nav-part-1-setting-up-custom-aliases"
+        id="nav-toc-part-1-setting-up-custom-aliases">Part 1: Setting Up
+        Custom Aliases</a></li>
+        <li><a href="#nav-step-by-step-instructions"
+        id="nav-toc-step-by-step-instructions">Step-by-Step
+        Instructions:</a></li>
+        <li><a href="#nav-part-2-setting-up-a-catch-all-address"
+        id="nav-toc-part-2-setting-up-a-catch-all-address">Part 2:
+        Setting Up a Catch-All Address</a></li>
+        <li><a href="#nav-step-by-step-instructions-1"
+        id="nav-toc-step-by-step-instructions-1">Step-by-Step
+        Instructions:</a></li>
+        <li><a
+        href="#nav-part-3-sendingreplying-as-your-alias-in-outlook"
+        id="nav-toc-part-3-sendingreplying-as-your-alias-in-outlook">Part
+        3: Sending/Replying as Your Alias in Outlook</a></li>
+        </ul></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-managing-email-storage-restrictions"
+        id="nav-toc-managing-email-storage-restrictions">Managing email
+        storage Restrictions</a>
+        <ul>
+        <li><a href="#nav-considerations"
+        id="nav-toc-considerations">Considerations</a></li>
+        <li><a
+        href="#nav-power-automate-desktop-free-built-in-windows-app"
+        id="nav-toc-power-automate-desktop-free-built-in-windows-app">Power
+        Automate Desktop (Free Built-In Windows App)</a>
+        <ul>
+        <li><a
+        href="#nav-structuring-your-disk-folder-for-easy-indexing"
+        id="nav-toc-structuring-your-disk-folder-for-easy-indexing">Structuring
+        Your Disk Folder for Easy Indexing</a></li>
+        <li><a href="#nav-recommended-folder-hierarchy"
+        id="nav-toc-recommended-folder-hierarchy">Recommended Folder
+        Hierarchy</a></li>
+        <li><a href="#nav-standardized-naming-convention"
+        id="nav-toc-standardized-naming-convention">Standardized Naming
+        Convention</a></li>
+        <li><a href="#nav-plaintext"
+        id="nav-toc-plaintext">Plaintext</a></li>
+        <li><a href="#nav-tips-for-file-explorer-indexing"
+        id="nav-toc-tips-for-file-explorer-indexing">Tips for File
+        Explorer Indexing:</a></li>
+        </ul></li>
+        <li><a href="#nav-power-automation"
+        id="nav-toc-power-automation">Power Automation</a>
+        <ul>
+        <li><a href="#nav-how-the-automated-sequence-works"
+        id="nav-toc-how-the-automated-sequence-works">How the Automated
+        Sequence Works</a></li>
+        <li><a href="#nav-step-by-step-power-automate-flow-blueprint"
+        id="nav-toc-step-by-step-power-automate-flow-blueprint">Step-by-Step
+        Power Automate Flow Blueprint</a></li>
+        <li><a href="#nav-important-safeguards"
+        id="nav-toc-important-safeguards">Important Safeguards</a></li>
+        </ul></li>
+        <li><a href="#nav-power-automate"
+        id="nav-toc-power-automate">Power Automate</a>
+        <ul>
+        <li><a href="#nav-step-1-install-the-local-file-system-gateway"
+        id="nav-toc-step-1-install-the-local-file-system-gateway">Step
+        1: Install the Local File System Gateway</a></li>
+        <li><a
+        href="#nav-step-2-configure-the-file-system-connection-in-power-automate"
+        id="nav-toc-step-2-configure-the-file-system-connection-in-power-automate">Step
+        2: Configure the File System Connection in Power
+        Automate</a></li>
+        <li><a href="#nav-step-3-build-the-cloud-flow"
+        id="nav-toc-step-3-build-the-cloud-flow">Step 3: Build the Cloud
+        Flow</a>
+        <ul>
+        <li><a href="#nav-trigger-when-a-new-email-arrives-v3"
+        id="nav-toc-trigger-when-a-new-email-arrives-v3">1. Trigger:
+        When a new email arrives (V3)</a></li>
+        <li><a href="#nav-action-compose-sanitize-dynamic-content"
+        id="nav-toc-action-compose-sanitize-dynamic-content">2. Action:
+        Compose (Sanitize Dynamic Content)</a></li>
+        <li><a href="#nav-action-create-file-file-system-connector"
+        id="nav-toc-action-create-file-file-system-connector">3. Action:
+        Create file (File System Connector)</a></li>
+        <li><a href="#nav-action-delete-email-v2"
+        id="nav-toc-action-delete-email-v2">4. Action: Delete email
+        (V2)</a></li>
+        </ul></li>
+        <li><a href="#nav-step-4-test-safely-before-deleting"
+        id="nav-toc-step-4-test-safely-before-deleting">Step 4: Test
+        Safely Before Deleting</a></li>
+        </ul></li>
+        <li><a href="#nav-email-statistics-and-analytics"
+        id="nav-toc-email-statistics-and-analytics">Email Statistics and
+        Analytics</a></li>
+        <li><a
+        href="#nav-layer-2-business-archival-analytics-custom-logging"
+        id="nav-toc-layer-2-business-archival-analytics-custom-logging">Layer
+        2: Business &amp; Archival Analytics (Custom Logging)</a>
+        <ul>
+        <li><a href="#nav-recommended-logging-fields-matrix"
+        id="nav-toc-recommended-logging-fields-matrix">Recommended
+        Logging Fields Matrix</a></li>
+        <li><a
+        href="#nav-step-1-create-and-format-the-excel-tracking-file"
+        id="nav-toc-step-1-create-and-format-the-excel-tracking-file">Step
+        1: Create and Format the Excel Tracking File</a></li>
+        <li><a
+        href="#nav-step-2-add-the-excel-logging-action-to-your-flow"
+        id="nav-toc-step-2-add-the-excel-logging-action-to-your-flow">Step
+        2: Add the Excel Logging Action to Your Flow</a></li>
+        <li><a href="#nav-step-3-map-dynamic-content-and-expressions"
+        id="nav-toc-step-3-map-dynamic-content-and-expressions">Step 3:
+        Map Dynamic Content and Expressions</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-external-services-platforms-referenced"
+        id="nav-toc-external-services-platforms-referenced">External
+        Services &amp; Platforms Referenced</a>
+        <ul>
+        <li><a href="#nav-domain-dns-management"
+        id="nav-toc-domain-dns-management">Domain &amp; DNS
+        Management</a></li>
+        <li><a href="#nav-web-hosting-version-control"
+        id="nav-toc-web-hosting-version-control">Web Hosting &amp;
+        Version Control</a></li>
+        <li><a href="#nav-email-services"
+        id="nav-toc-email-services">Email Services</a>
+        <ul>
+        <li><a href="#nav-primary-email-solution"
+        id="nav-toc-primary-email-solution">Primary Email
+        Solution</a></li>
+        <li><a href="#nav-alternativesupplementary-services"
+        id="nav-toc-alternativesupplementary-services">Alternative/Supplementary
+        Services</a></li>
+        <li><a href="#nav-productivity-automation"
+        id="nav-toc-productivity-automation">Productivity &amp;
+        Automation</a></li>
+        <li><a href="#nav-email-infrastructure-services"
+        id="nav-toc-email-infrastructure-services">Email Infrastructure
+        Services</a></li>
+        </ul></li>
+        <li><a href="#nav-technical-concepts-documentation-to-reference"
+        id="nav-toc-technical-concepts-documentation-to-reference">Technical
+        Concepts &amp; Documentation to Reference</a>
+        <ul>
+        <li><a href="#nav-email-authentication-security"
+        id="nav-toc-email-authentication-security">Email Authentication
+        &amp; Security</a></li>
+        <li><a href="#nav-dns-record-types"
+        id="nav-toc-dns-record-types">DNS Record Types</a></li>
+        <li><a href="#nav-github-pages-deployment"
+        id="nav-toc-github-pages-deployment">GitHub Pages &amp;
+        Deployment</a></li>
+        <li><a href="#nav-email-protocols"
+        id="nav-toc-email-protocols">Email Protocols</a></li>
+        </ul></li>
+        <li><a href="#nav-further-reading-learning-resources"
+        id="nav-toc-further-reading-learning-resources">Further Reading
+        &amp; Learning Resources</a>
+        <ul>
+        <li><a href="#nav-key-configuration-urls-to-bookmark"
+        id="nav-toc-key-configuration-urls-to-bookmark">Key
+        Configuration URLs to Bookmark</a></li>
+        </ul></li>
+        </ul></li>
         </ul>
       </aside>
 
       <article class="document-content">
         <figure>
-        <img
-        src="../assets/figures/3-home-lab-dns-procedure/media/image1.png"
+        <img src="3-home-lab-dns-procedure/media/image1.png"
         style="width:6.5in;height:3.54545in"
-        alt=": Your Home in the Clouds!" />
-        <figcaption aria-hidden="true">: Your Home in the
+        alt="Figure 3: Your Home in the Clouds!" />
+        <figcaption aria-hidden="true">Figure 4: Your Home in the
         Clouds!</figcaption>
         </figure>
         <h1 id="nav-basic-home-lab-configuration">Basic Home Lab
         Configuration</h1>
-        <h3
-        id="nav-a-home-lab-self-contained-in-a-single-mini-computer.">A
-        Home Lab self-contained in a single mini-computer.</h3>
-        <p><img
-        src="../assets/figures/3-home-lab-dns-procedure/media/image2.png"
-        style="width:6.5in;height:3.54834in" /></p>
+        <h2 id="nav-recommended-design-architecture">Recommended Design
+        Architecture</h2>
+        <h3 id="nav-basic-home-lab-configuration-1">Basic Home Lab
+        Configuration</h3>
+        <p>A Home Lab self-contained in an inexpensive single
+        mini-computer.</p>
+        <p><img src="3-home-lab-dns-procedure/media/image2.png"
+        style="width:6.5in;height:3.54861in" /></p>
         <h4
-        id="nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">
-
-            $FigureIndex++
-
-            "Figure ${FigureIndex}:"
-         Proxmox VE 9.2.3 / Minicomputer Architecture &amp; Network
+        id="nav-figure-2-proxmox-ve-9.2.3-minicomputer-architecture-network-diagram">Figure 5: Proxmox VE 9.2.3 / Minicomputer Architecture &amp; Network
         Diagram<span
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span></h4>
@@ -392,303 +650,128 @@
         caches and then load this config for reference."</p>
         </blockquote>
         <table>
+        <caption>Code 1: Barnes Home Lab Configuration</caption>
         <colgroup>
-        <col style="width: 101%" />
+        <col style="width: 100%" />
         </colgroup>
         <thead>
         <tr>
-        <th><div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>=========================================================================</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>Barnes Home Lab Configuration</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
-        4.9GHz)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>Proxmox VE 9.2.3 / Dedicated Ethernet / Intel Core
-        i7-13620H</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>Integrated GPU: Intel UHD Graphics (13th Gen) / 1TB PCIe NVMe
-        SSD</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>=========================================================================</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>[ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2 Threads for
-        overhead ]</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ 192.168.86.250</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>├──► [ VM 101 ] HOME ASSISTANT OS (HAOS)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── RAM: 4 GB (Dedicated)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── STO: 32 GB - 64 GB NVMe</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── 192.168.86.251 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ └── 10.0.10.1/24 - Isolated Backend Segment (vmbr1 -</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ No Gateway/DNS Emulation) eth1</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>├──► [ LXC 100 ] DNSMASQ SERVER (PiHole)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── CPU: 1 Core (vCPU)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── RAM: 512 MB (Ultra-lightweight)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── STO: 2 GB NVMe</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ └── 192.168.86.254 (Currently .249 until production
-        release)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>├──► [ LXC 102 ] NGINX PROXY MANAGER</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── RAM: 1 GB (Scalable)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── STO: 8 GB (OS) + Mount point to external storage for
-        media</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ └── 192.168.86.252</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>├──► [ LXC 103 ] OLLAMA LLM ENGINE</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── CPU: 6 Cores (vCPUs) ---&gt; (Uses high-perf Intel
-        P-Cores)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── GPU Passthru: Vulkan0 Intel(R) Graphics (RPL-P)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ type=iGPU total=23.3 GiB Ram</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── RAM: 16 GB (Allows up to 8B/11B parameter models)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── STO: 40 GB NVMe --------&gt; (Large capacity for model
-        weights)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── LAM: gemma3:4b ---------&gt; Multimodal (Vision) &amp;
-        128K Context Window</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── LAM: phi4-mini:latest --&gt; Logic, Intense Reasoning,
-        &amp; Tool Calling</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── LAM: qwen2.5-coder:7b --&gt; Complex Automation
-        Engineering,</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ Code Sandbox, &amp; YAML Chat</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── LAM: qwen2.5-coder:1.5b -&gt; Inline IDE Autocomplete
-        Engine</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ (Fed via Desktop on LAN)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── LAM: nomic-embed-text --&gt; Vector Embeddings &amp;
-        Local</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ Document Context Parsing</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── 192.168.86.253 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ └── 10.0.10.3/24 - Isolated Backend Segment (vmbr1 - No</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ Gateway/DNS Emulation) eth1</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>├──► [ LXC 104 ] WYOMING-DOCKER</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── RAM: 2 GB (Scalable)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── STO: 10 GB (OS) + Mount point to external storage
-        for</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ media</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── ports: 10200:10200</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── volumes: piper-data:/data</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ ├── 192.168.86.248 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>│ └── 10.0.10.4/24 - Isolated Backend Segment (vmbr1)
-        eth1</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>└──► [ LXC 105 ] TWINGATE CONNECTOR</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>├── CPU: 1 Core (vCPU)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>├── RAM: 512 MB (Ultra-lightweight)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>├── STO: 2 GB NVMe (OS Only)</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>└── 192.168.86.247 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-Plain Text Plain Text"
-        data-custom-style="Plain Text">
-        <p>(Routes 192.168.86.0/24 Securely)</p>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>"Please start a clean conversation, flush all buffers and
+        caches and then load this config Code 2: Barnes Home Lab
+        Configuration<br />
+        =========================================================================<br />
+        Barnes Home Lab Configuration<br />
+        KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
+        4.9GHz)<br />
+        Proxmox VE 9.2.3 / Dedicated Ethernet / Intel Core
+        i7-13620H<br />
+        Integrated GPU: Intel UHD Graphics (13th Gen) / 1TB PCIe NVMe
+        SSD<br />
+        =========================================================================<br />
+        <br />
+        [ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2 Threads for
+        overhead ]<br />
+        │ 192.168.86.250<br />
+        ├──► [ VM 101 ] HOME ASSISTANT OS (HAOS)<br />
+        │ ├── CPU: 2 Cores (vCPUs)<br />
+        │ ├── RAM: 4 GB (Dedicated)<br />
+        │ ├── STO: 32 GB - 64 GB NVMe<br />
+        │ ├── 192.168.86.251 - Primary LAN Segment (vmbr0) eth0<br />
+        │ └── 10.0.10.1/24 - Isolated Backend Segment (vmbr1 -<br />
+        │ No Gateway/DNS Emulation) eth1<br />
+        ├──► [ LXC 100 ] DNSMASQ SERVER (PiHole)<br />
+        │ ├── CPU: 1 Core (vCPU)<br />
+        │ ├── RAM: 512 MB (Ultra-lightweight)<br />
+        │ ├── STO: 2 GB NVMe<br />
+        │ └── 192.168.86.254 (Currently .249 until production
+        release)<br />
+        ├──► [ LXC 102 ] NGINX PROXY MANAGER<br />
+        │ ├── CPU: 2 Cores (vCPUs)<br />
+        │ ├── RAM: 1 GB (Scalable)<br />
+        │ ├── STO: 8 GB (OS) + Mount point to external storage for
+        media<br />
+        │ └── 192.168.86.252<br />
+        ├──► [ LXC 103 ] OLLAMA LLM ENGINE<br />
+        │ ├── CPU: 6 Cores (vCPUs) ---&gt; (Uses high-perf Intel
+        P-Cores)<br />
+        │ ├── GPU Passthru: Vulkan0 Intel(R) Graphics (RPL-P)<br />
+        │ type=iGPU total=23.3 GiB Ram<br />
+        │ ├── RAM: 16 GB (Allows up to 8B/11B parameter models)<br />
+        │ ├── STO: 40 GB NVMe --------&gt; (Large capacity for model
+        weights)<br />
+        │ ├── LAM: gemma3:4b ---------&gt; Multimodal (Vision) &amp;
+        128K Context<br />
+        Window<br />
+        │ ├── LAM: phi4-mini:latest --&gt; Logic, Intense Reasoning,
+        &amp; Tool<br />
+        Calling<br />
+        │ ├── LAM: qwen2.5-coder:7b --&gt; Complex Automation
+        Engineering,<br />
+        │ Code Sandbox, &amp; YAML Chat<br />
+        │ ├── LAM: qwen2.5-coder:1.5b -&gt; Inline IDE Autocomplete
+        Engine<br />
+        │ (Fed via Desktop on LAN)<br />
+        │ ├── LAM: nomic-embed-text --&gt; Vector Embeddings &amp;
+        Local<br />
+        │ Document Context Parsing<br />
+        │ ├── 192.168.86.253 - Primary LAN Segment (vmbr0) eth0<br />
+        │ └── 10.0.10.3/24 - Isolated Backend Segment (vmbr1 - No<br />
+        │ Gateway/DNS Emulation) eth1<br />
+        ├──► [ LXC 104 ] WYOMING-DOCKER<br />
+        │ ├── CPU: 2 Cores (vCPUs)<br />
+        │ ├── RAM: 2 GB (Scalable)<br />
+        │ ├── STO: 10 GB (OS) + Mount point to external storage
+        for<br />
+        │ media<br />
+        │ ├── ports: 10200:10200<br />
+        │ ├── volumes: piper-data:/data<br />
+        │ ├── 192.168.86.248 - Primary LAN Segment (vmbr0) eth0<br />
+        │ └── 10.0.10.4/24 - Isolated Backend Segment (vmbr1) eth1<br />
+        └──► [ LXC 105 ] TWINGATE CONNECTOR<br />
+        ├── CPU: 1 Core (vCPU)<br />
+        ├── RAM: 512 MB (Ultra-lightweight)<br />
+        ├── STO: 2 GB NVMe (OS Only)<br />
+        └── 192.168.86.247 - Primary LAN Segment (vmbr0) eth0<br />
+        (Routes 192.168.86.0/24 Securely)</p>
         </div></th>
         </tr>
         </thead>
         <tbody>
         </tbody>
         </table>
-        <h4 id="nav-code-barnes-home-lab-configuration">
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         Barnes
-        Home Lab Configuration</h4>
-        <h2 id="nav-setting-up-a-domain-name">Setting up a Domain
-        Name</h2>
-        <p>Reserve your spot now if you think you want to present an
-        image to the external world. Names are unique to the individual
-        person or company. Cost can influence your Domain Name. I have
-        found that a .us domain costs around $7 US dollars per year.
-        That is probably the cheapest you can find. I have a reference
-        paper that you can read in helping you decide what extension you
-        want. I also have found the cheapest overall solution is to skip
-        the middleman (can introduce unknown costs and make the creation
-        and decision more complicated). Read my paper called <a
+        <h1 id="nav-setting-up-a-domain-name">Setting up a Domain
+        Name</h1>
+        <h2
+        id="nav-reserve-your-spot-now-if-you-think-you-want-to-present-an-image-to-the-external-world."><span
+        class="custom-style-Heading 1 Char Heading 1 Char"
+        data-custom-style="Heading 1 Char">Reserve your spot now if you
+        think you want to present an image to the external
+        world.</span></h2>
+        <p>Names are unique to the individual person or company. Cost
+        can influence your Domain Name. I have found that a .us domain
+        costs around $7 US dollars per year. That is probably the
+        cheapest you can find. I have a reference paper that you can
+        read in helping you decide what extension you want. I also have
+        found the cheapest overall solution is to skip the middleman
+        (they can introduce unknown costs and make the creation and
+        decision more complicated). Read my paper called <a
         href="../../smart-home-edge-systems/home-lab/reference/choosing-your-domain-name.html"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Choosing a Domain Name</span></a>.
-        Here are the steps, when you are ready to register your Domain
-        Name.</p>
-        <ol type="1">
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
+        Here are the steps, when you are finally ready to register your
+        Domain Name.</p>
         <p>Create an account on <a href="https://github.com"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">GitHub</span></a> if you don't
         already have one.</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
         <p>Create an account on <a
         href="https://dash.cloudflare.com/"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Cloudfare.com</span></a></p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>Point the connector to your GitHub account for login purposes
-        to simplify authentication.</p>
-        </div></li>
-        </ol>
+        <p>Point the login details to use your GitHub account for login
+        for authentication.</p>
         <h3 id="nav-step-1-register-your-new-domain">Step 1: Register
         Your New Domain</h3>
         <p>Cloudflare operates as an official domain registrar, selling
@@ -704,9 +787,10 @@
         Domains</strong>.</p></li>
         <li><p>Type the domain name you want in the search bar and press
         <strong>Enter</strong>.</p></li>
-        <li><p>Check the availability list. Click <strong>Add to
-        cart</strong> next to your preferred extension (e.g., .com,
-        .org, .net).</p></li>
+        <li><p>Check the availability list. If your domain name is
+        available it will tell you or recommend alternatives.</p></li>
+        <li><p>Click <strong>Add to cart</strong> next to your preferred
+        extension (e.g., .us, .com, .org, .net).</p></li>
         <li><p>Click <strong>Purchase Now</strong>.</p></li>
         <li><p>Select your registration term length (e.g., 1 year) and
         fill out your <strong>Contact Information</strong> (required by
@@ -720,7 +804,8 @@
         Your New DNS Dashboard</h3>
         <p>Because you bought the domain directly through Cloudflare,
         the nameservers are already configured automatically. You do not
-        need to change any registrar settings to start using it.</p>
+        need to change any registrar settings to start using it. You
+        will need to point it to your GitHub account.</p>
         <ol type="1">
         <li><p>Go back to your main <strong>Cloudflare
         Dashboard</strong> home page.</p></li>
@@ -731,7 +816,8 @@
         <li><p>From the active DNS management pane, click <strong>Add
         Record</strong> to point your new domain to your web host,
         GitHub Pages, or an email provider using the exact setup steps
-        described previously.</p></li>
+        described previously. We will do this step later in this
+        document so don’t worry now.</p></li>
         </ol>
         <h2 id="nav-setting-up-a-public-repository-on-github">Setting up
         a Public Repository on Github</h2>
@@ -754,12 +840,71 @@
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
         <p><strong>Repository name</strong>: Type a name (e.g.,
-        home-lab-site).</p>
+        your-DomainName).</p>
+        </div>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>I would leave off the . extension to keep things simple.</p>
         </div></li>
+        </ul></li>
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
         <p><strong>Public/Private</strong>: Select
         <strong>Public</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Initialize this repository with</strong>: Check the
+        box for <strong>Add a README file</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Click <strong>Create repository</strong>.</p>
+        </div></li>
+        </ul>
+        <h4
+        id="nav-create-2-additional-repositories-at-this-time.">Create 2
+        additional Repositories at this time.</h4>
+        <p>site-documentation</p>
+        <p>This Repository will be to hold your work area for source
+        documents that are being maintained for this Web Site.</p>
+        <p>Click the <strong>+</strong> (plus) icon in the top-right
+        corner and select <strong>New repository</strong>.</p>
+        <p>Configure your repository settings:</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Repository name</strong>: Type a name (e.g.,
+        site-documentation).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Public/Private</strong>: Select
+        <strong>Private</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Initialize this repository with</strong>: Check the
+        box for <strong>Add a README file</strong>.</p>
+        </div></li>
+        </ul>
+        <p>home-lab-project</p>
+        <p>This Repository will be to hold your work area for source
+        documents that are being maintained for this Web Site.</p>
+        <p>Click the <strong>+</strong> (plus) icon in the top-right
+        corner and select <strong>New repository</strong>.</p>
+        <p>Configure your repository settings:</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Repository name</strong>: Type a name (e.g.,
+        home-lab-project).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Public/Private</strong>: Select
+        <strong>Private</strong>.</p>
         </div></li>
         <li><div class="custom-style-List Paragraph List Paragraph"
         data-custom-style="List Paragraph">
@@ -777,7 +922,7 @@
         lowercase, and no spaces) for GitHub to recognize it as the
         homepage.</p>
         <p>Since you don’t have any files yet just skip this step for
-        now:</p>
+        now: Continue to Step 3</p>
         <blockquote>
         <p>Inside your new repository</p>
         </blockquote>
@@ -841,9 +986,8 @@
         Github Desltop</h3>
         <p><strong>Its time to install Github Desltop and sync it to
         your Git Repository</strong></p>
-        <blockquote>
-        <p><strong>Step 1: Install and Authenticate</strong></p>
-        </blockquote>
+        <h4 id="nav-step-1-install-and-authenticate">Step 1: Install and
+        Authenticate</h4>
         <ol type="1">
         <li><p><strong>Download the Installer:</strong> Go to <a
         href="https://desktop.github.com/"><u>desktop.github.com</u></a>
@@ -859,32 +1003,84 @@
         desktop</strong>. Your browser will then ask for permission to
         redirect you back to the application.</p></li>
         </ol>
+        <h4 id="nav-step-2-connect-your-repository">Step 2: Connect Your
+        Repository</h4>
         <blockquote>
-        <p><strong>Step 2: Connect Your Repository</strong></p>
         <p>Depending on whether your repository already exists on GitHub
         or only exists as a folder on your computer, choose
         <strong>one</strong> of the methods below. We will be using the
         cloning method (Option A) since we do not have any web pages
-        yet.</p>
-        <p><strong>Option A: If your repository is already on GitHub
-        (Cloning)</strong></p>
+        yet. Option B is here for future use (if needed)</p>
+        </blockquote>
+              <div class="download-container">
+                  <details class="collapsible-download-box">
+                      <summary class="box-header">
+                          <span class="folder-icon">📂</span> Option A: If your repository is already on GitHub (Cloning). Not on your local machine.
+                      </summary>
+                      <div class="box-body">
+                          <p>This automated bundle contains the baseline configurations, code layouts, and operational manifests tracked for this module.</p>
+                          
+                          <!-- Internal Preview Block Context -->
+                          <div class="asset-preview-pane">
+                              <h4 class="preview-title">👁️ Internal Asset Preview</h4>
+                              <div class="preview-gallery">
+                                  <!-- Your webpage will display images or file links here -->
+                                  <p class="preview-instructions">All embedded diagrams, schematics, and configurations are packaged below. Click the button to download the full-resolution archive block.</p>
+                              </div>
+                          </div>
+
+                          <a href="../assets/figures/option-a-if-your-repository-is-already-on-github-cloning-not-on-your-local-machine/option-a-if-your-repository-is-already-on-github-cloning-not-on-your-local-machine.zip" class="download-btn" download>Download Asset Archive Bundle</a>
+                      </div>
+                  </details>
+              </div>
+            
+        <blockquote>
         <p><em>This is the most common path if you created the repo on
-        the website first.</em></p>
+        the website first. You should pick a local path to hold all of
+        your Website stuff. Maybe use something like your Site Domain
+        under the Documents folder. Maybe</em>
+        <strong>C:\Users\yourusername\Documents\repositories</strong><em>.
+        It is important to not use any spaces or special characters here
+        since this is a path that will be referenced going
+        forward.</em></p>
         </blockquote>
         <ol type="1">
         <li><p>In GitHub Desktop, go to the top menu and select
         <strong>File &gt; Clone Repository</strong>.</p></li>
         <li><p>Click the <strong>GitHub.com</strong> tab. You will see a
         list of all your online repositories.</p></li>
-        <li><p>Select your repository from the list.</p></li>
+        <li><p>Select your 1<sup>st</sup> repository from the
+        list.</p></li>
         <li><p>Choose the <strong>Local Path</strong> (the folder on
-        your computer where you want the project files to
-        live).</p></li>
+        your computer where you want the project files to live
+        <strong>C:\Users\yourusername\Documents\repositories</strong>).</p></li>
         <li><p>Click <strong>Clone</strong>.</p></li>
+        <li><p>Do this for the other 2 repositories created
+        above.</p></li>
         </ol>
+              <div class="download-container">
+                  <details class="collapsible-download-box">
+                      <summary class="box-header">
+                          <span class="folder-icon">📂</span> Option B: If the folder is allready on your computer (Adding & Publishing)
+                      </summary>
+                      <div class="box-body">
+                          <p>This automated bundle contains the baseline configurations, code layouts, and operational manifests tracked for this module.</p>
+                          
+                          <!-- Internal Preview Block Context -->
+                          <div class="asset-preview-pane">
+                              <h4 class="preview-title">👁️ Internal Asset Preview</h4>
+                              <div class="preview-gallery">
+                                  <!-- Your webpage will display images or file links here -->
+                                  <p class="preview-instructions">All embedded diagrams, schematics, and configurations are packaged below. Click the button to download the full-resolution archive block.</p>
+                              </div>
+                          </div>
+
+                          <a href="../assets/figures/option-b-if-the-folder-is-allready-on-your-computer-adding--publishing/option-b-if-the-folder-is-allready-on-your-computer-adding--publishing.zip" class="download-btn" download>Download Asset Archive Bundle</a>
+                      </div>
+                  </details>
+              </div>
+            
         <blockquote>
-        <p><strong>Option B: If the folder is only on your computer
-        (Adding &amp; Publishing)</strong></p>
         <p><em>Use this if you have a local project folder that you want
         to upload to GitHub for the first time.</em></p>
         </blockquote>
@@ -900,9 +1096,9 @@
         repository</strong> to push it to your online GitHub
         account.</p></li>
         </ol>
+        <h4 id="nav-step-3-syncing-your-changes-going-forward">Step 3:
+        Syncing Your Changes Going Forward</h4>
         <blockquote>
-        <p><strong>Step 3: Syncing Your Changes Going
-        Forward</strong></p>
         <p>To keep your local computer and your online GitHub repository
         perfectly in sync, you will follow a simple 3-step loop whenever
         you do work:</p>
@@ -916,7 +1112,8 @@
         sidebar under the <strong>Changes</strong> tab.</p></li>
         <li><p><strong>Commit Your Changes:</strong> * At the bottom of
         the left sidebar, write a short summary of what you changed
-        (e.g., "Updated home page text").</p>
+        (e.g., "Updated home page text"). This is Required by git for
+        tracking purposes</p>
         <ul>
         <li>Click the blue <strong>Commit to main</strong> (or master)
         button. This saves a snapshot of your work <em>locally</em> on
@@ -932,10 +1129,12 @@
         <strong>Pull origin</strong>) button at the top. This downloads
         any changes made to the GitHub repository (like updates made
         from another computer or by a teammate) so your local files stay
-        up to date.</p>
+        up to date. If you ar ethe only user and are positive that no
+        other changes have been made offline then go ahead and skip this
+        step.</p>
         </blockquote>
-        <h3 id="nav-step-5-share-your-files-and-site">Step 5: Share Your
-        Files and Site</h3>
+        <h2 id="nav-share-your-files-and-site">Share Your Files and
+        Site</h2>
         <p><strong>To share the live website</strong>: Give people the
         URL generated in <strong>Step 3</strong>.</p>
         <p><strong>To share direct file downloads</strong>: Append the
@@ -956,7 +1155,8 @@
         Configure DNS Records in Cloudflare</h3>
         <p>First, you need to map your root domain (e.g., example.com)
         and your subdomain (e.g., www.example.com) to GitHub's
-        infrastructure.</p>
+        infrastructure. These entries are summarized in a Figure
+        below.</p>
         <ol type="1">
         <li><p>Log in to your <a
         href="https://dash.cloudflare.com/"><span
@@ -969,7 +1169,8 @@
         pointing your root (@) or www subdomains to another
         host.</p></li>
         <li><p>Add four separate <strong>A records</strong> for your
-        root domain using GitHub’s official IP addresses:</p>
+        root domain using <strong><em>GitHub’s official IP</em></strong>
+        <strong><em>addresses</em></strong>:</p>
         <ul>
         <li><p>Click <strong>Add Record</strong>, choose Type
         <strong>A</strong>, set the Name to @, <strong>Proxy
@@ -983,15 +1184,17 @@
         <li><p>185.199.111.153</p></li>
         </ul></li>
         </ul></li>
-        <li><p>Add a <strong>CNAME record</strong> to handle traffic
+        </ol>
+        <p>Add a <strong>CNAME record</strong> to handle traffic
         arriving via www:</p>
         <ul>
         <li>Click <strong>Add Record</strong>, choose Type
         <strong>CNAME</strong>, set the Name to www, and set the Target
         to your default GitHub Pages URL (e.g.,
         yourusername.github.io).</li>
-        </ul></li>
-        <li><p><strong>Add MX Records (Mail Exchange</strong></p></li>
+        </ul>
+        <ol start="5" type="1">
+        <li><strong>Add MX Records (Mail Exchange</strong></li>
         </ol>
         <blockquote>
         <p><strong>You must delete any existing MX records from previous
@@ -1002,7 +1205,7 @@
         <p><strong>MX @ Route2.mx.cloudflare.net 19</strong></p>
         <p><strong>MX @ route1.mx.cloudflare.net 2</strong></p>
         </blockquote>
-        <ol start="7" type="1">
+        <ol start="6" type="1">
         <li><strong>Add SPF Record (Sender Policy
         Framework)</strong></li>
         </ol>
@@ -1021,7 +1224,7 @@
         <p><strong>include:_spf.mx.cloudflare.net right before the ~all
         or -all tag.</strong></p>
         </blockquote>
-        <ol start="8" type="1">
+        <ol start="7" type="1">
         <li><strong>Find the Value in Your Settings</strong></li>
         </ol>
         <!-- -->
@@ -1058,7 +1261,7 @@
         </div></li>
         </ol>
         <!-- -->
-        <ol start="9" type="1">
+        <ol start="8" type="1">
         <li><strong>Publish the Record to Your DNS</strong></li>
         </ol>
         <blockquote>
@@ -1097,7 +1300,7 @@
         </div></li>
         </ol>
         <!-- -->
-        <ol start="10" type="1">
+        <ol start="9" type="1">
         <li><strong>Important Proxy Status Rule</strong>: Ensure the
         <strong>Proxy status</strong> toggle for all five newly created
         records is set to <strong>DNS Only</strong> (grey cloud) during
@@ -1106,15 +1309,9 @@
         change this to <em>Proxied</em> (orange cloud) later to enforce
         Cloudflare's security protections.</li>
         </ol>
-        <p><img
-        src="../assets/figures/3-home-lab-dns-procedure/media/image3.png"
-        style="width:6.66011in;height:3.08127in" /></p>
-        <h4 id="nav-figure-cloudflare-dns-configuration">
-
-            $FigureIndex++
-
-            "Figure ${FigureIndex}:"
-        
+        <p><img src="3-home-lab-dns-procedure/media/image3.png"
+        style="width:6.6601in;height:3.08127in" /></p>
+        <h4 id="nav-figure-2-cloudflare-dns-configuration">Figure 6:
         Cloudflare DNS Configuration</h4>
         <h3 id="nav-step-2-configure-your-custom-domain-in-github">Step
         2: Configure Your Custom Domain in GitHub</h3>
@@ -1155,207 +1352,1150 @@
         <li>Once it successfully clears, check the box labeled
         <strong>Enforce HTTPS</strong> to secure your live site.</li>
         </ol>
-        <h3 id="nav-step-3.-enable-email-routing">Step 3. Enable Email
-        Routing</h3>
-        <p><strong>1. Set Up</strong> Enable Email Routing</p>
+        <h1 id="nav-configuring-email-for-your-new-domain">Configuring
+        email for your new Domain</h1>
+        <p>There are ways to use email relays to send and forward your
+        emails so that your current inboxes can deal with them.
+        Microsoft Outlook will not let you use these Relays since
+        Microsoft treats these as untrusted. The core issue you will
+        experience is a classic limitation of using email forwarding
+        with a custom domain: when an email is forwarded via Cloudflare,
+        Microsoft Outlook receives it with the <em>original sender's
+        address</em> in the From field, but Outlook's default send/reply
+        behavior forces you to send from your local mailbox identity
+        rather than automatically routing replies back through Brevo's
+        SMTP server under your custom domain.</p>
+        <h2 id="nav-setting-up-email-routing-in-cloudfare">Setting up
+        email routing in Cloudfare</h2>
+        <p>Cloudflare Email Routing allows you to set up
+        <strong>multiple custom email addresses (aliases)</strong> on
+        the same domain at no additional cost. I am choosing to use
+        Cloudfare initially as my email router since the better solution
+        Purelymail costs. At some point in the future I will upgrade to
+        Purelymail. If you want to continue with Purelymail now please
+        skip this step.</p>
+        <h3 id="nav-how-email-addressing-works-in-cloudflare">How Email
+        Addressing Works in Cloudflare</h3>
+        <p>You can manage multiple addresses using two main approaches
+        inside the Cloudflare Dashboard (<strong>Email</strong> &gt;
+        <strong>Email Routing</strong> &gt;
+        <strong>Routes</strong>):</p>
+        <h4 id="nav-individual-custom-addresses-explicit-rules">1.
+        Individual Custom Addresses (Explicit Rules)</h4>
+        <p>You can create distinct addresses for specific purposes and
+        route them to the same or different personal inboxes:</p>
+        <p>sales@yourdomain.com → yourname@gmail.com</p>
+        <p>billing@yourdomain.com → yourname@gmail.com</p>
+        <p>personal@yourdomain.com → anotherinbox@outlook.com</p>
+        <h4 id="nav-catch-all-address-wildcard">2. Catch-All Address
+        (Wildcard)</h4>
+        <p>You can enable a single <strong>Catch-All</strong> rule
+        (*<span class="citation"
+        data-cites="yourdomain.com">@yourdomain.com</span>). This
+        automatically accepts and forwards emails sent to any prefix on
+        your domain (e.g., amazon@yourdomain.com,
+        netflix@yourdomain.com, random123@yourdomain.com) without
+        creating explicit routing rules for each one.</p>
+        <h3
+        id="nav-step-by-step-adding-a-new-address-rule">Step-by-Step:
+        Adding a New Address Rule</h3>
+        <p>Log into your <strong>Cloudflare Dashboard</strong> and
+        select your domain.</p>
+        <p><strong>New Dashboard Navigation (Compute
+        Section)</strong></p>
+        <p>In the left sidebar, look for <strong>Compute</strong>:</p>
         <ol type="1">
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>Log in to your <a href="https://dash.cloudflare.com/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">Cloudflare
-        Dashboard</span></a>.</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>Select your <strong>domain</strong> from the list.</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>On the left sidebar, click <strong>Email</strong> &gt;
-        <strong>Email Routing</strong>.</p>
-        </div></li>
-        <li><div class="custom-style-List Paragraph List Paragraph"
-        data-custom-style="List Paragraph">
-        <p>Click the blue <strong>Get Started</strong> button.</p>
-        </div></li>
+        <li><p>Click <strong>Compute</strong> in the left menu.</p></li>
+        <li><p>Select <strong>Email Service</strong> $\rightarrow$
+        <strong>Email Routing</strong>.</p></li>
+        <li><p>Select smart-home-edge-systems.us from the domain
+        dropdown list if prompted.</p></li>
         </ol>
-        <p><strong>2. Set Up Your Destination Address</strong></p>
+        <p>Select the <strong>Routes</strong> tab.</p>
+        <p>Under <strong>Custom addresses</strong>, click <strong>Create
+        Routing Rule</strong>.</p>
+        <p>Enter your desired prefix (e.g., info) and select the
+        verified <strong>Destination address</strong> where incoming
+        emails should be delivered.</p>
+        <p>Click <strong>Save</strong>.</p>
+        <h3 id="nav-key-limits-to-keep-in-mind">Key Limits to Keep in
+        Mind</h3>
+        <p><strong>Custom Routing Rules:</strong> Free Cloudflare
+        accounts allow up to <strong>200 explicit custom address
+        rules</strong> per domain.</p>
+        <p><strong>Destination Inboxes:</strong> You must verify
+        ownership of any target inbox (e.g., your Gmail or Outlook
+        address) before Cloudflare will forward emails to it.</p>
+        <p>I created routes for sponsorships, vendors, media,
+        engineering, and info.</p>
+        <p>If and when I decide to Migrate to Purelymail I will keep
+        these addresses. You can now jump to Managing email storage
+        Restrictions and return to Purelymail when you are ready.</p>
+        <h2 id="nav-setting-up-purelymail">Setting up Purelymail</h2>
+        <p>Once your emails start flowing freely you will find it is
+        getting cumbersome to make sure you enter the From: address in
+        every email you reply or send to. There is a better, more
+        reliable way to fix this, but it costs. $1o annually is not a
+        great cost but it provides a lot of features to make day-to-day
+        processing much easier. This section will explain how you can
+        use purelymail.</p>
+        <p>Purelymail operates on a flat <strong>$10/year</strong> plan
+        for the entire account.</p>
+        <h3 id="nav-key-features-capabilities">Key Features &amp;
+        Capabilities</h3>
         <ol type="1">
-        <li><p>Enter your <strong>Destination address</strong> (your
-        personal email, like yourname@gmail.com).</p></li>
-        <li><p>Click <strong>Save</strong>.</p></li>
-        <li><p>Check your personal inbox for a verification email from
-        Cloudflare and click the <strong>Verify email address</strong>
-        link.</p></li>
-        </ol>
-        <p><strong>3. Create a Routing Rule</strong></p>
-        <ol type="1">
-        <li><p>Go back to the <strong>Email Routing</strong> page in
-        Cloudflare.</p></li>
-        <li><p>Click the <strong>Routes</strong> tab at the top, then
-        click <strong>Create address</strong>.</p></li>
-        <li><p>In the <strong>Custom address</strong> field, type the
-        alias you want (e.g., hello or contact).</p></li>
-        <li><p>Under <strong>Action</strong>, select <strong>Forward
-        to</strong> and choose your verified destination email.</p></li>
-        <li><p>Click <strong>Save</strong>.</p></li>
-        </ol>
-        <p><strong>4. Test It Out</strong></p>
-        <p>To make sure it is working seamlessly:</p>
-        <ol type="1">
-        <li><p>Open a completely separate email account (like a personal
-        email or a work address).</p></li>
-        <li><p>Send a blank test email to your new custom domain address
-        (e.g., hello@smart-home-edge-systems.us).</p></li>
-        <li><p>Check your destination inbox (the destination address you
-        verified in Cloudflare earlier) to confirm the message arrives
-        safely.</p></li>
-        </ol>
-        <p>If it arrives, you are officially finished with the setup and
-        can completely ignore the top-left status warnings.</p>
-        <h3 id="nav-step-4.-custom-email-return-address-in-gmail">Step
-        4. Custom Email Return Address in Gmail</h3>
-        <p><strong>Step 1: Add Your Custom Address to Gmail</strong></p>
-        <ol type="1">
-        <li><p>Open <a href="https://mail.google.com/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">Gmail</span></a> on your computer,
-        click the <strong>Settings gear icon (⚙️)</strong> in the upper
-        right, and choose <strong>See all settings</strong>.</p></li>
-        <li><p>Click the <strong>Accounts and Import</strong>
-        tab.</p></li>
-        <li><p>Find the <em>Send mail as</em> line item and click
-        <strong>Add another email address</strong>.</p></li>
-        <li><p>A small popup window will appear:</p>
+        <li><p><strong>Unlimited Domains &amp; Aliases:</strong></p>
         <ul>
-        <li><p><strong>Name</strong>: Type the display name you want
-        recipients to see (e.g., your name or business title).</p></li>
-        <li><p><strong>Email address</strong>: Type your exact custom
-        domain alias (info@smart-home-edge-systems.us).</p></li>
-        <li><p><strong>Treat as an alias</strong>: Keep this checkbox
-        <strong>checked</strong>.</p></li>
+        <li><p>You can add as many custom domains as you want under one
+        account at no extra charge.</p></li>
+        <li><p>You can create unlimited standard mailboxes, catch-all
+        addresses, or routing aliases.</p></li>
         </ul></li>
-        <li><p>Click <strong>Next Step</strong>.</p></li>
-        </ol>
-        <p><strong>Step 2: Configure Outbound Server
-        Settings</strong></p>
-        <p>In the next section of the popup configuration panel, fill
-        out the settings exactly as shown below to hook into Google's
-        relay pipeline:</p>
+        <li><p><strong>Native IMAP/SMTP &amp; Webmail:</strong></p>
         <ul>
-        <li><p><strong>SMTP Server</strong>: smtp.gmail.com</p></li>
-        <li><p><strong>Port</strong>: 587</p></li>
-        <li><p><strong>Username</strong>: Enter your <strong>full
-        personal Gmail address</strong>
-        (edwin.m.barnes@gmail.com).</p></li>
-        <li><p><strong>Password</strong>: Paste the <strong>16-character
-        App Password</strong> you copied during Step 1.</p></li>
-        <li><p><strong>Secured connection choice</strong>: Choose
-        <strong>Secured connection using TLS</strong>.</p></li>
-        <li><p>Click <strong>Add Account</strong>.</p></li>
+        <li><p><strong>Incoming (IMAP):</strong> imap.purelymail.com
+        (Port 993 / SSL)</p></li>
+        <li><p><strong>Outgoing (SMTP):</strong> smtp.purelymail.com
+        (Port 465 / SSL or Port 587 / STARTTLS)</p></li>
+        <li><p>It includes a clean Webmail interface (Roundcube/Webmail)
+        along with standard CalDAV/CardDAV support for syncing calendars
+        and contacts.</p></li>
+        </ul></li>
+        <li><p><strong>High Deliverability Standards:</strong></p>
+        <ul>
+        <li><p>Out-of-the-box support for <strong>DKIM, SPF, and
+        DMARC</strong> authentication.</p></li>
+        <li><p>Outbound emails are sent through reputable IPs, avoiding
+        the spam-folder issues common with free relays or home-hosted
+        servers.</p></li>
+        </ul></li>
+        <li><p><strong>Simple Pricing Model ($10/year):</strong></p>
+        <ul>
+        <li>There are no artificial caps on users or storage under
+        normal fair-use usage. (If you use massive amounts of bandwidth
+        or storage, they offer an advanced usage-based metered tier, but
+        typical email users stay on the $10/year flat tier).</li>
+        </ul></li>
+        </ol>
+        <h3 id="nav-how-it-solves-your-outlook-problem">How It Solves
+        Your Outlook Problem</h3>
+        <p>Once you point your Cloudflare DNS to Purelymail, your custom
+        domain becomes a <strong>true, native email
+        account</strong>.</p>
+        <p>We will explain the following in more detail in the next
+        section.</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Inside Desktop Outlook or Mobile Outlook:</strong>
+        You add a new account, type in your you@yourdomain.com address,
+        and enter your Purelymail password.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Sending &amp; Replying:</strong> Outlook connects
+        directly to Purelymail's IMAP and SMTP servers. Hitting
+        <strong>Reply</strong> sends the email directly through
+        Purelymail using your custom domain. You no longer need
+        Cloudflare forwarding, Brevo SMTP relays, or manual address
+        copying.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>How Setup Works in Cloudflare</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Sign up at Purelymail</strong> and add your custom
+        domain.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Update DNS in Cloudflare:</strong> Delete your
+        current Cloudflare Email Routing records and add Purelymail's
+        provided DNS entries:</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>MX Record:</strong> Points incoming mail directly to
+        mailserver.purelymail.com.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>TXT Records (SPF &amp; DKIM):</strong> Authorizes
+        Purelymail to send on behalf of your domain.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Create Your User:</strong> Create a mailbox (e.g.,
+        me@yourdomain.com) in the Purelymail dashboard.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Log into Outlook:</strong> Add the account to Outlook
+        using standard credentials.</p>
+        </div></li>
         </ul>
-        <p><strong>Step 3: Verify and Lock it Down</strong></p>
+        <p>Connecting Purelymail, Cloudflare, and New Microsoft Outlook
+        establishes a direct, bi-directional email flow on your custom
+        domain, resolving prior forwarder issues.</p>
+        <h3 id="nav-step-1-add-domain-create-mailbox-in-purelymail">Step
+        1: Add Domain &amp; Create Mailbox in Purelymail</h3>
         <ol type="1">
-        <li><p>Google will send an automated verification email with a
-        code inside to your custom address.</p></li>
-        <li><p>Because your Cloudflare forwarding is already live, this
-        verification message will land right back in your primary Gmail
-        inbox within a minute.</p></li>
-        <li><p>Copy the numeric code from the body of that email, paste
-        it into the open popup window validation field, and click
-        <strong>Verify</strong>.</p></li>
-        <li><p>Back on your Gmail <strong>Accounts and Import</strong>
-        settings menu, locate the line beneath <em>Send mail as</em>
-        titled <em>When replying to a message</em>.</p></li>
-        <li><p>Toggle this option to <strong>Reply from the same address
-        the message was sent to</strong>.</p></li>
+        <li><p>Log into the <strong>Purelymail Account Admin
+        Portal</strong> (not the webmail client).</p></li>
+        <li><p>Go to <strong>Domains</strong> in the top menu and click
+        <strong>Add New Domain</strong>.</p></li>
+        <li><p>Type your custom domain name (e.g.,
+        yourdomain.com).</p></li>
+        <li><p>Purelymail will generate a set of DNS records and a
+        unique string labeled purelymail_ownership_proof. <strong>Keep
+        this tab open.</strong></p></li>
+        <li><p>Open a new tab, navigate to <strong>Users</strong> &gt;
+        <strong>Add New User</strong>, and create your primary mailbox
+        (e.g., you@yourdomain.com) and password.</p></li>
         </ol>
-        <p>Now, whenever anyone fires off a message to
-        info@smart-home-edge-systems.us, hitting reply inside Gmail will
-        automatically formulate your outbound response from your
-        professional domain name instead of your personal address.</p>
-        <p>Would you like help setting up a <strong>custom email
-        signature</strong> specifically for your new info@ sending
-        profile, or would you like to build an <strong>automated
-        vacation auto-responder</strong> for it?</p>
-        <h1 id="nav-references">References</h1>
-        <blockquote>
-        <p><strong>🌐 Cloudflare &amp; DNS Resources</strong></p>
-        </blockquote>
+        <h3 id="nav-step-2-configure-dns-records-in-cloudflare">Step 2:
+        Configure DNS Records in Cloudflare</h3>
+        <ol type="1">
+        <li><p>Log into your <strong>Cloudflare Dashboard</strong> and
+        select your domain.</p></li>
+        <li><p>Click on <strong>DNS</strong> &gt;
+        <strong>Records</strong> in the sidebar.</p></li>
+        <li><p><strong>Delete old email records:</strong> Remove any
+        existing <strong>MX</strong> or <strong>TXT (SPF)</strong>
+        records pointing to Cloudflare Email Routing, Brevo, or previous
+        hosts to prevent routing conflicts.</p></li>
+        <li><p>Add the following records precisely:</p></li>
+        </ol>
+        <table>
+        <caption>Code 3: Cloudfare DNS Records.txt</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Type Name / Host Target / Content / Value Priority Proxy
+        Status<br />
+        MX @ mailserver.purelymail.com 50 N/A (DNS Only)<br />
+        TXT @ v=spf1 include:_spf.purelymail.com ~all — N/A (DNS
+        Only)<br />
+        TXT @ (Paste your unique purelymail_ownership_proof=... value) —
+        N/A (DNS Only)<br />
+        CNAME purelymail1._domainkey key1.dkimroot.purelymail.com — DNS
+        Only (Gray Cloud)<br />
+        CNAME purelymail2._domainkey key2.dkimroot.purelymail.com — DNS
+        Only (Gray Cloud)<br />
+        CNAME purelymail3._domainkey key3.dkimroot.purelymail.com — DNS
+        Only (Gray Cloud)<br />
+        CNAME _dmarc dmarcroot.purelymail.com — DNS Only (Gray
+        Cloud)</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p><strong>CRITICAL CLOUDFLARE RULE:</strong> All
+        <strong>CNAME</strong> records for email (DKIM and DMARC)
+        <strong>MUST</strong> be set to <strong>DNS Only</strong> (gray
+        cloud). If Cloudflare's orange cloud proxy is enabled on DKIM
+        CNAMEs, DKIM signatures will fail and your email will land in
+        spam folders.</p>
+        <ol start="5" type="1">
+        <li>Go back to your <strong>Purelymail tab</strong> and click
+        <strong>Check DNS Records</strong> / <strong>Verify
+        Domain</strong>. <em>(Verification usually takes under 5
+        minutes).</em></li>
+        </ol>
+        <h3
+        id="nav-step-3-connect-purelymail-to-new-microsoft-outlook">Step
+        3: Connect Purelymail to New Microsoft Outlook</h3>
+        <p>Now that DNS is active and routing directly to Purelymail,
+        configure <strong>New Outlook</strong> (Windows/Web/Mac):</p>
+        <ol type="1">
+        <li><p>Open <strong>New Outlook</strong> and click the
+        <strong>Gear Icon (Settings)</strong> in the top right
+        corner.</p></li>
+        <li><p>Go to <strong>Accounts</strong> &gt; <strong>Email
+        accounts</strong> and click <strong>Add
+        Account</strong>.</p></li>
+        <li><p>Type your full custom domain email (e.g.,
+        you@yourdomain.com) and click
+        <strong>Continue</strong>.</p></li>
+        <li><p>New Outlook will attempt auto-detection. If prompted to
+        choose a provider, select <strong>IMAP</strong>.</p></li>
+        <li><p>Click <strong>Show More</strong> or <strong>Advanced
+        Settings</strong> and enter the following settings:</p></li>
+        </ol>
+        <h4 id="nav-imap-incoming-mail-server">IMAP (Incoming Mail
+        Server):</h4>
         <ul>
-        <li><p><strong>Cloudflare Docs: Register a New
-        Domain</strong></p></li>
-        <li><p><a
-        href="https://developers.cloudflare.com/dns/manage-dns-records/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink"><strong>Cloudflare Docs: Manage
-        DNS Records</strong></span></a></p></li>
-        <li><p><strong><a
-        href="https://developers.cloudflare.com/email-service/configuration/domains/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">Cloudflare Docs: Domain
-        Configuration for Email Service</span></a> [<a
-        href="https://developers.cloudflare.com/email-service/reference/troubleshooting/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">1</span></a>, <a
-        href="https://developers.cloudflare.com/email-service/configuration/domains/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">2</span></a>]</strong></p></li>
+        <li><p><strong>Server:</strong> imap.purelymail.com</p></li>
+        <li><p><strong>Port:</strong> 993</p></li>
+        <li><p><strong>Secure Connection:</strong> SSL / TLS</p></li>
         </ul>
-        <blockquote>
-        <p><strong>🛠️ GitHub Pages Resources</strong></p>
-        </blockquote>
+        <h4 id="nav-smtp-outgoing-mail-server">SMTP (Outgoing Mail
+        Server):</h4>
         <ul>
-        <li><p><a
-        href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink"><strong>GitHub Docs: Managing a
-        Custom Domain for Your GitHub Pages
-        Site</strong></span></a></p></li>
-        <li><p><strong><a
-        href="https://docs.github.com/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">GitHub Docs: Configuring a
-        Publishing Source for Your GitHub Pages Site</span></a> [<a
-        href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink">1</span></a>]</strong></p></li>
+        <li><p><strong>Server:</strong> smtp.purelymail.com</p></li>
+        <li><p><strong>Port:</strong> 465 (or 587 if 465 fails)</p></li>
+        <li><p><strong>Secure Connection:</strong> SSL / TLS (use
+        STARTTLS if selecting port 587)</p></li>
+        <li><p><strong>IMAP / SMTP Username:</strong> Your full email
+        address (you@yourdomain.com)</p></li>
+        <li><p><strong>Password:</strong> Your Purelymail user password
+        (or an <strong>App Password</strong> if you enabled 2FA in
+        Purelymail).</p></li>
         </ul>
-        <blockquote>
-        <p><strong>✉️ Gmail &amp; Outbound Pipeline
-        Resources</strong></p>
-        </blockquote>
+        <ol start="6" type="1">
+        <li>Click <strong>Continue / Save</strong>. Outlook will send a
+        test payload and sync your inbox.</li>
+        </ol>
+        <h4 id="nav-how-sending-replying-will-work">How Sending &amp;
+        Replying Will Work</h4>
         <ul>
-        <li><p><a href="https://support.google.com/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink"><strong>Gmail Help: Send Emails
-        from an Alias or Custom Address</strong></span></a></p></li>
-        <li><p><strong>Google Account Help: Sign in with App
-        Passwords</strong></p></li>
+        <li><p><strong>No Header Hacks:</strong> Hitting
+        <strong>Reply</strong> in Outlook sends mail directly through
+        Purelymail's SMTP server.</p></li>
+        <li><p><strong>Native Delivery:</strong> Replies arrive directly
+        from you@yourdomain.com without proxy wrappers or reverse alias
+        tracking.</p></li>
+        <li><p><strong>Full Folder Sync:</strong> Sent items, drafts,
+        and custom subfolders will sync across all devices via standard
+        IMAP.</p></li>
         </ul>
-        <blockquote>
-        <p><strong>🐳 Self-Hosted &amp; Environment Stack</strong></p>
-        </blockquote>
+        <h3 id="nav-email-aliases-in-purelymail">Email Aliases in
+        Purelymail</h3>
+        <p>Setting up aliases and catch-all routing in Purelymail is
+        handled through <strong>Account</strong> Routing Rules in the
+        Purelymail Admin Portal (not the webmail client).</p>
+        <h4 id="nav-part-1-setting-up-custom-aliases">Part 1: Setting Up
+        Custom Aliases</h4>
+        <p>An alias redirects incoming mail sent to a specific address
+        (e.g., support@yourdomain.com) to an existing primary inbox
+        (e.g., you@yourdomain.com).</p>
+        <h4 id="nav-step-by-step-instructions">Step-by-Step
+        Instructions:</h4>
+        <ol type="1">
+        <li><p>Log into the <strong>Purelymail Account Admin
+        Portal</strong>.</p></li>
+        <li><p>Click on <strong>Routing</strong> in the top navigation
+        menu.</p></li>
+        <li><p>Click <strong>Add Routing Rule</strong> (or <strong>Add
+        Rule</strong>).</p></li>
+        <li><p>Configure the rule fields:</p>
         <ul>
-        <li><p><a href="https://pve.proxmox.com/pve-docs/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink"><strong>Proxmox VE Admin Guide:
-        Virtual Environment Documentation</strong></span></a></p></li>
-        <li><p><a href="https://docs.pi-hole.net/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink"><strong>Pi-hole Docs: Post-Install
-        Configuration and DNS Rules</strong></span></a></p></li>
-        <li><p><a href="https://docs.docker.com/compose/"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink"><strong>Docker Docs:
-        Multi-Container Orchestration via Docker
-        Compose</strong></span></a></p></li>
-        <li><p><a href="https://ubuntu.com/server/docs"><span
-        class="custom-style-Hyperlink Hyperlink"
-        data-custom-style="Hyperlink"><strong>Linux/Ubuntu Manuals:
-        Network Configuration Profiles</strong></span></a></p></li>
+        <li><p><strong>Domain:</strong> Select your custom
+        domain.</p></li>
+        <li><p><strong>Match Type:</strong> Select <strong>Specific
+        email address</strong>.</p></li>
+        <li><p><strong>Address Prefix:</strong> Type the alias name
+        (e.g., support or billing).</p></li>
+        <li><p><strong>Target / Destination:</strong> Type your primary
+        email address (e.g., you@yourdomain.com).</p></li>
+        </ul></li>
+        <li><p>Click <strong>Save</strong>.</p></li>
+        </ol>
+        <h4 id="nav-part-2-setting-up-a-catch-all-address">Part 2:
+        Setting Up a Catch-All Address</h4>
+        <p>A catch-all rule captures any email sent to non-existent
+        addresses at your domain (e.g., anything@yourdomain.com) and
+        routes it to a designated inbox so no messages are lost.</p>
+        <h4 id="nav-step-by-step-instructions-1">Step-by-Step
+        Instructions:</h4>
+        <ol type="1">
+        <li><p>In the <strong>Purelymail Admin Portal</strong>, go to
+        <strong>Routing</strong>.</p></li>
+        <li><p>Click <strong>Add Routing Rule</strong>.</p></li>
+        <li><p>Configure the rule fields:</p>
+        <ul>
+        <li><p><strong>Domain:</strong> Select your custom
+        domain.</p></li>
+        <li><p><strong>Match Type:</strong> Select <strong>Any address
+        (Catch-all)</strong>.</p></li>
+        <li><p><strong>Target / Destination:</strong> Enter the user
+        mailbox where all unmapped incoming mail should land (e.g.,
+        you@yourdomain.com).</p></li>
+        </ul></li>
+        <li><p>Click <strong>Save</strong>.</p></li>
+        </ol>
+        <p><strong>Rule Precedence:</strong> Purelymail evaluates
+        specific rules first. If you have a specific alias for
+        support@yourdomain.com, it takes priority. Anything else without
+        an explicit rule or user account will fall through to your
+        catch-all address.</p>
+        <h4
+        id="nav-part-3-sendingreplying-as-your-alias-in-outlook">Part 3:
+        Sending/Replying as Your Alias in Outlook</h4>
+        <p>Creating a routing rule handles <strong>incoming</strong>
+        mail. To send or reply <strong>outgoing</strong> mail using an
+        alias inside Microsoft Outlook:</p>
+        <ol type="1">
+        <li><p>By default, Purelymail permits users to send from any
+        address on verified domains. <em>(You can verify this under
+        <strong>Settings &gt; Sending Restrictions</strong> in the
+        Purelymail portal)</em>.</p></li>
+        <li><p>In <strong>New Outlook</strong>, open a new message or
+        reply window.</p></li>
+        <li><p>Click the <strong>From</strong> dropdown menu at the top
+        of the composer.</p></li>
+        <li><p>Select <strong>Other Email Address...</strong> and type
+        your alias (e.g., support@yourdomain.com).</p></li>
+        <li><p>Outlook will send the message through Purelymail's SMTP
+        server using the alias address as the From header.</p></li>
+        </ol>
+        <h1 id="nav-managing-email-storage-restrictions">Managing email
+        storage Restrictions</h1>
+        <p>To keep your mailbox under a 5GB storage limit for
+        Purelymail, without losing messages, you need to offload email
+        data from Microsoft’s servers to a local, off-server file or
+        another storage location. Of course, if you are using cloudfare
+        routing there is no limit since no emails are stored on their
+        servers. It is good to set up practices from the beginning to
+        keep things organized and provide initial analytics and
+        statisticts.</p>
+        <p>Using the default <strong>"Archive" button</strong> in
+        Outlook or Outlook on the Web <strong>will not free up your 5GB
+        storage</strong>—it simply shifts messages to an "Archive"
+        folder on the same server, continuing to count against your
+        cloud quota.</p>
+        <h3 id="nav-considerations">Considerations</h3>
+        <p><strong>New Outlook for Windows / Outlook Web:</strong> "New
+        Outlook" and the web app do not support local .pst file storage.
+        If you use the web app or New Outlook, you must export emails
+        via <strong>Settings &gt; General &gt; Privacy and data &gt;
+        Export mailbox</strong> (which downloads a copy), and then
+        manually delete the emails from your inbox to free up space.</p>
+        <p><strong>Backups:</strong> Local .pst files exist
+        <em>only</em> on your computer's hard drive. Ensure your archive
+        PST file is included in your routine computer backup routine
+        (e.g., cloud backup or external drive) to prevent data loss if
+        your drive fails.</p>
+        <p>Because New Outlook is essentially a web wrapper (built on
+        webmail architecture) rather than a desktop app, Microsoft
+        stripped out legacy COM add-ins, local VBA macro automation, and
+        local "run a program" rule triggers. Native Outlook rules can
+        move emails to internal subfolders, but they <strong>cannot save
+        files to a Windows File Explorer directory</strong>
+        automatically.</p>
+        <h2
+        id="nav-power-automate-desktop-free-built-in-windows-app">Power
+        Automate Desktop (Free Built-In Windows App)</h2>
+        <p>If you want <strong>100% automated saving to local
+        disk</strong>, use <strong>Power Automate Desktop</strong>
+        (pre-installed on Windows 11 / downloadable on Windows 10):</p>
+        <ol type="1">
+        <li><p>Create a flow that connects to your Outlook account using
+        the <strong>Outlook/Exchange Connector</strong>.</p></li>
+        <li><p>Set the trigger to run when an email is marked as
+        <strong>Read</strong> or moved to a specific "Archive"
+        folder.</p></li>
+        <li><p>Add a step to retrieve email properties (Date, Sender,
+        Subject, Body, Attachments) and save them directly to a local
+        folder as text, HTML, or .eml files.</p></li>
+        </ol>
+        <h3
+        id="nav-structuring-your-disk-folder-for-easy-indexing">Structuring
+        Your Disk Folder for Easy Indexing</h3>
+        <p>Whether you automate this via Power Automate or
+        drag-and-drop, standardizing your file naming and directory
+        structure is crucial for Windows Search, Everything (Voidtools),
+        or desktop indexing tools to parse your archives easily.</p>
+        <h3 id="nav-recommended-folder-hierarchy">Recommended Folder
+        Hierarchy</h3>
+        <p>Organize by year and topic or sender rather than deep
+        nesting:</p>
+        <table>
+        <caption>Code 4: Power Automate Folder Hiearchy</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Plaintext<br />
+        C:\Users\barne\Documents\Smart-Home-Edge-Systems\Email_Archive\<br />
+        └── 2026\<br />
+        ├── Invoices\<br />
+        ├── Projects\<br />
+        └── General_Clients\</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3 id="nav-standardized-naming-convention">Standardized Naming
+        Convention</h3>
+        <p>Name files using ISO 8601 dates (YYYY-MM-DD) at the beginning
+        so File Explorer sorts them chronologically by default:</p>
+        <h3 id="nav-plaintext">Plaintext</h3>
+        <p>YYYY-MM-DD_[Sender]_[Sanitized_Subject].eml</p>
+        <ul>
+        <li><em>Example:</em>
+        2026-08-31_AcmeCorp_Monthly_Statement_Invoice.eml</li>
         </ul>
+        <h3 id="nav-tips-for-file-explorer-indexing">Tips for File
+        Explorer Indexing:</h3>
+        <ul>
+        <li><p><strong>Use .eml format:</strong> New Outlook natively
+        exports as .eml. .eml is plain-text based, making its body text
+        and headers natively indexable by Windows Search and third-party
+        tools.</p></li>
+        <li><p><strong>Sanitize Filenames:</strong> Ensure automated
+        scripts strip illegal Windows filename characters (\ / : * ? "
+        &lt; &gt; |).</p></li>
+        </ul>
+        <h2 id="nav-power-automation">Power Automation</h2>
+        <p><strong>Power Automate can build the disk directory, sort the
+        files, and delete the original emails from the cloud server
+        automatically.</strong></p>
+        <p>When configured correctly, Power Automate moves through three
+        steps seamlessly:</p>
+        <h3 id="nav-how-the-automated-sequence-works">How the Automated
+        Sequence Works</h3>
+        <ol type="1">
+        <li><p><strong>Creates Dynamic Folder Paths on Disk</strong></p>
+        <ul>
+        <li><p>Power Automate extracts the email metadata (such as
+        Received Time and Sender).</p></li>
+        <li><p>It creates local folders on the fly using standard date
+        formats (e.g., C:\Email_Archive\2026\Invoices\).</p></li>
+        </ul></li>
+        <li><p><strong>Exports File with Clean Naming</strong></p>
+        <ul>
+        <li>It formats the file string using an ISO standard (e.g.,
+        YYYY-MM-DD_Sender_Subject.eml) and writes the message and
+        attachments to the newly generated folder path.</li>
+        </ul></li>
+        <li><p><strong>Deletes the Email from the Server (Frees Up
+        5GB)</strong></p>
+        <ul>
+        <li><p>After confirming the file is saved to disk, the flow
+        passes the unique <strong>Message ID</strong> into the Delete
+        email (V2) step.</p></li>
+        <li><p>This permanently removes the email from the Outlook cloud
+        mailbox, keeping storage well under the 5GB cap.</p></li>
+        </ul></li>
+        </ol>
+        <h3
+        id="nav-step-by-step-power-automate-flow-blueprint">Step-by-Step
+        Power Automate Flow Blueprint</h3>
+        <p>To build this logic, set up a <strong>Cloud Flow</strong> (or
+        <strong>Power Automate Desktop</strong> flow) with the following
+        sequence:</p>
+        <table>
+        <caption>Code 5: Power Automate Flow</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>[ Trigger: When a new email arrives / When an email is moved
+        to a folder ]<br />
+        │<br />
+        [ Action: Compose Folder Path ]<br />
+        Formula: concat('C:\Email_Archive\',
+        formatDateTime(triggerOutputs()?['body/receivedDateTime'],
+        'yyyy'), '\', triggerOutputs()?['body/from'])<br />
+        │<br />
+        [ Action: Create File (Local Drive / File System) ]<br />
+        File Name:
+        concat(formatDateTime(triggerOutputs()?['body/receivedDateTime'],
+        'yyyy-MM-dd'), '_', triggerOutputs()?['body/subject'],
+        '.eml')<br />
+        File Content: Email Body / EML Content<br />
+        │<br />
+        [ Action: Log Telemetry Data ]<br />
+        │<br />
+        ▼<br />
+        [ Action: Delete Email (V2) ] &lt;-- Deletes from server after
+        saving<br />
+        Message ID: triggerOutputs()?['body/id']</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3 id="nav-important-safeguards">Important Safeguards</h3>
+        <ul>
+        <li><p><strong>Test with a Move Action First:</strong> Before
+        adding the Delete Email step, test the flow by using Move Email
+        (to an "Archive" or "Trash" subfolder in Outlook). Verify that
+        the disk files export cleanly before allowing the flow to
+        auto-delete messages off the server.</p></li>
+        <li><p><strong>Handle File Name Sanitation:</strong> Subjects
+        often contain special characters like :, ?, or /. Use replace()
+        expressions in Power Automate to strip these out so File
+        Explorer doesn't throw path errors.</p></li>
+        <li><p><strong>Backup Destination:</strong> If exporting to a
+        local hard drive via Power Automate Desktop, ensure that local
+        directory is mirrored to cloud storage (like OneDrive or Google
+        Drive) so drive failures don't cause data loss.</p></li>
+        </ul>
+        <h2 id="nav-power-automate">Power Automate</h2>
+        <p>To implement this flow on a Windows machine, you need to
+        address a structural requirement: <strong>Power Automate Cloud
+        Flows (which handle Outlook triggers) cannot write to a local
+        Windows hard drive directly.</strong></p>
+        <p>To connect the Cloud trigger to your local C:\ drive, you
+        must install the <strong>On-Premises Data Gateway</strong> on
+        Windows.</p>
+        <p>Here is the step-by-step setup to build this workflow safely
+        without failing on dynamic folder paths or character
+        restrictions.</p>
+        <h3 id="nav-step-1-install-the-local-file-system-gateway">Step
+        1: Install the Local File System Gateway</h3>
+        <ol type="1">
+        <li><p>Download and install the <strong>On-Premises Data Gateway
+        (Standard Mode)</strong> from Microsoft.</p></li>
+        <li><p>Launch the installer, sign in with your Microsoft 365
+        account, name the gateway (e.g., MyDesktopGateway), and complete
+        registration.</p></li>
+        <li><p>Open Windows Command Prompt and run whoami to get your
+        exact local Windows username string (e.g., DESKTOP-ABC\John or
+        AzureAD\JohnDoe).</p></li>
+        </ol>
+        <h3
+        id="nav-step-2-configure-the-file-system-connection-in-power-automate">Step
+        2: Configure the File System Connection in Power Automate</h3>
+        <ol type="1">
+        <li><p>Go to <a
+        href="https://www.google.com/search?q=https://make.powerautomate.com"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">make.powerautomate.com</span></a>
+        and sign in.</p></li>
+        <li><p>Navigate to <strong>Connections</strong> &gt; <strong>New
+        connection</strong>.</p></li>
+        <li><p>Search for <strong>File System</strong> and fill in the
+        details:</p>
+        <ul>
+        <li><p><strong>Root folder:</strong> C:\Email_Archive (Ensure
+        you create this folder on your C drive first).</p></li>
+        <li><p><strong>Authentication Type:</strong> Windows.</p></li>
+        <li><p><strong>Username:</strong> The exact output from your
+        whoami command.</p></li>
+        <li><p><strong>Password:</strong> Your Windows login
+        password.</p></li>
+        <li><p><strong>Gateway:</strong> Select your registered gateway
+        (MyDesktopGateway).</p></li>
+        </ul></li>
+        </ol>
+        <h3 id="nav-step-3-build-the-cloud-flow">Step 3: Build the Cloud
+        Flow</h3>
+        <p>Go to <strong>Create</strong> &gt; <strong>Automated cloud
+        flow</strong>.</p>
+        <h4 id="nav-trigger-when-a-new-email-arrives-v3">1. Trigger:
+        When a new email arrives (V3)</h4>
+        <ul>
+        <li>Select <strong>Office 365 Outlook</strong> -&gt;
+        <strong>When a new email arrives (V3)</strong> (or <em>When an
+        email is moved to a folder</em> if using folder-based
+        archival).</li>
+        </ul>
+        <h4 id="nav-action-compose-sanitize-dynamic-content">2. Action:
+        Compose (Sanitize Dynamic Content)</h4>
+        <p>Due to Windows file-naming restrictions, sender addresses
+        contain &lt; and &gt;, and subject lines contain characters like
+        :, /, or ?. You must sanitize them to prevent the file creation
+        from failing.</p>
+        <p>Add a <strong>Compose</strong> action for the <strong>Folder
+        Path</strong>:</p>
+        <table>
+        <caption>Code 6: Power Automate Folder Compose</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Plaintext<br />
+        concat('C:\Email_Archive\',
+        formatDateTime(triggerOutputs()?['body/receivedDateTime'],
+        'yyyy'), '\',
+        replace(replace(replace(triggerOutputs()?['body/from'], '&lt;',
+        ''), '&gt;', ''), ':', ''))</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p>Add a second <strong>Compose</strong> action for the
+        <strong>File Name</strong>:</p>
+        <table>
+        <caption>Code 7: Power Automate File Compose</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Plaintext<br />
+        concat(formatDateTime(triggerOutputs()?['body/receivedDateTime'],
+        'yyyy-MM-dd'), '_',
+        replace(replace(replace(replace(replace(triggerOutputs()?['body/subject'],
+        ':', ''), '/', '_'), '?', ''), '"', ''), '*', ''), '.eml')</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h4 id="nav-action-create-file-file-system-connector">3. Action:
+        Create file (File System Connector)</h4>
+        <ul>
+        <li><p><strong>Folder Path:</strong> Select the Output of your
+        first Compose action (Outputs).</p></li>
+        <li><p><strong>File Name:</strong> Select the Output of your
+        second Compose action (Outputs).</p></li>
+        <li><p><strong>File Content:</strong></p></li>
+        </ul>
+        <p>To save as a standard .eml or readable archive format, pass
+        triggerOutputs()?['body/body'] (HTML Body) or use an Export
+        Email action if raw headers are required.</p>
+        <p><strong>Note on Automatic Subfolder Creation:</strong> The
+        <strong>File System - Create file</strong> action automatically
+        generates any missing subdirectories (e.g., 2026\JohnDoe)
+        dynamically when executing the command.</p>
+        <h4 id="nav-action-delete-email-v2">4. Action: Delete email
+        (V2)</h4>
+        <ul>
+        <li><strong>Message ID:</strong> Select dynamic content Message
+        Id (triggerOutputs()?['body/id']).</li>
+        </ul>
+        <h3 id="nav-step-4-test-safely-before-deleting">Step 4: Test
+        Safely Before Deleting</h3>
+        <p>Before enabling step 4, <strong>disable or remove the "Delete
+        email (V2)" step temporarily</strong>.</p>
+        <ol type="1">
+        <li><p>Send a test email to your inbox.</p></li>
+        <li><p>Verify that the dynamic path
+        C:\Email_Archive\2026\sender@example.com\ is generated correctly
+        on your hard drive and that the .eml file is written.</p></li>
+        <li><p>Once the file creation runs cleanly, add the
+        <strong>Delete email (V2)</strong> step back into the
+        flow.</p></li>
+        </ol>
+        <h2 id="nav-email-statistics-and-analytics">Email Statistics and
+        Analytics</h2>
+        <p>You can implement analytics across two distinct layers
+        depending on what you want to measure:
+        <strong>Infrastructure/Execution Analytics</strong> (tracking if
+        the flow ran successfully) and <strong>Business
+        Analytics</strong> (tracking <em>what</em> was inside the
+        archived emails, such as email volume by domain, file sizes, or
+        time trends).</p>
+        <h2
+        id="nav-layer-2-business-archival-analytics-custom-logging">Layer
+        2: Business &amp; Archival Analytics (Custom Logging)</h2>
+        <p><strong>Log to a Centralized CSV / Excel File</strong></p>
+        <ol type="1">
+        <li><p>Adding an <strong>Excel Online (Business)</strong> or
+        <strong>CSV</strong> action inside Power Automate.</p></li>
+        <li><p>Append a row every time an email is archived with
+        fields:</p>
+        <ul>
+        <li>Timestamp | SenderDomain | FilePath | FileSizeBytes |
+        HasAttachments</li>
+        </ul></li>
+        </ol>
+        <h3 id="nav-recommended-logging-fields-matrix">Recommended
+        Logging Fields Matrix</h3>
+        <p>If you implement custom logging, use this structure to
+        capture useful metrics:</p>
+        <table style="width:99%;">
+        <colgroup>
+        <col style="width: 14%" />
+        <col style="width: 43%" />
+        <col style="width: 41%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>Field Name</strong></th>
+        <th style="text-align: left;"><strong>Source
+        Expression</strong></th>
+        <th style="text-align: left;"><strong>Analytical
+        Value</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td
+        style="text-align: left;"><strong>ExecutionDate</strong></td>
+        <td style="text-align: left;"><strong>utcNow('yyyy-MM-dd
+        HH:mm:ss')</strong></td>
+        <td style="text-align: left;"><strong>Tracks daily/hourly
+        processing volume spikes.</strong></td>
+        </tr>
+        <tr>
+        <td
+        style="text-align: left;"><strong>SenderAddress</strong></td>
+        <td
+        style="text-align: left;"><strong>triggerOutputs()?['body/from']</strong></td>
+        <td style="text-align: left;"><strong>Identifies top email
+        senders.</strong></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>SenderDomain</strong></td>
+        <td
+        style="text-align: left;"><strong>last(split(triggerOutputs()?['body/from'],
+        '@'))</strong></td>
+        <td style="text-align: left;"><strong>Aggregates volume by
+        vendor or internal department.</strong></td>
+        </tr>
+        <tr>
+        <td
+        style="text-align: left;"><strong>SubjectLength</strong></td>
+        <td
+        style="text-align: left;"><strong>length(triggerOutputs()?['body/subject'])</strong></td>
+        <td style="text-align: left;"><strong>Detects potential filename
+        truncation risks.</strong></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Status</strong></td>
+        <td style="text-align: left;"><strong>'SUCCESS'</strong></td>
+        <td style="text-align: left;"><strong>Helps count total items
+        offloaded from the server.</strong></td>
+        </tr>
+        </tbody>
+        </table>
+        <p>To log analytics every time an email is archived, you can
+        insert an <strong>Excel Online (Business)</strong> step into
+        your flow.</p>
+        <h3
+        id="nav-step-1-create-and-format-the-excel-tracking-file">Step
+        1: Create and Format the Excel Tracking File</h3>
+        <p>Before configuring Power Automate, create a master
+        spreadsheet to record each run:</p>
+        <ol type="1">
+        <li><p>Open <strong>Excel Online</strong> (via OneDrive or
+        SharePoint).</p></li>
+        <li><p>Create a new workbook named Email_Archive_Log.xlsx inside
+        your OneDrive or SharePoint document library.</p></li>
+        <li><p>In Sheet 1, create a table header row in row 1:</p></li>
+        </ol>
+        <table style="width:97%;">
+        <colgroup>
+        <col style="width: 20%" />
+        <col style="width: 16%" />
+        <col style="width: 24%" />
+        <col style="width: 17%" />
+        <col style="width: 18%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>A</strong></th>
+        <th style="text-align: left;"><strong>B</strong></th>
+        <th style="text-align: left;"><strong>C</strong></th>
+        <th style="text-align: left;"><strong>D</strong></th>
+        <th style="text-align: left;"><strong>E</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>Timestamp</strong></td>
+        <td style="text-align: left;"><strong>Sender</strong></td>
+        <td style="text-align: left;"><strong>SenderDomain</strong></td>
+        <td style="text-align: left;"><strong>Subject</strong></td>
+        <td style="text-align: left;"><strong>FilePath</strong></td>
+        </tr>
+        </tbody>
+        </table>
+        <ol start="4" type="1">
+        <li><p>Highlight the headers and at least one blank row beneath
+        them (A1:E2).</p></li>
+        <li><p>Go to the <strong>Home</strong> tab and click
+        <strong>Format as Table</strong>. Pick any style, ensure
+        <strong>"My table has headers"</strong> is checked, and click
+        <strong>OK</strong>.</p></li>
+        <li><p>Select the table, go to the <strong>Table Design</strong>
+        tab on the top ribbon, and rename it to
+        ArchiveLogTable.</p></li>
+        </ol>
+        <h3
+        id="nav-step-2-add-the-excel-logging-action-to-your-flow">Step
+        2: Add the Excel Logging Action to Your Flow</h3>
+        <p>In your existing Power Automate Cloud Flow, insert the Excel
+        logging step right after creating the local file and right
+        before deleting the email if missing:</p>
+        <ol type="1">
+        <li><p>Click <strong>+ New step</strong> (or the + icon) between
+        <em>Create File</em> and <em>Delete Email</em>.</p></li>
+        <li><p>Search for <strong>Excel Online (Business)</strong> and
+        select the action <strong>Add a row into a
+        table</strong>.</p></li>
+        <li><p>Configure the file location fields:</p>
+        <ul>
+        <li><p><strong>Location:</strong> Select OneDrive for Business
+        (or SharePoint Site).</p></li>
+        <li><p><strong>Document Library:</strong> Select OneDrive (or
+        your library name).</p></li>
+        <li><p><strong>File:</strong> Browse and pick
+        Email_Archive_Log.xlsx.</p></li>
+        <li><p><strong>Table 1:</strong> Select ArchiveLogTable from the
+        dropdown.</p></li>
+        </ul></li>
+        </ol>
+        <h3 id="nav-step-3-map-dynamic-content-and-expressions">Step 3:
+        Map Dynamic Content and Expressions</h3>
+        <p>Once the table is loaded, Power Automate will automatically
+        expand input fields for each column header in your Excel
+        table:</p>
+        <table>
+        <caption>Code 8: Power Automate Dynamic Content</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>• Timestamp: Select the Expression tab and enter:<br />
+        Plaintext<br />
+        utcNow('yyyy-MM-dd HH:mm:ss')<br />
+        • Sender: Under Dynamic Content, select From
+        (triggerOutputs()?['body/from']).<br />
+        • SenderDomain: Select the Expression tab and enter this formula
+        to extract the domain name:<br />
+        Plaintext<br />
+        last(split(triggerOutputs()?['body/from'], '@'))<br />
+        • Subject: Under Dynamic Content, select Subject
+        (triggerOutputs()?['body/subject']).<br />
+        • FilePath: Pass the output from your Compose (Folder Path)
+        action or enter:<br />
+        Plaintext<br />
+        outputs('Compose_Folder_Path')</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p><strong>Step 4: Verify Executions</strong></p>
+        <ol type="1">
+        <li><p>Save your updated flow and run a test email.</p></li>
+        <li><p>Verify that the file is created on your C:\ drive, the
+        email is deleted from Outlook, and a new row appears in
+        Email_Archive_Log.xlsx.</p></li>
+        <li><p>You can now point <strong>Power BI Desktop</strong>
+        directly to Email_Archive_Log.xlsx to render charts of archived
+        email volume over time, top email domains, or daily processing
+        trends.</p></li>
+        </ol>
+        <h1 id="nav-external-services-platforms-referenced">External
+        Services &amp; Platforms Referenced</h1>
+        <h2 id="nav-domain-dns-management">Domain &amp; DNS
+        Management</h2>
+        <ul>
+        <li><p><strong>Cloudflare Dashboard</strong> — <a
+        href="https://dash.cloudflare.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://dash.cloudflare.com/</span></a></p>
+        <ul>
+        <li><p>Used for domain registration and DNS management</p></li>
+        <li><p>Email routing service</p></li>
+        <li><p>WHOIS privacy protection</p></li>
+        </ul></li>
+        </ul>
+        <h2 id="nav-web-hosting-version-control">Web Hosting &amp;
+        Version Control</h2>
+        <ul>
+        <li><p><strong>GitHub</strong> — <a
+        href="https://github.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://github.com/</span></a></p>
+        <ul>
+        <li><p>Repository hosting and GitHub Pages (free static site
+        hosting)</p></li>
+        <li><p>Domain: yourusername.github.io</p></li>
+        </ul></li>
+        <li><p><strong>GitHub Desktop</strong> — <a
+        href="https://desktop.github.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://desktop.github.com/</span></a></p>
+        <ul>
+        <li>Desktop application for Git repository management</li>
+        </ul></li>
+        </ul>
+        <h2 id="nav-email-services">Email Services</h2>
+        <h3 id="nav-primary-email-solution">Primary Email Solution</h3>
+        <ul>
+        <li><p><strong>Purelymail</strong> — <a
+        href="https://purelymail.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://purelymail.com/</span></a></p>
+        <ul>
+        <li><p>IMAP/SMTP email service ($10/year)</p></li>
+        <li><p>DKIM, SPF, DMARC support</p></li>
+        <li><p>Custom domain email hosting</p></li>
+        <li><p>IMAP Server: imap.purelymail.com (Port 993)</p></li>
+        <li><p>SMTP Server: smtp.purelymail.com (Port 465/587)</p></li>
+        </ul></li>
+        </ul>
+        <h3
+        id="nav-alternativesupplementary-services">Alternative/Supplementary
+        Services</h3>
+        <ul>
+        <li><p><strong>Brevo</strong> — Email relay service (mentioned
+        as alternative)</p></li>
+        <li><p><strong>Cloudflare Email Routing</strong> — Free email
+        forwarding</p></li>
+        </ul>
+        <h3 id="nav-productivity-automation">Productivity &amp;
+        Automation</h3>
+        <ul>
+        <li><p><strong>Microsoft Power Automate</strong> — <a
+        href="https://make.powerautomate.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://make.powerautomate.com/</span></a></p>
+        <ul>
+        <li><p>Cloud workflow automation</p></li>
+        <li><p>Power Automate Desktop (Windows 11/10 built-in)</p></li>
+        <li><p>On-Premises Data Gateway for local file access</p></li>
+        </ul></li>
+        <li><p><strong>Microsoft Outlook</strong> (New Outlook for
+        Windows/Web/Mac)</p>
+        <ul>
+        <li>Email client integration with IMAP/SMTP</li>
+        </ul></li>
+        </ul>
+        <h3 id="nav-email-infrastructure-services">Email Infrastructure
+        Services</h3>
+        <ul>
+        <li><strong>Let's Encrypt</strong> — SSL/TLS certificate
+        provider (referenced for HTTPS)</li>
+        </ul>
+        <hr />
+        <h2
+        id="nav-technical-concepts-documentation-to-reference">Technical
+        Concepts &amp; Documentation to Reference</h2>
+        <h3 id="nav-email-authentication-security">Email Authentication
+        &amp; Security</h3>
+        <ul>
+        <li><p><strong>SPF (Sender Policy Framework)</strong> — Email
+        authorization protocol</p>
+        <ul>
+        <li>Format: v=spf1 include:_spf.purelymail.com ~all</li>
+        </ul></li>
+        <li><p><strong>DKIM (DomainKeys Identified Mail)</strong> —
+        Email signing</p>
+        <ul>
+        <li>CNAME
+        records: purelymail1._domainkey, purelymail2._domainkey, purelymail3._domainkey</li>
+        </ul></li>
+        <li><p><strong>DMARC (Domain-based Message
+        Authentication)</strong> — Email policy enforcement</p>
+        <ul>
+        <li>CNAME record: _dmarc</li>
+        </ul></li>
+        </ul>
+        <h3 id="nav-dns-record-types">DNS Record Types</h3>
+        <ul>
+        <li><p><strong>A Records</strong> — IPv4 address mapping
+        (GitHub: 185.199.108.153, 185.199.109.153, 185.199.110.153,
+        185.199.111.153)</p></li>
+        <li><p><strong>CNAME Records</strong> — Canonical name
+        aliasing</p></li>
+        <li><p><strong>MX Records</strong> — Mail exchange
+        routing</p></li>
+        </ul>
+        <h3 id="nav-github-pages-deployment">GitHub Pages &amp;
+        Deployment</h3>
+        <ul>
+        <li><p>GitHub Pages documentation (free hosting for static
+        sites)</p></li>
+        <li><p>Custom domain configuration with DNS</p></li>
+        </ul>
+        <h3 id="nav-email-protocols">Email Protocols</h3>
+        <ul>
+        <li><p><strong>IMAP</strong> — Email retrieval (Port 993 for
+        SSL/TLS)</p></li>
+        <li><p><strong>SMTP</strong> — Email sending (Port 465 for SSL,
+        Port 587 for STARTTLS)</p></li>
+        </ul>
+        <hr />
+        <h2 id="nav-further-reading-learning-resources">Further Reading
+        &amp; Learning Resources</h2>
+        <ol type="1">
+        <li><p><strong>Cloudflare Documentation</strong> — Domain
+        registration, DNS management, email routing</p></li>
+        <li><p><strong>GitHub Pages Documentation</strong> — Custom
+        domains, SSL/TLS with HTTPS</p></li>
+        <li><p><strong>Purelymail Setup Guides</strong> — Email
+        configuration, IMAP/SMTP setup, routing rules</p></li>
+        <li><p><strong>Microsoft Power Automate Docs</strong> — Cloud
+        flows, connectors, On-Premises Data Gateway</p></li>
+        <li><p><strong>ICANN Domain Ownership</strong> — WHOIS privacy
+        and domain registration requirements</p></li>
+        <li><p><strong>RFC 7208 (SPF)</strong> — Technical specification
+        for Sender Policy Framework</p></li>
+        <li><p><strong>RFC 6376 (DKIM)</strong> — Technical
+        specification for DomainKeys Identified Mail</p></li>
+        <li><p><strong>RFC 7489 (DMARC)</strong> — Technical
+        specification for Domain-based Message Authentication</p></li>
+        </ol>
+        <hr />
+        <h3 id="nav-key-configuration-urls-to-bookmark">Key
+        Configuration URLs to Bookmark</h3>
+        <table style="width:99%;">
+        <colgroup>
+        <col style="width: 11%" />
+        <col style="width: 66%" />
+        <col style="width: 20%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>Service</strong></th>
+        <th style="text-align: left;"><strong>URL</strong></th>
+        <th style="text-align: left;"><strong>Purpose</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;">Cloudflare</td>
+        <td style="text-align: left;"><a
+        href="https://dash.cloudflare.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://dash.cloudflare.com/</span></a></td>
+        <td style="text-align: left;">Manage domains &amp; DNS</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">GitHub</td>
+        <td style="text-align: left;"><a
+        href="https://github.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://github.com/</span></a></td>
+        <td style="text-align: left;">Repository &amp; Pages
+        hosting</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Power Automate</td>
+        <td style="text-align: left;"><a
+        href="https://make.powerautomate.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://make.powerautomate.com/</span></a></td>
+        <td style="text-align: left;">Email automation workflows</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">GitHub Desktop</td>
+        <td style="text-align: left;"><a
+        href="https://desktop.github.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://desktop.github.com/</span></a></td>
+        <td style="text-align: left;">Local repository sync</td>
+        </tr>
+        </tbody>
+        </table>
       </article>
     </div>
   </main>
@@ -1363,4 +2503,3 @@
   <script src="/scripts/component-loader.js"></script>
 </body>
 </html>
-
