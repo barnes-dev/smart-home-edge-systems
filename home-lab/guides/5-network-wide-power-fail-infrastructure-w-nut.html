@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5-network-wide-power-fail-infrastructure-w-nut</title>
+  <title>Network Wide Power Fail Infrastructure W Nut</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,13 +13,33 @@
   </script>
   <link rel="stylesheet" href="/styles/global.css">
   <style>
+    /* Prevent outer window scrolling and lock viewport bounds */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; 
+    }
+
+    /* Main container takes up the exact remaining window height */
+    main.app-main {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      box-sizing: border-box;
+      padding: 1.5rem 1.5rem;
+      max-width: 100%;
+    }
+
+    /* Doc layout fills whatever vertical space is left below the title banner */
     .doc-layout {
       display: grid;
       grid-template-columns: 450px 1fr;
       gap: 2.5rem;
-      margin-top: 2rem;
       align-items: start;
+      flex: 1;
+      min-height: 0; /* Crucial for grid children to shrink and scroll properly */
     }
+    
     [custom-style="TextBlock"], 
     .TextBlock, 
     .textblock, 
@@ -27,27 +47,28 @@
     .Code, 
     span[data-custom-style="TextBlock"],
     p[custom-style="TextBlock"] {
-        background: #1e1e1e !important;         /* Matches your dark code/box theme */
-        border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Subtle dark-mode border */
-        border-left: 4px solid #3182ce !important;              /* Accent left border (or keep your preferred color) */
-        padding: 16px !important;               /* Creates internal breathing room */
-        line-height: 1.1 !important;           /* Keeps text lines tightly grouped */
-        display: block !important;              /* Forces the inline element to act like a box */
-        width: 100% !important;                 /* Spans the box structure across the viewport */
-        max-width: 850px !important;            /* Restricts maximum box width to look clean */
-        margin: 1.5rem 0 !important;            /* Vertical margins separate it from normal body text */
-        color: #eaf4ff !important;                     /* Matches your light text color */
-        border-radius: 6px !important;          /* Gives the box sleek, rounded corners */
+        background: #1e1e1e !important;         
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+        border-left: 4px solid #3182ce !important;             
+        padding: 16px !important;               
+        line-height: 1.1 !important;            
+        display: block !important;              
+        width: 100% !important;                 
+        max-width: 850px !important;            
+        margin: 1.5rem 0 !important;            
+        color: #eaf4ff !important;                   
+        border-radius: 6px !important;          
     }
+
+    /* Left Column (TOC) Independent Scroll */
     .sidebar-toc {
-      position: sticky;
-      top: 2rem;
-      max-height: calc(100vh - 4rem);
+      height: 100%;
       overflow-y: auto;
       background: rgba(255, 255, 255, 0.05);
       padding: 1.5rem;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
     }
     .sidebar-toc ul {
       list-style: none;
@@ -70,9 +91,15 @@
       color: #eaf4ff;
       text-decoration: underline;
     }
+
+    /* Right Column (Document Content) Independent Scroll */
     .document-content {
+      height: 100%;
+      overflow-y: auto;
       color: #eaf4ff;
       line-height: 1.7;
+      padding-right: 1rem; 
+      box-sizing: border-box;
     }
     .document-content pre {
       background: #1e1e1e;
@@ -220,13 +247,18 @@
     }
 
     @media (max-width: 768px) {
-      .doc-layout {
-        grid-template-columns: 1fr;
+      html, body {
+        overflow: auto; /* Re-enable window scrolling on mobile */
       }
-      .sidebar-toc {
-        position: relative;
-        top: 0;
-        max-height: none;
+      main.app-main {
+        height: auto;
+      }
+      .doc-layout {
+        display: block;
+        height: auto;
+      }
+      .sidebar-toc, .document-content {
+        height: auto;
         overflow-y: visible;
       }
       .document-content table {
@@ -239,8 +271,8 @@
 </head>
 <body>
   <div id="header-placeholder"></div>
-  <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
-    <p style="margin-bottom: 1.5rem; text-align: left;">
+  <main class="app-main">
+    <p style="margin-bottom: 1rem; text-align: left; flex-shrink: 0;">
       <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">→Home Lab</a>
       <span style="color: #64748b; margin: 0 0.75rem;">|</span>
       <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">→Back</a>
@@ -248,8 +280,9 @@
       <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">→Gateway</a>
     </p>
 
-    <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">5-network-wide-power-fail-infrastructure-w-nut</h1>
+    <div class="title-banner" style="text-align: left; margin-bottom: 1.5rem; flex-shrink: 0;">
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Network
+Wide Power Fail Infrastructure W Nut</h1>
       <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
       <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
     </div>
@@ -259,40 +292,200 @@
         <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
         <ul>
         <li><a
-        href="#nav-configuring-a-a-network-wide-power-fail-infrastructure-using-network-ups-tool."
-        id="nav-toc-configuring-a-a-network-wide-power-fail-infrastructure-using-network-ups-tool.">Configuring
-        a a Network Wide Power Fail Infrastructure using Network UPS
+        href="#nav-configuring-a-network-wide-power-fail-infrastructure-using-network-ups-tool."
+        id="nav-toc-configuring-a-network-wide-power-fail-infrastructure-using-network-ups-tool.">Configuring
+        a Network Wide Power Fail Infrastructure using Network UPS
         Tool.</a></li>
-        <li><a href="#nav-ups-direct-connection-to-the-pve-host"
-        id="nav-toc-ups-direct-connection-to-the-pve-host">UPS Direct
-        Connection to the PVE Host</a>
+        <li><a
+        href="#nav-ups-direct-connection-to-the-pve-host-overview"
+        id="nav-toc-ups-direct-connection-to-the-pve-host-overview">UPS
+        Direct Connection to the PVE Host Overview</a>
         <ul>
-        <li><a href="#nav-step-1-the-linux-network-strategy"
-        id="nav-toc-step-1-the-linux-network-strategy">Step 1: The Linux
-        Network Strategy</a></li>
-        <li><a
-        href="#nav-step-2-the-ups-core-logic-synology-standby-low-battery-shutdown"
-        id="nav-toc-step-2-the-ups-core-logic-synology-standby-low-battery-shutdown">Step
-        2: The UPS Core Logic (Synology Standby &amp; Low Battery
-        Shutdown)</a></li>
-        <li><a href="#nav-step-3-the-unified-internet-recovery-script"
-        id="nav-toc-step-3-the-unified-internet-recovery-script">Step 3:
-        The Unified Internet Recovery Script</a></li>
-        <li><a href="#nav-step-4-schedule-the-automated-check"
-        id="nav-toc-step-4-schedule-the-automated-check">Step 4:
-        Schedule the Automated Check</a></li>
-        <li><a
-        href="#nav-step-5-handle-the-smartthings-offline-safety-net"
-        id="nav-toc-step-5-handle-the-smartthings-offline-safety-net">Step
-        5: Handle the SmartThings "Offline" Safety Net</a></li>
+        <li><a href="#nav-why-this-is-better-than-creating-a-new-lxc"
+        id="nav-toc-why-this-is-better-than-creating-a-new-lxc">Why this
+        is better than creating a new LxC:</a></li>
+        <li><a href="#nav-strengths-of-this-design"
+        id="nav-toc-strengths-of-this-design">Strengths of This
+        Design</a></li>
+        <li><a href="#nav-system-level-design"
+        id="nav-toc-system-level-design">System Level Design</a></li>
         </ul></li>
+        <li><a href="#nav-architectural-weaknesses-edge-cases"
+        id="nav-toc-architectural-weaknesses-edge-cases">Architectural
+        Weaknesses &amp; Edge Cases</a>
+        <ul>
+        <li><a
+        href="#nav-the-synology-safe-mode-hang-grid-restored-after-nas-shutdown"
+        id="nav-toc-the-synology-safe-mode-hang-grid-restored-after-nas-shutdown">1.
+        The Synology "Safe Mode" Hang (Grid Restored After NAS
+        Shutdown)</a></li>
+        <li><a href="#nav-the-power-bounce-grid-restores-mid-outage"
+        id="nav-toc-the-power-bounce-grid-restores-mid-outage">2. The
+        Power "Bounce" (Grid Restores Mid-Outage)</a></li>
+        <li><a href="#nav-cross-ups-network-dependency-split-brain-risk"
+        id="nav-toc-cross-ups-network-dependency-split-brain-risk">3.
+        Cross-UPS Network Dependency (Split-Brain Risk)</a>
+        <ul>
+        <li><a href="#nav-ideal-power-up-recovery-scenario"
+        id="nav-toc-ideal-power-up-recovery-scenario">Ideal Power-Up
+        &amp; Recovery Scenario</a></li>
+        <li><a href="#nav-key-automation-tweaks-for-perfect-recovery"
+        id="nav-toc-key-automation-tweaks-for-perfect-recovery">Key
+        Automation Tweaks for Perfect Recovery:</a></li>
+        <li><a href="#nav-how-the-proxmox-recovery-watchdog-works"
+        id="nav-toc-how-the-proxmox-recovery-watchdog-works">How the
+        Proxmox Recovery Watchdog Works</a></li>
+        <li><a
+        href="#nav-what-happens-during-the-510-minute-boot-recovery"
+        id="nav-toc-what-happens-during-the-510-minute-boot-recovery">What
+        Happens During the 5–10 Minute Boot Recovery?</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-textual-and-structural-layout"
+        id="nav-toc-textual-and-structural-layout">Textual and
+        Structural Layout</a>
+        <ul>
+        <li><a href="#nav-ups-1-the-compute-layer"
+        id="nav-toc-ups-1-the-compute-layer">🏢 UPS 1: The Compute
+        Layer</a></li>
+        <li><a
+        href="#nav-ups-2-the-infrastructure-storage-network-layer"
+        id="nav-toc-ups-2-the-infrastructure-storage-network-layer">🌐
+        UPS 2: The Infrastructure, Storage &amp; Network Layer</a></li>
+        <li><a href="#nav-ups-3-the-workstation-layer"
+        id="nav-toc-ups-3-the-workstation-layer">🖥️ UPS 3: The
+        Workstation Layer</a></li>
+        <li><a href="#nav-ups-4-the-entertainment-layer"
+        id="nav-toc-ups-4-the-entertainment-layer">📺 UPS 4: The
+        Entertainment Layer</a></li>
+        <li><a href="#nav-physical-data-network-topology-map"
+        id="nav-toc-physical-data-network-topology-map">🔀 Physical Data
+        &amp; Network Topology Map</a></li>
+        </ul></li>
+        <li><a href="#nav-tiered-outage-execution-timeline"
+        id="nav-toc-tiered-outage-execution-timeline">Tiered Outage
+        Execution Timeline</a></li>
+        <li><a href="#nav-final-setup-procedures"
+        id="nav-toc-final-setup-procedures">Final setup procedures</a>
+        <ul>
+        <li><a
+        href="#nav-proxmox-host-configuration-ups-1-primary-nut-server"
+        id="nav-toc-proxmox-host-configuration-ups-1-primary-nut-server">1.
+        Proxmox Host Configuration (UPS 1 — Primary NUT Server)</a>
+        <ul>
+        <li><a href="#nav-step-1.1-install-nut-packages"
+        id="nav-toc-step-1.1-install-nut-packages">Step 1.1: Install NUT
+        Packages</a></li>
+        <li><a href="#nav-step-1.2-configure-nut-mode-etcnutnut.conf"
+        id="nav-toc-step-1.2-configure-nut-mode-etcnutnut.conf">Step
+        1.2: Configure NUT Mode (/etc/nut/nut.conf)</a></li>
+        <li><a href="#nav-step-1.3-define-ups-driver-etcnutups.conf"
+        id="nav-toc-step-1.3-define-ups-driver-etcnutups.conf">Step 1.3:
+        Define UPS Driver (/etc/nut/ups.conf)</a></li>
+        <li><a href="#nav-step-1.4-bind-network-daemon-etcnutupsd.conf"
+        id="nav-toc-step-1.4-bind-network-daemon-etcnutupsd.conf">Step
+        1.4: Bind Network Daemon (/etc/nut/upsd.conf)</a></li>
+        <li><a href="#nav-step-1.5-define-nut-users-etcnutupsd.users"
+        id="nav-toc-step-1.5-define-nut-users-etcnutupsd.users">Step
+        1.5: Define NUT Users (/etc/nut/upsd.users)</a></li>
+        <li><a
+        href="#nav-step-1.6-configure-local-monitor-etcnutupsmon.conf"
+        id="nav-toc-step-1.6-configure-local-monitor-etcnutupsmon.conf">Step
+        1.6: Configure Local Monitor (/etc/nut/upsmon.conf)</a></li>
+        <li><a href="#nav-step-1.7-enable-and-start-services"
+        id="nav-toc-step-1.7-enable-and-start-services">Step 1.7: Enable
+        and Start Services</a></li>
+        </ul></li>
+        <li><a
+        href="#nav-raspberry-pi-configuration-ups-2-backup-pi-hole-infrastructure-monitor"
+        id="nav-toc-raspberry-pi-configuration-ups-2-backup-pi-hole-infrastructure-monitor">2.
+        Raspberry Pi Configuration (UPS 2 — Backup Pi-hole &amp;
+        Infrastructure Monitor)</a>
+        <ul>
+        <li><a href="#nav-step-2.1-install-nut-packages"
+        id="nav-toc-step-2.1-install-nut-packages">Step 2.1: Install NUT
+        Packages</a></li>
+        <li><a
+        href="#nav-step-2.2-configure-nut-etcnutups.conf-etcnutnut.conf"
+        id="nav-toc-step-2.2-configure-nut-etcnutups.conf-etcnutnut.conf">Step
+        2.2: Configure NUT (/etc/nut/ups.conf &amp;
+        /etc/nut/nut.conf)</a></li>
+        <li><a
+        href="#nav-step-2.3-create-percentage-monitoring-script-usrlocalbinups2_monitor.sh"
+        id="nav-toc-step-2.3-create-percentage-monitoring-script-usrlocalbinups2_monitor.sh">Step
+        2.3: Create Percentage Monitoring Script
+        (/usr/local/bin/ups2_monitor.sh)</a></li>
+        <li><a href="#nav-step-2.4-automate-execution-via-cron"
+        id="nav-toc-step-2.4-automate-execution-via-cron">Step 2.4:
+        Automate Execution via Cron</a></li>
+        </ul></li>
+        <li><a
+        href="#nav-synology-nas-configurations-ups-2-network-clients"
+        id="nav-toc-synology-nas-configurations-ups-2-network-clients">3.
+        Synology NAS Configurations (UPS 2 — Network Clients)</a>
+        <ul>
+        <li><a href="#nav-step-3.1-enable-network-ups-client-in-dsm"
+        id="nav-toc-step-3.1-enable-network-ups-client-in-dsm">Step 3.1:
+        Enable Network UPS Client in DSM</a></li>
+        <li><a href="#nav-step-3.2-enable-wake-on-lan-wol"
+        id="nav-toc-step-3.2-enable-wake-on-lan-wol">Step 3.2: Enable
+        Wake-on-LAN (WOL)</a></li>
+        </ul></li>
+        <li><a href="#nav-proxmox-automatic-recovery-watchdog-setup"
+        id="nav-toc-proxmox-automatic-recovery-watchdog-setup">4.
+        Proxmox Automatic Recovery Watchdog Setup</a>
+        <ul>
+        <li><a
+        href="#nav-step-4.1-create-recovery-script-usrlocalbinsynology-recovery.sh"
+        id="nav-toc-step-4.1-create-recovery-script-usrlocalbinsynology-recovery.sh">Step
+        4.1: Create Recovery Script
+        (/usr/local/bin/synology-recovery.sh)</a></li>
+        <li><a href="#nav-step-4.2-add-cron-job-on-proxmox"
+        id="nav-toc-step-4.2-add-cron-job-on-proxmox">Step 4.2: Add Cron
+        Job on Proxmox</a></li>
+        </ul></li>
+        <li><a href="#nav-windows-11-workstation-ups-3-independent-node"
+        id="nav-toc-windows-11-workstation-ups-3-independent-node">5.
+        Windows 11 Workstation (UPS 3 — Independent Node)</a>
+        <ul>
+        <li><a href="#nav-step-5.1-install-winnut-client"
+        id="nav-toc-step-5.1-install-winnut-client">Step 5.1: Install
+        WinNUT-Client</a></li>
+        <li><a href="#nav-step-5.2-configure-connection-parameters"
+        id="nav-toc-step-5.2-configure-connection-parameters">Step 5.2:
+        Configure Connection Parameters</a></li>
+        <li><a href="#nav-step-5.3-set-shutdown-conditions"
+        id="nav-toc-step-5.3-set-shutdown-conditions">Step 5.3: Set
+        Shutdown Conditions</a></li>
+        </ul></li>
+        <li><a
+        href="#nav-esp32-s3-node-configuration-ups-4-entertainment-layer"
+        id="nav-toc-esp32-s3-node-configuration-ups-4-entertainment-layer">6.
+        ESP32-S3 Node Configuration (UPS 4 — Entertainment Layer)</a>
+        <ul>
+        <li><a
+        href="#nav-step-6.1-esphome-custom-firmware-setup-ups4.yaml"
+        id="nav-toc-step-6.1-esphome-custom-firmware-setup-ups4.yaml">Step
+        6.1: ESPHome / Custom Firmware Setup (ups4.yaml)</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-operational-validation-checklist"
+        id="nav-toc-operational-validation-checklist">Operational
+        Validation Checklist</a></li>
         </ul>
       </aside>
 
       <article class="document-content">
+        <figure>
+        <img src="5-network-wide-power-fail-infrastructure-w-nut/media/image1.png"
+        style="width:6.5in;height:3.54545in"
+        alt="Figure 1: Your Home in the Clouds!" />
+        <figcaption aria-hidden="true">Figure 2: Your Home in the
+        Clouds!</figcaption>
+        </figure>
         <h1
-        id="nav-configuring-a-a-network-wide-power-fail-infrastructure-using-network-ups-tool.">Configuring
-        a a Network Wide Power Fail Infrastructure using Network UPS
+        id="nav-configuring-a-network-wide-power-fail-infrastructure-using-network-ups-tool.">Configuring
+        a Network Wide Power Fail Infrastructure using Network UPS
         Tool.</h1>
         <p>For a Network UPS Tools (NUT) deployment where the UPS is
         physically connected via USB, to the main Promox server you have
@@ -302,13 +495,13 @@
         host (including all your VMs and LXCs), <strong>the ideal
         architecture is to install the NUT server directly on the
         Proxmox Host (PVE Host, 192.168.86.250).</strong></p>
-        <h1 id="nav-ups-direct-connection-to-the-pve-host">UPS Direct
-        Connection to the PVE Host</h1>
+        <h1 id="nav-ups-direct-connection-to-the-pve-host-overview">UPS
+        Direct Connection to the PVE Host Overview</h1>
         <p>In this configuration, the physical USB cable goes from the
         UPS into the Kamrui Mini PC, and the bare-metal Proxmox Debian
         layer handles the driver (usbhid-ups).</p>
-        <p><strong>Why this is better than creating a new
-        LxC:</strong></p>
+        <h2 id="nav-why-this-is-better-than-creating-a-new-lxc">Why this
+        is better than creating a new LxC:</h2>
         <ul>
         <li><p><strong>Fail-Safe Shutdowns:</strong> If the battery runs
         critically low, the host has direct control to gracefully stop
@@ -327,340 +520,1166 @@
         (Clients)</strong> like your Home Assistant OS instance (VM 101)
         for dashboards and automations.</p></li>
         </ul>
-        <p>Here is the complete textual and structural layout of your
-        dual-UPS infrastructure.</p>
+        <h2 id="nav-strengths-of-this-design">Strengths of This
+        Design</h2>
+        <ul>
+        <li><p><strong>Compute Isolation:</strong> Keeping Proxmox alone
+        on UPS 1 eliminates heavy load draw (spinning drives, PoE
+        switches), maximizing runtime so your core logic stays alive as
+        a command node to coordinate everything else.</p></li>
+        <li><p><strong>Circuit Segmentation:</strong> Spreading 4 UPS
+        units across independent wall outlets prevents a sudden
+        high-power draw (like a GPU spike on UPS 3) from tripping a
+        breaker that takes down your network or server
+        infrastructure.</p></li>
+        <li><p><strong>Storage Protection:</strong> Enforcing a soft
+        shutdown on the Synology NAS units at 60% battery preserves
+        Btrfs/EXT4 file systems and prevents degraded RAID arrays or NFS
+        stale-handle deadlocks.</p></li>
+        <li><p><strong>Continuous Network Fabric:</strong> Network gear
+        on UPS 2 remains powered long enough to let all remote nodes
+        (Proxmox, Windows, ESP32, NAS) communicate telemetry until their
+        final shutdown phase.</p></li>
+        </ul>
+        <h2 id="nav-system-level-design">System Level Design</h2>
+        <figure>
+        <img src="5-network-wide-power-fail-infrastructure-w-nut/media/image2.png"
+        style="width:6.49471in;height:3.54545in"
+        alt="Figure 3: System Level UPS Setup" />
+        <figcaption aria-hidden="true">Figure 4: System Level UPS
+        Setup</figcaption>
+        </figure>
+        <h1 id="nav-architectural-weaknesses-edge-cases">Architectural
+        Weaknesses &amp; Edge Cases</h1>
+        <table>
+        <caption>Code 1: UPS Power Edge Cases</caption>
+        <colgroup>
+        <col style="width: 27%" />
+        <col style="width: 72%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th colspan="2">CRITICAL OUTAGE RISKS (Edge Cases)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td><strong>Edge Case</strong></td>
+        <td>Resulting System Vulnerability</td>
+        </tr>
+        <tr>
+        <td><strong>1. Synology "Safe Mode" Loop</strong></td>
+        <td>NAS halts services/unmounts volumes but stays powered. If
+        grid returns, NAS won't auto-reboot.</td>
+        </tr>
+        <tr>
+        <td><strong>2. Partial Outage / Bounce</strong></td>
+        <td>RPi/NAS shut down at 60%, grid restores at 50%. Proxmox
+        never hit 20%, so system is half-dead.</td>
+        </tr>
+        <tr>
+        <td><strong>3. Master-Client Dependency</strong></td>
+        <td>Synology NAS 2 on UPS 2 relies on Proxmox on UPS 1 over
+        Ethernet on UPS 2 to receive triggers.</td>
+        </tr>
+        </tbody>
+        </table>
+        <h2
+        id="nav-the-synology-safe-mode-hang-grid-restored-after-nas-shutdown">1.
+        The Synology "Safe Mode" Hang (Grid Restored After NAS
+        Shutdown)</h2>
+        <p>Synology DSM by default enters <strong>Safe Mode</strong>
+        (unmounts volumes and shuts down services to protect data) but
+        leaves the motherboard powered on until the UPS physically cuts
+        input power.</p>
+        <ul>
+        <li><p><strong>The Problem:</strong> If the grid returns
+        <em>after</em> the NAS enters Safe Mode, but <em>before</em> UPS
+        2 dies completely, UPS 2 never power-cycles its
+        outlets.</p></li>
+        <li><p><strong>Result:</strong> The Synology units remain
+        powered on in a permanently halted state. They will not reboot
+        automatically when grid power normalizes until someone manually
+        presses the physical power buttons.</p></li>
+        </ul>
+        <h2 id="nav-the-power-bounce-grid-restores-mid-outage">2. The
+        Power "Bounce" (Grid Restores Mid-Outage)</h2>
+        <p>Suppose a storm drops utility power. UPS 2 drains to 60%,
+        triggering the Synology NAS units and ESP32 to shut down. Then
+        power comes back on while UPS 1 is still at 40% (meaning Proxmox
+        never received its 20% shutdown threshold and stayed
+        running).</p>
+        <ul>
+        <li><p><strong>The Problem:</strong> Proxmox never shut down,
+        but its NFS storage backend (Synology NAS 2) <em>did</em> shut
+        down.</p></li>
+        <li><p><strong>Result:</strong> Proxmox VM storage drops
+        offline, throwing I/O errors and corrupting running virtual
+        machines because the host never rebooted to trigger storage
+        re-initialization.</p></li>
+        </ul>
+        <h2 id="nav-cross-ups-network-dependency-split-brain-risk">3.
+        Cross-UPS Network Dependency (Split-Brain Risk)</h2>
+        <p>Synology NAS units are plugged into <strong>UPS 2</strong>,
+        but they monitor <strong>UPS 1</strong> via Proxmox
+        (192.168.86.250) over the network switch (powered by <strong>UPS
+        2</strong>).</p>
+        <ul>
+        <li>If UPS 2 fails prematurely (or its network switch fails),
+        the Synology units lose connection to Proxmox. Without explicit
+        deadtime watchdog settings in upsmon.conf, the Synology NAS
+        units won't know whether power is fine or if Proxmox died,
+        potentially missing their shutdown window.</li>
+        </ul>
+        <h3 id="nav-ideal-power-up-recovery-scenario">Ideal Power-Up
+        &amp; Recovery Scenario</h3>
+        <p>To make this setup self-healing, the reboot sequence must
+        mirror the shutdown sequence in reverse, driven by hardware
+        power-cycling.</p>
+        <table>
+        <caption>Code 2: UPS Power Ideal Recovery Sequence</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>IDEAL AUTOMATED RECOVERY SEQUENCE<br />
+        <br />
+        [ Utility Power Restored ]<br />
+        │<br />
+        ▼<br />
+        1. Mains Voltage Stabilizes ──► [ UPS 2 (Network) ] &amp; [ UPS
+        1 (Compute) ]<br />
+        │<br />
+        ├─► UPS 2 powers on outlets ──► Router, Switches &amp; Pi-Hole
+        boot up<br />
+        │ (Network Fabric Restored)<br />
+        │<br />
+        ├─► UPS 1 delays output 5-10s ─► Kamrui Mini PC auto-boots (BIOS
+        "Restore AC Power")<br />
+        │ (Proxmox Host / NUT Master comes online)<br />
+        │<br />
+        └─► Synology NAS Units ─────────► Controlled via Wake-on-LAN
+        (WOL) or</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3 id="nav-key-automation-tweaks-for-perfect-recovery">Key
+        Automation Tweaks for Perfect Recovery:</h3>
+        <ol type="1">
+        <li><p><strong>Enable "Auto-Reboot when Power Restores" on
+        Synology:</strong> In <strong>DSM → Control Panel → Hardware
+        &amp; Power</strong>, check <strong>"Restart automatically when
+        power supply issue is fixed"</strong>. Additionally, check
+        <strong>"Shut down UPS when system enters Safe Mode"</strong>.
+        This forces Synology to tell UPS 2 to kill power to its outlets
+        once Safe Mode is reached, ensuring a complete power cycle when
+        grid power returns.</p></li>
+        <li><p><strong>Configure BIOS AC Power Loss Settings:</strong>
+        Set the Kamrui Mini PC (Proxmox), Raspberry Pi, and Win 11 PC
+        BIOS setting <strong>State After G3 / AC Power Loss</strong> to
+        <strong>Power On</strong> (or Last State).</p></li>
+        <li><p><strong>Proxmox Storage Watchdog Script:</strong> Add an
+        automated systemd timer on Proxmox that periodically
+        pings/checks the Synology NFS share. If the NFS mount goes stale
+        during a partial outage bounce, the watchdog script cleanly
+        restarts Proxmox storage services or triggers a self-reboot once
+        the NAS comes back online.</p></li>
+        </ol>
+        <p>Since Proxmox (UPS 1) stays online during a partial outage
+        where UPS 2 drops to 60% and shuts down the Synology units,
+        <strong>Proxmox can act as an automated recovery
+        orchestrator</strong>.</p>
+        <p>Because your Synology NAS units are in Safe Mode/halted while
+        plugged into live power, they cannot turn themselves back on
+        automatically. Proxmox can monitor their availability and issue
+        <strong>Wake-on-LAN (WOL)</strong> magic packets over the
+        restored network to wake them up without requiring a physical
+        power cycle or button press.</p>
+        <h3 id="nav-how-the-proxmox-recovery-watchdog-works">How the
+        Proxmox Recovery Watchdog Works</h3>
+        <p>Proxmox runs a lightweight background script that
+        continuously monitors your infrastructure state:</p>
+        <table>
+        <caption>Code 3: UPS Power Edge Case Recovery Sequence</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>EDGE CASE AUTOMATED RECOVERY FLOW<br />
+        <br />
+        [ UPS 2 Hits 60% ] ──► Synology NAS Units Safe-Mode &amp;
+        Halt<br />
+        │<br />
+        ▼<br />
+        [ Grid Power Returns ] ──► Network Switches &amp; Gateway Boot
+        Up<br />
+        │<br />
+        ▼<br />
+        [ Proxmox Watchdog ] ──► Detects Network Gateway is reachabile
+        AGAIN<br />
+        ├─► Detects Synology NFS/IP is DOWN<br />
+        ├─► Issues Wake-on-LAN (WOL) Magic Packets to NAS MACs<br />
+        └─► Waits 5-10 mins for Synology Boot ──► Remounts NFS
+        Storage</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3
+        id="nav-what-happens-during-the-510-minute-boot-recovery">What
+        Happens During the 5–10 Minute Boot Recovery?</h3>
+        <p>Because Proxmox virtual machines might throw I/O errors if
+        their underlying NFS storage disappears during the NAS reboot
+        window, you can refine how Proxmox handles storage mounts:</p>
+        <ol type="1">
+        <li><p><strong>Pause/Suspend VMs on NFS:</strong> When Proxmox
+        detects the 60% trigger, have it suspend running NFS-dependent
+        VMs to RAM rather than hard-stopping them.</p></li>
+        <li><p><strong>Disable NFS Storage Plugin:</strong> Temporarily
+        mark the Synology NFS storage as disabled in Proxmox (pvesm set
+        &lt;storage&gt; --disable 1). This prevents Proxmox from locking
+        up while waiting for stale NFS socket timeouts.</p></li>
+        <li><p><strong>Re-Enable Post-WOL:</strong> Once the script
+        sends the WOL packet and sleeps for the 5–10 minute boot
+        duration, it re-enables the storage (pvesm set &lt;storage&gt;
+        --disable 0), mounts the NFS shares cleanly, and resumes the
+        paused VMs.</p></li>
+        </ol>
+        <h1 id="nav-textual-and-structural-layout">Textual and
+        Structural Layout</h1>
+        <p>The complete textual and structural layout of your multi-UPS
+        infrastructure.</p>
         <p>This design separates your core computing layer (Proxmox)
         from your network and storage dependencies, ensuring your
         infrastructure stays alive and manageable for as long as
         possible during a power event.</p>
-        <p><strong>🏢 UPS 1: The Compute Layer</strong></p>
-        <p><strong>Dedicated to:</strong> Proxmox VE Host (Kamrui Mini
-        PC)</p>
+        <h2 id="nav-ups-1-the-compute-layer">🏢 UPS 1: The Compute
+        Layer</h2>
         <ul>
-        <li><p><strong>Physical Data Link:</strong> A USB communication
-        cable connects directly from <strong>UPS 1</strong> into a USB
-        port on the <strong>Proxmox Host</strong>.</p></li>
-        <li><p><strong>Role:</strong> This UPS only has to power the
-        low-draw Mini PC. Because it isn't burdened by spinning hard
-        drives or power-hungry PoE cameras, it provides a maximum
-        runtime buffer for the Proxmox host to execute its network
-        watchdog scripts and manage the cluster shutdown.</p></li>
-        <li><p><strong>Control Signaling:</strong></p>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Dedicated to: Proxmox VE Host (Kamrui Mini PC)</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Physical Data Link: A USB communication cable connects
+        directly from UPS 1 into a USB port on the Proxmox Host.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Role: This UPS only powers the low-draw Mini PC. Because it
+        isn't burdened by spinning hard drives or power-hungry PoE
+        cameras, it provides a maximum runtime buffer for the Proxmox
+        host to execute its network watchdog scripts and manage the
+        system shutdown.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Control Signaling:</p>
+        </div>
         <ul>
-        <li><p>The Proxmox Host runs the <strong>NUT Master
-        (Server)</strong> daemon. It monitors the battery status of UPS
-        1 over the USB cable.</p></li>
-        <li><p>It shares this power status out over the local network
-        via Ethernet.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>The Proxmox Host runs the NUT Master (Server) daemon,
+        monitoring the battery status of UPS 1 over the USB
+        connection.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>It shares this power status out over the local network via
+        Ethernet at 192.168.86.250.</p>
+        </div></li>
         </ul></li>
         </ul>
-        <p><strong>🌐 UPS 2: The Infrastructure, Storage &amp; Network
-        Layer</strong></p>
-        <p><strong>Dedicated to:</strong> All supporting equipment and
-        network appliances.</p>
+        <h2 id="nav-ups-2-the-infrastructure-storage-network-layer">🌐
+        UPS 2: The Infrastructure, Storage &amp; Network Layer</h2>
         <ul>
-        <li><p><strong>Power Connections:</strong></p>
-        <ol type="1">
-        <li><p><strong>Internet Modem</strong> (Plugged into the
-        SmartThings Z-Wave Smart Plug ──► UPS 2 Battery
-        Outlets)</p></li>
-        <li><p><strong>Wi-Fi Router / EERO Nest Primary
-        Node</strong></p></li>
-        <li><p><strong>Core Network Switch</strong></p></li>
-        <li><p><strong>PoE Network Switches</strong> (Powering your IP
-        surveillance cameras)</p></li>
-        <li><p><strong>Synology NAS 1</strong> (Surveillance Station
-        storage)</p></li>
-        <li><p><strong>Synology NAS 2</strong> (NFS/Data
-        storage)</p></li>
-        <li><p><strong>SmartThings Hub</strong></p></li>
-        </ol></li>
-        <li><p><strong>Role:</strong> Keeps your entire local network
-        fabric, Wi-Fi mesh, smart home mesh, and data storage fully
-        active.</p></li>
-        <li><p><strong>Control Signaling:</strong></p>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Dedicated to: All supporting equipment and network
+        appliances.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Power Connections:</p>
+        </div>
         <ul>
-        <li><p>The <strong>Synology NAS units</strong> are configured as
-        <strong>NUT Slaves (Clients)</strong>.</p></li>
-        <li><p>They continuously poll the Proxmox Host (192.168.86.250)
-        over the local Ethernet network.</p></li>
-        <li><p>Even though they are plugged into UPS 2 for power, they
-        listen to the shutdown command broadcast by Proxmox. When
-        Proxmox reports a power failure, the Synologies execute their
-        2-to-5-minute countdown to enter Safe Mode, saving their disk
-        volumes from corruption before UPS 2 can run out of
-        juice.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Internet Modem (Plugged into the SmartThings Z-Wave Smart
+        Plug ──► UPS 2 Battery Outlets)</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Wi-Fi Router / EERO Nest Primary Node</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Core Network Switch</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>PoE Network Switches (Powering IP surveillance cameras)</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Synology NAS 1 (Surveillance Station storage)</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Synology NAS 2 (NFS/Data storage)</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>SmartThings Hub</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Raspberry Pi (Backup Pi-hole)</p>
+        </div></li>
+        </ul></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Role: Keeps your entire local network fabric, Wi-Fi mesh,
+        smart home mesh, and data storage fully active.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Control Signaling:</p>
+        </div>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The Synology NAS units are configured as NUT
+        Secondary (Slave) clients.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>They continuously poll the Proxmox Host
+        (192.168.86.250) over the local Ethernet network.</strong></p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Even though they are plugged into UPS 2 for power,
+        they listen to the battery thresholds and shutdown triggers
+        broadcast by Proxmox. When the designated threshold is reached
+        (e.g., UPS 2 charge drops to 60%), the Synologies execute their
+        countdown to enter Safe Mode, saving their disk volumes from
+        corruption long</strong></p>
+        </div></li>
         </ul></li>
         </ul>
-        <p><strong>🔀 Physical Data &amp; Network Topology
-        Map</strong></p>
-        <p>text</p>
-        <p>======================= ELECTRICAL POWER LINES
-        =======================</p>
-        <p>[Wall Outlet A] ──► [ UPS 1 (Compute) ] ──► Kamrui Mini PC
-        (Proxmox Host)</p>
-        <p>│</p>
-        <p>[Wall Outlet B] ──► [ UPS 2 (Network) ] ──► Power Strip /
-        PDU</p>
-        <p>├──► SmartThings Z-Wave Plug ──► Internet Modem</p>
-        <p>├──► Wi-Fi Router / EERO Nodes</p>
-        <p>├──► Core Network Switch</p>
-        <p>├──► PoE Camera Switches</p>
-        <p>├──► Synology NAS (Surveillance)</p>
-        <p>├──► Synology NAS (NFS Data)</p>
-        <p>└──► SmartThings Hub</p>
-        <p>======================= LOGICAL AND DATA PATHS
-        =======================</p>
-        <p>[ UPS 1 ] ⚡───(USB Monitoring Cable)───► [ Proxmox Host
-        (192.168.86.250) ]</p>
-        <p>(NUT Master Service / Runs Script)</p>
-        <p>│</p>
-        <p>┌────────────────────────────────────────┴────────────────────────────────────────┐</p>
-        <p>▼ (Ethernet Path - local) ▼ (Wi-Fi Path - internet)</p>
-        <p>[ Core Network Switch ] [ Wi-Fi Router / EERO Mesh ]</p>
-        <p>│ │</p>
-        <p>├──► [ Synology NAS Units ] (NUT Slaves) └──► [ Internet /
-        Cloud ]</p>
-        <p>│ └─► Listens for ONBATT signal ▲</p>
-        <p>│ └─► Enters Safe Mode in 2-5 mins │ (API Commands)</p>
-        <p>│ │</p>
-        <p>└──► [ SmartThings Hub ] ───(Z-Wave Mesh)───► [ SmartThings
-        Z-Wave Plug ] ──────────────┘</p>
-        <p>└─► Unaffected by local Wi-Fi drop └─► Cuts power to Modem
-        for 60s</p>
-        <p>Use code with caution.</p>
-        <p><strong>💡 Why This Dual Layout Works Best For Your
-        Script</strong></p>
-        <ol type="1">
-        <li><p><strong>Isolated Troubleshooting:</strong> When your
-        script detects a dropped internet connection on the wlan0
-        interface, it cycles the SmartThings Z-Wave plug. Because the
-        <strong>SmartThings Hub</strong> and <strong>Core
-        Switch</strong> are on UPS 2, they remain completely powered up
-        and operational. The Z-Wave command moves locally from the hub
-        to the plug seamlessly.</p></li>
-        <li><p><strong>Proxmox Safety:</strong> If the modem power-cycle
-        script runs while a true utility power outage is occurring, your
-        Proxmox server won't abruptly lose power when the modem reboots,
-        because Proxmox's power supply is completely isolated on UPS
-        1.</p></li>
-        </ol>
-        <p><strong>How to structure it in your Network Map</strong></p>
-        <p>If you go with the recommended
-        <strong>Host-as-Master</strong> approach, your configuration
-        won't require spinning up a new container ID, keeping your 32GB
-        RAM footprint exactly where it is.</p>
-        <p>Here is how the data and shutdown signaling will flow through
-        your existing layout:</p>
-        <blockquote>
-        <p>[ Physical UPS ] ──(USB Cable)──► [ PROXMOX VE HOST
-        (192.168.86.250) ]</p>
-        <p>│ (Runs NUT Server / Master)</p>
-        <p>│</p>
-        <p>┌────────────────────┴────────────────────┐</p>
-        <p>▼ (LAN Broadcast) ▼ (LAN Broadcast)</p>
-        <p>├──► [ VM 101 ] HOME ASSISTANT [ Other Network Hosts ]</p>
-        <p>│ (Runs NUT Client / Integration) (NAS, Desktops, etc.)</p>
-        <p>│ - Triggers Smart Home Alerts - Graceful automated
-        shutdowns</p>
-        <p>│ - Logs Battery Runtime Metrics</p>
-        </blockquote>
-        <p><strong>Resource Impact:</strong></p>
+        <h2 id="nav-ups-3-the-workstation-layer">🖥️ UPS 3: The
+        Workstation Layer</h2>
         <ul>
-        <li><strong>CPU/RAM:</strong> Negligible. The nut-server daemon
-        uses less than 10–20 MB of RAM and essentially 0% CPU overhead,
-        fitting perfectly within the <strong>2GB RAM / 2
-        Threads</strong> overhead you already wisely reserved for your
-        Proxmox host.</li>
-        </ul>
-        <p>Promox NUT Server will tell synology to sleep, I want it to
-        shutdown on LL. i want it to poll wifi. *(Promox has ethernet
-        and wifi). Promox NUT will run a restart script that cycles
-        internet ( wifi ) and then wait 1 minute. Then it will cycle
-        smartthings</p>
-        <p>This advanced, multi-network automation is completely
-        possible using your Linux machine as the central coordinator.
-        Since your Linux box has <strong>both Ethernet and
-        Wi-Fi</strong>, we can isolate the networks: Ethernet handles
-        your local infrastructure (Synology and SmartThings), while
-        Wi-Fi tests and handles the internet recovery.</p>
-        <p>Here is the complete blueprint to orchestrate this logic
-        flow.</p>
-        <hr />
-        <h2 id="nav-step-1-the-linux-network-strategy">Step 1: The Linux
-        Network Strategy</h2>
-        <p>To make this reliable, you must ensure your Linux routing
-        table doesn't get confused by having two active network
-        interfaces.</p>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Dedicated to:</strong> Windows 11 Desktop</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Physical Data Link:</strong> A direct USB
+        communication cable connects UPS 3 to a USB port on the Windows
+        11 PC.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Role:</strong> Powers your primary workstation
+        independently. Isolating the desktop onto its own outlet and
+        battery prevents high-power components (like GPU power spikes)
+        from draining or tripping the core infrastructure battery
+        banks.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Control Signaling:</strong></p>
+        </div>
         <ul>
-        <li><p><strong>Ethernet (eth0):</strong> Hardwired to your local
-        network switch. This interface must be configured
-        <strong>without a default gateway</strong> so it only handles
-        local IP traffic (talking to Synology, SmartThings, and your
-        UPS).</p></li>
-        <li><p><strong>Wi-Fi (wlan0):</strong> Connected to your main
-        Wi-Fi network. This interface must hold the <strong>default
-        gateway</strong>, forcing all external internet traffic (pings
-        to the outside world) to go through the Wi-Fi chip.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Runs <strong>WinNUT-Client</strong> (or local CyberPower
+        PowerPanel / NUT Windows service) locally over USB.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Operates as an isolated node that triggers a graceful Windows
+        shutdown when UPS 3 battery runtime drops below safety
+        thresholds, or listes for network heartbeat signals from
+        Proxmox.</p>
+        </div></li>
+        </ul></li>
         </ul>
-        <hr />
+        <h2 id="nav-ups-4-the-entertainment-layer">📺 UPS 4: The
+        Entertainment Layer</h2>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Dedicated to:</strong> Main Living Room TV, Nvidia
+        Shield, and Secondary Mesh Network</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Power Connections:</strong></p>
+        </div>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Wall Screen LCD TV</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Nvidia Shield Media Player</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Secondary EERO Mesh Router Node</p>
+        </div></li>
+        </ul></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Physical Data Link:</strong> A USB communication
+        cable connects directly into an <strong>ESP32-S3
+        Microcontroller</strong> running an embedded NUT daemon / custom
+        USB host code.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Role:</strong> Keeps your streaming media and
+        secondary Wi-Fi mesh node online through short flickers and
+        brownouts without risking filesystem loss on storage
+        servers.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Control Signaling:</strong></p>
+        </div>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>The <strong>ESP32 Node</strong> acts as a lightweight network
+        telemetry server over Wi-Fi, streaming battery health metrics to
+        Home Assistant or Proxmox via MQTT / HTTP sockets.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>When UPS 2 broadcasts a 60% battery threshold signal across
+        the network, the ESP32 receives the trigger to cleanly shut down
+        media sessions or signal power-down events to connected home
+        entertainment gear.</p>
+        </div></li>
+        </ul></li>
+        </ul>
+        <h2 id="nav-physical-data-network-topology-map">🔀 Physical Data
+        &amp; Network Topology Map</h2>
+        <table>
+        <caption>Code 4: UPS Power Distribution</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>========================= INDEPENDENT CIRCUIT &amp; TELEMETRY
+        MATRIX =========================<br />
+        <br />
+        [ Outlet 1 ] ──► [ UPS 1: Compute ] ──(USB)──► Kamrui Mini PC
+        (Proxmox / NUT Master)<br />
+        │ │<br />
+        ├─► Kamrui Mini PC ├─► Primary PiHole LXC/VM<br />
+        ├─► SmartThings Hub (Backup) └─► Exports upsd @
+        192.168.86.250<br />
+        └─► PDU / Power Strip<br />
+        <br />
+        <br />
+        [ Outlet 2 ] ──► [ UPS 2: Network ] ──(USB)──► Raspberry Pi
+        (Backup PiHole / NUT Server)<br />
+        │ │<br />
+        ├─► Modem, Router &amp; Core Switch └─► Local USB upsd
+        server<br />
+        ├─► EERO Primary Mesh &amp; PoE Switches<br />
+        ├─► SmartThings Primary Hub<br />
+        ├─► Synology NAS (Surveillance) ──(NUT Client pointing to
+        Pi/Proxmox)<br />
+        ├─► Synology NAS (NFS Data) ──(NUT Client pointing to
+        Pi/Proxmox)<br />
+        └─► Raspberry Pi (Backup PiHole)<br />
+        <br />
+        <br />
+        [ Outlet 3 ] ──► [ UPS 3: Workstation ] ──(USB)──► Windows 11
+        Desktop<br />
+        │ │<br />
+        └─► Win 11 PC └─► WinNUT / USB monitoring<br />
+        <br />
+        <br />
+        [ Outlet 4 ] ──► [ UPS 4: Entertainment ] ──(USB)──► ESP32
+        Node<br />
+        │ │<br />
+        ├─► Secondary EERO Mesh └─► WiFi Telemetry / NUT Exporter<br />
+        ├─► Wall Screen LCD TV<br />
+        └─► Nvidia Shield</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h1 id="nav-tiered-outage-execution-timeline">Tiered Outage
+        Execution Timeline</h1>
+        <table style="width:99%;">
+        <caption>Table 1: Tiered Outage Execution Timeline</caption>
+        <colgroup>
+        <col style="width: 9%" />
+        <col style="width: 17%" />
+        <col style="width: 15%" />
+        <col style="width: 56%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>Trigger</strong></th>
+        <th style="text-align: left;"><strong>Monitoring
+        Node</strong></th>
+        <th style="text-align: left;"><strong>Targets</strong></th>
+        <th style="text-align: left;"><strong>Automated
+        Action</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>UPS 2 @ 60%</strong></td>
+        <td style="text-align: left;">Raspberry Pi (Backup Pi-hole)</td>
+        <td style="text-align: left;">Both Synology NAS units</td>
+        <td style="text-align: left;">Triggers graceful volume unmount
+        and system halt via upsc / upsmon network signals.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>UPS 2 @ 60%</strong></td>
+        <td style="text-align: left;">Raspberry Pi (Backup Pi-hole)</td>
+        <td style="text-align: left;">ESP32 Node (UPS 4)</td>
+        <td style="text-align: left;">Sends custom network payload to
+        ESP32 to trigger optional soft-shutdown on TV/Shield node.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>UPS 2 @ 40%</strong></td>
+        <td style="text-align: left;">Raspberry Pi (Backup Pi-hole)</td>
+        <td style="text-align: left;">RPi Host &amp; UPS 4 hardware</td>
+        <td style="text-align: left;">Initiates OS shutdown for the
+        Raspberry Pi itself; sends final power-off signal to UPS 4.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>UPS 1 @ 20%</strong></td>
+        <td style="text-align: left;">Proxmox Host (192.168.86.250)</td>
+        <td style="text-align: left;">Kamrui Mini PC &amp; VMs</td>
+        <td style="text-align: left;">Triggers graceful guest VM/LXC
+        shutdowns followed by Proxmox host OS shutdown.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>UPS 1 @ 10%</strong></td>
+        <td style="text-align: left;">Proxmox Host (192.168.86.250)</td>
+        <td style="text-align: left;">UPS 1 Hardware</td>
+        <td style="text-align: left;">Issue upsdrvctl shutdown /
+        load.off command to kill output outlets and preserve battery
+        safety margin.</td>
+        </tr>
+        </tbody>
+        </table>
+        <h1 id="nav-final-setup-procedures">Final setup procedures</h1>
+        <p>Here is the step-by-step setup guide to implement your 4-UPS
+        architecture, percentage-based shutdown triggers, Wake-on-LAN
+        recovery, and client node configurations.</p>
         <h2
-        id="nav-step-2-the-ups-core-logic-synology-standby-low-battery-shutdown">Step
-        2: The UPS Core Logic (Synology Standby &amp; Low Battery
-        Shutdown)</h2>
-        <p>As configured earlier, your Linux server runs the NUT master
-        service.</p>
-        <ol type="1">
-        <li><p><strong>Synology Standby:</strong> In your Synology DSM
-        interface (<strong>Control Panel &gt; Hardware &amp; Power &gt;
-        UPS</strong>), set the time-based countdown to a short window
-        (e.g., <strong>2 to 5 minutes</strong>).</p>
-        <ul>
-        <li><em>When power drops, the Linux NUT server broadcasts the
-        power failure. The Synology countdown triggers, safely
-        unmounting its drives and slipping into its low-power standby
-        "Safe Mode."</em></li>
-        </ul></li>
-        <li><p><strong>Linux Low Battery Shutdown:</strong> Your Linux
-        server ignores the short timer and remains fully operational on
-        battery. It will continue running the internet monitoring script
-        below until the UPS battery drops to its physical low-voltage
-        threshold, at which point the NUT daemon executes its native
-        SHUTDOWNCMD.</p></li>
-        </ol>
-        <hr />
-        <h2 id="nav-step-3-the-unified-internet-recovery-script">Step 3:
-        The Unified Internet Recovery Script</h2>
-        <p>This script runs on your Linux box. It forces all ping tests
-        to route through your Wi-Fi interface. If the internet fails, it
-        drops your Wi-Fi connection to attempt a local software reset,
-        waits, and then instructs your SmartThings Z-Wave plug to
-        cycle.</p>
-        <ol type="1">
-        <li>Create the script file on your Linux machine:</li>
-        </ol>
-        <p>bash</p>
-        <p>sudo nano /usr/local/bin/network_watchdog.sh</p>
-        <p>Use code with caution.</p>
-        <ol start="2" type="1">
-        <li>Paste the following automated script. <em>Note: Ensure you
-        update your SmartThings API Token, Z-Wave Plug Device ID, and
-        your local Wi-Fi interface name (usually wlan0).</em></li>
-        </ol>
-        <p>bash</p>
-        <p>#!/bin/bash</p>
-        <p># Configuration Parameters</p>
-        <p>TARGET_IP="8.8.8.8"</p>
-        <p>WIFI_INTERFACE="wlan0" # Change to your actual Linux Wi-Fi
-        interface name</p>
-        <p>ST_TOKEN="YOUR_SMARTTHINGS_BEARER_TOKEN"</p>
-        <p>ST_DEVICE_ID="YOUR_Z_WAVE_PLUG_DEVICE_ID"</p>
-        <p>echo "Executing Network Watchdog..."</p>
-        <p># 1. Force the ping to route EXCLUSIVELY through the Wi-Fi
-        interface</p>
-        <p>if ! ping -I "$WIFI_INTERFACE" -c 3 -W 5 "$TARGET_IP" &gt;
-        /dev/null 2&gt;&amp;1; then</p>
-        <p>echo "Internet failure detected on Wi-Fi interface!"</p>
-        <p># 2. Cycle local Linux Wi-Fi interface first to clear local
-        software locks</p>
-        <p>echo "Restarting Linux Wi-Fi interface..."</p>
-        <p>sudo ip link set "$WIFI_INTERFACE" down</p>
-        <p>sleep 10</p>
-        <p>sudo ip link set "$WIFI_INTERFACE" up</p>
-        <p># Wait 45 seconds for Linux to reconnect to the Wi-Fi access
-        point</p>
-        <p>echo "Waiting for Wi-Fi reconnection..."</p>
-        <p>sleep 45</p>
-        <p># 3. Re-test internet after local Wi-Fi reset. If still dead,
-        proceed to hardware cycle.</p>
-        <p>if ! ping -I "$WIFI_INTERFACE" -c 3 -W 5 "$TARGET_IP" &gt;
-        /dev/null 2&gt;&amp;1; then</p>
-        <p>echo "Internet still dead. Initiating SmartThings Z-Wave
-        power cycle..."</p>
-        <p># 4. Turn off the SmartThings Z-Wave plug powering your
-        router/modem</p>
-        <p>curl -X POST -s -H "Authorization: Bearer $ST_TOKEN" -H
-        "Content-Type: application/json" \</p>
-        <p>-d '{"commands": [{"component": "main", "capability":
-        "switch", "command": "off"}]}' \</p>
-        <p>https://smartthings.com &gt; /dev/null</p>
-        <p># 5. Wait exactly 1 minute (60 seconds) as requested</p>
-        <p>echo "Modem/Router powered off. Waiting 60 seconds..."</p>
-        <p>sleep 60</p>
-        <p># 6. Turn the SmartThings Z-Wave plug back ON</p>
-        <p>echo "Powering Modem/Router back on via SmartThings..."</p>
-        <p>curl -X POST -s -H "Authorization: Bearer $ST_TOKEN" -H
-        "Content-Type: application/json" \</p>
-        <p>-d '{"commands": [{"component": "main", "capability":
-        "switch", "command": "on"}]}' \</p>
-        <p>https://smartthings.com &gt; /dev/null</p>
-        <p>echo "Power cycle complete. Allowing network time to
-        boot..."</p>
-        <p>else</p>
-        <p>echo "Local Linux Wi-Fi cycle resolved the issue. Internet
-        restored."</p>
-        <p>fi</p>
-        <p>else</p>
-        <p>echo "Internet connection on Wi-Fi is perfectly healthy."</p>
-        <p>fi</p>
-        <p>Use code with caution.</p>
-        <ol start="3" type="1">
-        <li>Save and close the file (Ctrl+O, Enter, Ctrl+X), then make
-        it executable:</li>
-        </ol>
-        <p>bash</p>
-        <p>sudo chmod +x /usr/local/bin/network_watchdog.sh</p>
-        <p>Use code with caution.</p>
-        <hr />
-        <h2 id="nav-step-4-schedule-the-automated-check">Step 4:
-        Schedule the Automated Check</h2>
-        <p>To give your modem and router plenty of time to finish
-        booting up after a hard reset, configure this script to run
-        every 15 minutes.</p>
-        <ol type="1">
-        <li>Open your system's automation scheduler:</li>
-        </ol>
-        <p>bash</p>
-        <p>crontab -e</p>
-        <p>Use code with caution.</p>
-        <ol start="2" type="1">
-        <li>Add this execution rule to the very bottom of the file:</li>
-        </ol>
-        <p>text</p>
-        <p>*/15 * * * * /usr/local/bin/network_watchdog.sh</p>
-        <p>Use code with caution.</p>
-        <hr />
+        id="nav-proxmox-host-configuration-ups-1-primary-nut-server">1.
+        Proxmox Host Configuration (UPS 1 — Primary NUT Server)</h2>
+        <p>The Kamrui Mini PC monitors UPS 1 via USB host and acts as
+        the central upsd server (192.168.86.250) for remote clients.</p>
+        <h3 id="nav-step-1.1-install-nut-packages">Step 1.1: Install NUT
+        Packages</h3>
+        <p>Run the following in the Proxmox shell:</p>
+        <table>
+        <caption>Code 5: UPS Proxmox Nut Install</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Bash<br />
+        apt update &amp;&amp; apt install -y nut wakeonlan</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3 id="nav-step-1.2-configure-nut-mode-etcnutnut.conf">Step
+        1.2: Configure NUT Mode (/etc/nut/nut.conf)</h3>
+        <p>Set NUT to operate as a netserver:</p>
+        <table>
+        <caption>Code 6: UPS Proxmox Nut Configure</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Ini, TOML<br />
+        MODE=netserver</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3 id="nav-step-1.3-define-ups-driver-etcnutups.conf">Step 1.3:
+        Define UPS Driver (/etc/nut/ups.conf)</h3>
+        <p>Add the CyberPower configuration with forced low-battery
+        overrides:</p>
+        <table>
+        <caption>Code 7: UPS Proxmox Nut Driver</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Ini, TOML<br />
+        [ups1]<br />
+        driver = usbhid-ups<br />
+        port = auto<br />
+        desc = "Compute UPS 1 - Kamrui Mini PC"<br />
+        override.battery.charge.low = 20<br />
+        override.battery.charge.warning = 30</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3 id="nav-step-1.4-bind-network-daemon-etcnutupsd.conf">Step
+        1.4: Bind Network Daemon (/etc/nut/upsd.conf)</h3>
+        <p>Listen on all interfaces (or specifically
+        192.168.86.250):</p>
+        <table>
+        <caption>Code 8: UPS Proxmox Nut Driver Binding</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Ini, TOML<br />
+        LISTEN 0.0.0.0 3493</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3 id="nav-step-1.5-define-nut-users-etcnutupsd.users">Step
+        1.5: Define NUT Users (/etc/nut/upsd.users)</h3>
+        <p>Configure authentication credentials for remote clients:</p>
+        <table>
+        <caption>Code 9: UPS Proxmox Nut Users</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Ini, TOML<br />
+        [admin]<br />
+        password = SuperSecretPassword<br />
+        actions = SET<br />
+        instcmds = ALL<br />
+        <br />
+        [monuser]<br />
+        password = SecretClientPassword<br />
+        upsmon master</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3
+        id="nav-step-1.6-configure-local-monitor-etcnutupsmon.conf">Step
+        1.6: Configure Local Monitor (/etc/nut/upsmon.conf)</h3>
+        <p>Edit the /etc/nut/upsmon.conf with the following
+        contents.</p>
+        <table>
+        <caption>Code 10: UPS Proxmox Nut Local Monitor</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Ini, TOML<br />
+        MONITOR ups1@localhost 1 monuser SecretClientPassword
+        master<br />
+        MINSUPPLIES 1<br />
+        SHUTDOWNCMD "/sbin/shutdown -h now"<br />
+        POWERDOWNFLAG /etc/killpower</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3 id="nav-step-1.7-enable-and-start-services">Step 1.7: Enable
+        and Start Services</h3>
+        <p>Execute the following commands on the Promox Console.</p>
+        <table>
+        <caption>Code 11: UPS Proxmox Nut Start Services</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Bash<br />
+        systemctl restart nut-server nut-client<br />
+        systemctl enable nut-server nut-client</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
         <h2
-        id="nav-step-5-handle-the-smartthings-offline-safety-net">Step
-        5: Handle the SmartThings "Offline" Safety Net</h2>
-        <p>Because the SmartThings command travels over the internet, a
-        critical safety issue arises: <strong>If your modem is
-        completely locked up, the internet is down, meaning the Linux
-        box cannot send the "Turn ON" command to SmartThings via the
-        cloud API.</strong></p>
-        <p>To prevent your network from being permanently stuck in an
-        "OFF" state, you <strong>must change a hardware parameter on
-        your Z-Wave plug</strong>.</p>
+        id="nav-raspberry-pi-configuration-ups-2-backup-pi-hole-infrastructure-monitor">2.
+        Raspberry Pi Configuration (UPS 2 — Backup Pi-hole &amp;
+        Infrastructure Monitor)</h2>
+        <p>The Raspberry Pi monitors UPS 2 directly via USB and executes
+        the 60% and 40% threshold triggers.</p>
+        <h3 id="nav-step-2.1-install-nut-packages">Step 2.1: Install NUT
+        Packages</h3>
+        <p>Run the following on the Raspberry Pi.</p>
+        <table>
+        <caption>Code 12: UPS PiHole Nut Install</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Bash<br />
+        sudo apt update &amp;&amp; sudo apt install -y nut</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3
+        id="nav-step-2.2-configure-nut-etcnutups.conf-etcnutnut.conf">Step
+        2.2: Configure NUT (/etc/nut/ups.conf &amp;
+        /etc/nut/nut.conf)</h3>
+        <p>Edit the /etc/nut/ups.conf &amp; /etc/nut/nut.conf and
+        restart the daemon as follows:</p>
+        <table>
+        <caption>Code 13: UPS PiHole Nut Configure</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>In /etc/nut/nut.conf:<br />
+        Ini, TOML<br />
+        MODE=netserver<br />
+        <br />
+        In /etc/nut/ups.conf:<br />
+        Ini, TOML<br />
+        [ups2]<br />
+        driver = usbhid-ups<br />
+        port = auto<br />
+        desc = "Infrastructure UPS 2 - Network &amp; Storage"<br />
+        <br />
+        In /etc/nut/upsd.conf:<br />
+        Ini, TOML<br />
+        LISTEN 0.0.0.0 3493<br />
+        <br />
+        In /etc/nut/upsd.users:<br />
+        Ini, TOML<br />
+        [monuser]<br />
+        password = SecretClientPassword<br />
+        upsmon master<br />
+        <br />
+        Restart services:<br />
+        Bash<br />
+        sudo systemctl restart nut-server</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3
+        id="nav-step-2.3-create-percentage-monitoring-script-usrlocalbinups2_monitor.sh">Step
+        2.3: Create Percentage Monitoring Script
+        (/usr/local/bin/ups2_monitor.sh)</h3>
+        <p>Create the custom trigger script:</p>
+        <table>
+        <caption>Code 14: UPS PiHole Nut Monitoring Script</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Bash<br />
+        #!/bin/bash<br />
+        CHARGE=$(upsc ups2@localhost battery.charge
+        2&gt;/dev/null)<br />
+        STATUS=$(upsc ups2@localhost ups.status 2&gt;/dev/null)<br />
+        <br />
+        # Execute only if running on battery power<br />
+        if [[ "$STATUS" == *"OB"* ]]; then<br />
+        if [ "$CHARGE" -le 60 ] &amp;&amp; [ ! -f /tmp/ups2_60_triggered
+        ]; then<br />
+        # Signal Synology NAS units via SSH or Safe Mode command<br />
+        ssh -o StrictHostKeyChecking=no admin@192.168.86.X
+        "synopoweroff"<br />
+        ssh -o StrictHostKeyChecking=no admin@192.168.86.Y
+        "synopoweroff"<br />
+        # Optional: Send HTTP / MQTT call to ESP32 (UPS 4)<br />
+        curl -s "http://192.168.86.Z/shutdown" || true<br />
+        touch /tmp/ups2_60_triggered<br />
+        fi<br />
+        <br />
+        if [ "$CHARGE" -le 40 ] &amp;&amp; [ ! -f /tmp/ups2_40_triggered
+        ]; then<br />
+        touch /tmp/ups2_40_triggered<br />
+        sudo shutdown -h now<br />
+        fi<br />
+        fi<br />
+        <br />
+        # Reset flags if AC power returns<br />
+        if [[ "$STATUS" == *"OL"* ]]; then<br />
+        rm -f /tmp/ups2_60_triggered /tmp/ups2_40_triggered<br />
+        fi<br />
+        <br />
+        Make it executable:<br />
+        Bash<br />
+        sudo chmod +x /usr/local/bin/ups2_monitor.sh</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h3 id="nav-step-2.4-automate-execution-via-cron">Step 2.4:
+        Automate Execution via Cron</h3>
+        <p>Add to /etc/crontab:</p>
+        <table>
+        <caption>Code 15: UPS PiHole Nut Crontab</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Code snippet<br />
+        * * * * * root /usr/local/bin/ups2_monitor.sh<br />
+        * * * * * root sleep 30; /usr/local/bin/ups2_monitor.sh</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h2
+        id="nav-synology-nas-configurations-ups-2-network-clients">3.
+        Synology NAS Configurations (UPS 2 — Network Clients)</h2>
+        <p>Configure both NAS units to connect to NUT server signals and
+        process Safe Mode commands cleanly.</p>
+        <h3 id="nav-step-3.1-enable-network-ups-client-in-dsm">Step 3.1:
+        Enable Network UPS Client in DSM</h3>
         <ol type="1">
-        <li><p>Open your SmartThings app and locate your Z-Wave
-        plug.</p></li>
-        <li><p>Go to its <strong>Settings / Device
-        Options</strong>.</p></li>
-        <li><p>Look for a setting called <strong>"Auto Turn-On
-        Timer"</strong> or <strong>"Auto-Off Disabled / Auto-On
-        Enabled"</strong> (varies by brand like Zooz or
-        Aeotec).</p></li>
-        <li><p>Set the plug to <strong>automatically turn itself back ON
-        after 60 seconds</strong> if it ever receives an OFF
-        command.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Log in to DSM on both NAS units.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Go to <strong>Control Panel → Hardware &amp; Power →
+        UPS</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Check <strong>Enable UPS support</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Select <strong>Synology UPS Server</strong> or
+        <strong>Network NUT Server</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Set Network UPS Server IP address:</p>
+        </div>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Point to 192.168.86.250 (Proxmox) or 192.168.86.W (Raspberry
+        Pi UPS 2 server).</p>
+        </div></li>
+        </ul></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Set <strong>Time before Synology NAS enters Safe
+        Mode</strong>: Choose <strong>Customize time</strong> (e.g., 2
+        minutes) or set it to respond to low battery signals.</p>
+        </div></li>
         </ol>
-        <p><em>By enabling this hardware-level feature on the plug
-        itself, the Linux box only needs to successfully transmit the
-        initial "OFF" command while the internet is failing. Even if the
-        internet cuts out immediately after, the Z-Wave plug's internal
-        firmware countdown will guarantee your router turns back on 60
-        seconds later.</em></p>
-        <hr />
+        <h3 id="nav-step-3.2-enable-wake-on-lan-wol">Step 3.2: Enable
+        Wake-on-LAN (WOL)</h3>
+        <ol type="1">
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Go to Control Panel → Hardware &amp; Power → General.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Under Power Recovery, check Enable Wake on LAN (WOL).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Check Restart automatically when power supply issue is
+        fixed.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Note the Ethernet MAC Addresses (found under Control Panel →
+        Info Center → Network).</p>
+        </div></li>
+        </ol>
+        <h2 id="nav-proxmox-automatic-recovery-watchdog-setup">4.
+        Proxmox Automatic Recovery Watchdog Setup</h2>
+        <p>This script runs on Proxmox (UPS 1) to wake up the Synology
+        NAS units via Wake-on-LAN if UPS 1 never failed, but UPS 2
+        dropped to 60% and restored power.</p>
+        <h3
+        id="nav-step-4.1-create-recovery-script-usrlocalbinsynology-recovery.sh">Step
+        4.1: Create Recovery Script
+        (/usr/local/bin/synology-recovery.sh)</h3>
+        <p>Edit the file /usr/local/bin/synology-recovery.sh and make it
+        executable</p>
+        <table>
+        <caption>Code 16: UPS Proxmox Auto Recovery Script</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Bash<br />
+        #!/bin/bash<br />
+        <br />
+        GATEWAY_IP="192.168.86.1" # Core Router IP<br />
+        NAS1_IP="192.168.86.X" # Synology Surveillance IP<br />
+        NAS2_IP="192.168.86.Y" # Synology NFS IP<br />
+        NAS1_MAC="AA:BB:CC:DD:EE:01" # Synology 1 MAC<br />
+        NAS2_MAC="AA:BB:CC:DD:EE:02" # Synology 2 MAC<br />
+        <br />
+        FLAG_FILE="/tmp/syno_shutdown_active"<br />
+        <br />
+        # Check if Gateway is reachable<br />
+        if ping -c 1 -W 2 "$GATEWAY_IP" &gt; /dev/null 2&gt;&amp;1;
+        then<br />
+        if [ -f "$FLAG_FILE" ]; then<br />
+        echo "Network power restored. Issuing WOL packets to Synology
+        units..."<br />
+        wakeonlan "$NAS1_MAC"<br />
+        wakeonlan "$NAS2_MAC"<br />
+        <br />
+        # Remove trigger flag<br />
+        rm -f "$FLAG_FILE"<br />
+        <br />
+        # Wait 8 minutes for NAS array to re-initialize before
+        un-freezing mounts<br />
+        sleep 480<br />
+        pvesm set nfs-storage-name --disable 0<br />
+        fi<br />
+        else<br />
+        # Gateway dropped (Network power down)<br />
+        touch "$FLAG_FILE"<br />
+        fi<br />
+        <br />
+        Make it executable:<br />
+        Bash<br />
+        chmod +x /usr/local/bin/synology-recovery.sh</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p>Bash</p>
+        <h3 id="nav-step-4.2-add-cron-job-on-proxmox">Step 4.2: Add Cron
+        Job on Proxmox</h3>
+        <p>Add to /etc/crontab on Proxmox:</p>
+        <table>
+        <caption>Code 17: UPS Proxmox Crontab</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>Code snippet<br />
+        * * * * * root /usr/local/bin/synology-recovery.sh &gt;/dev/null
+        2&gt;&amp;1</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h2 id="nav-windows-11-workstation-ups-3-independent-node">5.
+        Windows 11 Workstation (UPS 3 — Independent Node)</h2>
+        <h3 id="nav-step-5.1-install-winnut-client">Step 5.1: Install
+        WinNUT-Client</h3>
+        <ol type="1">
+        <li><p>Download and install <strong>WinNUT-Client</strong> (or
+        CyberPower PowerPanel Personal).</p></li>
+        <li><p>Open WinNUT-Client configuration.</p></li>
+        </ol>
+        <h3 id="nav-step-5.2-configure-connection-parameters">Step 5.2:
+        Configure Connection Parameters</h3>
+        <ul>
+        <li><p><strong>UPS Name:</strong> ups3 (or cyberpower)</p></li>
+        <li><p><strong>NUT Server IP:</strong> 127.0.0.1 (if USB is
+        monitored via local WinNUT runner) or 192.168.86.250 (if
+        monitoring central signals).</p></li>
+        <li><p><strong>Port:</strong> 3493</p></li>
+        </ul>
+        <h3 id="nav-step-5.3-set-shutdown-conditions">Step 5.3: Set
+        Shutdown Conditions</h3>
+        <ul>
+        <li>Select <strong>Shutdown System</strong> on ONBATT + LOWBATT
+        or set battery runtime remaining to <strong>&lt; 5
+        minutes</strong>.</li>
+        </ul>
+        <h2
+        id="nav-esp32-s3-node-configuration-ups-4-entertainment-layer">6.
+        ESP32-S3 Node Configuration (UPS 4 — Entertainment Layer)</h2>
+        <p>The ESP32 reads battery data over USB Host or Serial and
+        reports telemetry to Home Assistant or Proxmox via Wi-Fi.</p>
+        <h3
+        id="nav-step-6.1-esphome-custom-firmware-setup-ups4.yaml">Step
+        6.1: ESPHome / Custom Firmware Setup (ups4.yaml)</h3>
+        <p>If using ESPHome with USB Host HID / Serial component:</p>
+        <table>
+        <caption>Code 18: UPS ESP32 Nut Custom Firmware</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-Code Code"
+        data-custom-style="Code">
+        <p>YAML<br />
+        esphome:<br />
+        name: esp32-ups4-node<br />
+        <br />
+        esp32:<br />
+        board: esp32-s3-devkitc-1<br />
+        framework:<br />
+        type: esp-idf<br />
+        <br />
+        wifi:<br />
+        ssid: "YourNetworkSSID"<br />
+        password: "YourWiFiPassword"<br />
+        manual_ip:<br />
+        static_ip: 192.168.86.Z<br />
+        gateway: 192.168.86.1<br />
+        subnet: 255.255.255.0<br />
+        <br />
+        api:<br />
+        encryption:<br />
+        key: "YourGeneratedAPIKey"<br />
+        <br />
+        web_server:<br />
+        port: 80<br />
+        <br />
+        # Configure custom local endpoint to listen for network shutdown
+        calls from Raspberry Pi<br />
+        http_request:<br />
+        <br />
+        switch:<br />
+        - platform: template<br />
+        name: "Entertainment Display Relay"<br />
+        turn_off_action:<br />
+        - logger.log: "Executing TV/Shield Soft Off Trigger"</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h1 id="nav-operational-validation-checklist">Operational
+        Validation Checklist</h1>
+        <ol type="1">
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Verify Proxmox Server Status:</strong> Run upsc
+        ups1@localhost on Proxmox to ensure battery telemetry is
+        broadcasting properly.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Verify Network Client Connectivity:</strong> From the
+        Raspberry Pi, run upsc ups1@192.168.86.250 to confirm
+        cross-network socket connectivity.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Simulate Power Outage:</strong> Unplug <strong>Outlet
+        2</strong> (Network UPS). Verify that:</p>
+        </div>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>The Raspberry Pi detects the drop.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>At 60% battery, Synology units receive the safe mode
+        command.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Restoring power to Outlet 2 causes Proxmox to automatically
+        issue Wake-on-LAN packets and resume normal operation.</p>
+        </div></li>
+        </ul></li>
+        </ol>
       </article>
     </div>
   </main>
@@ -668,4 +1687,3 @@
   <script src="/scripts/component-loader.js"></script>
 </body>
 </html>
-
