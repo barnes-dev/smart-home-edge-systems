@@ -3,143 +3,274 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Smart Home Edge Systems: transparent, private, locally engineered smart home infrastructure." />
   <link rel="stylesheet" href="/styles/global.css">
   <style>
+    :root {
+      --ink: #edf4f7;
+      --muted: #a9bcc4;
+      --line: rgba(201, 228, 232, 0.16);
+      --panel: rgba(13, 34, 45, 0.82);
+      --blue: #60a5fa;
+      --blue-deep: #1d4ed8;
+      --blue-pale: #bfdbfe;
+    }
+
     body {
-      background: #07111f;
-      color: #eaf4ff;
-      font-family: Arial, sans-serif;
-      margin: 0;
+      background: #07151d;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
     }
 
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1rem 3rem;
+    #header-placeholder { background: #091923; }
+
+    .entry-page {
+      background-color: #07151d;
+      background-image: linear-gradient(rgba(97, 225, 208, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(97, 225, 208, 0.045) 1px, transparent 1px);
+      background-size: 44px 44px;
+      overflow: hidden;
     }
 
-    h1 {
-      font-size: 1.75rem;
-      font-weight: 700;
-      text-align: left;
-      margin: 0 0 1.5rem 0;
-      padding: 0;
-      line-height: 1.2;
-    }
+    .entry-wrap { width: min(1160px, calc(100% - 3rem)); margin: 0 auto; }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-    }
+    .entry-nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 0; border-bottom: 1px solid var(--line); font-family: "Segoe UI", sans-serif; }
+    .entry-nav strong { color: var(--blue); font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .entry-nav a { color: var(--muted); margin-left: 1.4rem; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .entry-nav a:hover { color: var(--blue); text-decoration: none; }
 
-    .card {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 14px;
-      padding: 1rem 1.15rem;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-      min-height: 140px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr); gap: 4rem; align-items: end; min-height: 580px; padding: 6rem 0 5rem; }
+    .eyebrow { color: var(--blue-pale); font-family: "Segoe UI", sans-serif; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+    .hero h1 { max-width: 780px; margin: 1.2rem 0 1.5rem; font-size: clamp(3.2rem, 7vw, 6.6rem); line-height: 0.92; letter-spacing: -0.04em; }
+    .hero h1 em { color: var(--blue); font-style: normal; }
+    .hero-copy { max-width: 650px; color: var(--muted); font-size: 1.2rem; line-height: 1.65; }
+    .hero-aside { border-left: 2px solid var(--blue); padding: 0 0 0 1.4rem; font-family: "Segoe UI", sans-serif; }
+    .hero-aside p { color: var(--ink); font-size: 1rem; line-height: 1.55; }
+    .hero-aside small { color: var(--muted); display: block; line-height: 1.5; }
+    .button-row { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+    .button { display: inline-block; padding: 0.82rem 1.1rem; border: 1px solid var(--blue); color: #07111f; background: var(--blue); font: 700 0.78rem "Segoe UI", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+    .button.secondary { background: transparent; color: var(--blue-pale); border-color: var(--line); }
+    .button:hover { color: #07111f; text-decoration: none; background: #93c5fd; }
+    .button.secondary:hover { color: #07111f; border-color: var(--blue); }
 
-    .card h3 {
-      margin: 0 0 0.5rem;
-      color: #f5f9ff;
-      font-size: 1.05rem;
-    }
+    .section { padding: 5.5rem 0; border-top: 1px solid var(--line); }
+    .section-label { color: var(--blue-pale); font: 700 0.74rem "Segoe UI", sans-serif; letter-spacing: 0.18em; text-transform: uppercase; }
+    .section-heading { display: flex; justify-content: space-between; gap: 2rem; align-items: end; margin-bottom: 2.5rem; }
+    .section h2 { max-width: 720px; margin: 0.7rem 0 0; border: 0; padding: 0; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1; }
+    .section-intro { max-width: 500px; margin: 0; color: var(--muted); line-height: 1.6; }
+    .mission { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 4rem; }
+    .mission-quote { margin: 0; color: var(--blue-pale); font-size: clamp(1.7rem, 3vw, 2.6rem); line-height: 1.12; }
+    .mission-detail { color: var(--muted); font: 1.05rem/1.75 "Segoe UI", sans-serif; }
 
-    .card p {
-      margin: 0 0 0.75rem;
-      color: #dbeafe;
-      font-size: 0.95rem;
-      line-height: 1.45;
-    }
+    .hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .hub { min-height: 175px; padding: 1.4rem; background: var(--panel); display: flex; flex-direction: column; justify-content: space-between; }
+    .hub-number { color: var(--blue); font: 700 0.75rem "Segoe UI", sans-serif; letter-spacing: 0.12em; }
+    .hub h3 { margin: 1.6rem 0 0.4rem; font-size: 1.25rem; }
+    .hub p { margin: 0; color: var(--muted); font: 0.9rem/1.45 "Segoe UI", sans-serif; }
+    .hub a { margin-top: 1.2rem; color: var(--blue); font: 700 0.75rem "Segoe UI", sans-serif; letter-spacing: 0.1em; text-transform: uppercase; }
+    .hub a:hover { color: var(--blue-pale); text-decoration: none; }
 
-    .card a {
-      color: #bfdbfe;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
+    .matrix-wrap { overflow-x: auto; border: 1px solid var(--line); }
+    .matrix { width: 100%; min-width: 680px; border-collapse: collapse; font: 0.88rem "Segoe UI", sans-serif; }
+    .matrix th, .matrix td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); }
+    .matrix th { color: var(--blue-pale); background: rgba(29, 78, 216, 0.16); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .matrix td { height: 70px; color: #77909a; }
+    .matrix tr:last-child td { border-bottom: 0; }
+    .matrix-note { margin: 1rem 0 0; color: var(--blue-pale); font: 700 0.78rem/1.5 "Segoe UI", sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
 
-    .card a:hover {
-      color: #60a5fa;
-    }
+    .about { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 4rem; }
+    .about-mark { color: var(--blue-deep); font-size: clamp(5rem, 14vw, 12rem); line-height: 0.7; }
+    .about h3 { margin: 0 0 0.35rem; font-size: 2rem; }
+    .about-role { color: var(--blue); font: 700 0.82rem "Segoe UI", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+    .about-copy { color: var(--muted); font: 1.04rem/1.75 "Segoe UI", sans-serif; }
+    .ai-layout { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .ai-panel { padding: 1.7rem; background: var(--panel); }
+    .ai-panel h3 { margin: 0 0 1.2rem; font-size: 1.3rem; }
+    .spec-list { display: grid; gap: 0.8rem; margin: 0; font: 0.88rem/1.45 "Segoe UI", sans-serif; }
+    .spec-list div { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--line); }
+    .spec-list dt { color: var(--muted); }
+    .spec-list dd { margin: 0; color: var(--blue-pale); text-align: right; }
+    .model-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); }
+    .model { padding: 1.3rem; background: #0a202e; }
+    .model strong { display: block; color: var(--blue); font: 700 0.95rem "Segoe UI", sans-serif; }
+    .model span { display: block; margin-top: 0.45rem; color: var(--muted); font: 0.84rem/1.45 "Segoe UI", sans-serif; }
+    .ai-footnote { margin: 1rem 0 0; color: #8fa5b0; font: 0.8rem/1.5 "Segoe UI", sans-serif; }
+    .promise { margin-top: 1px; padding: 1.8rem; background: #081a26; border-top: 2px solid var(--blue); }
+    .promise h3 { margin: 0 0 0.7rem; font-size: 1.35rem; }
+    .promise-intro { max-width: 760px; margin: 0 0 1.5rem; color: var(--muted); font: 0.95rem/1.55 "Segoe UI", sans-serif; }
+    .promise-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .promise-step { min-height: 145px; padding: 1rem; background: #0b2230; }
+    .promise-step strong { display: block; color: var(--blue-pale); font: 700 0.76rem "Segoe UI", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+    .promise-step span { display: block; margin-top: 0.8rem; color: var(--ink); font: 0.9rem/1.45 "Segoe UI", sans-serif; }
+    .promise-step small { display: block; margin-top: 0.5rem; color: #8fa5b0; font: 0.76rem/1.4 "Segoe UI", sans-serif; }
+    .sponsor { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; padding: 2.2rem; border: 1px solid var(--blue); background: rgba(29, 78, 216, 0.12); }
+    .sponsor h2 { color: var(--blue-pale); font-size: clamp(1.8rem, 3vw, 2.7rem); }
+    .sponsor p { color: var(--ink); font: 1rem/1.6 "Segoe UI", sans-serif; }
+    .sponsor ul { margin: 0; padding-left: 1.2rem; color: var(--muted); font: 0.95rem/1.8 "Segoe UI", sans-serif; }
 
-    @media (max-width: 900px) {
-      .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 600px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 760px) {
+      .entry-wrap { width: min(100% - 2rem, 1160px); }
+      .entry-nav { align-items: flex-start; gap: 1rem; }
+      .entry-nav div { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.6rem; }
+      .entry-nav a { margin-left: 0; }
+      .hero, .mission, .about, .ai-layout, .sponsor { grid-template-columns: 1fr; gap: 2rem; }
+      .hero { min-height: auto; padding: 4rem 0; }
+      .hero h1 { font-size: clamp(3rem, 15vw, 5rem); }
+      .section { padding: 4rem 0; }
+      .section-heading { display: block; }
+      .section-intro { margin-top: 1.2rem; }
+      .hub-grid { grid-template-columns: 1fr; }
+      .hub { min-height: 150px; }
+      .model-list { grid-template-columns: 1fr; }
+      .promise-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div id="header-placeholder"></div>
 
-  <main>
-    <h1>
-      <span style="color: #1d4ed8;">SMART HOME</span>
-      <span style="color: #60a5fa;">EDGE SYSTEMS</span>
-      <span style="color: #eaf4ff; font-weight: 400;">Gateway</span>
-    </h1>
+  <div class="entry-page">
+    <div class="entry-wrap">
+      <nav class="entry-nav" aria-label="Page sections">
+        <strong>Local Voice &amp; Performance Lab</strong>
+        <div>
+          <a href="#mission">Mission</a>
+          <a href="#blueprint">Blueprint</a>
+          <a href="#ai-lab">AI Lab</a>
+          <a href="#benchmark">Benchmark</a>
+          <a href="#sponsor">Partner</a>
+        </div>
+      </nav>
 
-    <div class="grid">
-      <div class="card">
-        <h3>Home Lab</h3>
-        <p>Core infrastructure, networks, and hypervisors.</p>
-        <a href="./home-lab/index.html">Enter Hub &rarr;</a>
-      </div>
-      <div class="card">
-        <h3>Home Assistant</h3>
-        <p>Smart automations, dashboards, and integrations.</p>
-        <a href="./home-assistant/index.html">Enter Hub &rarr;</a>
-      </div>
-      <div class="card">
-        <h3>Home Voice Assistants</h3>
-        <p>Voice Satellites and integration with Voice Services.</p>
-        <a href="./voice/index.html">Enter Hub &rarr;</a>
-      </div>
-      <div class="card">
-        <h3>Home Media Servers</h3>
-        <p>Music, and Movie Media Server Platforms.</p>
-        <a href="./media/index.html">Enter Hub &rarr;</a>
-      </div>
-      <div class="card">
-        <h3>Home Storage</h3>
-        <p>Smart home Storage Solutions.</p>
-        <a href="./storage/index.html">Enter Hub &rarr;</a>
-      </div>
-      <div class="card">
-        <h3>Home Survailence and Security</h3>
-        <p>Home Security and Survailence</p>
-        <a href="./survailence/index.html">Enter Hub &rarr;</a>
-      </div>
-      <div class="card">
-        <h3>3D Printing</h3>
-        <p>Additive manufacturing, custom parts, and modifications.</p>
-        <a href="./3d-printing/index.html">Enter Hub &rarr;</a>
-      </div>
-      <div class="card">
-        <h3>Research and Development</h3>
-        <p>Projects that our Team is currently working on.</p>
-        <a href="./r-d/index.html">Enter Hub &rarr;</a>
-      </div>
-      <div class="card">
-        <h3>Marketing</h3>
-        <p>Marketing and Community Engagement.</p>
-        <a href="./marketing/index.html">Enter Hub &rarr;</a>
-      </div>
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <div>
+            <div class="eyebrow">Smart-Home-Edge-Systems.us / In-home testbed</div>
+            <h1 id="hero-title">Build the home <em>around its data.</em></h1>
+            <p class="hero-copy">An in-home, practical, inexpensive lab for proving that private AI, voice control, and intelligent automation can live locally, within reach of ordinary households.</p>
+            <p class="hero-copy">Our Ollama-powered systems keep everyday assistance close to the people and devices they serve: interpreting voice, recognizing images, helping write automations, retrieving local knowledge, and coordinating the home without sending its context to a distant cloud.</p>
+            <div class="button-row">
+              <a class="button" href="#sponsor">Sponsor the testbed</a>
+              <a class="button secondary" href="#blueprint">Explore the blueprint</a>
+            </div>
+          </div>
+          <aside class="hero-aside">
+            <p>Independent field testing for the next generation of local-first infrastructure.</p>
+            <small>Hardware and software partners are invited to place real products in a transparent, community-facing evaluation environment.</small>
+          </aside>
+        </section>
+
+        <section class="section" id="mission" aria-labelledby="mission-title">
+          <div class="section-heading">
+            <div><div class="section-label">01 / Why this exists</div><h2 id="mission-title">The mission</h2></div>
+          </div>
+          <div class="mission">
+            <p class="mission-quote">“The future of the smart home belongs at the edge, not in the cloud. The future of helpful AI should live there too.”</p>
+            <p class="mission-detail">Our mission is to dismantle reliance on subscription-heavy, high-maintenance cloud servers by testing, benchmarking, and engineering simple, cost-effective, and entirely private local ecosystems for every home. That includes practical AI: Ollama models running inside the lab to support local voice assistants, vision, coding, automation, and private document search. We measure the real tradeoffs between model capability, response latency, memory, power, and hardware cost so families can choose systems that fit their needs instead of accepting opaque cloud subscriptions as the only path to a smart home. We want to provide a low-cost, one-stop, tried-and-tested solution for integrating secure infrastructure for this Smart Home Edge System.</p>
+          </div>
+        </section>
+
+        <section class="section" id="blueprint" aria-labelledby="blueprint-title">
+          <div class="section-heading">
+            <div><div class="section-label">02 / The in-home architecture</div><h2 id="blueprint-title">Nine hubs. One local system.</h2></div>
+            <p class="section-intro">Each hub will grow through setup guides, configuration notes, field reports, and references that make the work reproducible.</p>
+          </div>
+          <div class="hub-grid">
+            <article class="hub"><span class="hub-number">01</span><div><h3>Home Lab</h3><p>Infrastructure, virtualization, and networking.</p></div><a href="./home-lab/index.html">Enter hub &rarr;</a></article>
+            <article class="hub"><span class="hub-number">02</span><div><h3>Home Assistant</h3><p>Automation, dashboards, and integrations.</p></div><a href="./home-assistant/index.html">Enter hub &rarr;</a></article>
+            <article class="hub"><span class="hub-number">03</span><div><h3>Home Voice Assistants</h3><p>Private voice control and satellite systems.</p></div><a href="./voice/index.html">Enter hub &rarr;</a></article>
+            <article class="hub"><span class="hub-number">04</span><div><h3>Home Media Services</h3><p>Locally managed music and film platforms.</p></div><a href="./media/index.html">Enter hub &rarr;</a></article>
+            <article class="hub"><span class="hub-number">05</span><div><h3>Home Storage</h3><p>Durable, private storage for the household.</p></div><a href="./storage/index.html">Enter hub &rarr;</a></article>
+            <article class="hub"><span class="hub-number">06</span><div><h3>Surveillance &amp; Security</h3><p>Resilient, local-first visibility and protection.</p></div><a href="./surveillance/index.html">Enter hub &rarr;</a></article>
+            <article class="hub"><span class="hub-number">07</span><div><h3>3D Printing</h3><p>Fabrication, repairs, and custom parts.</p></div><a href="./3d-printing/index.html">Enter hub &rarr;</a></article>
+            <article class="hub"><span class="hub-number">08</span><div><h3>Research &amp; Development</h3><p>Experiments and emerging local technologies.</p></div><a href="./r-d/index.html">Enter hub &rarr;</a></article>
+            <article class="hub"><span class="hub-number">09</span><div><h3>Marketing</h3><p>Community engagement and partner stories.</p></div><a href="./marketing/index.html">Enter hub &rarr;</a></article>
+          </div>
+        </section>
+
+        <section class="section" id="ai-lab" aria-labelledby="ai-title">
+          <div class="section-heading">
+            <div><div class="section-label">03 / Intelligence at home</div><h2 id="ai-title">Ollama, running close to the system.</h2></div>
+            <p class="section-intro">The lab is putting local AI to work inside the same private infrastructure it documents, with models selected for voice, vision, coding, automation, and local document context.</p>
+          </div>
+          <div class="ai-layout">
+            <div class="ai-panel">
+              <h3>Current lab configuration</h3>
+              <dl class="spec-list">
+                <div><dt>Host</dt><dd>Proxmox VE 9.2.3</dd></div>
+                <div><dt>Compute</dt><dd>Core i7-13620H / 10C 16T</dd></div>
+                <div><dt>Memory</dt><dd>32 GB RAM</dd></div>
+                <div><dt>AI service</dt><dd>LXC 103 / Ollama</dd></div>
+                <div><dt>Allocation</dt><dd>6 vCPU / 16 GB RAM</dd></div>
+                <div><dt>Storage</dt><dd>40 GB NVMe</dd></div>
+                <div><dt>Network</dt><dd>LAN + isolated backend</dd></div>
+              </dl>
+              <p class="ai-footnote">GPU passthrough and Vulkan behavior remain part of the lab's measured validation work, not an assumed performance guarantee.</p>
+            </div>
+            <div class="ai-panel">
+              <h3>Model roles in the testbed</h3>
+              <div class="model-list">
+                <div class="model"><strong>gemma3:4b</strong><span>Multimodal vision and general local assistance.</span></div>
+                <div class="model"><strong>phi4-mini</strong><span>Reasoning, logic, and tool-calling experiments.</span></div>
+                <div class="model"><strong>qwen2.5-coder:7b</strong><span>Automation engineering, code, and YAML support.</span></div>
+                <div class="model"><strong>qwen2.5-coder:1.5b</strong><span>Low-latency inline autocomplete over the LAN.</span></div>
+                <div class="model"><strong>nomic-embed-text</strong><span>Local embeddings and document context retrieval.</span></div>
+              </div>
+              <p class="ai-footnote">These roles describe the planned lab workload. Published latency, throughput, and power results will appear in the testing matrix after repeatable runs.</p>
+            </div>
+          </div>
+          <div class="promise">
+            <h3>Our voice testing promise</h3>
+            <p class="promise-intro">We will test the complete local path, not just the model in isolation: from the satellite microphone, across the private backend, through Home Assistant and Ollama, and back to the speaker. Every result should be explainable, repeatable, and useful to the community.</p>
+            <div class="promise-grid">
+              <div class="promise-step"><strong>01 / Capture</strong><span>Microphone and wake word</span><small>Signal integrity, gain, noise floor, and false triggers.</small></div>
+              <div class="promise-step"><strong>02 / Understand</strong><span>STT and transcription</span><small>Recognition accuracy and processing time for real commands.</small></div>
+              <div class="promise-step"><strong>03 / Decide</strong><span>Intent and local AI</span><small>Home Assistant actions, Ollama response time, and model behavior.</small></div>
+              <div class="promise-step"><strong>04 / Respond</strong><span>Piper and TTS</span><small>Time to first audio, format compatibility, and playback quality.</small></div>
+              <div class="promise-step"><strong>05 / Prove</strong><span>Logs and network evidence</span><small>Pipeline timings, packet paths, CPU/GPU use, and privacy checks.</small></div>
+            </div>
+            <p class="ai-footnote">A core privacy condition: when the satellite is idle, it should not stream household audio to the backend. Network captures and pipeline logs will help verify that behavior.</p>
+          </div>
+        </section>
+
+        <section class="section" id="benchmark" aria-labelledby="benchmark-title">
+          <div class="section-heading">
+            <div><div class="section-label">04 / Evidence from the lab</div><h2 id="benchmark-title">Testing before promises.</h2></div>
+            <p class="section-intro">The matrix is intentionally empty until hardware units enter the lab. Published results will be tied to repeatable configurations and software versions.</p>
+          </div>
+          <div class="matrix-wrap">
+            <table class="matrix">
+              <thead><tr><th>Hardware model</th><th>Software / firmware</th><th>Workload</th><th>Latency</th><th>Throughput</th><th>Power</th></tr></thead>
+              <tbody>
+                <tr><td>Pending lab integration</td><td>Pending</td><td>Pending</td><td>--</td><td>--</td><td>--</td></tr>
+                <tr><td>Pending lab integration</td><td>Pending</td><td>Pending</td><td>--</td><td>--</td><td>--</td></tr>
+                <tr><td>Pending lab integration</td><td>Pending</td><td>Pending</td><td>--</td><td>--</td><td>--</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="matrix-note">Testing Matrix: Launching Summer 2027 &mdash; Hardware Units Currently Pending Lab Integration.</p>
+        </section>
+
+        <section class="section" id="about" aria-labelledby="about-title">
+          <div class="section-heading"><div><div class="section-label">05 / The person behind the measurements</div><h2 id="about-title">About the architect</h2></div></div>
+          <div class="about">
+            <div class="about-mark" aria-hidden="true">EB</div>
+            <div>
+              <h3>Ed Barnes</h3><div class="about-role">Director &amp; Lead Tester / The Local Voice &amp; Performance Lab</div>
+              <p class="about-copy">Ed Barnes is a retired veteran with a deep, multi-decade understanding of the technological evolution of voice assistant ecosystems, from early high-latency cloud architectures to modern local-first environments. Following a career cut short due to a disability, Ed has channeled his disciplined engineering mindset, rigorous testing methodologies, and dedicated full-time focus into pioneering open-source, private-by-default home automation.</p>
+              <p class="about-copy">Utilizing an enterprise-grade testing lab, a dedicated media production studio, and extensive hands-on experience deploying containerized virtualization architectures, Ed is building a definitive open benchmark data matrix for the next generation of local voice infrastructure. His goal is to provide the global open-source community with transparent, empirical performance data that bridges the gap between hardware manufacturers and private smart home adopters.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sponsor" aria-labelledby="sponsor-title">
+          <div class="sponsor">
+            <div><div class="section-label">An in-home partnership</div><h2 id="sponsor-title">Put your product in the lab.</h2><p>We are seeking sponsorship from hardware and software companies that want their products evaluated in a real, privacy-first home infrastructure.</p><a class="button" href="mailto:info@smart-home-edge-systems.us?subject=Testbed%20sponsorship%20inquiry">Start a conversation</a></div>
+            <div><p>Support helps us build and document the testbed through:</p><ul><li>Hardware units for repeatable field testing</li><li>Software licenses and developer access</li><li>Lab expansion, measurement, and media production</li><li>Open benchmark reports for the community</li></ul></div>
+          </div>
+        </section>
+      </main>
     </div>
-  </main>
+  </div>
 
   <div id="footer-placeholder"></div>
   <script src="/scripts/component-loader.js"></script>
