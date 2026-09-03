@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GPU Performance Strategies</title>
+  <title>Gpu Performance Strategies</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,13 +13,33 @@
   </script>
   <link rel="stylesheet" href="/styles/global.css">
   <style>
+    /* Prevent outer window scrolling and lock viewport bounds */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; 
+    }
+
+    /* Main container takes up the exact remaining window height */
+    main.app-main {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      box-sizing: border-box;
+      padding: 1.5rem 1.5rem;
+      max-width: 100%;
+    }
+
+    /* Doc layout fills whatever vertical space is left below the title banner */
     .doc-layout {
       display: grid;
       grid-template-columns: 450px 1fr;
       gap: 2.5rem;
-      margin-top: 2rem;
       align-items: start;
+      flex: 1;
+      min-height: 0; /* Crucial for grid children to shrink and scroll properly */
     }
+    
     [custom-style="TextBlock"], 
     .TextBlock, 
     .textblock, 
@@ -27,27 +47,28 @@
     .Code, 
     span[data-custom-style="TextBlock"],
     p[custom-style="TextBlock"] {
-        background: #1e1e1e !important;         /* Matches your dark code/box theme */
-        border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Subtle dark-mode border */
-        border-left: 4px solid #3182ce !important;              /* Accent left border (or keep your preferred color) */
-        padding: 16px !important;               /* Creates internal breathing room */
-        line-height: 1.1 !important;           /* Keeps text lines tightly grouped */
-        display: block !important;              /* Forces the inline element to act like a box */
-        width: 100% !important;                 /* Spans the box structure across the viewport */
-        max-width: 850px !important;            /* Restricts maximum box width to look clean */
-        margin: 1.5rem 0 !important;            /* Vertical margins separate it from normal body text */
-        color: #eaf4ff !important;                     /* Matches your light text color */
-        border-radius: 6px !important;          /* Gives the box sleek, rounded corners */
+        background: #1e1e1e !important;         
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+        border-left: 4px solid #3182ce !important;             
+        padding: 16px !important;               
+        line-height: 1.1 !important;            
+        display: block !important;              
+        width: 100% !important;                 
+        max-width: 850px !important;            
+        margin: 1.5rem 0 !important;            
+        color: #eaf4ff !important;                   
+        border-radius: 6px !important;          
     }
+
+    /* Left Column (TOC) Independent Scroll */
     .sidebar-toc {
-      position: sticky;
-      top: 2rem;
-      max-height: calc(100vh - 4rem);
+      height: 100%;
       overflow-y: auto;
       background: rgba(255, 255, 255, 0.05);
       padding: 1.5rem;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
     }
     .sidebar-toc ul {
       list-style: none;
@@ -70,9 +91,15 @@
       color: #eaf4ff;
       text-decoration: underline;
     }
+
+    /* Right Column (Document Content) Independent Scroll */
     .document-content {
+      height: 100%;
+      overflow-y: auto;
       color: #eaf4ff;
       line-height: 1.7;
+      padding-right: 1rem; 
+      box-sizing: border-box;
     }
     .document-content pre {
       background: #1e1e1e;
@@ -220,13 +247,18 @@
     }
 
     @media (max-width: 768px) {
-      .doc-layout {
-        grid-template-columns: 1fr;
+      html, body {
+        overflow: auto; /* Re-enable window scrolling on mobile */
       }
-      .sidebar-toc {
-        position: relative;
-        top: 0;
-        max-height: none;
+      main.app-main {
+        height: auto;
+      }
+      .doc-layout {
+        display: block;
+        height: auto;
+      }
+      .sidebar-toc, .document-content {
+        height: auto;
         overflow-y: visible;
       }
       .document-content table {
@@ -239,8 +271,8 @@
 </head>
 <body>
   <div id="header-placeholder"></div>
-  <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
-    <p style="margin-bottom: 1.5rem; text-align: left;">
+  <main class="app-main">
+    <p style="margin-bottom: 1rem; text-align: left; flex-shrink: 0;">
       <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">→Home Lab</a>
       <span style="color: #64748b; margin: 0 0.75rem;">|</span>
       <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">→Back</a>
@@ -248,8 +280,8 @@
       <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">→Gateway</a>
     </p>
 
-    <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">GPU
+    <div class="title-banner" style="text-align: left; margin-bottom: 1.5rem; flex-shrink: 0;">
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Gpu
 Performance Strategies</h1>
       <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
       <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
@@ -259,70 +291,264 @@ Performance Strategies</h1>
       <aside class="sidebar-toc">
         <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
         <ul>
-        <li><a href="#nav-prompted-what-intel-gpus-are-not-supported"
-        id="nav-toc-prompted-what-intel-gpus-are-not-supported">Prompted
-        What intel gpus are not supported</a></li>
-        <li><a href="#nav-prompted-how-can-i-tell-what-gpu-i-have"
-        id="nav-toc-prompted-how-can-i-tell-what-gpu-i-have">Prompted
-        How can i tell what gpu i have</a></li>
+        <li><a href="#nav-ollama-supported-gpus"
+        id="nav-toc-ollama-supported-gpus">Ollama Supported GPUs</a>
+        <ul>
+        <li><a href="#nav-what-intel-gpus-are-not-supported"
+        id="nav-toc-what-intel-gpus-are-not-supported">What intel GPUs
+        are not supported</a>
+        <ul>
+        <li><a href="#nav-legacy-integrated-graphics-the-heavy-cutoff"
+        id="nav-toc-legacy-integrated-graphics-the-heavy-cutoff">1.
+        Legacy Integrated Graphics (The Heavy Cutoff)</a></li>
         <li><a
-        href="#nav-prompted-what-if-i-am-looking-at-buying-in-integrated-intel.-what-can-i-look-for-in-the-specs"
-        id="nav-toc-prompted-what-if-i-am-looking-at-buying-in-integrated-intel.-what-can-i-look-for-in-the-specs">Prompted
-        What if i am looking at buying in integrated intel. What can i
-        look for in the specs</a></li>
-        <li><a href="#nav-prompted-what-about-intel-uhd-13-gen"
-        id="nav-toc-prompted-what-about-intel-uhd-13-gen">Prompted What
-        about intel uhd 13 gen</a></li>
-        <li><a href="#nav-prompted-i-have-the-intel-13620"
-        id="nav-toc-prompted-i-have-the-intel-13620">Prompted I have the
-        intel 13620</a></li>
+        href="#nav-low-power-budget-architectures-atom-celeron-pentium-n-series"
+        id="nav-toc-low-power-budget-architectures-atom-celeron-pentium-n-series">2.
+        Low-Power &amp; Budget Architectures (Atom / Celeron / Pentium /
+        N-Series)</a></li>
+        <li><a
+        href="#nav-early-xe-graphics-intel-iris-xe-11th-12th-gen-core-igpus"
+        id="nav-toc-early-xe-graphics-intel-iris-xe-11th-12th-gen-core-igpus">3.
+        Early Xe Graphics (Intel Iris Xe / 11th &amp; 12th Gen Core
+        iGPUs)</a></li>
+        <li><a
+        href="#nav-intel-data-center-gpu-max-series-hardware-specific"
+        id="nav-toc-intel-data-center-gpu-max-series-hardware-specific">4.
+        Intel Data Center GPU Max Series (Hardware Specific)</a></li>
+        </ul></li>
+        <li><a href="#nav-how-can-i-tell-what-gpu-i-have"
+        id="nav-toc-how-can-i-tell-what-gpu-i-have">How can I tell what
+        GPU I have</a>
+        <ul>
+        <li><a href="#nav-on-windows-quickest-method"
+        id="nav-toc-on-windows-quickest-method">1. On Windows (Quickest
+        Method)</a>
+        <ul>
+        <li><a href="#nav-via-task-manager"
+        id="nav-toc-via-task-manager">Via Task Manager</a></li>
+        <li><a href="#nav-via-device-manager"
+        id="nav-toc-via-device-manager">Via Device Manager</a></li>
+        </ul></li>
+        <li><a href="#nav-on-linux-terminal-commands"
+        id="nav-toc-on-linux-terminal-commands">2. On Linux (Terminal
+        Commands)</a>
+        <ul>
+        <li><a href="#nav-for-a-general-hardware-listing"
+        id="nav-toc-for-a-general-hardware-listing">For a general
+        hardware listing:</a></li>
+        <li><a href="#nav-for-detailed-intel-specific-gpu-info"
+        id="nav-toc-for-detailed-intel-specific-gpu-info">For detailed
+        Intel-specific GPU info:</a></li>
+        </ul></li>
+        <li><a href="#nav-how-to-tell-if-its-supported-by-ollama"
+        id="nav-toc-how-to-tell-if-its-supported-by-ollama">3. How to
+        tell if it's supported by Ollama</a></li>
+        </ul></li>
+        <li><a
+        href="#nav-what-if-i-am-looking-at-buying-an-integrated-intel-gpu.-what-can-i-look-for-in-the-specs"
+        id="nav-toc-what-if-i-am-looking-at-buying-an-integrated-intel-gpu.-what-can-i-look-for-in-the-specs">What
+        if I am looking at buying an integrated intel GPU. What can I
+        look for in the specs</a>
+        <ul>
+        <li><a href="#nav-look-for-the-golden-branding-rules"
+        id="nav-toc-look-for-the-golden-branding-rules">1. Look for the
+        Golden Branding Rules</a></li>
+        <li><a
+        href="#nav-check-the-memory-specs-the-ultimate-bottleneck"
+        id="nav-toc-check-the-memory-specs-the-ultimate-bottleneck">2.
+        Check the Memory Specs (The Ultimate Bottleneck)</a>
+        <ul>
+        <li><a
+        href="#nav-ram-configuration-dual-channel-is-non-negotiable"
+        id="nav-toc-ram-configuration-dual-channel-is-non-negotiable">RAM
+        Configuration (Dual-Channel is Non-Negotiable)</a></li>
+        <li><a href="#nav-ram-speed" id="nav-toc-ram-speed">RAM
+        Speed</a></li>
+        <li><a href="#nav-total-capacity"
+        id="nav-toc-total-capacity">Total Capacity</a></li>
+        </ul></li>
+        <li><a href="#nav-the-current-cheat-sheet-of-top-mobile-chips"
+        id="nav-toc-the-current-cheat-sheet-of-top-mobile-chips">3. The
+        Current "Cheat Sheet" of Top Mobile Chips</a></li>
+        </ul></li>
+        <li><a href="#nav-what-about-intel-uhd-13-gen"
+        id="nav-toc-what-about-intel-uhd-13-gen">What about intel UHD 13
+        gen</a>
+        <ul>
+        <li><a href="#nav-what-happens-if-you-try-to-use-it"
+        id="nav-toc-what-happens-if-you-try-to-use-it">What Happens if
+        You Try to Use It?</a></li>
+        <li><a
+        href="#nav-the-manual-workaround-and-why-it-isnt-worth-it"
+        id="nav-toc-the-manual-workaround-and-why-it-isnt-worth-it">The
+        Manual "Workaround" (And Why It Isn't Worth It)</a></li>
+        <li><a href="#nav-however-you-shouldnt-do-this-for-two-reasons"
+        id="nav-toc-however-you-shouldnt-do-this-for-two-reasons">However,
+        you shouldn't do this for two reasons:</a></li>
+        </ul></li>
+        <li><a href="#nav-bottom-line" id="nav-toc-bottom-line">Bottom
+        Line</a></li>
+        <li><a href="#nav-i-have-the-intel-13620"
+        id="nav-toc-i-have-the-intel-13620">I have the intel
+        13620</a></li>
+        <li><a
+        href="#nav-the-silver-lining-your-cpu-is-actually-great-for-it"
+        id="nav-toc-the-silver-lining-your-cpu-is-actually-great-for-it">The
+        Silver Lining: Your CPU Is Actually Great For It</a></li>
+        <li><a
+        href="#nav-one-critical-caveat-do-you-have-a-dedicated-gpu"
+        id="nav-toc-one-critical-caveat-do-you-have-a-dedicated-gpu">One
+        Critical Caveat: Do You Have a Dedicated GPU?</a></li>
         <li><a href="#nav-but-this-works-for-ollama"
-        id="nav-toc-but-this-works-for-ollama"> But this works for
-        ollama</a></li>
+        id="nav-toc-but-this-works-for-ollama">But this works for
+        ollama</a>
+        <ul>
         <li><a
-        href="#nav-prompted-but-i-watch-gpu-tools-grab-the-processing-and-the-cpu-drops-the-processing-when-i-send-a-model"
-        id="nav-toc-prompted-but-i-watch-gpu-tools-grab-the-processing-and-the-cpu-drops-the-processing-when-i-send-a-model">Prompted
-        But i watch gpu tools grab the processing, and the cpu drops the
-        processing when i send a model</a></li>
-        <li><a href="#nav-prompted-but-the-vpu-never-peaks."
-        id="nav-toc-prompted-but-the-vpu-never-peaks.">Prompted But the
-        vpu never peaks.</a></li>
+        href="#nav-the-distinction-between-linux-passthrough-vs.-driver-support"
+        id="nav-toc-the-distinction-between-linux-passthrough-vs.-driver-support">1.
+        The Distinction Between Linux Passthrough vs. Driver
+        Support</a></li>
+        <li><a href="#nav-what-happens-inside-the-lxc-container"
+        id="nav-toc-what-happens-inside-the-lxc-container">2. What
+        Happens inside the LXC Container</a></li>
+        </ul></li>
+        <li><a href="#nav-the-best-way-to-optimize-your-setup"
+        id="nav-toc-the-best-way-to-optimize-your-setup">The Best Way to
+        Optimize Your Setup</a></li>
+        <li><a
+        href="#nav-but-i-watch-gpu-tools-grab-the-processing-and-the-cpu-drops-the-processing-when-i-send-a-model"
+        id="nav-toc-but-i-watch-gpu-tools-grab-the-processing-and-the-cpu-drops-the-processing-when-i-send-a-model">But
+        I watch GPU tools grab the processing, and the CPU drops the
+        processing when I send a model</a>
+        <ul>
+        <li><a href="#nav-why-the-gpu-grabs-the-processing"
+        id="nav-toc-why-the-gpu-grabs-the-processing">Why the GPU
+        "Grabs" the Processing</a></li>
+        <li><a href="#nav-why-the-cpu-activity-drops"
+        id="nav-toc-why-the-cpu-activity-drops">Why the CPU Activity
+        Drops</a></li>
+        <li><a href="#nav-the-fallback-loop"
+        id="nav-toc-the-fallback-loop">The Fallback Loop</a></li>
+        </ul></li>
+        <li><a href="#nav-but-the-gpu-never-peaks."
+        id="nav-toc-but-the-gpu-never-peaks.">But the GPU never
+        peaks.</a>
+        <ul>
+        <li><a href="#nav-the-80-gpu-spike-is-a-memory-allocation-event"
+        id="nav-toc-the-80-gpu-spike-is-a-memory-allocation-event">1.
+        The 80% GPU Spike is a Memory Allocation Event</a></li>
+        <li><a href="#nav-why-your-cpu-caps-out-at-60"
+        id="nav-toc-why-your-cpu-caps-out-at-60">2. Why Your CPU Caps
+        Out at ~60%</a></li>
+        </ul></li>
+        <li><a href="#nav-how-to-prove-it-in-your-logs"
+        id="nav-toc-how-to-prove-it-in-your-logs">How to Prove It in
+        Your Logs</a></li>
         <li><a
         href="#nav-if-i-remove-the-gpu-from-the-config-the-cpu-pegs"
         id="nav-toc-if-i-remove-the-gpu-from-the-config-the-cpu-pegs">If
-        i remove the gpu from the config the cpu pegs</a></li>
+        I remove the GPU from the config the CPU pegs</a>
+        <ul>
         <li><a
-        href="#nav-using-the-gpu-my-total-response-time-is-1-sec.-without-it-it-jumps-to-around-20-sec-for-a-simple-command"
-        id="nav-toc-using-the-gpu-my-total-response-time-is-1-sec.-without-it-it-jumps-to-around-20-sec-for-a-simple-command">Using
-        the gpu my total response time is &lt; 1 sec. Without it it
-        jumps to around 20 sec for a simple command</a></li>
+        href="#nav-scenario-a-with-the-gpu-passthrough-configured-soft-failure"
+        id="nav-toc-scenario-a-with-the-gpu-passthrough-configured-soft-failure">Scenario
+        A: With the GPU Passthrough Configured (Soft Failure)</a></li>
+        <li><a
+        href="#nav-scenario-b-removing-the-gpu-from-the-config-hard-failure-100-spike"
+        id="nav-toc-scenario-b-removing-the-gpu-from-the-config-hard-failure-100-spike">Scenario
+        B: Removing the GPU from the Config (Hard Failure / 100%
+        Spike)</a></li>
+        <li><a href="#nav-how-to-know-for-sure"
+        id="nav-toc-how-to-know-for-sure">How to Know for Sure</a></li>
+        </ul></li>
+        <li><a
+        href="#nav-when-using-the-gpu-my-total-response-time-is-1-sec.-without-it-it-jumps-to-around-20-sec-for-a-simple-command"
+        id="nav-toc-when-using-the-gpu-my-total-response-time-is-1-sec.-without-it-it-jumps-to-around-20-sec-for-a-simple-command">When
+        using the GPU my total response time is &lt; 1 sec. Without it
+        it jumps to around 20 sec for a simple command</a>
+        <ul>
+        <li><a href="#nav-the-20-second-delay-the-naked-cpu-cold-start"
+        id="nav-toc-the-20-second-delay-the-naked-cpu-cold-start">1. The
+        ~20 Second Delay (The Naked CPU Cold-Start)</a></li>
+        <li><a
+        href="#nav-the-sub-1-second-response-the-driver-pre-allocation"
+        id="nav-toc-the-sub-1-second-response-the-driver-pre-allocation">2.
+        The Sub-1-Second Response (The Driver Pre-Allocation)</a></li>
+        </ul></li>
+        <li><a href="#nav-the-final-proof-watch-the-typing-speed"
+        id="nav-toc-the-final-proof-watch-the-typing-speed">The Final
+        Proof: Watch the Typing Speed</a>
+        <ul>
         <li><a href="#nav-even-with-the-intel-core-14450hx"
         id="nav-toc-even-with-the-intel-core-14450hx">Even with the
         Intel Core 14450HX</a></li>
+        <li><a href="#nav-the-zero-copy-memory-fast-track-gpu-enabled"
+        id="nav-toc-the-zero-copy-memory-fast-track-gpu-enabled">The
+        "Zero-Copy" Memory Fast-Track (GPU Enabled)</a></li>
+        <li><a href="#nav-the-double-buffer-bottleneck-gpu-disabled"
+        id="nav-toc-the-double-buffer-bottleneck-gpu-disabled">The
+        "Double-Buffer" Bottleneck (GPU Disabled)</a></li>
+        <li><a href="#nav-how-to-double-check"
+        id="nav-toc-how-to-double-check">How to Double-Check</a></li>
+        </ul></li>
         <li><a
         href="#nav-what-is-the-cheapest-mini-computer-that-will-run-ollama-efficiently"
         id="nav-toc-what-is-the-cheapest-mini-computer-that-will-run-ollama-efficiently">What
         is the cheapest mini computer that will run Ollama
-        efficiently</a></li>
+        efficiently</a>
+        <ul>
+        <li><a href="#nav-top-budget-friendly-intel-options-for-ollama"
+        id="nav-toc-top-budget-friendly-intel-options-for-ollama">Top
+        Budget-Friendly Intel Options for Ollama</a></li>
+        </ul></li>
+        <li><a href="#nav-hardware-feature-comparison"
+        id="nav-toc-hardware-feature-comparison">Hardware Feature
+        Comparison</a></li>
         <li><a
-        href="#nav-those-run-from-700-to-1000-mine-was-under-500.-but-i-am-getting-adequate-performance-with-all-types-of-queries.-i-am-using-the-qwen-models"
-        id="nav-toc-those-run-from-700-to-1000-mine-was-under-500.-but-i-am-getting-adequate-performance-with-all-types-of-queries.-i-am-using-the-qwen-models">Those
-        run from $700 to $1000 mine was under $500. But i am getting
-        adequate performance with all types of queries. I am using the
-        qwen models</a></li>
+        href="#nav-these-run-from-700-to-1000-mine-was-under-500."
+        id="nav-toc-these-run-from-700-to-1000-mine-was-under-500.">These
+        run from $700 to $1000 mine was under $500.</a></li>
         <li><a
-        href="#nav-prompted-yes-qwen-coder-as-well-as-autocomplete"
-        id="nav-toc-prompted-yes-qwen-coder-as-well-as-autocomplete">Prompted
-        Yes qwen coder as well as autocomplete</a></li>
-        <li><a href="#nav-what-times-woulc-you-expect-from-this-setup"
-        id="nav-toc-what-times-woulc-you-expect-from-this-setup">What
-        times woulc you expect from this setup</a></li>
+        href="#nav-why-your-current-setup-is-hitting-the-sweet-spot"
+        id="nav-toc-why-your-current-setup-is-hitting-the-sweet-spot">Why
+        Your Current Setup Is Hitting the "Sweet Spot"</a>
+        <ul>
+        <li><a href="#nav-advanced-intel-oneapi-sycl-tuning-flags"
+        id="nav-toc-advanced-intel-oneapi-sycl-tuning-flags">1. Advanced
+        Intel oneAPI &amp; SYCL Tuning Flags</a></li>
+        <li><a
+        href="#nav-pin-thread-affinities-for-hybrid-architecture-intel-13th14th-gen"
+        id="nav-toc-pin-thread-affinities-for-hybrid-architecture-intel-13th14th-gen">2.
+        Pin Thread Affinities for Hybrid Architecture (Intel 13th/14th
+        Gen)</a></li>
+        </ul></li>
+        <li><a href="#nav-what-times-would-you-expect-from-this-setup"
+        id="nav-toc-what-times-would-you-expect-from-this-setup">What
+        times would you expect from this setup</a></li>
+        <li><a
+        href="#nav-real-world-performance-breakdown-qwen-2.5-coder"
+        id="nav-toc-real-world-performance-breakdown-qwen-2.5-coder">Real-World
+        Performance Breakdown (Qwen 2.5-Coder)</a></li>
+        </ul></li>
+        <li><a href="#nav-the-takeaway" id="nav-toc-the-takeaway">The
+        Takeaway</a></li>
+        <li><a href="#nav-primary-sources"
+        id="nav-toc-primary-sources">Primary sources</a>
+        <ul>
+        <li><a href="#nav-model-and-benchmarking-references"
+        id="nav-toc-model-and-benchmarking-references">Model and
+        benchmarking references</a></li>
+        <li><a href="#nav-claims-that-require-local-testing"
+        id="nav-toc-claims-that-require-local-testing">Claims that
+        require local testing</a></li>
+        </ul></li>
+        <li><a href="#nav-further-reading"
+        id="nav-toc-further-reading">Further Reading</a></li>
         </ul>
       </aside>
 
       <article class="document-content">
-        <p>What intel gpus does ollama support abd can you provide
-        performancs specs for each maybe use a table format</p>
+        <h1 id="nav-ollama-supported-gpus">Ollama Supported GPUs</h1>
         <p>Ollama handles Intel GPU support primarily through an
         accelerated backend powered by <strong>IPEX-LLM</strong> (Intel
         Extension for PyTorch) and the <strong>llama.cpp SYCL
@@ -336,63 +562,56 @@ Performance Strategies</h1>
         <p>Here is a performance breakdown based on real-world community
         testing and hardware configurations (using typical Q4_K_M
         quantization):</p>
-        <table style="width:98%;">
+        <table style="width:99%;">
         <colgroup>
-        <col style="width: 23%" />
-        <col style="width: 13%" />
-        <col style="width: 13%" />
-        <col style="width: 15%" />
-        <col style="width: 32%" />
+        <col style="width: 12%" />
+        <col style="width: 12%" />
+        <col style="width: 7%" />
+        <col style="width: 9%" />
+        <col style="width: 56%" />
         </colgroup>
         <thead>
         <tr>
-        <th style="text-align: left;"><strong>GPU Class /
-        Model</strong></th>
-        <th style="text-align: left;"><strong>VRAM / Shared
-        Memory</strong></th>
-        <th style="text-align: left;"><strong>Target Model
-        Size</strong></th>
-        <th style="text-align: left;"><strong>Expected Generation
-        Speed</strong></th>
-        <th style="text-align: left;"><strong>Key Advantage /
-        Context</strong></th>
+        <th style="text-align: left;">GPU Class / Model</th>
+        <th style="text-align: left;">VRAM / Shared Memory</th>
+        <th style="text-align: left;">Target Model Size</th>
+        <th style="text-align: left;">Expected Generation Speed</th>
+        <th style="text-align: left;">Key Advantage / Context</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-        <td style="text-align: left;"><strong>Intel Arc Pro
-        B60</strong> (Server)</td>
+        <td style="text-align: left;">Intel Arc Pro B60 (Server)</td>
         <td style="text-align: left;">24 GB ECC GDDR6</td>
         <td style="text-align: left;">Llama 3.1 8B<br />
         Qwen 2.5 14B</td>
-        <td style="text-align: left;"><strong>~50 t/s</strong><br />
-        <strong>~32 t/s</strong></td>
+        <td style="text-align: left;">~50 t/s<br />
+        ~32 t/s</td>
         <td style="text-align: left;">High dedicated VRAM lets you keep
         multiple small models resident or run medium models
         natively.</td>
         </tr>
         <tr>
-        <td style="text-align: left;"><strong>Intel Arc
-        A770</strong> (Discrete)</td>
+        <td style="text-align: left;">Intel Arc A770 (Discrete)</td>
         <td style="text-align: left;">16 GB GDDR6</td>
         <td style="text-align: left;">Llama 3.1 8B<br />
         Mistral 7B</td>
-        <td style="text-align: left;"><strong>~40–50 t/s</strong><br />
-        <strong>~45–50 t/s</strong></td>
+        <td style="text-align: left;">~40–50 t/s<br />
+        ~45–50 t/s</td>
         <td style="text-align: left;">Excellent budget-to-VRAM ratio for
         a consumer desktop setup.</td>
         </tr>
         <tr>
-        <td style="text-align: left;"><strong>Intel Core Ultra 5
-        125H</strong> (Arc iGPU)</td>
+        <td style="text-align: left;">Intel Core Ultra 5 125H (Arc
+        iGPU)</td>
         <td style="text-align: left;">Uses System RAM (e.g., 64GB
         DDR5)</td>
         <td style="text-align: left;">Llama 3.2 3b<br />
         Llama 3.1 8B<br />
         Llama 3.3 70B</td>
-        <td style="text-align: left;"><strong>~23 t/s</strong><br />
-        <strong>~12–13 t/s</strong><br />
-        <strong>~1.5 t/s</strong></td>
+        <td style="text-align: left;">~23 t/s<br />
+        ~12–13 t/s<br />
+        ~1.5 t/s</td>
         <td style="text-align: left;">Highly energy-efficient.
         Outperforms pure CPU inference by up to 30% while pulling less
         power. Can even chunk through 70B models if you pack enough
@@ -406,8 +625,8 @@ Performance Strategies</h1>
         Ollama to offload all layers to the Intel GPU via SYCL rather
         than letting layers split or fall back heavily onto standard CPU
         computation.</p>
-        <h2 id="nav-prompted-what-intel-gpus-are-not-supported">Prompted
-        What intel gpus are not supported</h2>
+        <h2 id="nav-what-intel-gpus-are-not-supported">What intel GPUs
+        are not supported</h2>
         <p>While Ollama has expanded its hardware matrix significantly
         by adding a <strong>Vulkan backend</strong> and supporting
         the <strong>llama.cpp SYCL backend</strong>, a substantial
@@ -417,76 +636,113 @@ Performance Strategies</h1>
         specific hardware features like vector execution units or
         dedicated AI engines (XMX/DP4a).</p>
         <hr />
-        <p><strong>1. Legacy Integrated Graphics (The Heavy
-        Cutoff)</strong></p>
+        <h3 id="nav-legacy-integrated-graphics-the-heavy-cutoff">1.
+        Legacy Integrated Graphics (The Heavy Cutoff)</h3>
         <p>Any Intel processor generation prior to <strong>11th Gen Core
         (Tiger Lake)</strong> is completely unsupported.</p>
         <ul>
-        <li><p><strong>Unsupported Hardware:</strong> Intel HD Graphics,
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Unsupported Hardware:</strong> Intel HD Graphics,
         Intel UHD Graphics 620/630 (found in popular 6th, 7th, 8th, 9th,
-        and 10th Gen Core CPUs).</p></li>
-        <li><p><strong>Why they fail:</strong> These older iGPUs lack
-        the low-level computing architectures (like Intel oneAPI or
-        modern Vulkan compute extensions) necessary to parallelize
-        tensor mathematics.</p></li>
-        <li><p><strong>The Result:</strong> Ollama will completely
-        ignore these graphics chips and fall back entirely to your
-        CPU.</p></li>
+        and 10th Gen Core CPUs).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Why they fail:</strong> These older iGPUs lack the
+        low-level computing architectures (like Intel oneAPI or modern
+        Vulkan compute extensions) necessary to parallelize tensor
+        mathematics.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The Result:</strong> Ollama will completely ignore
+        these graphics chips and fall back entirely to your CPU.</p>
+        </div></li>
         </ul>
-        <p><strong>2. Low-Power &amp; Budget Architectures (Atom /
-        Celeron / Pentium / N-Series)</strong></p>
+        <h3
+        id="nav-low-power-budget-architectures-atom-celeron-pentium-n-series">2.
+        Low-Power &amp; Budget Architectures (Atom / Celeron / Pentium /
+        N-Series)</h3>
         <p>Even when these chips are modern (released recently), their
         integrated graphics are heavily stripped down.</p>
         <ul>
-        <li><p><strong>Unsupported Hardware:</strong> Intel UHD Graphics
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Unsupported Hardware:</strong> Intel UHD Graphics
         found in Alder Lake-N processors (like the N95, N100, or modern
-        Celeron/Pentium lines).</p></li>
-        <li><p><strong>Why they fail:</strong> While these chips
-        sometimes technically register under basic Vulkan layers, they
-        lack the required matrix instruction sets and Execution Unit
-        (EU) density. Furthermore, Ollama intentionally drops integrated
-        GPUs that do not meet minimum VRAM allocation metrics to prevent
-        massive system instability.</p></li>
-        <li><p><strong>The Result:</strong> If you attempt to force
+        Celeron/Pentium lines).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Why they fail:</strong> While these chips sometimes
+        technically register under basic Vulkan layers, they lack the
+        required matrix instruction sets and Execution Unit (EU)
+        density. Furthermore, Ollama intentionally drops integrated GPUs
+        that do not meet minimum VRAM allocation metrics to prevent
+        massive system instability.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The Result:</strong> If you attempt to force
         acceleration on an N100-class iGPU, Ollama will usually flag a
         warning in the logs (dropping integrated GPU; to enable, set
         OLLAMA_IGPU_ENABLE=1) or crash due to memory allocation
-        limits.</p></li>
+        limits.</p>
+        </div></li>
         </ul>
-        <p><strong>3. Early Xe Graphics (Intel Iris Xe / 11th &amp; 12th
-        Gen Core iGPUs)</strong></p>
+        <h3
+        id="nav-early-xe-graphics-intel-iris-xe-11th-12th-gen-core-igpus">3.
+        Early Xe Graphics (Intel Iris Xe / 11th &amp; 12th Gen Core
+        iGPUs)</h3>
         <p>This is a grey zone that leans heavily toward "Not
         Effectively Supported."</p>
         <ul>
-        <li><p><strong>Unsupported / Unstable Hardware:</strong> Early
-        Iris Xe iGPUs found in 11th Gen (e.g., i7-1165G7) or 12th Gen
-        laptop chips.</p></li>
-        <li><p><strong>Why they fail:</strong> While the underlying
-        Xe-LP architecture can occasionally be forced to run via manual
-        SYCL configurations or third-party wrappers (like IPEX-LLM),
-        official native Ollama binaries do not reliably accelerate them.
-        They lack <strong>XMX (Xe Matrix eXtensions)</strong> hardware
-        engines.</p></li>
-        <li><p><strong>The Result:</strong> Even if successfully forced
-        via environment variables, processing speeds are incredibly
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Unsupported / Unstable Hardware:</strong> Early Iris
+        Xe iGPUs found in 11th Gen (e.g., i7-1165G7) or 12th Gen laptop
+        chips.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Why they fail:</strong> While the underlying Xe-LP
+        architecture can occasionally be forced to run via manual SYCL
+        configurations or third-party wrappers (like IPEX-LLM), official
+        native Ollama binaries do not reliably accelerate them. They
+        lack <strong>XMX (Xe Matrix eXtensions)</strong> hardware
+        engines.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The Result:</strong> Even if successfully forced via
+        environment variables, processing speeds are incredibly
         slow—often running <em>slower</em> than just letting your
-        system’s standard CPU cores handle the math.</p></li>
+        system’s standard CPU cores handle the math.</p>
+        </div></li>
         </ul>
-        <p><strong>4. Intel Data Center GPU Max Series (Hardware
-        Specific)</strong></p>
+        <h3
+        id="nav-intel-data-center-gpu-max-series-hardware-specific">4.
+        Intel Data Center GPU Max Series (Hardware Specific)</h3>
         <p>While Intel's Flex and Max lines are server-focused, specific
         enterprise targets have distinct optimization gaps.</p>
         <ul>
-        <li><p><strong>Unsupported Hardware:</strong> Certain iterations
-        of the Intel Data Center GPU Max Series (like early Ponte
-        Vecchio setups) lack direct, unified optimization pipelines
-        within the mainstream public Ollama releases.</p></li>
-        <li><p><strong>Why they fail:</strong> Enterprise architectures
-        rely strictly on deep target-specific stack implementations
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Unsupported Hardware:</strong> Certain iterations of
+        the Intel Data Center GPU Max Series (like early Ponte Vecchio
+        setups) lack direct, unified optimization pipelines within the
+        mainstream public Ollama releases.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Why they fail:</strong> Enterprise architectures rely
+        strictly on deep target-specific stack implementations
         via oneAPI. Without utilizing the dedicated
         Intel-compiled IPEX-LLM docker container variant, standard
         mainline Ollama packages will fail to address the compute
-        matrices properly.</p></li>
+        matrices properly.</p>
+        </div></li>
         </ul>
         <hr />
         <p><strong>The General Rule of Thumb:</strong> If an Intel GPU
@@ -494,8 +750,8 @@ Performance Strategies</h1>
         discrete like the A770/B580 or integrated into Core Ultra
         "Meteor Lake/Arrow Lake" chips), Ollama will treat the system as
         a <strong>CPU-only host</strong>.</p>
-        <h2 id="nav-prompted-how-can-i-tell-what-gpu-i-have">Prompted
-        How can i tell what gpu i have</h2>
+        <h2 id="nav-how-can-i-tell-what-gpu-i-have">How can I tell what
+        GPU I have</h2>
         <p>To find out exactly what GPU (or GPUs) your system is
         running, the method depends on your operating system. Since you
         are looking at running tools like Ollama, you'll want to check
@@ -503,67 +759,99 @@ Performance Strategies</h1>
         Video Memory (VRAM)</strong>.</p>
         <p>Here is how to check on Windows and Linux:</p>
         <hr />
-        <p><strong>1. On Windows (Quickest Method)</strong></p>
-        <p><strong>Via Task Manager</strong></p>
+        <h3 id="nav-on-windows-quickest-method">1. On Windows (Quickest
+        Method)</h3>
+        <h4 id="nav-via-task-manager">Via Task Manager</h4>
         <ol type="1">
-        <li><p>Press Ctrl + Shift + Esc to open the <strong>Task
-        Manager</strong>.</p></li>
-        <li><p>Click on the <strong>Performance</strong> tab on the left
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Press Ctrl + Shift + Esc to open the <strong>Task
+        Manager</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Click on the <strong>Performance</strong> tab on the left
         sidebar (if you just see a small window, click <em>More
-        details</em> at the bottom first).</p></li>
-        <li><p>Scroll down the performance list and click on <strong>GPU
+        details</em> at the bottom first).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Scroll down the performance list and click on <strong>GPU
         0</strong> (and <strong>GPU 1</strong> if you have both
-        integrated and discrete graphics).</p></li>
-        <li><p>In the top-right corner, you will see the exact model
+        integrated and discrete graphics).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>In the top-right corner, you will see the exact model
         (e.g., <em>Intel(R) Arc(TM) A770 Graphics</em> or <em>Intel(R)
-        Graphics</em>).</p></li>
-        <li><p>Look at the bottom of the graphs for <strong>Dedicated
-        Video Memory</strong> (e.g., 16.0 GB)—this is the VRAM Ollama
-        uses to load models.</p></li>
+        Graphics</em>).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Look at the bottom of the graphs for <strong>Dedicated Video
+        Memory</strong> (e.g., 16.0 GB)—this is the VRAM Ollama uses to
+        load models.</p>
+        </div></li>
         </ol>
-        <p><strong>Via Device Manager</strong></p>
+        <h4 id="nav-via-device-manager">Via Device Manager</h4>
         <ol type="1">
-        <li><p>Right-click the <strong>Start Menu</strong> button and
-        select <strong>Device Manager</strong>.</p></li>
-        <li><p>Expand the <strong>Display
-        adapters</strong> section.</p></li>
-        <li><p>Your installed graphics cards will be listed right
-        there.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Right-click the <strong>Start Menu</strong> button and
+        select <strong>Device Manager</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Expand the <strong>Display adapters</strong> section.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Your installed graphics cards will be listed right there.</p>
+        </div></li>
         </ol>
         <hr />
-        <p><strong>2. On Linux (Terminal Commands)</strong></p>
+        <h3 id="nav-on-linux-terminal-commands">2. On Linux (Terminal
+        Commands)</h3>
         <p>If you are running your environment or Ollama server on
         Linux, open a terminal and run one of the following
         commands:</p>
-        <p><strong>For a general hardware listing:</strong></p>
+        <h4 id="nav-for-a-general-hardware-listing">For a general
+        hardware listing:</h4>
         <p>lspci | grep -E "VGA|3D"</p>
         <p><em>This will output something like: VGA compatible
         controller: Intel Corporation Device 56a0 (rev 08).</em></p>
-        <p><strong>For detailed Intel-specific GPU info:</strong></p>
+        <h4 id="nav-for-detailed-intel-specific-gpu-info">For detailed
+        Intel-specific GPU info:</h4>
         <p>If you have intel-gpu-tools installed, you can run:</p>
         <p>sudo intel_gpu_top</p>
         <p>Alternatively, to see the exact engine details and memory
         architecture, use:</p>
         <p>lshw -C display</p>
-        <hr />
-        <p><strong>3. How to tell if it's supported by
-        Ollama</strong></p>
+        <h3 id="nav-how-to-tell-if-its-supported-by-ollama">3. How to
+        tell if it's supported by Ollama</h3>
         <p>Once you have the name, check it against these quick
         markers:</p>
         <ul>
-        <li><p><strong>Intel Arc / Arc Pro (e.g., A770, A750,
-        B580):</strong> Fully supported natively.</p></li>
-        <li><p><strong>Intel Core Ultra (Meteor Lake / Arrow
-        Lake):</strong> Fully supported via its integrated Arc
-        graphics.</p></li>
-        <li><p><strong>Intel Iris Xe / Intel UHD / Intel
-        HD:</strong> Not natively accelerated. Ollama will run, but it
-        will fall back to using your <strong>CPU</strong> and system RAM
-        instead.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Intel Arc / Arc Pro (e.g., A770, A750, B580): Fully supported
+        natively.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Intel Core Ultra (Meteor Lake / Arrow Lake): Fully supported
+        via its integrated Arc graphics.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Intel Iris Xe / Intel UHD / Intel HD: Not natively
+        accelerated. Ollama will run, but it will fall back to using
+        your CPU and system RAM instead.</p>
+        </div></li>
         </ul>
         <h2
-        id="nav-prompted-what-if-i-am-looking-at-buying-in-integrated-intel.-what-can-i-look-for-in-the-specs">Prompted
-        What if i am looking at buying in integrated intel. What can i
+        id="nav-what-if-i-am-looking-at-buying-an-integrated-intel-gpu.-what-can-i-look-for-in-the-specs">What
+        if I am looking at buying an integrated intel GPU. What can I
         look for in the specs</h2>
         <p>If you are shopping for a new laptop or mini PC with the goal
         of running Ollama smoothly on integrated Intel graphics, you
@@ -575,75 +863,98 @@ Performance Strategies</h1>
         <p>Here are the absolute key specifications to look for on the
         box or tech sheet.</p>
         <hr />
-        <p><strong>1. Look for the Golden Branding Rules</strong></p>
+        <h3 id="nav-look-for-the-golden-branding-rules">1. Look for the
+        Golden Branding Rules</h3>
         <p>Do not look at the generation number alone (like "14th Gen").
         Instead, look closely at the exact processor line and graphics
         brand name.</p>
         <ul>
-        <li><p><strong>Look for:</strong> <strong>"Intel Core
-        Ultra"</strong> (Series 1 or Series 2) processors.</p></li>
-        <li><p><strong>The Graphics Name MUST
-        Be:</strong> <strong>"Intel Arc
-        Graphics"</strong> or <strong>"Intel Arc 140V /
-        140T"</strong>.</p></li>
-        <li><p><strong>Avoid:</strong> Chips that just say "Intel
-        Graphics" or "Intel UHD Graphics." Even on modern budget chips
-        (like the Core Ultra 5 200V entry tiers or desktop "F" series),
-        if it drops the <strong>Arc</strong> branding, the hardware
-        engines (XMX/Vector units) required to make Ollama fast are
-        either stripped down or absent.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Look for:</strong> <strong>"Intel Core
+        Ultra"</strong> (Series 1 or Series 2) processors.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The Graphics Name MUST Be:</strong> <strong>"Intel
+        Arc Graphics"</strong> or <strong>"Intel Arc 140V /
+        140T"</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Avoid:</strong> Chips that just say "Intel Graphics"
+        or "Intel UHD Graphics." Even on modern budget chips (like the
+        Core Ultra 5 200V entry tiers or desktop "F" series), if it
+        drops the <strong>Arc</strong> branding, the hardware engines
+        (XMX/Vector units) required to make Ollama fast are either
+        stripped down or absent.</p>
+        </div></li>
         </ul>
         <hr />
-        <p><strong>2. Check the Memory Specs (The Ultimate
-        Bottleneck)</strong></p>
+        <h3 id="nav-check-the-memory-specs-the-ultimate-bottleneck">2.
+        Check the Memory Specs (The Ultimate Bottleneck)</h3>
         <p>Since an iGPU doesn't have its own VRAM, it treats your
         system RAM as its video memory. Ollama will load models directly
         into your system memory, meaning your RAM speed dictates your
         tokens-per-second.</p>
-        <p><strong>RAM Configuration (Dual-Channel is
-        Non-Negotiable)</strong></p>
+        <h4
+        id="nav-ram-configuration-dual-channel-is-non-negotiable">RAM
+        Configuration (Dual-Channel is Non-Negotiable)</h4>
         <ul>
-        <li><p><strong>What to look
-        for:</strong> <strong>Dual-Channel</strong> memory
-        configurations.</p></li>
-        <li><p><strong>Why it matters:</strong> Intel Arc iGPUs require
-        dual-channel configurations to unlock their full processing
-        capabilities. If a laptop ships with a single stick of RAM
-        (Single-Channel), the memory bandwidth drops by half, and
-        Ollama’s performance will tank.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>What to look for: Dual-Channel memory configurations.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Why it matters: Intel Arc iGPUs require dual-channel
+        configurations to unlock their full processing capabilities. If
+        a laptop ships with a single stick of RAM (Single-Channel), the
+        memory bandwidth drops by half, and Ollama’s performance will
+        tank.</p>
+        </div></li>
         </ul>
-        <p><strong>RAM Speed</strong></p>
+        <h4 id="nav-ram-speed">RAM Speed</h4>
         <ul>
-        <li><p><strong>What to look for:</strong> Look
-        for <strong>LPDDR5X (speeds of 7467 MHz to 8533 MHz)</strong> or
-        standard <strong>DDR5 (5600 MHz to 6400 MHz)</strong>.</p></li>
-        <li><p><strong>Why it matters:</strong> LLM inference is
-        entirely bound by memory bandwidth. The faster the RAM speed,
-        the faster the words generate on your screen.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>What to look for: Look for LPDDR5X (speeds of 7467 MHz to
+        8533 MHz) or standard DDR5 (5600 MHz to 6400 MHz).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Why it matters: LLM inference is entirely bound by memory
+        bandwidth. The faster the RAM speed, the faster the words
+        generate on your screen.</p>
+        </div></li>
         </ul>
-        <p><strong>Total Capacity</strong></p>
+        <h4 id="nav-total-capacity">Total Capacity</h4>
         <ul>
-        <li><p><strong>Minimum Recommendation:</strong> <strong>32
-        GB</strong>.</p></li>
-        <li><p><strong>Why:</strong> Windows and the system take 4–6 GB
-        baseline. Windows will typically allow an integrated Intel GPU
-        to claim up to half of the total system RAM. On a 32 GB system,
-        you have roughly 16 GB available exclusively for the
-        iGPU—perfect for comfortably running a 14B model or a highly
-        optimized 8B model.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Minimum Recommendation: 32 GB.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Why: Windows and the system take 4–6 GB baseline. Windows
+        will typically allow an integrated Intel GPU to claim up to half
+        of the total system RAM. On a 32 GB system, you have roughly 16
+        GB available exclusively for the iGPU—perfect for comfortably
+        running a 14B model or a highly optimized 8B model.</p>
+        </div></li>
         </ul>
         <hr />
-        <p><strong>3. The Current "Cheat Sheet" of Top Mobile
-        Chips</strong></p>
+        <h3 id="nav-the-current-cheat-sheet-of-top-mobile-chips">3. The
+        Current "Cheat Sheet" of Top Mobile Chips</h3>
         <p>If you want a machine that handles local AI gracefully right
         out of the box, target these specific processor families:</p>
-        <table style="width:98%;">
+        <table style="width:99%;">
         <colgroup>
-        <col style="width: 16%" />
+        <col style="width: 12%" />
+        <col style="width: 10%" />
+        <col style="width: 10%" />
         <col style="width: 14%" />
-        <col style="width: 17%" />
-        <col style="width: 20%" />
-        <col style="width: 28%" />
+        <col style="width: 51%" />
         </colgroup>
         <thead>
         <tr>
@@ -699,8 +1010,8 @@ Performance Strategies</h1>
         cores, halving your processing throughput for LLMs. Stick
         to <strong>H-series</strong> or <strong>V-series</strong> processors
         if you want local AI performance.</p>
-        <h2 id="nav-prompted-what-about-intel-uhd-13-gen">Prompted What
-        about intel uhd 13 gen</h2>
+        <h2 id="nav-what-about-intel-uhd-13-gen">What about intel UHD 13
+        gen</h2>
         <p>An <strong>Intel UHD Graphics (13th
         Gen)</strong> chip—typically the <strong>UHD 770</strong> found
         in desktop processors like the i7-13700K or i5-13600K—falls
@@ -711,53 +1022,67 @@ Performance Strategies</h1>
         hardware architecture to be useful for local LLM
         acceleration.</p>
         <hr />
-        <p><strong>What Happens if You Try to Use It?</strong></p>
+        <h3 id="nav-what-happens-if-you-try-to-use-it">What Happens if
+        You Try to Use It?</h3>
         <ul>
-        <li><p><strong>Official Out-of-the-Box Ollama:</strong> The
-        standard mainline Windows or Linux installation of Ollama will
-        completely ignore a 13th Gen Intel UHD chip. It will pass right
-        over it and perform all inference using your
-        standard <strong>CPU</strong> and system RAM.</p></li>
-        <li><p><strong>The Hardware Limitation:</strong> 13th Gen UHD
-        770 graphics only feature <strong>32 Execution Units
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Official Out-of-the-Box Ollama:</strong> The standard
+        mainline Windows or Linux installation of Ollama will completely
+        ignore a 13th Gen Intel UHD chip. It will pass right over it and
+        perform all inference using your
+        standard <strong>CPU</strong> and system RAM.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The Hardware Limitation:</strong> 13th Gen UHD 770
+        graphics only feature <strong>32 Execution Units
         (EUs)</strong> and completely lack <strong>XMX (Xe Matrix
         eXtensions)</strong> engines. By comparison, a laptop with
         a <em>Core Ultra (Intel Arc)</em> iGPU packs up to <strong>128
         Execution Units</strong> built on a completely different
         architecture optimized for AI instructions. The UHD 770 simply
         lacks the physical computing paths needed to calculate large
-        tensor matrices efficiently.</p></li>
+        tensor matrices efficiently.</p>
+        </div></li>
         </ul>
         <hr />
-        <p><strong>The Manual "Workaround" (And Why It Isn't Worth
-        It)</strong></p>
+        <h3 id="nav-the-manual-workaround-and-why-it-isnt-worth-it">The
+        Manual "Workaround" (And Why It Isn't Worth It)</h3>
         <p>Technically, Intel’s underlying compiler framework
         (oneAPI / SYCL) can detect a 13th Gen UHD iGPU. If you download
         Intel's specialized wrapper, <strong>IPEX-LLM</strong>, or
         manually compile a custom version of llama.cpp using the SYCL
         backend, you <em>can</em> technically force the UHD 770 to
         accept LLM layers.</p>
-        <p>However, you shouldn't do this for two reasons:</p>
-        <ol type="1">
-        <li><p><strong>It is often slower than the CPU:</strong> Because
-        the UHD 770 has so few compute units and must fight for standard
+        <h3
+        id="nav-however-you-shouldnt-do-this-for-two-reasons">However,
+        you shouldn't do this for two reasons:</h3>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>It is often slower than the CPU:</strong> Because the
+        UHD 770 has so few compute units and must fight for standard
         system memory bandwidth, forcing it to crunch numbers usually
         results in <strong>worse</strong> tokens-per-second performance
         than just letting your high-performance 13th Gen CPU cores
-        handle it directly.</p></li>
-        <li><p><strong>VRAM Crashing:</strong> Since it shares your
-        system RAM, attempting to carve out 4GB–8GB of memory space for
-        a graphics chip with low bandwidth frequently causes system
-        instabilities and out-of-memory crashes.</p></li>
-        </ol>
-        <p><strong>Bottom Line</strong></p>
+        handle it directly.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>VRAM Crashing:</strong> Since it shares your system
+        RAM, attempting to carve out 4GB–8GB of memory space for a
+        graphics chip with low bandwidth frequently causes system
+        instabilities and out-of-memory crashes.</p>
+        </div></li>
+        </ul>
+        <h2 id="nav-bottom-line">Bottom Line</h2>
         <p>If your machine has a 13th Gen Intel CPU with UHD 770
         graphics, <strong>just let Ollama run normally on the
         CPU</strong>. Your 13th Gen processor has excellent, fast
         multi-core performance that will handle small 3B models
         comfortably (and 8B models tolerably) entirely on its own.</p>
-        <h2 id="nav-prompted-i-have-the-intel-13620">Prompted I have the
-        intel 13620</h2>
+        <h2 id="nav-i-have-the-intel-13620">I have the intel 13620</h2>
         <p>That means you are running the <strong>Intel Core
         i7-13620H</strong> processor.</p>
         <p>The integrated graphics chip on this specific processor is
@@ -768,8 +1093,9 @@ Performance Strategies</h1>
         <p>Ollama will default to running entirely on
         your <strong>CPU</strong> instead.</p>
         <hr />
-        <p><strong>The Silver Lining: Your CPU Is Actually Great For
-        It</strong></p>
+        <h2
+        id="nav-the-silver-lining-your-cpu-is-actually-great-for-it">The
+        Silver Lining: Your CPU Is Actually Great For It</h2>
         <p>While you won't get GPU acceleration from the integrated
         chip, you aren't completely out of luck. The i7-13620H is a very
         capable, high-performance laptop processor with <strong>10 cores
@@ -779,22 +1105,30 @@ Performance Strategies</h1>
         models locally through Ollama using standard CPU inference. Here
         is what to expect based on model size:</p>
         <ul>
-        <li><p><strong>Llama 3.2 (3B) / Qwen 2.5 (3B):</strong> Smooth
-        and perfectly usable. You can expect around <strong>15–20 tokens
-        per second</strong>, which is faster than normal reading
-        speed.</p></li>
-        <li><p><strong>Llama 3.1 (8B) / Mistral (7B):</strong> Decent
-        but slower. It will run at roughly <strong>5–8 tokens per
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Llama 3.2 (3B) / Qwen 2.5 (3B):</strong> Smooth and
+        perfectly usable. You can expect around <strong>15–20 tokens per
+        second</strong>, which is faster than normal reading speed.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Llama 3.1 (8B) / Mistral (7B):</strong> Decent but
+        slower. It will run at roughly <strong>5–8 tokens per
         second</strong>. It's fine for simple tasks, coding help, or
         testing, but it will feel sluggish for long essay
-        generations.</p></li>
-        <li><p><strong>Larger Models (14B+):</strong> Not recommended.
-        The generation speed will drop down to 1–2 tokens per second,
-        and you will hit massive bottlenecks depending on how much
-        system RAM your laptop has.</p></li>
+        generations.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Larger Models (14B+):</strong> Not recommended. The
+        generation speed will drop down to 1–2 tokens per second, and
+        you will hit massive bottlenecks depending on how much system
+        RAM your laptop has.</p>
+        </div></li>
         </ul>
-        <p><strong>One Critical Caveat: Do You Have a Dedicated
-        GPU?</strong></p>
+        <h2 id="nav-one-critical-caveat-do-you-have-a-dedicated-gpu">One
+        Critical Caveat: Do You Have a Dedicated GPU?</h2>
         <p>The i7-13620H is a high-power mobile chip that is very
         frequently paired with a dedicated graphics card in mid-range
         gaming or creator laptops (most commonly an <strong>NVIDIA
@@ -811,7 +1145,7 @@ Performance Strategies</h1>
         a <strong>GPU 1 (NVIDIA GeForce RTX...)</strong> listed
         underneath it, you are completely good to go for full GPU
         acceleration!</p>
-        <h2 id="nav-but-this-works-for-ollama"> But this works for
+        <h2 id="nav-but-this-works-for-ollama">But this works for
         ollama</h2>
         <p>Ah, you are working on a Proxmox LXC container setup! That
         completely changes the context.</p>
@@ -826,8 +1160,10 @@ Performance Strategies</h1>
         the technical breakdown of why the container will see it, but
         Ollama will still bypass it:</p>
         <hr />
-        <p><strong>1. The Distinction Between Linux Passthrough
-        vs. Driver Support</strong></p>
+        <h3
+        id="nav-the-distinction-between-linux-passthrough-vs.-driver-support">1.
+        The Distinction Between Linux Passthrough vs. Driver
+        Support</h3>
         <p>The configuration snippet you provided does a great job of
         bridging the kernel-level hardware device nodes
         (/dev/dri/card0 and /dev/dri/renderD128) into the isolated LXC
@@ -842,48 +1178,70 @@ Performance Strategies</h1>
         instruction pipelines that Ollama looks for, Ollama’s Intel
         runner package will reject it during the initialization
         handshake.</p>
-        <p><strong>2. What Happens inside the LXC Container</strong></p>
+        <h3 id="nav-what-happens-inside-the-lxc-container">2. What
+        Happens inside the LXC Container</h3>
         <p>When you start the Ollama service inside that LXC container
         with the passthrough configured:</p>
-        <ol type="1">
-        <li><p>Ollama scans the available hardware via its
-        initialization routines.</p></li>
-        <li><p>It detects the passed-through Intel GPU device interface
-        (renderD128).</p></li>
-        <li><p>It queries the device capabilities and discovers it does
-        not meet the minimum architecture or execution unit (EU)
-        threshold.</p></li>
-        <li><p>It safely prints a log line saying it is dropping the
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Ollama scans the available hardware via its initialization
+        routines.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>It detects the passed-through Intel GPU device interface
+        (renderD128).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>It queries the device capabilities and discovers it does not
+        meet the minimum architecture or execution unit (EU)
+        threshold.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>It safely prints a log line saying it is dropping the
         integrated GPU and defaults back to standard <strong>CPU
-        multi-threading mode</strong> inside the container.</p></li>
-        </ol>
+        multi-threading mode</strong> inside the container.</p>
+        </div></li>
+        </ul>
         <hr />
-        <p><strong>The Best Way to Optimize Your Setup</strong></p>
+        <h2 id="nav-the-best-way-to-optimize-your-setup">The Best Way to
+        Optimize Your Setup</h2>
         <p>Since you have a robust 10-core mobile processor hosting this
         Proxmox environment, you can still get highly respectable
         performance by tuning the LXC container to use raw CPU
         processing effectively:</p>
         <ul>
-        <li><p><strong>Allocate Core Resources Wisely:</strong> In the
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Allocate Core Resources Wisely:</strong> In the
         Proxmox GUI for your LXC container, assign at least <strong>6 to
-        8 vCPUs</strong> to this specific container.</p></li>
-        <li><p><strong>Enable Host CPU Type:</strong> Ensure that the
-        CPU type under the container's hardware/advanced settings is set
+        8 vCPUs</strong> to this specific container.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Enable Host CPU Type:</strong> Ensure that the CPU
+        type under the container's hardware/advanced settings is set
         to <strong>host</strong> rather than a generic virtualized CPU.
         This passes through the specific instruction sets (like AVX2)
         native to your 13th Gen chip, which Ollama uses heavily to speed
-        up CPU inference.</p></li>
-        <li><p><strong>Match Thread Counts:</strong> When running a
-        model, Ollama automatically optimizes thread count, but you can
+        up CPU inference.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Match Thread Counts:</strong> When running a model,
+        Ollama automatically optimizes thread count, but you can
         explicitly ensure it uses your high-performance cores by keeping
         the model sizes small (like a 3B parameter model), which will
-        easily run at readable speeds purely over the CPU
-        bridge.</p></li>
+        easily run at readable speeds purely over the CPU bridge.</p>
+        </div></li>
         </ul>
         <h2
-        id="nav-prompted-but-i-watch-gpu-tools-grab-the-processing-and-the-cpu-drops-the-processing-when-i-send-a-model">Prompted
-        But i watch gpu tools grab the processing, and the cpu drops the
-        processing when i send a model</h2>
+        id="nav-but-i-watch-gpu-tools-grab-the-processing-and-the-cpu-drops-the-processing-when-i-send-a-model">But
+        I watch GPU tools grab the processing, and the CPU drops the
+        processing when I send a model</h2>
         <p>That behavior happens because you have successfully passed
         the hardware nodes (/dev/dri) into the LXC container, allowing
         standard Linux diagnostic tools
@@ -892,7 +1250,8 @@ Performance Strategies</h1>
         <p>When you send a model to Ollama, a specific handoff occurs
         that causes that exact visual shift in your monitoring
         tools:</p>
-        <p><strong>Why the GPU "Grabs" the Processing</strong></p>
+        <h3 id="nav-why-the-gpu-grabs-the-processing">Why the GPU
+        "Grabs" the Processing</h3>
         <p>When you execute a model, Ollama uses a compilation layer
         (like Vulkan or SYCL) to inventory the environment. Because the
         driver rendering path is open inside the container, Ollama
@@ -904,25 +1263,32 @@ Performance Strategies</h1>
         activity because the graphics engine is actively spinning up,
         probing the device capabilities, and attempting to allocate a
         VRAM buffer from system memory.</p>
-        <p><strong>Why the CPU Activity Drops</strong></p>
+        <h3 id="nav-why-the-cpu-activity-drops">Why the CPU Activity
+        Drops</h3>
         <p>While the GPU engine is attempting that handshake, the main
         CPU thread pauses its own mathematical operations. It enters a
         "wait state" while it passes execution tokens to the GPU driver
         layer, expecting the graphics card to handle the heavy matrix
         lifting. This handoff makes your CPU usage metrics drop
         momentarily.</p>
-        <p><strong>The Fallback Loop</strong></p>
+        <h3 id="nav-the-fallback-loop">The Fallback Loop</h3>
         <p>Once the initialization scan completes, Ollama realizes the
         i7-13620H UHD chip lacks the specialized AI instruction matrices
         (like XMX) required to run the actual model layers natively.</p>
-        <ol type="1">
-        <li><p><strong>The Dropped Task:</strong> The GPU realization
-        fails, and the driver drops the processing context.</p></li>
-        <li><p><strong>The CPU Resurgence:</strong> Ollama instantly
-        falls back to standard CPU multi-threading. You will see the GPU
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The Dropped Task:</strong> The GPU realization fails,
+        and the driver drops the processing context.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The CPU Resurgence:</strong> Ollama instantly falls
+        back to standard CPU multi-threading. You will see the GPU
         activity flatline back to zero, and your CPU usage will climb
-        back up as it takes over the mathematical crunching.</p></li>
-        </ol>
+        back up as it takes over the mathematical crunching.</p>
+        </div></li>
+        </ul>
         <p>If you check your container's system logs by
         running journalctl -u ollama or viewing the live service output
         during a model request, you will typically see this transition
@@ -936,15 +1302,15 @@ Performance Strategies</h1>
         data-custom-style="Hyperlink">Run Ollama on Your Intel Arc GPU
         video tutorial</span></a> covers how Ollama initializes its
         hardware paths and manages performance handoffs.</p>
-        <h2 id="nav-prompted-but-the-vpu-never-peaks.">Prompted But the
-        vpu never peaks.</h2>
+        <h2 id="nav-but-the-gpu-never-peaks.">But the GPU never
+        peaks.</h2>
         <p>What you are observing is actually a very specific hardware
         tracking phenomenon common to how Intel handles shared system
         memory on Proxmox/Linux hosts.</p>
         <p>Here is exactly what is happening under the hood to cause
         that 80% GPU spike and the 60% CPU cap:</p>
-        <p><strong>1. The 80% GPU Spike is a Memory Allocation
-        Event</strong></p>
+        <h3 id="nav-the-80-gpu-spike-is-a-memory-allocation-event">1.
+        The 80% GPU Spike is a Memory Allocation Event</h3>
         <p>When you pass /dev/dri/renderD128 into an LXC container and
         send a model query, Ollama uses an interface layer (like Vulkan
         or OpenCL) to probe the system. Because your i7-13620H iGPU
@@ -959,7 +1325,8 @@ Performance Strategies</h1>
         Once Ollama realizes the compute engines aren't compatible for
         true execution, the model is released, and the memory allocation
         drops back down to zero.</p>
-        <p><strong>2. Why Your CPU Caps Out at ~60%</strong></p>
+        <h3 id="nav-why-your-cpu-caps-out-at-60">2. Why Your CPU Caps
+        Out at ~60%</h3>
         <p>It is incredibly common to wonder why a CPU isn't hitting
         100% when running a local model, but it is actually a sign that
         your system is functioning normally.</p>
@@ -969,17 +1336,24 @@ Performance Strategies</h1>
         of data to process while waiting for your motherboard's system
         RAM to feed it the next set of weights.</p>
         <ul>
-        <li><p><strong>The Math Wait-State:</strong> Your CPU spends a
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The Math Wait-State:</strong> Your CPU spends a
         significant fraction of every second completely idle, just
-        waiting on data lines. It literally stalls.</p></li>
-        <li><p><strong>Core Overhead:</strong> Ollama intentionally
-        leaves a few of your processor's threads open so that your
-        container (and the Proxmox host) doesn't completely freeze up
-        during generation. On a 10-core chip like yours, utilizing the
-        ideal thread count usually translates mathematically to right
-        around 55% to 65% total capacity on a system monitor.</p></li>
+        waiting on data lines. It literally stalls.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Core Overhead:</strong> Ollama intentionally leaves a
+        few of your processor's threads open so that your container (and
+        the Proxmox host) doesn't completely freeze up during
+        generation. On a 10-core chip like yours, utilizing the ideal
+        thread count usually translates mathematically to right around
+        55% to 65% total capacity on a system monitor.</p>
+        </div></li>
         </ul>
-        <p><strong>How to Prove It in Your Logs</strong></p>
+        <h2 id="nav-how-to-prove-it-in-your-logs">How to Prove It in
+        Your Logs</h2>
         <p>If you want to verify this without relying on visual graph
         tools, jump into your LXC container's terminal and check the
         live logs while you start a model:</p>
@@ -990,7 +1364,7 @@ Performance Strategies</h1>
         output a line similar to: "LLaMA cursor fallback to CPU" or "no
         compatible execution units found; utilizing CPU BLAS."</p>
         <h2 id="nav-if-i-remove-the-gpu-from-the-config-the-cpu-pegs">If
-        i remove the gpu from the config the cpu pegs</h2>
+        I remove the GPU from the config the CPU pegs</h2>
         <p>That is an incredibly logical conclusion to draw, but what
         you are seeing here is actually a quirk of how Linux
         containerization and the llama.cpp runner handle a <strong>hard
@@ -998,8 +1372,9 @@ Performance Strategies</h1>
         <p>The behavior you just described perfectly explains the exact
         "aha!" moment of what is happening under the hood when you
         toggle that configuration:</p>
-        <p><strong>Scenario A: With the GPU Passthrough Configured (Soft
-        Failure)</strong></p>
+        <h3
+        id="nav-scenario-a-with-the-gpu-passthrough-configured-soft-failure">Scenario
+        A: With the GPU Passthrough Configured (Soft Failure)</h3>
         <p>When the container has lines like lxc.mount.entry:
         /dev/dri... inside it, the Ollama service starts up and actively
         sees an active graphics adapter.</p>
@@ -1016,29 +1391,40 @@ Performance Strategies</h1>
         your CPU cores completely open for host processes. Your total
         CPU usage registers a smooth ~60% cap because it is throttled by
         your memory speed while waiting for data.</p>
-        <p><strong>Scenario B: Removing the GPU from the Config (Hard
-        Failure / 100% Spike)</strong></p>
+        <h3
+        id="nav-scenario-b-removing-the-gpu-from-the-config-hard-failure-100-spike">Scenario
+        B: Removing the GPU from the Config (Hard Failure / 100%
+        Spike)</h3>
         <p>When you delete those device mappings from the .conf file,
         you completely blindfold the container. The /dev/dri directory
         disappears entirely inside the LXC environment.</p>
         <p>When you send a model to Ollama now, it hits a <strong>hard
         brick wall</strong>:</p>
-        <ol type="1">
-        <li><p>Ollama instantly reads that there are zero GPU adapters
-        available.</p></li>
-        <li><p>It bypasses all detection routines and initializes its
-        fallback multi-threading <em>immediately</em>.</p></li>
-        <li><p>Because it assumes there is no graphical interface to
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Ollama instantly reads that there are zero GPU adapters
+        available.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>It bypasses all detection routines and initializes its
+        fallback multi-threading <em>immediately</em>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Because it assumes there is no graphical interface to
         balance, it aggressively attempts to use <strong>every single
         instruction pipeline</strong> it can find to spin up the runtime
-        environment as fast as humanly possible.</p></li>
-        </ol>
+        environment as fast as humanly possible.</p>
+        </div></li>
+        </ul>
         <p>That massive <strong>100% peg for 15 to 20
         seconds</strong> is your i7-13620H host CPU working at its
         absolute absolute physical limit to chunk the huge model file
         from your storage disk, uncompress it, and build the initial
         tensor matrix arrays inside your system memory.</p>
-        <p><strong>How to Know for Sure</strong></p>
+        <h3 id="nav-how-to-know-for-sure">How to Know for Sure</h3>
         <p>Once that intense 15–20 second initialization spike finishes
         and the model actually starts streaming text back to you, look
         closely at your CPU meter.</p>
@@ -1048,9 +1434,9 @@ Performance Strategies</h1>
         horsepower required to open the massive model file completely
         naked without a driver buffer to catch it!</p>
         <h2
-        id="nav-using-the-gpu-my-total-response-time-is-1-sec.-without-it-it-jumps-to-around-20-sec-for-a-simple-command">Using
-        the gpu my total response time is &lt; 1 sec. Without it it
-        jumps to around 20 sec for a simple command</h2>
+        id="nav-when-using-the-gpu-my-total-response-time-is-1-sec.-without-it-it-jumps-to-around-20-sec-for-a-simple-command">When
+        using the GPU my total response time is &lt; 1 sec. Without it
+        it jumps to around 20 sec for a simple command</h2>
         <p>That 20-second delta confirms exactly what is happening under
         the hood, but it actually points to a different phase of the
         execution than the text generation itself: <strong>Model Loading
@@ -1059,8 +1445,8 @@ Performance Strategies</h1>
         that, and why pulling the GPU from the configuration file
         fundamentally alters the time to first token.</p>
         <hr />
-        <p><strong>1. The ~20 Second Delay (The Naked CPU
-        Cold-Start)</strong></p>
+        <h3 id="nav-the-20-second-delay-the-naked-cpu-cold-start">1. The
+        ~20 Second Delay (The Naked CPU Cold-Start)</h3>
         <p>When you remove the GPU entries from your Proxmox LXC config,
         the operating system kernel cannot pass the hardware layer
         through. Ollama has to load the model file directly from your
@@ -1072,8 +1458,9 @@ Performance Strategies</h1>
         typically takes exactly <strong>15 to 20 seconds of pure
         preparation time</strong> before it can even type its first
         word.</p>
-        <p><strong>2. The Sub-1-Second Response (The Driver
-        Pre-Allocation)</strong></p>
+        <h3
+        id="nav-the-sub-1-second-response-the-driver-pre-allocation">2.
+        The Sub-1-Second Response (The Driver Pre-Allocation)</h3>
         <p>When you put the GPU configurations back into
         your .conf file, Ollama doesn't actually run the mathematical
         computation faster on the iGPU—instead, it uses
@@ -1088,26 +1475,33 @@ Performance Strategies</h1>
         <p>This hardware-level shortcut drops your preparation time down
         to <strong>under a second</strong>.</p>
         <hr />
-        <p><strong>The Final Proof: Watch the Typing Speed</strong></p>
+        <h2 id="nav-the-final-proof-watch-the-typing-speed">The Final
+        Proof: Watch the Typing Speed</h2>
         <p>To confirm this with absolute certainty, look closely at how
         the model actually behaves <em>after</em> that initial
         delay:</p>
-        <ol type="1">
-        <li><p><strong>With the GPU active:</strong> The model pops up
-        in less than a second, but if you time how fast the words stream
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>With the GPU active:</strong> The model pops up in
+        less than a second, but if you time how fast the words stream
         across your terminal screen, it will likely tick forward at a
         steady pace (roughly <strong>5 to 8 tokens per
-        second</strong> for an 8B model).</p></li>
-        <li><p><strong>Without the GPU active:</strong> You wait 20
+        second</strong> for an 8B model).</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>Without the GPU active:</strong> You wait 20
         agonizing seconds for the text to start. But once it finally
         breathes to life, the words will stream across your screen at
-        that <em>exact same generation speed</em>.</p></li>
-        </ol>
+        that <em>exact same generation speed</em>.</p>
+        </div></li>
+        </ul>
         <p>Your Proxmox passthrough trick is essentially providing you
         with a hyper-efficient "fast-loader" for your local environment,
         making your local AI setup significantly more responsive!</p>
-        <h2 id="nav-even-with-the-intel-core-14450hx">Even with the
-        Intel Core 14450HX</h2>
+        <h3 id="nav-even-with-the-intel-core-14450hx">Even with the
+        Intel Core 14450HX</h3>
         <p>You are completely right about the symptom you are seeing,
         but the reason that 20-second delay vanishes isn't because
         Ollama is processing the actual model tokens on the GPU.
@@ -1124,8 +1518,8 @@ Performance Strategies</h1>
         <p>Here is the exact technical mechanics of why toggling the GPU
         in the LXC config drops your initial response time from 20
         seconds to under 1 second on this specific mini PC:</p>
-        <p><strong>The "Zero-Copy" Memory Fast-Track (GPU
-        Enabled)</strong></p>
+        <h3 id="nav-the-zero-copy-memory-fast-track-gpu-enabled">The
+        "Zero-Copy" Memory Fast-Track (GPU Enabled)</h3>
         <p>When you map the /dev/dri hardware nodes into the LXC
         configuration on a 14th Gen HX processor, the container hooks
         directly into the host Linux kernel's <strong>Intel i915/Xe
@@ -1136,31 +1530,46 @@ Performance Strategies</h1>
         (Graphics Translation Table) pinned memory
         mappings</strong>.</p>
         <ul>
-        <li><p>The driver takes a direct, low-overhead hardware shortcut
-        to instantly allocate a shared buffer block out of your 32GB
-        system RAM.</p></li>
-        <li><p>This bypasses standard Linux container memory
-        throat-throttling entirely.</p></li>
-        <li><p>The file pointers map almost instantly, dropping your
-        setup time to <strong>&lt; 1 second</strong>.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>The driver takes a direct, low-overhead hardware shortcut to
+        instantly allocate a shared buffer block out of your 32GB system
+        RAM.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>This bypasses standard Linux container memory
+        throat-throttling entirely.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>The file pointers map almost instantly, dropping your setup
+        time to <strong>&lt; 1 second</strong>.</p>
+        </div></li>
         </ul>
-        <p><strong>The "Double-Buffer" Bottleneck (GPU
-        Disabled)</strong></p>
+        <h3 id="nav-the-double-buffer-bottleneck-gpu-disabled">The
+        "Double-Buffer" Bottleneck (GPU Disabled)</h3>
         <p>When you completely strip the GPU out of the LXC config file,
         the container is forced into a generic virtualized memory
         state.</p>
         <ul>
-        <li><p>Ollama must load the model weights from the PCIe 4.0 SSD
-        into the host's kernel space, page it <em>again</em> through the
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Ollama must load the model weights from the PCIe 4.0 SSD into
+        the host's kernel space, page it <em>again</em> through the
         Proxmox LXC abstraction layer, allocate individual CPU thread
         registers, and verify the memory buffers completely in user
-        space.</p></li>
-        <li><p>On an HX laptop/mini PC processor, parsing multi-gigabyte
+        space.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>On an HX laptop/mini PC processor, parsing multi-gigabyte
         models through this naked, layered CPU pipeline without a kernel
         driver proxy to pin the memory blocks takes <strong>15 to 20
-        seconds</strong> just to organize the data structure.</p></li>
+        seconds</strong> just to organize the data structure.</p>
+        </div></li>
         </ul>
-        <p><strong>How to Double-Check</strong></p>
+        <h3 id="nav-how-to-double-check">How to Double-Check</h3>
         <p>If you watch a live text generation on the 14450HX system
         with the GPU active: The prompt will return instantly (&lt;1
         sec), but the actual text streaming out will still clock in
@@ -1191,21 +1600,25 @@ Performance Strategies</h1>
         of <strong>32GB of DDR5 system RAM</strong> (which acts as the
         iGPU's shared video memory).</p>
         <hr />
-        <p><strong>Top Budget-Friendly Intel Options for
-        Ollama</strong></p>
+        <h3 id="nav-top-budget-friendly-intel-options-for-ollama">Top
+        Budget-Friendly Intel Options for Ollama</h3>
         <p>The following options strike the absolute best balance
         between affordability and proper hardware compatibility:</p>
         <ul>
-        <li><p>The <a href="https://myactivity.google.com/"><span
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>The <a href="https://myactivity.google.com/"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">GMKtec NucBox K9 Mini
         PC</span></a> stands out as one of the most cost-effective entry
         points for Core Ultra computing. It comes fully equipped with
         the Intel Ultra 5 125H processor, providing an internal 7-core
         Arc GPU configuration that natively accelerates local AI
-        workloads without relying on sluggish CPU-only code
-        layers.</p></li>
-        <li><p>Another excellent option is the <a
+        workloads without relying on sluggish CPU-only code layers.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Another excellent option is the <a
         href="https://myactivity.google.com/"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Minisforum M1 Pro Mini
@@ -1213,8 +1626,11 @@ Performance Strategies</h1>
         features 32GB of high-speed dual-channel DDR5 memory alongside
         an <strong>Oculink interface</strong>, allowing power users the
         option to plug in a high-performance external dedicated graphics
-        card later if their local AI requirements expand.</p></li>
-        <li><p>For users looking for premium expandability, the <a
+        card later if their local AI requirements expand.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>For users looking for premium expandability, the <a
         href="https://myactivity.google.com/"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Minix Elite EU512-AI Mini
@@ -1222,19 +1638,21 @@ Performance Strategies</h1>
         support. It wraps the standard Core Ultra 5 hardware matrix
         inside a rugged enclosure featuring dual 2.5G Ethernet ports and
         Thunderbolt 4 connectivity, making it ideal for deployment as a
-        highly reliable, always-on smart home server node.</p></li>
+        highly reliable, always-on smart home server node.</p>
+        </div></li>
         </ul>
         <hr />
-        <p><strong>Hardware Feature Comparison</strong></p>
+        <h2 id="nav-hardware-feature-comparison">Hardware Feature
+        Comparison</h2>
         <p>If you would like to look at building a system from scratch,
         I can locate barebone configurations of these mini PCs that
         allow you to bring your own RAM and SSD. Would you like me to
         find those pricing tiers for you?</p>
         <h2
-        id="nav-those-run-from-700-to-1000-mine-was-under-500.-but-i-am-getting-adequate-performance-with-all-types-of-queries.-i-am-using-the-qwen-models">Those
-        run from $700 to $1000 mine was under $500. But i am getting
-        adequate performance with all types of queries. I am using the
-        qwen models</h2>
+        id="nav-these-run-from-700-to-1000-mine-was-under-500.">These
+        run from $700 to $1000 mine was under $500.</h2>
+        <p>But i am getting adequate performance with all types of
+        queries. I am using the qwen models.</p>
         <p>You have hit the absolute nail on the head. That difference
         reveals exactly why your sub-$500 system is performing so
         well: <strong>the Qwen models are architectural masterpieces for
@@ -1248,37 +1666,44 @@ Performance Strategies</h1>
         yet highly streamlined in how they route processing math, they
         require significantly fewer computing instructions per token
         than older model architectures.</p>
-        <p><strong>Why Your Current Setup Is Hitting the "Sweet
-        Spot"</strong></p>
+        <h2
+        id="nav-why-your-current-setup-is-hitting-the-sweet-spot">Why
+        Your Current Setup Is Hitting the "Sweet Spot"</h2>
         <p>When you pair the efficient Qwen architecture with your
         Proxmox LXC setup, you are getting the best of both worlds
         without spending $800+:</p>
         <ul>
-        <li><p><strong>The Model is Lightweight:</strong> A Qwen 3B or
-        7B model requires much less raw processing power to output smart
-        answers compared to bulkier models.</p></li>
-        <li><p><strong>The Driver Memory Bypass Wins:</strong> By
-        keeping that GPU passed through (/dev/dri), the Linux kernel
-        utilizes its graphics memory tables to map the Qwen model
-        instantly. You completely skip the 20-second CPU data-shuffling
-        bottleneck.</p></li>
-        <li><p><strong>The Generation Speed is
-        "Adequate":</strong> Because a 14th Gen or 13th Gen Intel mobile
-        processor paired with fast DDR5 memory can naturally process a
-        small Qwen model at 15–20 tokens per second on its CPU cores, it
-        reads faster than you can blink anyway.</p></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The Model is Lightweight:</strong> A Qwen 3B or 7B
+        model requires much less raw processing power to output smart
+        answers compared to bulkier models.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The Driver Memory Bypass Wins:</strong> By keeping
+        that GPU passed through (/dev/dri), the Linux kernel utilizes
+        its graphics memory tables to map the Qwen model instantly. You
+        completely skip the 20-second CPU data-shuffling bottleneck.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p><strong>The Generation Speed is "Adequate":</strong> Because
+        a 14th Gen or 13th Gen Intel mobile processor paired with fast
+        DDR5 memory can naturally process a small Qwen model at 15–20
+        tokens per second on its CPU cores, it reads faster than you can
+        blink anyway.</p>
+        </div></li>
         </ul>
         <p>You’ve essentially built a perfectly balanced, sub-$500 home
         lab setup. You skipped paying the premium for high-end dedicated
         AI hardware, yet by using smart container configurations and
         picking highly optimized models, your real-world user experience
         is nearly identical to a machine that costs twice as much.</p>
-        <p>Are you primarily using the standard chat models for daily
+        <p>I am primarily using the standard chat models for daily
         tasks, or are you playing around with the specialized Qwen-Coder
-        models for scripting and home automation?</p>
-        <h2
-        id="nav-prompted-yes-qwen-coder-as-well-as-autocomplete">Prompted
-        Yes qwen coder as well as autocomplete</h2>
+        models for scripting and home automation? qwen coder as well as
+        autocomplete are working fine.</p>
         <p>That explains the fantastic experience you're having.
         Qwen-Coder is an absolute marvel for local hosting. Because
         coding and autocomplete models rely heavily on dense context
@@ -1310,8 +1735,8 @@ Performance Strategies</h1>
         directly inside your LXC startup script environment
         variables):</p>
         <hr />
-        <p><strong>1. Advanced Intel oneAPI &amp; SYCL Tuning
-        Flags</strong></p>
+        <h3 id="nav-advanced-intel-oneapi-sycl-tuning-flags">1. Advanced
+        Intel oneAPI &amp; SYCL Tuning Flags</h3>
         <p>Add the following environment lines to your deployment:</p>
         <p># Force the Intel driver to bypass aggressive power savings
         and keep execution units alert</p>
@@ -1327,22 +1752,33 @@ Performance Strategies</h1>
         <p>OLLAMA_NUM_GPU=999</p>
         <p>GGML_OPENCL_PLATFORM=Intel</p>
         <hr />
-        <p><strong>2. Pin Thread Affinities for Hybrid Architecture
-        (Intel 13th/14th Gen)</strong></p>
+        <h3
+        id="nav-pin-thread-affinities-for-hybrid-architecture-intel-13th14th-gen">2.
+        Pin Thread Affinities for Hybrid Architecture (Intel 13th/14th
+        Gen)</h3>
         <p>Because your processor utilizes a hybrid architecture of
         Performance Cores (P-Cores) and Efficient Cores (E-Cores),
         Ollama can sometimes accidentally schedule a critical
         autocomplete calculation onto a slower E-core.</p>
         <p>To prevent this inside your Proxmox LXC container:</p>
-        <ol type="1">
-        <li><p>Ensure your container's CPU settings are explicitly set
-        to <strong>Type: host</strong>.</p></li>
-        <li><p>If you are running small Qwen-Coder models (like the 1.5B
-        or 7B variants), force Ollama to match only the
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Ensure your container's CPU settings are explicitly set
+        to <strong>Type: host</strong>.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>If you are running small Qwen-Coder models (like the 1.5B or
+        7B variants), force Ollama to match only the
         physical <strong>P-Core</strong> count of your processor by
-        setting the thread variable:</p></li>
-        <li><p>OLLAMA_NUM_PARALLEL=1</p></li>
-        </ol>
+        setting the thread variable:</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>OLLAMA_NUM_PARALLEL=1</p>
+        </div></li>
+        </ul>
         <hr />
         <p>If you want to run a quick test to see your exact
         token-per-second generation metrics right now, you can
@@ -1350,8 +1786,8 @@ Performance Strategies</h1>
         terminal and reply with the final stats. We can use those
         baseline numbers to measure exactly how much speed these memory
         mapping tweaks unlock!</p>
-        <h2 id="nav-what-times-woulc-you-expect-from-this-setup">What
-        times woulc you expect from this setup</h2>
+        <h2 id="nav-what-times-would-you-expect-from-this-setup">What
+        times would you expect from this setup</h2>
         <p>Here is the direct, unfiltered truth about how your sub-$500
         setup stacks up against those higher price tiers.</p>
         <p>Because Qwen models (especially Qwen 2.5-Coder 1.5B for
@@ -1360,16 +1796,17 @@ Performance Strategies</h1>
         <p>The performance comparison below shows exactly what you get
         for the extra money.</p>
         <hr />
-        <table style="width:98%;">
-        <caption>1Real-World Performance Breakdown (Qwen
-        2.5-Coder)</caption>
+        <h2
+        id="nav-real-world-performance-breakdown-qwen-2.5-coder">Real-World
+        Performance Breakdown (Qwen 2.5-Coder)</h2>
+        <table style="width:99%;">
         <colgroup>
         <col style="width: 12%" />
-        <col style="width: 19%" />
-        <col style="width: 11%" />
-        <col style="width: 20%" />
-        <col style="width: 15%" />
-        <col style="width: 20%" />
+        <col style="width: 7%" />
+        <col style="width: 14%" />
+        <col style="width: 9%" />
+        <col style="width: 13%" />
+        <col style="width: 42%" />
         </colgroup>
         <thead>
         <tr>
@@ -1428,7 +1865,7 @@ Performance Strategies</h1>
         </tbody>
         </table>
         <hr />
-        <p>The Takeaway</p>
+        <h1 id="nav-the-takeaway">The Takeaway</h1>
         <p>For Autocomplete (1.5B): Your under-$500 machine delivers an
         experience that is visually indistinguishable from a $1,000
         machine. At 30 tokens per second, inline suggestions pop up
@@ -1442,6 +1879,245 @@ Performance Strategies</h1>
         jumping to massive 32B or 70B models, spending the extra $200 to
         $500 right now will not fundamentally change your daily coding
         routine.</p>
+        <h1 id="nav-primary-sources">Primary sources</h1>
+        <ul>
+        <li><p><a href="https://docs.ollama.com/gpu"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Ollama GPU
+        documentation</span></a><br />
+        GPU backends, supported vendors, Vulkan, CUDA, and hardware
+        detection.</p></li>
+        <li><p><a href="https://docs.ollama.com/faq"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Ollama FAQ</span></a><br />
+        Environment variables, model loading, memory usage, and
+        performance behavior.</p></li>
+        <li><p><a href="https://github.com/ollama/ollama"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Ollama GitHub
+        repository</span></a><br />
+        Best source for current implementation details and reported
+        Intel GPU issues.</p></li>
+        <li><p><a
+        href="https://github.com/ggml-org/llama.cpp/blob/master/docs/backend/SYCL.md"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">llama.cpp SYCL
+        backend</span></a><br />
+        Intel oneAPI/SYCL acceleration and supported
+        configuration.</p></li>
+        <li><p><a
+        href="https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">llama.cpp Vulkan
+        backend</span></a><br />
+        Vulkan compilation and GPU backend behavior.</p></li>
+        <li><p><a
+        href="https://pve.proxmox.com/pve-docs/pve-container.5.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Proxmox LXC configuration
+        reference</span></a><br />
+        Container configuration, device mappings, and mount
+        entries.</p></li>
+        <li><p><a
+        href="https://pve.proxmox.com/wiki/Linux_Container"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Proxmox Linux Containers
+        documentation</span></a><br />
+        General LXC architecture and limitations.</p></li>
+        <li><p><a
+        href="https://www.kernel.org/doc/html/latest/gpu/drm-uapi.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Linux DRM GPU API</span></a><br />
+        Background on /dev/dri/card*, render nodes, and GPU device
+        access.</p></li>
+        <li><p><a
+        href="https://www.intel.com/content/www/us/en/products/sku/232155/intel-core-i713620h-processor-24m-cache-up-to-4-90-ghz/specifications.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Intel Core i7-13620H
+        specifications</span></a><br />
+        Integrated graphics, execution units, cores, and memory
+        specifications.</p></li>
+        <li><p><a href="https://github.com/intel/intel-gpu-tools"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Intel GPU Tools</span></a><br />
+        intel_gpu_top and related monitoring tools.</p></li>
+        </ul>
+        <h2 id="nav-model-and-benchmarking-references">Model and
+        benchmarking references</h2>
+        <ul>
+        <li><p><a href="https://huggingface.co/Qwen"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Qwen2.5 model
+        cards</span></a><br />
+        Official parameter counts, architecture details, context sizes,
+        and licensing.</p></li>
+        <li><p><a
+        href="https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Qwen2.5-Coder</span></a><br />
+        Technical information for the coding models discussed in the
+        document.</p></li>
+        <li><p><a href="https://ollama.com/library/qwen2.5-coder"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Qwen models in
+        Ollama</span></a><br />
+        Ollama-specific model sizes and quantized downloads.</p></li>
+        <li><p><a href="https://github.com/ggml-org/llama.cpp"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">llama.cpp benchmark
+        documentation</span></a><br />
+        Useful for independently measuring prompt-processing and
+        generation speed.</p></li>
+        </ul>
+        <h2 id="nav-claims-that-require-local-testing">Claims that
+        require local testing</h2>
+        <p>These statements in the document should be supported by
+        measurements rather than presented as established facts:</p>
+        <ul>
+        <li><p>The exact token-per-second figures for the i7-13620H,
+        i5-14450HX, Arc 125H, and RTX 4060.</p></li>
+        <li><p>The claim that /dev/dri passthrough acts as a
+        “fast-loader.”</p></li>
+        <li><p>The explanation that GTT mappings reduce model startup
+        from 20 seconds to under 1 second.</p></li>
+        <li><p>The interpretation of an 80% GPU spike as memory
+        allocation rather than actual inference.</p></li>
+        <li><p>The claim that Ollama categorically ignores all Intel UHD
+        and Iris Xe graphics.</p></li>
+        <li><p>The claim that CPU usage should settle around
+        55–65%.</p></li>
+        <li><p>The hardware price comparisons.</p></li>
+        </ul>
+        <p>The most useful validation command is:</p>
+        <p>ollama run qwen2.5-coder:7b --verbose</p>
+        <p>Record load time, prompt evaluation rate, and generation rate
+        both with and without /dev/dri passthrough. Also compare Ollama
+        logs with:</p>
+        <p>journalctl -u ollama -f</p>
+        <p>Several configuration recommendations should be treated
+        cautiously. NEOReadDebugKeys, OverrideGpuAddressSpace, and
+        CL_PROGRAM_OPTS are Intel/OpenCL debugging or compiler settings,
+        not generally documented Ollama performance controls.
+        GGML_OPENCL_PLATFORM=Intel may also be irrelevant when Ollama is
+        using Vulkan, CUDA, or SYCL.</p>
+        <h1 id="nav-further-reading">Further Reading</h1>
+        <ul>
+        <li><p><a href="https://docs.ollama.com/gpu"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Ollama GPU
+        Documentation</span></a><br />
+        Supported GPU backends, CUDA, ROCm, Vulkan, and GPU
+        detection.</p></li>
+        <li><p><a href="https://docs.ollama.com/faq"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Ollama FAQ</span></a><br />
+        Model loading, memory usage, environment variables, and
+        troubleshooting.</p></li>
+        <li><p><a href="https://github.com/ollama/ollama/issues"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Ollama GitHub
+        Issues</span></a><br />
+        Current Intel GPU, Vulkan, SYCL, and LXC compatibility
+        reports.</p></li>
+        <li><p><a
+        href="https://github.com/ggml-org/llama.cpp/tree/master/docs/backend"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">llama.cpp Backend
+        Documentation</span></a><br />
+        CPU, CUDA, Vulkan, SYCL, and other inference backends.</p></li>
+        <li><p><a
+        href="https://github.com/ggml-org/llama.cpp/blob/master/docs/backend/SYCL.md"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">llama.cpp SYCL
+        Backend</span></a><br />
+        Intel GPU acceleration using oneAPI and SYCL.</p></li>
+        <li><p><a
+        href="https://www.intel.com/content/www/us/en/docs/oneapi/optimization-guide/current/overview.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Intel oneAPI GPU Optimization
+        Guide</span></a><br />
+        GPU execution, memory bandwidth, shared memory, and kernel
+        optimization.</p></li>
+        <li><p><a
+        href="https://gitlab.freedesktop.org/drm/igt-gpu-tools"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Intel GPU Tools</span></a><br />
+        intel_gpu_top, GPU activity monitoring, and diagnostic
+        tools.</p></li>
+        <li><p><a
+        href="https://www.kernel.org/doc/html/latest/gpu/drm-uapi.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Linux DRM GPU API</span></a><br />
+        Technical explanation of /dev/dri, render nodes, and GPU
+        access.</p></li>
+        <li><p><a
+        href="https://pve.proxmox.com/wiki/Linux_Container"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Proxmox Linux Container
+        Documentation</span></a><br />
+        LXC architecture, isolation, resource limits, and device
+        access.</p></li>
+        <li><p><a
+        href="https://pve.proxmox.com/pve-docs/pve-container.5.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Proxmox Container Configuration
+        Reference</span></a><br />
+        Detailed reference for lxc.mount.entry, device permissions, and
+        container settings.</p></li>
+        <li><p><a
+        href="https://www.intel.com/content/www/us/en/products/sku/232155/intel-core-i713620h-processor-24m-cache-up-to-4-90-ghz/specifications.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Intel Core i7-13620H
+        Specifications</span></a><br />
+        Processor, integrated graphics, execution units, and memory
+        details.</p></li>
+        <li><p><a
+        href="https://www.intel.com/content/www/us/en/products/sku/232158/intel-core-i514450hx-processor-20m-cache-up-to-4-80-ghz/specifications.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Intel Core i5-14450HX
+        Specifications</span></a><br />
+        Hardware specifications for the processor discussed in the
+        document.</p></li>
+        <li><p><a href="https://qwen.readthedocs.io/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Qwen
+        Documentation</span></a><br />
+        Model architecture, quantization, deployment, and inference
+        guidance.</p></li>
+        <li><p><a
+        href="https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Qwen2.5-Coder Model
+        Card</span></a><br />
+        Official model details, capabilities, context length, and
+        limitations.</p></li>
+        <li><p><a
+        href="https://huggingface.co/docs/transformers/main/en/quantization/overview"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Hugging Face Quantization
+        Guide</span></a><br />
+        How quantization affects model size, memory requirements, and
+        performance.</p></li>
+        <li><p><a
+        href="https://github.com/ggml-org/llama.cpp/tree/master/examples/llama-bench"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">llama.cpp
+        Benchmarking</span></a><br />
+        Tools for comparing prompt processing and token-generation
+        speed.</p></li>
+        <li><p><a href="https://github.com/intel/compute-runtime"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Intel GPU Compute
+        Runtime</span></a><br />
+        Intel OpenCL and Level Zero runtime implementation.</p></li>
+        <li><p><a
+        href="https://www.intel.com/content/www/us/en/developer/tools/oneapi/base-toolkit.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Intel oneAPI Base
+        Toolkit</span></a><br />
+        SYCL, Level Zero, OpenCL, and Intel GPU development
+        tools.</p></li>
+        </ul>
       </article>
     </div>
   </main>
@@ -1449,4 +2125,3 @@ Performance Strategies</h1>
   <script src="/scripts/component-loader.js"></script>
 </body>
 </html>
-
