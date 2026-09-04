@@ -20,30 +20,52 @@
         body {
             background: #07111f;
             color: #eaf4ff;
-            font-family: Arial, sans-serif;
+            font-family: "Segoe UI", Arial, sans-serif;
             margin: 0;
         }
 
         main {
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 0 auto;
-            padding: 2rem 1rem 3rem;
+            padding: 3rem 1.25rem 4rem;
         }
 
-        .content-shell {
+        .lab-hero {
             display: grid;
-            grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
-            gap: 1.5rem;
-            align-items: start;
-            margin-top: 1.5rem;
+            grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+            gap: 2rem;
+            align-items: stretch;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(29, 78, 216, 0.2), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(147, 197, 253, 0.24);
+            border-radius: 10px;
         }
 
-        .left-column,
-        .right-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+        .lab-hero h1 { margin: 0.65rem 0 0.8rem; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95; letter-spacing: -0.04em; }
+        .lab-hero h1 span { color: #60a5fa; }
+        .eyebrow { color: #bfdbfe; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+        .hero-copy { max-width: 580px; color: #cbd5e1; font-size: 1.05rem; line-height: 1.65; }
+        .hero-image { min-height: 330px; overflow: hidden; border-radius: 6px; background: #e2e8f0; }
+        .hero-image img { width: 100%; height: 100%; min-height: 330px; display: block; object-fit: cover; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        .spec-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-top: 1.5rem; }
+        .spec { padding: 0.8rem; background: rgba(7, 17, 31, 0.55); border: 1px solid rgba(191, 219, 254, 0.14); }
+        .spec strong { display: block; color: #bfdbfe; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+        .spec span { display: block; margin-top: 0.35rem; color: #f8fafc; font-size: 0.88rem; }
+
+        .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin: 4rem 0 1.5rem; }
+        .section-heading h2 { margin: 0.45rem 0 0; font-size: clamp(1.8rem, 4vw, 3rem); }
+        .section-heading p { max-width: 520px; margin: 0; color: #94a3b8; line-height: 1.55; }
+        .section-label { color: #60a5fa; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+        .architecture { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: rgba(191, 219, 254, 0.16); border: 1px solid rgba(191, 219, 254, 0.16); }
+        .node { padding: 1.25rem; background: rgba(30, 41, 59, 0.9); }
+        .node-type { color: #60a5fa; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+        .node h3 { margin: 0.5rem 0 0.45rem; color: #f8fafc; font-size: 1.15rem; }
+        .node p { margin: 0; color: #cbd5e1; line-height: 1.5; }
+        .node-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem; color: #93c5fd; font-size: 0.78rem; }
+        .node-meta span { padding: 0.3rem 0.45rem; background: rgba(29, 78, 216, 0.2); }
+
+        .resource-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 
         .panel,
         .card {
@@ -78,25 +100,22 @@
             overflow-wrap: anywhere;
         }
 
-        .right-column .grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1rem;
-        }
-
         .card p {
             margin: 0 0 0.7rem;
             color: #dbeafe;
         }
 
         @media (max-width: 860px) {
-            .content-shell {
-                grid-template-columns: 1fr;
-            }
+            .lab-hero { grid-template-columns: 1fr; }
+            .resource-grid, .architecture { grid-template-columns: 1fr; }
+            .section-heading { display: block; }
+            .section-heading p { margin-top: 0.8rem; }
+        }
 
-            .right-column .grid {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 560px) {
+            .spec-strip { grid-template-columns: 1fr; }
+            .lab-hero { padding: 1rem; }
+            main { padding-inline: 0.75rem; }
         }
     </style>
 </head>
@@ -104,64 +123,42 @@
     <div id="header-placeholder"></div>
 
     <main>
-        <h1 style="color: #eaf4ff; margin-bottom: 1.5rem; font-size: 2rem;">Home Lab</h1>
-        <p style="margin-bottom: 1.5rem; text-align: left;">
-            <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Gateway</a>        
-        </p>
+        <p style="margin-bottom: 1.5rem; text-align: left;"><a href="/index.html" style="color: #bfdbfe; font-weight: 600;">&#8594; Gateway</a></p>
 
-
-        <div class="content-shell">
-            <div class="left-column">
-                <div class="panel">
-                    <h3>Materials and Services</h3>
-                    <ul>
-                        <li><a href="https://www.amazon.com/s?k=KAMRUI+Hyper+H2+Mini+PC+with+Intel+Core+14450HX+%2810C%2F16T%2C+up+to+4.8GHz%29%2C+32GB+RAM+1TB+NVMe+SSD%2C+Triple+4K%2C+HDMI%2C+DP%2C+USB-C%2C+Ethernet%2C+Mini+Desktop+Computer+for+Office%2C+Business%2C+Gaming&i=electronics&crid=11NAYKUIWUAV8&sprefix=kamrui+hyper+h2+mini+pc+with+intel+core+14450hx+10c%2F16t%2C+up+to+4.8ghz+%2C+32gb+ram+1tb+nvme+ssd%2C+triple+4k%2C+hdmi%2C+dp%2C+usb-c%2C+ethernet%2C+mini+desktop+computer+for+office%2C+business%2C+gaming%2Celectronics%2C163&ref=nb_sb_noss" target="_blank" rel="noopener">Minicomputer - $500 - $600 (see References regarding specifications)</a></li>
-                        <li><a href="https://dash.cloudfare.com" target="_blank" rel="noopener">Cloudfare Annual Subscription - $6 - $25</a></li>
-                        <li><a href="https://purelymail.com/" target="_blank" rel="noopener">Purelymail IMAP Annual Subscription (Optional) - $10</a></li>
-                        <li><a href="https://www.home-assistant.io" target="_blank" rel="noopener">Optional Raspberry Pi 4 (Backup PiHole Server) $25 - $75</a></li>
-                    </ul>
-                </div>
-
-                <div class="panel">
-                    <h3>Required Support Software</h3>
-                    <ul>
-                        <li><a href="https://pandoc.org/" target="_blank" rel="noopener">Pandoc - a universal document converter</a></li>
-                        <li><a href="https://www.winzip.com/" target="_blank" rel="noopener">WinZip</a></li>
-                    </ul>
-                </div>
-                <div class="panel">
-                    <h3>Required Account References</h3>
-                    <ul>
-                        <li><a href="https://www.github.com" target="_blank" rel="noopener">github</a></li>
-                        <li><a href="https://dash.cloudfare.com" target="_blank" rel="noopener">Cloudfare Dashboard</a></li>
-                        <li><a href="https://analytics.google.com" target="_blank" rel="noopener">Google Analytics</a></li>
-                        <li><a href="https://purelymail.com/" target="_blank" rel="noopener">Purelymail (Optional)</a></li>
-
-                    </ul>
+        <section class="lab-hero" aria-labelledby="lab-title">
+            <div>
+                <div class="eyebrow">Barnes Home Lab / Proxmox edge testbed</div>
+                <h1 id="lab-title">One small chassis.<br><span>One full-size home lab.</span></h1>
+                <p class="hero-copy">This in-home lab turns a compact KAMRUI HYPER H2 into a private, modular platform for home automation, local AI, voice services, networking, and resilient storage.</p>
+                <div class="spec-strip">
+                    <div class="spec"><strong>Compute</strong><span>Intel Core i7-13620H</span></div>
+                    <div class="spec"><strong>Memory</strong><span>32 GB RAM</span></div>
+                    <div class="spec"><strong>Virtualization</strong><span>Proxmox VE 9.2.3</span></div>
                 </div>
             </div>
-            <div class="right-column">
-                <div class="grid">
-                    <div class="panel">
-                        <h3>Home Lab Guides</h3>
-                        <ul>
-                            <li><a href="guides/1-home-lab-install-procedure.html">Home Lab Install Procedure</a></li>
-                            <li><a href="guides/2-instructions-for-using-vscode.html">Instructions For Using VSCode</a></li>
-                            <li><a href="guides/3-home-lab-dns-procedure.html">Home Lab DNS Procedure</a></li>
-                            <li><a href="guides/4-building-your-own-webpage.html">Building Your Own Webpage</a></li>
-                            <li><a href="guides/5-network-wide-power-fail-infrastructure-w-nut.html">Network Wide Power Fail Infrastructure With NUT</a></li>
-                        </ul>
-                    </div>
-                    <div class="panel">
-                        <h3>Home Lab Reference</h3>
-                        <ul>
-                            <li><a href="reference/choosing-your-domain-name.html">Choosing Your Domain Name</a></li>
-                            <li><a href="reference/GPU Performance Strategies.html">GPU Performance Strategies</a></li>
-                        </ul>
-                    </div>
-                </div>
+            <figure class="hero-image"><img src="assets/KAMRIU-Chassis.jpg" alt="KAMRUI HYPER H2 mini PC chassis" loading="eager"><figcaption class="sr-only">KAMRUI HYPER H2 mini PC used as the Barnes Home Lab host.</figcaption></figure>
+        </section>
+
+        <section aria-labelledby="architecture-title">
+            <div class="section-heading"><div><div class="section-label">01 / System blueprint</div><h2 id="architecture-title">One host, purposeful workloads.</h2></div><p>Virtual machines and containers keep the services isolated, reproducible, and easy to test as the lab evolves.</p></div>
+            <div class="architecture">
+                <article class="node"><div class="node-type">Proxmox VM 101</div><h3>Home Assistant OS</h3><p>The primary automation environment for integrations, dashboards, devices, and local voice orchestration.</p><div class="node-meta"><span>2 vCPU</span><span>4 GB RAM</span><span>192.168.86.251</span></div></article>
+                <article class="node"><div class="node-type">Proxmox LXC 100</div><h3>Pi-hole / DNS</h3><p>Network-wide DNS filtering and local name resolution for the private home infrastructure.</p><div class="node-meta"><span>1 vCPU</span><span>512 MB RAM</span><span>192.168.86.254</span></div></article>
+                <article class="node"><div class="node-type">Proxmox LXC 102</div><h3>Nginx Proxy Manager</h3><p>Reverse proxy and secure service routing, with external storage available for media workloads.</p><div class="node-meta"><span>2 vCPU</span><span>1 GB RAM</span><span>192.168.86.252</span></div></article>
+                <article class="node"><div class="node-type">Proxmox LXC 103</div><h3>Ollama LLM Engine</h3><p>Local AI for voice, vision, coding, automation, and document context without sending household data to a cloud service.</p><div class="node-meta"><span>6 vCPU</span><span>16 GB RAM</span><span>192.168.86.253</span><span>10.0.10.3 backend</span></div></article>
+                <article class="node"><div class="node-type">Proxmox LXC 104</div><h3>Wyoming Voice Services</h3><p>Private voice pipeline support for satellite audio, Piper speech, and Home Assistant communication.</p><div class="node-meta"><span>2 vCPU</span><span>2 GB RAM</span><span>Port 10200</span></div></article>
+                <article class="node"><div class="node-type">Proxmox LXC 105</div><h3>Twingate Connector</h3><p>Secure remote access to the home network through a dedicated connector with a small resource footprint.</p><div class="node-meta"><span>1 vCPU</span><span>512 MB RAM</span><span>192.168.86.247</span></div></article>
             </div>
-        </div>
+        </section>
+
+        <section aria-labelledby="resources-title">
+            <div class="section-heading"><div><div class="section-label">02 / Build documentation</div><h2 id="resources-title">Build it. Test it. Share it.</h2></div><p>Installation procedures, configuration notes, and reference material turn the working lab into a repeatable blueprint.</p></div>
+            <div class="resource-grid">
+                <div class="panel"><h3>Home Lab Guides</h3><ul><li><a href="guides/1-home-lab-install-procedure.html">Home Lab Install Procedure</a></li><li><a href="guides/2-instructions-for-using-vscode.html">Instructions For Using VSCode</a></li><li><a href="guides/3-home-lab-dns-procedure.html">Home Lab DNS Procedure</a></li><li><a href="guides/4-building-your-own-webpage.html">Building Your Own Webpage</a></li><li><a href="guides/5-network-wide-power-fail-infrastructure-w-nut.html">Network Wide Power Fail Infrastructure</a></li></ul></div>
+                <div class="panel"><h3>Home Lab Reference</h3><ul><li><a href="reference/choosing-your-domain-name.html">Choosing Your Domain Name</a></li><li><a href="reference/GPU Performance Strategies.html">GPU Performance Strategies</a></li></ul></div>
+                <div class="panel"><h3>Tools &amp; Services</h3><ul><li><a href="guides/1-home-lab-install-procedure.html#nav-tools-to-verify-installation-and-functionality">Home Lab Tools Bundle</a></li><li><a href="https://www.home-assistant.io" target="_blank" rel="noopener">Home Assistant</a></li><li><a href="https://www.proxmox.com/" target="_blank" rel="noopener">Proxmox VE</a></li><li><a href="https://ollama.com/" target="_blank" rel="noopener">Ollama</a></li></ul></div>
+            </div>
+        </section>
     </main>
 
     <div id="footer-placeholder"></div>

@@ -480,7 +480,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         <img src="5-network-wide-power-fail-infrastructure-w-nut/media/image1.png"
         style="width:6.5in;height:3.54545in"
         alt="Figure 1: Your Home in the Clouds!" />
-        <figcaption aria-hidden="true">Figure 2: Your Home in the
+        <figcaption aria-hidden="true">Figure 1: Your Home in the
         Clouds!</figcaption>
         </figure>
         <h1
@@ -545,14 +545,14 @@ Wide Power Fail Infrastructure W Nut</h1>
         <figure>
         <img src="5-network-wide-power-fail-infrastructure-w-nut/media/image2.png"
         style="width:6.49471in;height:3.54545in"
-        alt="Figure 3: System Level UPS Setup" />
-        <figcaption aria-hidden="true">Figure 4: System Level UPS
+        alt="Figure 2: System Level UPS Setup" />
+        <figcaption aria-hidden="true">Figure 2: System Level UPS
         Setup</figcaption>
         </figure>
         <h1 id="nav-architectural-weaknesses-edge-cases">Architectural
         Weaknesses &amp; Edge Cases</h1>
         <table>
-        <caption>Code 1: UPS Power Edge Cases</caption>
+        <caption>Table 1: UPS Power Edge Cases</caption>
         <colgroup>
         <col style="width: 27%" />
         <col style="width: 72%" />
@@ -1038,7 +1038,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         <h1 id="nav-tiered-outage-execution-timeline">Tiered Outage
         Execution Timeline</h1>
         <table style="width:99%;">
-        <caption>Table 1: Tiered Outage Execution Timeline</caption>
+        <caption>Table 5: Tiered Outage Execution Timeline</caption>
         <colgroup>
         <col style="width: 9%" />
         <col style="width: 17%" />
@@ -1107,7 +1107,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         Packages</h3>
         <p>Run the following in the Proxmox shell:</p>
         <table>
-        <caption>Code 5: UPS Proxmox Nut Install</caption>
+        <caption>Code 6: UPS Proxmox Nut Install</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -1127,7 +1127,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         1.2: Configure NUT Mode (/etc/nut/nut.conf)</h3>
         <p>Set NUT to operate as a netserver:</p>
         <table>
-        <caption>Code 6: UPS Proxmox Nut Configure</caption>
+        <caption>Code 7: UPS Proxmox Nut Configure</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -1148,7 +1148,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         <p>Add the CyberPower configuration with forced low-battery
         overrides:</p>
         <table>
-        <caption>Code 7: UPS Proxmox Nut Driver</caption>
+        <caption>Code 8: UPS Proxmox Nut Driver</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -1174,7 +1174,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         <p>Listen on all interfaces (or specifically
         192.168.86.250):</p>
         <table>
-        <caption>Code 8: UPS Proxmox Nut Driver Binding</caption>
+        <caption>Code 9: UPS Proxmox Nut Driver Binding</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -1194,7 +1194,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         1.5: Define NUT Users (/etc/nut/upsd.users)</h3>
         <p>Configure authentication credentials for remote clients:</p>
         <table>
-        <caption>Code 9: UPS Proxmox Nut Users</caption>
+        <caption>Code 10: UPS Proxmox Nut Users</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -1223,7 +1223,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         <p>Edit the /etc/nut/upsmon.conf with the following
         contents.</p>
         <table>
-        <caption>Code 10: UPS Proxmox Nut Local Monitor</caption>
+        <caption>Code 11: UPS Proxmox Nut Local Monitor</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -1247,7 +1247,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         and Start Services</h3>
         <p>Execute the following commands on the Promox Console.</p>
         <table>
-        <caption>Code 11: UPS Proxmox Nut Start Services</caption>
+        <caption>Code 12: UPS Proxmox Nut Start Services</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -1274,7 +1274,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         Packages</h3>
         <p>Run the following on the Raspberry Pi.</p>
         <table>
-        <caption>Code 12: UPS PiHole Nut Install</caption>
+        <caption>Code 13: UPS PiHole Nut Install</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -1297,7 +1297,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         <p>Edit the /etc/nut/ups.conf &amp; /etc/nut/nut.conf and
         restart the daemon as follows:</p>
         <table>
-        <caption>Code 13: UPS PiHole Nut Configure</caption>
+        <caption>Code 14: UPS PiHole Nut Configure</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -1341,7 +1341,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         (/usr/local/bin/ups2_monitor.sh)</h3>
         <p>Create the custom trigger script:</p>
         <table>
-        <caption>Code 14: UPS PiHole Nut Monitoring Script</caption>
+        <caption>Code 15: UPS PiHole Nut Monitoring Script</caption>
         <colgroup>
         <col style="width: 101%" />
         </colgroup>
@@ -1394,7 +1394,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         Automate Execution via Cron</h3>
         <p>Add to /etc/crontab:</p>
         <table>
-        <caption>Code 15: UPS PiHole Nut Crontab</caption>
+        <caption>Code 16: UPS PiHole Nut Crontab</caption>
         <colgroup>
         <col style="width: 100%" />
         </colgroup>
@@ -1489,7 +1489,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         <p>Edit the file /usr/local/bin/synology-recovery.sh and make it
         executable</p>
         <table>
-        <caption>Code 16: UPS Proxmox Auto Recovery Script</caption>
+        <caption>Code 17: UPS Proxmox Auto Recovery Script</caption>
         <colgroup>
         <col style="width: 101%" />
         </colgroup>
@@ -1544,7 +1544,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         Job on Proxmox</h3>
         <p>Add to /etc/crontab on Proxmox:</p>
         <table>
-        <caption>Code 17: UPS Proxmox Crontab</caption>
+        <caption>Code 18: UPS Proxmox Crontab</caption>
         <colgroup>
         <col style="width: 101%" />
         </colgroup>
@@ -1596,7 +1596,7 @@ Wide Power Fail Infrastructure W Nut</h1>
         6.1: ESPHome / Custom Firmware Setup (ups4.yaml)</h3>
         <p>If using ESPHome with USB Host HID / Serial component:</p>
         <table>
-        <caption>Code 18: UPS ESP32 Nut Custom Firmware</caption>
+        <caption>Code 19: UPS ESP32 Nut Custom Firmware</caption>
         <colgroup>
         <col style="width: 101%" />
         </colgroup>
