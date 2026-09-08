@@ -1,0 +1,2401 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Proxmox Storage Server V2</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LLK7685ZGC');
+  </script>
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    /* Prevent outer window scrolling and lock viewport bounds */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; 
+    }
+
+    /* Main container takes up the exact remaining window height */
+    main.app-main {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      box-sizing: border-box;
+      padding: 1.5rem 1.5rem;
+      max-width: 100%;
+    }
+
+    /* Doc layout fills whatever vertical space is left below the title banner */
+    .doc-layout {
+      display: grid;
+      grid-template-columns: 450px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      flex: 1;
+      min-height: 0; /* Crucial for grid children to shrink and scroll properly */
+    }
+    
+    [custom-style="TextBlock"], 
+    .TextBlock, 
+    .textblock, 
+    .code, 
+    .Code, 
+    span[data-custom-style="TextBlock"],
+    p[custom-style="TextBlock"] {
+        background: #1e1e1e !important;         
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+        border-left: 4px solid #3182ce !important;             
+        padding: 16px !important;               
+        line-height: 1.1 !important;            
+        display: block !important;              
+        width: 100% !important;                 
+        max-width: 850px !important;            
+        margin: 1.5rem 0 !important;            
+        color: #eaf4ff !important;                   
+        border-radius: 6px !important;          
+    }
+
+    /* Left Column (TOC) Independent Scroll */
+    .sidebar-toc {
+      height: 100%;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
+    }
+    .sidebar-toc ul {
+      list-style: none;
+      padding-left: 1.25rem;
+      margin: 0;
+    }
+    .sidebar-toc > ul {
+      padding-left: 0;
+    }
+    .sidebar-toc li {
+      margin-bottom: 0.5rem;
+    }
+    .sidebar-toc a {
+      color: #bfdbfe;
+      text-decoration: none;
+      transition: color 0.2s;
+      font-size: 0.95rem;
+    }
+    .sidebar-toc a:hover {
+      color: #eaf4ff;
+      text-decoration: underline;
+    }
+
+    /* Right Column (Document Content) Independent Scroll */
+    .document-content {
+      height: 100%;
+      overflow-y: auto;
+      color: #eaf4ff;
+      line-height: 1.7;
+      padding-right: 1rem; 
+      box-sizing: border-box;
+    }
+    .document-content pre {
+      background: #1e1e1e;
+      padding: 1.25rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    .document-content pre code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: #eaf4ff;
+      line-height: 1.5;
+    }
+    .document-content pre[class*="language-"]::before {
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-family: sans-serif;
+    }
+    .document-content pre.language-powershell::before { content: "POWERSHELL"; border-bottom: 1px solid #10b981; }
+    .document-content pre.language-css::before { content: "CSS"; border-bottom: 1px solid #3b82f6; }
+    .document-content pre.language-html::before { content: "HTML"; border-bottom: 1px solid #f97316; }
+    .document-content pre.language-yaml::before { content: "YAML"; border-bottom: 1px solid #a855f7; }
+    .document-content pre.language-plaintext::before { content: "TEXT"; }
+    
+    .document-content pre.language-powershell { border-left: 3px solid #10b981; }
+    .document-content pre.language-css { border-left: 3px solid #3b82f6; }
+    .document-content pre.language-html { border-left: 3px solid #f97316; }
+    .document-content pre.language-yaml { border-left: 3px solid #a855f7; }
+
+    .document-content table {
+      width: auto;
+      max-width: 850px;
+      margin: 1.5rem 0;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      text-align: left;
+    }
+    .document-content th, .document-content td {
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .document-content td {
+      white-space: pre-wrap;
+    }
+    .document-content th {
+      background: rgba(191, 219, 254, 0.1);
+      color: #bfdbfe;
+      font-weight: 600;
+    }
+    .document-content img {
+      display: block;
+      margin-left: 0 !important;
+      margin-right: auto !important;
+      text-align: left;
+    }
+    .document-content p.caption, .document-content .caption, .document-content figcaption {
+      text-align: left !important;
+      margin-left: 0 !important;
+      margin-top: 0.5rem;
+      color: #94a3b8;
+    }
+    .document-content tr:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    /* ========================================================================== */
+    /* # COLLAPSIBLE DOWNLOAD BOX LAYOUT INTEGRATION                              */
+    /* ========================================================================== # */
+    .download-container {
+      margin: 1.5rem 0;
+      max-width: 850px;
+    }
+    .collapsible-download-box {
+      background: #1e1e1e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .collapsible-download-box[open] {
+      border: 1px solid rgba(191, 219, 254, 0.3);
+    }
+    .box-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      color: #bfdbfe;
+      background: rgba(191, 219, 254, 0.05);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .box-header::-webkit-details-marker {
+      display: none;
+    }
+    .box-header:hover {
+      background: rgba(191, 219, 254, 0.12);
+      color: #eaf4ff;
+    }
+    .folder-icon {
+      margin-right: 12px;
+      font-size: 1.1rem;
+    }
+    .box-body {
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.15);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      animation: expandReveal 0.2s ease-out;
+    }
+    .box-body p {
+      margin: 0 0 1rem 0;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+    .download-btn {
+      display: inline-block;
+      background: #3182ce;
+      color: #ffffff !important;
+      padding: 8px 16px;
+      text-decoration: none !important;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      transition: background 0.15s ease;
+    }
+    .download-btn:hover {
+      background: #2b6cb0;
+    }
+    @keyframes expandReveal {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      html, body {
+        overflow: auto; /* Re-enable window scrolling on mobile */
+      }
+      main.app-main {
+        height: auto;
+      }
+      .doc-layout {
+        display: block;
+        height: auto;
+      }
+      .sidebar-toc, .document-content {
+        height: auto;
+        overflow-y: visible;
+      }
+      .document-content table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <main class="app-main">
+    <p style="margin-bottom: 1rem; text-align: left; flex-shrink: 0;">
+      <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">→Home Lab</a>
+      <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+      <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">→Back</a>
+      <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+      <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">→Gateway</a>
+    </p>
+
+    <div class="title-banner" style="text-align: left; margin-bottom: 1.5rem; flex-shrink: 0;">
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
+Proxmox Storage Server V2</h1>
+      <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
+      <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
+    </div>
+
+    <div class="doc-layout">
+      <aside class="sidebar-toc">
+        <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
+        <ul>
+        <li><a href="#nav-sizing" id="nav-toc-sizing">Sizing</a></li>
+        <li><a href="#nav-architectural-recommendations"
+        id="nav-toc-architectural-recommendations">Architectural
+        Recommendations</a>
+        <ul>
+        <li><a href="#nav-shared-database-strategy-postgres-lxc"
+        id="nav-toc-shared-database-strategy-postgres-lxc">1. Shared
+        Database Strategy (Postgres LXC)</a></li>
+        <li><a href="#nav-intel-quicksync-igpu-passthrough"
+        id="nav-toc-intel-quicksync-igpu-passthrough">2. Intel QuickSync
+        iGPU Passthrough</a></li>
+        <li><a href="#nav-storage-bind-mounts"
+        id="nav-toc-storage-bind-mounts">3. Storage &amp; Bind
+        Mounts</a></li>
+        </ul></li>
+        <li><a href="#nav-resource-footprint"
+        id="nav-toc-resource-footprint">Resource Footprint</a>
+        <ul>
+        <li><a href="#nav-physical-storage-breakdown-1tb-nvme"
+        id="nav-toc-physical-storage-breakdown-1tb-nvme">1. Physical
+        Storage Breakdown (1TB NVMe)</a></li>
+        <li><a href="#nav-memory-ram-analysis-32gb-total"
+        id="nav-toc-memory-ram-analysis-32gb-total">2. Memory (RAM)
+        Analysis (32GB Total)</a></li>
+        <li><a
+        href="#nav-cpu-load-core-utilization-intel-i7-13620h-10c-16t"
+        id="nav-toc-cpu-load-core-utilization-intel-i7-13620h-10c-16t">3.
+        CPU Load &amp; Core Utilization (Intel i7-13620H | 10C /
+        16T)</a></li>
+        <li><a href="#nav-resource-summary"
+        id="nav-toc-resource-summary">Resource Summary</a></li>
+        </ul></li>
+        <li><a href="#nav-hardware-limitations"
+        id="nav-toc-hardware-limitations">Hardware Limitations</a></li>
+        <li><a href="#nav-resource-utilization-breakdown"
+        id="nav-toc-resource-utilization-breakdown">Resource Utilization
+        Breakdown</a></li>
+        <li><a href="#nav-storage-analysis-1tb-pcie-nvme-ssd"
+        id="nav-toc-storage-analysis-1tb-pcie-nvme-ssd">Storage Analysis
+        (1TB PCIe NVMe SSD)</a></li>
+        <li><a href="#nav-memory-ram-load-profile-32gb-total"
+        id="nav-toc-memory-ram-load-profile-32gb-total">Memory (RAM)
+        Load Profile (32GB Total)</a></li>
+        <li><a href="#nav-cpu-load-profile-10-cores-16-threads"
+        id="nav-toc-cpu-load-profile-10-cores-16-threads">CPU Load
+        Profile (10 Cores / 16 Threads)</a></li>
+        <li><a href="#nav-design-decisions"
+        id="nav-toc-design-decisions">Design Decisions</a>
+        <ul>
+        <li><a href="#nav-running-redis-inside-of-manyfold-lxc"
+        id="nav-toc-running-redis-inside-of-manyfold-lxc">Running Redis
+        inside of Manyfold LxC</a>
+        <ul>
+        <li><a href="#nav-comparison-summary"
+        id="nav-toc-comparison-summary">Comparison Summary</a></li>
+        <li><a href="#nav-key-architectural-reasons"
+        id="nav-toc-key-architectural-reasons">Key Architectural
+        Reasons</a></li>
+        <li><a href="#nav-our-implementation"
+        id="nav-toc-our-implementation">Our Implementation</a></li>
+        </ul></li>
+        <li><a href="#nav-manyfold-database-model"
+        id="nav-toc-manyfold-database-model">Manyfold Database Model</a>
+        <ul>
+        <li><a href="#nav-automation-media-pipeline-arr-stack"
+        id="nav-toc-automation-media-pipeline-arr-stack">2. Automation
+        &amp; Media Pipeline ("Arr" Stack)</a></li>
+        <li><a href="#nav-backup-maintenance-infrastructure"
+        id="nav-toc-backup-maintenance-infrastructure">3. Backup &amp;
+        Maintenance Infrastructure</a></li>
+        </ul></li>
+        <li><a href="#nav-operational-design-adjustments-1"
+        id="nav-toc-operational-design-adjustments-1">Operational &amp;
+        Design Adjustments</a>
+        <ul>
+        <li><a
+        href="#nav-storage-permissions-uidgid-mapping-unprivileged-lxcs"
+        id="nav-toc-storage-permissions-uidgid-mapping-unprivileged-lxcs">1.
+        Storage Permissions &amp; UID/GID Mapping (Unprivileged
+        LXCs)</a></li>
+        <li><a
+        href="#nav-media-server-redundancy-plex-vs.-jellyfin-vs.-emby"
+        id="nav-toc-media-server-redundancy-plex-vs.-jellyfin-vs.-emby">2.
+        Media Server Redundancy (Plex vs. Jellyfin vs. Emby)</a></li>
+        <li><a href="#nav-storage-mount-strategy"
+        id="nav-toc-storage-mount-strategy">3. Storage Mount
+        Strategy</a>
+        <ul>
+        <li><a href="#nav-complete-storage-mount-directory-strategy"
+        id="nav-toc-complete-storage-mount-directory-strategy">Complete
+        Storage Mount &amp; Directory Strategy</a></li>
+        <li><a href="#nav-app-by-app-operational-strategy"
+        id="nav-toc-app-by-app-operational-strategy">App-by-App
+        Operational Strategy</a></li>
+        </ul></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-ipmac-address-assignment"
+        id="nav-toc-ipmac-address-assignment">IP/MAC address
+        assignment</a></li>
+        <li><a
+        href="#nav-issues-to-consider-while-implementing-system-wide"
+        id="nav-toc-issues-to-consider-while-implementing-system-wide">Issues
+        to consider while implementing System Wide</a>
+        <ul>
+        <li><a href="#nav-critical-architecture-blind-spots-edge-cases"
+        id="nav-toc-critical-architecture-blind-spots-edge-cases">Critical
+        Architecture Blind Spots (Edge Cases)</a></li>
+        <li><a href="#nav-high-availability-failover-blind-spots"
+        id="nav-toc-high-availability-failover-blind-spots">1. High
+        Availability &amp; Failover Blind Spots</a>
+        <ul>
+        <li><a href="#nav-network-routing-gaps"
+        id="nav-toc-network-routing-gaps">2. Network &amp; Routing
+        Gaps</a></li>
+        <li><a href="#nav-backup-disaster-recovery-storage-risks"
+        id="nav-toc-backup-disaster-recovery-storage-risks">3. Backup,
+        Disaster Recovery &amp; Storage Risks</a>
+        <ul>
+        <li><a href="#nav-this-strategy-works"
+        id="nav-toc-this-strategy-works">This Strategy Works</a></li>
+        </ul></li>
+        <li><a href="#nav-hardware-monitoring-realities"
+        id="nav-toc-hardware-monitoring-realities">4. Hardware &amp;
+        Monitoring Realities</a></li>
+        </ul></li>
+        <li><a href="#nav-section" id="nav-toc-section"></a></li>
+        </ul></li>
+        </ul>
+      </aside>
+
+      <article class="document-content">
+        <p><img src="1 - Proxmox Storage Server v2/media/image1.jpeg"
+        style="width:5.83333in;height:2.56597in" /></p>
+        <p>I wrote this analysis and design document for my Proxmox VE
+        9.2.3 media and I/O mini-computer architecture. I’m using it to
+        prove the concept and start the first development cycle.</p>
+        <p>The Smart Home Edge System has two connected parts that work
+        together as one complete home edge system. The first part is the
+        compute module that contains all the centralized IT functions
+        necessary to protect, operate and manage an in home Edge System.
+        In this document, I focus on the second part that contains media
+        and I/O portion, which runs on a single minicomputer. This
+        computer will include an external USBC attached Disk enclosure
+        with 2 - 20TB drives for storage and 2 empty slots for
+        maintenance and backups. We are NOT proposing RAID
+        configurations.</p>
+        <p>I’m proposing the CENMATE Aluminum 4 Bay 10Gbps Hard Drive
+        Enclosure with Cooling Fan for 2.5”/3.5" SATA HDD/SSD with USB
+        A/C 3.2 Gen 2, Support Hot Swappable, Tool-Free HDD Enclosure,
+        DAS(NO RAID/NAS).</p>
+        <table style="width:90%;">
+        <colgroup>
+        <col style="width: 34%" />
+        <col style="width: 55%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>Hardware
+        Interface</strong></th>
+        <th style="text-align: left;">USB 3.2 Gen 2</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>Brand</strong></td>
+        <td style="text-align: left;">cenmate</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Product
+        Dimensions</strong></td>
+        <td style="text-align: left;">7.95"L x 5.2"W x 5.75"H</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Hardware
+        Platform</strong></td>
+        <td style="text-align: left;">Windows Mac Linux</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Material</strong></td>
+        <td style="text-align: left;">Aluminum</td>
+        </tr>
+        </tbody>
+        </table>
+        <hr />
+        <p>I chose this item for the 4-bay enclosure (2 live and 2
+        backup slots) and USB 3.2 output interface for transfer speed.
+        This enclosure will transfer 1G files in 3-5 seconds with USB
+        3.2 Ports, which is 20 times faster than USB 2.0. 4 HDDs will
+        total a R/W speed of 1016MB/s with a 1 SSD-510MB/s R/W
+        speed.</p>
+        <p>NOTE: Read and write speeds are determined by factors such as
+        hard drive version, computer version, etc...</p>
+        <p>This enclosure will house 3.5 hard drives but also supports
+        2.5/3.5 inches HDD and SSD, max capacity up to 80TB(20TB for
+        each hard drive), making it an ideal external hard drive
+        enclosure</p>
+        <p>While the fan noise is a little excessive, I am planning on
+        placing this inside of a Telcom/storage room away from daily
+        access. Fan noise is around 40-50 decibels, not recommended if
+        you are very near to the device. The noise is based upon the
+        excessive power necessary to drive the 4-bay enclosure.</p>
+        <p>Hot swapping is required to make sure we do not disrupt the
+        system due to maintenance. This will allow users to replace hard
+        drives without powering off the device. This feature enhances
+        convenience and efficiency in data transfer processes.</p>
+        <p><img src="1 - Proxmox Storage Server v2/media/image2.jpg"
+        style="width:5.83333in;height:3.88889in" /></p>
+        <p>The minicomputer I’m using is the Proxmox server with the
+        following HW characteristics:</p>
+        <p>KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
+        4.9GHz) </p>
+        <p>Proxmox VE 9.2.3 / Dedicated Ethernet / Intel Core
+        i7-13620H</p>
+        <p>Integrated GPU: Intel UHD Graphics (13th Gen) / 1TB PCIe NVMe
+        SSD</p>
+        <p>This is the same computer used for the Smart Home Edge System
+        Compute module. By using the same computer, it makes sparing
+        easier, if necessary. This computer is a mid-range mini-computer
+        that ranges around $400 USD and fits well into the overall
+        system design while taking up a small footprint. This model was
+        chosen for its Graphics card which while not used for graphics
+        is used for GPU passthu for AI functions in the Compute module
+        and for Video transcoding in the Media&amp;IO module. Having the
+        same computer makes configuration of the GPU passthru much
+        easier. At some point I may create a 3D printed enclosure that
+        contains both compute modules and the 4-bay disk enclosure. That
+        is forward work after the system is finalized. It may well be
+        noted that I use a 3<sup>rd</sup> minicomputer as my personal
+        workstation with 3 monitors. This is not part of the overall
+        system but is worth mentioning.</p>
+        <table>
+        <caption>Code 1: Infotainment Architecture</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>=========================================================================</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Barnes Home Lab Configuration</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>* * * * Infotainment Module * * * *</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>PROXMOX VE SYSTEM (10C / 16T | 32GB RAM)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Proxmox VE 9.2.3 / Dedicated Ethernet / Intel QuickSync</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Storage: 1TB NVMe OS / Central Storage Array Mounts</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>=========================================================================</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>[ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2 Threads for
+        overhead ]</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ 192.168.86.235</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 100 ] SAMBA-NAS (Central Storage Gateway)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 1 GB (Scalable)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 16 GB NVMe (OS)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── SHARE EXPORTS (SMB/NFS):</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ │ ├── /mnt/storage/media ---&gt; Shared across Plex,
+        Jellyfin, Emby</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ │ ├── /mnt/storage/audiobooks ---&gt; Exported to
+        Audiobookshelf</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ │ ├── /mnt/storage/documents ---&gt; Exported to
+        Paperless-NGX / Nextcloud</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ │ ├── /mnt/storage/photos ---&gt; Exported to Immich /
+        Nextcloud</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ │ ├── /mnt/storage/downloads ---&gt; Exported to Deluge</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ │ └── /mnt/storage/3d_assets ---&gt; Exported to
+        Manyfold</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.234 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 101 ] POSTGRES-DB</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 4 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 4 GB (Dedicated)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 32 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/db_data,mp=/var/lib/postgresql/data</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 10.0.20.10 - Isolated Backend Segment (vmbr1) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 102 ] MEDIA-PLEX</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 6 Cores (vCPUs) ---&gt; (Intel QuickSync
+        Passthrough)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 4 GB</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 20 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/shares/media,mp=/data/media,ro=1</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.236 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 103 ] MEDIA-JELLYFIN</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 6 Cores (vCPUs) ---&gt; (Intel QuickSync
+        Passthrough)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 4 GB</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 20 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/shares/media,mp=/data/media,ro=1</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.237 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 104 ] MEDIA-EMBY</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 4 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 2 GB</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 20 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/shares/media,mp=/data/media,ro=1</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.238 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 105 ] AUDIOBOOKSHELF</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 1 GB</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 10 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/shares/audiobooks,mp=/data/audiobooks</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.239 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 106 ] NEXTCLOUD</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 4 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 4 GB</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 32 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/shares/documents,mp=/var/www/html/data</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.240 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 107 ] IMMICH</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 6 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 6 GB</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 32 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/shares/photos,mp=/usr/src/app/upload</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.241 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 108 ] PAPERLESS-NGX</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 2 GB</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 16 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/shares/documents/paperless,mp=/usr/src/paperless/consume</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp1:
+        /mnt/pve/shares/documents/archive,mp=/usr/src/paperless/media</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.242 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 109 ] POSTGRES-FE</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 512 MB</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 8 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.243 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 110 ] DELUGE (VPN)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 1 GB</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 16 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/shares/downloads,mp=/data/downloads</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.244 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 112 ] LINUX-GSM</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 8 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 4 GB</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 100 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/shares/game_backups,mp=/home/lgsm/backups</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.245 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>└──► [ VM 113 ] DOCKER WEB STACK</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── CPU: 4 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── RAM: 4 GB (Dedicated)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── STO: 32 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── SMB/NFS VM MOUNTS:</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── /mnt/shares/3d_assets ---&gt; Mounted into Manyfold
+        container</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── /mnt/shares/backups ---&gt; Mounted for Uptime
+        Kuma/Netbox exports</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── Docker Container: Pi-hole Backup (Port 53 / 80)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── Docker Container: Gravity-Sync (Syncs with Compute
+        Pi-hole at 192.168.86.254)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── Docker Container: Manyfold (Port 3232:3232 | Volume:
+        /mnt/shares/3d_assets:/libraries)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── Docker Container: Homebox (Port 7745:7745)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── Docker Container: Netbox (Port 8000:8000)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── Docker Container: Grocy (Port 9192:80)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── Docker Container: Mealie (Port 9925:9000)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── Docker Container: Uptime Kuma (Port 3001:3001)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>└── 192.168.86.233 - Primary LAN Segment (vmbr0) eth0</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <h2 id="nav-sizing">Sizing</h2>
+        <p>The <strong>Intel i7-13620H</strong> (6 Performance cores, 4
+        Efficient cores / 16 threads) combined with 32GB RAM provides
+        plenty of room for all these workloads. Because LXCs share the
+        host Linux kernel, CPU and RAM are provisioned as upper limits
+        rather than hard allocations, allowing for safe
+        overprovisioning.</p>
+        <p>To prevent container bloat and isolate compute from database
+        operations, we use a dedicated <strong>PostgreSQL database
+        container</strong> shared across Immich, Paperless-ngx, and
+        Vaultwarden. This database can be used as a home database. There
+        are a few containers available for the home including Homebox,
+        Netbox, Grocy, Mealie and Uptime Kuma. Others can be loaded in
+        this docker instance as needed for the home user.</p>
+        <p>We are sizing the LxC as follows to ensure system level
+        performance needs are met.</p>
+        <p><strong>LXC Sizing &amp; Allocation Matrix</strong></p>
+        <table style="width:99%;">
+        <colgroup>
+        <col style="width: 5%" />
+        <col style="width: 9%" />
+        <col style="width: 10%" />
+        <col style="width: 4%" />
+        <col style="width: 6%" />
+        <col style="width: 8%" />
+        <col style="width: 10%" />
+        <col style="width: 44%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;">CT ID</th>
+        <th style="text-align: left;">LXC Name</th>
+        <th style="text-align: left;">Base OS</th>
+        <th style="text-align: left;">vCPUs</th>
+        <th style="text-align: left;">RAM (GB)</th>
+        <th style="text-align: left;">Storage (GB)</th>
+        <th style="text-align: left;">GPU Passthrough</th>
+        <th style="text-align: left;">Notes / Mounting</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>100</strong></td>
+        <td style="text-align: left;">samba-nas</td>
+        <td style="text-align: left;">Debian 12</td>
+        <td style="text-align: left;">2</td>
+        <td style="text-align: left;">1.0</td>
+        <td style="text-align: left;">16</td>
+        <td style="text-align: left;">No</td>
+        <td style="text-align: left;">Bind mounts host storage /
+        external pools</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>101</strong></td>
+        <td style="text-align: left;">postgres-db</td>
+        <td style="text-align: left;">Debian 12</td>
+        <td style="text-align: left;">4</td>
+        <td style="text-align: left;">4.0</td>
+        <td style="text-align: left;">32</td>
+        <td style="text-align: left;">No</td>
+        <td style="text-align: left;">Fast NVMe storage for Immich,
+        Paperless, Vaultwarden needs pgvector extension</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>102</strong></td>
+        <td style="text-align: left;">media-plex</td>
+        <td style="text-align: left;">Ubuntu 24.04</td>
+        <td style="text-align: left;">6</td>
+        <td style="text-align: left;">4.0</td>
+        <td style="text-align: left;">20</td>
+        <td style="text-align: left;">Yes (/dev/dri)</td>
+        <td style="text-align: left;">QuickSync iGPU passthrough for
+        transcoding</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>103</strong></td>
+        <td style="text-align: left;">media-jellyfin</td>
+        <td style="text-align: left;">Ubuntu 24.04</td>
+        <td style="text-align: left;">6</td>
+        <td style="text-align: left;">4.0</td>
+        <td style="text-align: left;">20</td>
+        <td style="text-align: left;">Yes (/dev/dri)</td>
+        <td style="text-align: left;">QuickSync iGPU passthrough</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>104</strong></td>
+        <td style="text-align: left;">media-emby</td>
+        <td style="text-align: left;">Ubuntu 24.04</td>
+        <td style="text-align: left;">4</td>
+        <td style="text-align: left;">2.0</td>
+        <td style="text-align: left;">20</td>
+        <td style="text-align: left;">Optional</td>
+        <td style="text-align: left;">Turn off transcode if duplicating
+        Plex/Jellyfin</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>105</strong></td>
+        <td style="text-align: left;">audiobookshelf</td>
+        <td style="text-align: left;">Debian 12</td>
+        <td style="text-align: left;">2</td>
+        <td style="text-align: left;">1.0</td>
+        <td style="text-align: left;">10</td>
+        <td style="text-align: left;">No</td>
+        <td style="text-align: left;">Light metadata &amp; audio
+        streaming overhead</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>106</strong></td>
+        <td style="text-align: left;">nextcloud</td>
+        <td style="text-align: left;">Debian 12</td>
+        <td style="text-align: left;">4</td>
+        <td style="text-align: left;">4.0</td>
+        <td style="text-align: left;">32</td>
+        <td style="text-align: left;">No</td>
+        <td style="text-align: left;">Uses Redis inside LXC; DB points
+        to CT 101</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>107</strong></td>
+        <td style="text-align: left;">immich</td>
+        <td style="text-align: left;">Ubuntu 24.04</td>
+        <td style="text-align: left;">6</td>
+        <td style="text-align: left;">6.0</td>
+        <td style="text-align: left;">32</td>
+        <td style="text-align: left;">Yes (Optional)</td>
+        <td style="text-align: left;">Machine Learning (ML) benefits
+        from iGPU/OpenCL</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>108</strong></td>
+        <td style="text-align: left;">paperless-ngx</td>
+        <td style="text-align: left;">Debian 12</td>
+        <td style="text-align: left;">2</td>
+        <td style="text-align: left;">2.0</td>
+        <td style="text-align: left;">16</td>
+        <td style="text-align: left;">No</td>
+        <td style="text-align: left;">Machine learning/OCR runs via
+        shared CPU cores. Redis installes</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>109</strong></td>
+        <td style="text-align: left;">vaultwarden</td>
+        <td style="text-align: left;">Alpine / Debian</td>
+        <td style="text-align: left;">2</td>
+        <td style="text-align: left;">0.5</td>
+        <td style="text-align: left;">8</td>
+        <td style="text-align: left;">No</td>
+        <td style="text-align: left;">Extremely lightweight
+        (Rust-based)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>110</strong></td>
+        <td style="text-align: left;">deluge</td>
+        <td style="text-align: left;">Debian 12</td>
+        <td style="text-align: left;">2</td>
+        <td style="text-align: left;">1.0</td>
+        <td style="text-align: left;">16</td>
+        <td style="text-align: left;">No</td>
+        <td style="text-align: left;">WireGuard VPN configuration
+        encouraged</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>111</strong></td>
+        <td style="text-align: left;">manyfold</td>
+        <td style="text-align: left;">Debian 12</td>
+        <td style="text-align: left;">2</td>
+        <td style="text-align: left;">1.0</td>
+        <td style="text-align: left;">10</td>
+        <td style="text-align: left;">No</td>
+        <td style="text-align: left;">3D model asset management Redis
+        installed</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>112</strong></td>
+        <td style="text-align: left;">linux-gsm</td>
+        <td style="text-align: left;">Ubuntu 24.04</td>
+        <td style="text-align: left;">8</td>
+        <td style="text-align: left;">4.0</td>
+        <td style="text-align: left;">100+</td>
+        <td style="text-align: left;">No</td>
+        <td style="text-align: left;">Game servers (Palworld, CS2,
+        Valheim) need raw disk</td>
+        </tr>
+        </tbody>
+        </table>
+        <h2 id="nav-architectural-recommendations">Architectural
+        Recommendations</h2>
+        <h3 id="nav-shared-database-strategy-postgres-lxc">1. Shared
+        Database Strategy (Postgres LXC)</h3>
+        <ul>
+        <li><p>Set up a dedicated PostgreSQL instance on CT 101 instead
+        of spinning up database sidecars inside individual containers.
+        Install pgvector extension</p></li>
+        <li><p>Create isolated users and databases for Immich
+        (immich_db), Paperless (paperless_db), and Vaultwarden
+        (vaultwarden_db) as well as others per home instances
+        desired.</p></li>
+        </ul>
+        <h3 id="nav-intel-quicksync-igpu-passthrough">2. Intel QuickSync
+        iGPU Passthrough</h3>
+        <ul>
+        <li>To enable hardware transcoding across media containers
+        (Plex, Jellyfin, Emby) and OpenCL acceleration for Immich photo
+        recognition, pass through the Intel UHD Graphics device to
+        unprivileged LXCs: Add the following lines to
+        /etc/pve/lxc/&lt;CTID&gt;.conf:</li>
+        </ul>
+        <p>lxc.cgroup2.devices.allow: c 226:0 rwm</p>
+        <p>lxc.cgroup2.devices.allow: c 226:128 rwm</p>
+        <p>lxc.mount.entry: /dev/dri/renderD128 dev/dri/renderD128 none
+        bind,optional,create=file</p>
+        <ul>
+        <li>Ensure the render group ID on the host matches the group ID
+        assigned inside the LXCs (chown -R root:render
+        /dev/dri/renderD128).</li>
+        </ul>
+        <h3 id="nav-storage-bind-mounts">3. Storage &amp; Bind
+        Mounts</h3>
+        <ul>
+        <li><p><strong>Root Disk:</strong> Keep container OS disks lean
+        on the 1TB PCIe NVMe SSD.</p></li>
+        <li><p><strong>Data Disks:</strong> Map bulk media storage,
+        paperless document ingest paths, and torrent staging areas
+        directly from the Proxmox host using bind mounts in
+        /etc/pve/lxc/&lt;CTID&gt;.conf:</p></li>
+        </ul>
+        <p>Plaintext</p>
+        <p>mp0: /mnt/pve/storage/media, mp=/mnt/media</p>
+        <p>can you provide anaylsis on this sizing - How much room is
+        used and what would the nominal CPU/Memory load be</p>
+        <h2 id="nav-resource-footprint">Resource Footprint</h2>
+        <p>Analyzing the resource footprint of this architecture
+        requires separating <strong>Base OS Overhead &amp;
+        Containers</strong> from <strong>Active Operational
+        Workloads</strong>. Because LXC containers share the host Linux
+        kernel, they consume virtually zero CPU or RAM when sitting
+        idle, unlike traditional Virtual Machines.</p>
+        <h3 id="nav-physical-storage-breakdown-1tb-nvme">1. Physical
+        Storage Breakdown (1TB NVMe)</h3>
+        <p>We have architecture the Base OS allocations to define the
+        upper limits, but LXC root disks are thin-provisioned (only
+        consuming the physical storage actually written).</p>
+        <ul>
+        <li><p><strong>Proxmox VE Base Hypervisor:</strong> ~15–20
+        GB</p></li>
+        <li><p><strong>LXC Operating System Files:</strong> ~25 GB total
+        across all 13 containers (~1.5–2.0 GB base OS footprint per
+        container).</p></li>
+        <li><p><strong>Application Binaries &amp; Databases:</strong>
+        ~15–30 GB (PostgreSQL data, Paperless OCR caches, Nextcloud app
+        files, Immich ML models).</p></li>
+        <li><p><strong>Base Footprint Total:</strong> <strong>~60 – 75
+        GB</strong> physical usage on fresh setup (~925 GB free space
+        remaining).</p></li>
+        </ul>
+        <p><strong>Doing a Storage Reality Check:</strong> <em>The 1TB
+        NVMe will easily house all OS disks, databases, index logs, and
+        thumbnail caches. The actual</em> <strong>media storage</strong>
+        <em>(Plex films, music, torrent staging, raw photos, Linux GSM
+        game files) will outgrow 1TB quickly so we use external NAS
+        shares (SMB/NFS) to host bulk storage via host bind
+        mounts.</em></p>
+        <h3 id="nav-memory-ram-analysis-32gb-total">2. Memory (RAM)
+        Analysis (32GB Total)</h3>
+        <p>Proxmox VE (ZFS or ext4/LVM) uses ~2GB for host services and
+        ARC cache.</p>
+        <table style="width:99%;">
+        <colgroup>
+        <col style="width: 12%" />
+        <col style="width: 13%" />
+        <col style="width: 73%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;">State</th>
+        <th style="text-align: left;">Nominal RAM Footprint</th>
+        <th style="text-align: left;">Details / Breakdown</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>Idle /
+        Baseline</strong></td>
+        <td style="text-align: left;"><strong>~6.5 GB – 8.5
+        GB</strong></td>
+        <td style="text-align: left;">Proxmox Host (2GB) + Shared
+        Postgres (1.5GB) + Immich Server (1.5GB) + Media Servers &amp;
+        Nextcloud (2GB) + Other 8 LXCs (1.5GB).</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Typical Daily
+        Use</strong></td>
+        <td style="text-align: left;"><strong>~12 GB – 15
+        GB</strong></td>
+        <td style="text-align: left;">Active Nextcloud sync, background
+        torrent seeding, Vaultwarden active connections, background
+        Paperless OCR jobs.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Peak Load</strong></td>
+        <td style="text-align: left;"><strong>~22 GB – 26
+        GB</strong></td>
+        <td style="text-align: left;">Simultaneous Immich Machine
+        Learning facial indexing + Linux GSM hosting heavy games (e.g.,
+        Palworld/Valheim) + active Plex transcoding.</td>
+        </tr>
+        </tbody>
+        </table>
+        <p>Our analysis determined that 32GB is the optimal "sweet spot"
+        for this layout. We have ~6–10GB of head-room during peak
+        operations to avoid invoking Out-Of-Memory (OOM) killers.</p>
+        <h3
+        id="nav-cpu-load-core-utilization-intel-i7-13620h-10c-16t">3.
+        CPU Load &amp; Core Utilization (Intel i7-13620H | 10C /
+        16T)</h3>
+        <p>Because LXCs overprovision naturally, assigning 4–6 virtual
+        cores per container doesn’t overload the system—CPU time is only
+        used when actively executing tasks.</p>
+        <p>We determined the following high level system resource
+        allocations:</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Total Capacity: 23,200 PassMark Score (6 Performance Cores /
+        4 Efficient Cores)</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>[ Idle Load ] - 1% - 3% (~0.2 cores utilized)</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>[ Typical Load ] - 15% - 25% (~2 - 4 cores utilized)</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>[ Peak Load ] - 55% - 70% (~9 - 11 cores utilized)</p>
+        </div></li>
+        </ul>
+        <!-- -->
+        <ul>
+        <li><p><strong>Idle Load (1% – 3% CPU):</strong> When no users
+        are actively streaming, transcoding, or ingesting files, all
+        containers sit dormant. The host draws around 12–20W of wall
+        power.</p></li>
+        <li><p><strong>Nominal Daily Load (15% – 25% CPU):</strong>
+        Background sync (Nextcloud), audio streaming (Audiobookshelf),
+        small torrent downloads (Deluge), and low-volume database
+        queries.</p></li>
+        <li><p><strong>Peak Operational Load (55% – 70% CPU):</strong>
+        Happens during specific spikes:</p>
+        <ol type="1">
+        <li><p><strong>Immich Photo Ingest:</strong> Indexing new photos
+        and generating vector embeddings triggers high CPU spikes if
+        executed entirely on CPU. (Mitigated by mapping /dev/dri to
+        Immich for iGPU OpenCL acceleration).</p></li>
+        <li><p><strong>Paperless-ngx OCR:</strong> Processing multi-page
+        PDFs using Tesseract temporarily maxes out assigned CPU
+        threads.</p></li>
+        <li><p><strong>Media Transcoding:</strong> Handled entirely by
+        the Intel QuickSync iGPU. Up to 4–5 concurrent 4K HDR → 1080p
+        transcodes run on the iGPU without pushing the CPU cores past
+        10–15% load.</p></li>
+        </ol></li>
+        </ul>
+        <h3 id="nav-resource-summary">Resource Summary</h3>
+        <p>The KAMRUI HYPER H2 setup is exceptionally well-sized for
+        this specific stack:</p>
+        <ul>
+        <li><p><strong>Memory Headroom:</strong> ~40–50% available
+        during nominal use.</p></li>
+        <li><p><strong>CPU Headroom:</strong> QuickSync offloads video
+        processing, leaving the 10-core CPU free to handle background
+        databases, game servers, and file indexing
+        effortlessly.</p></li>
+        <li><p><strong>Primary Bottleneck:</strong> Not CPU or RAM, but
+        <strong>bulk storage capacity</strong> over time. Plan to
+        bind-mount an external storage array, NAS, or secondary
+        expansion drive for raw media.</p></li>
+        </ul>
+        <h2 id="nav-hardware-limitations">Hardware Limitations</h2>
+        <p>This allocation fits well within the hardware limits of the
+        <strong>KAMRUI Hyper H2</strong> (10-core i7-13620H, 32GB RAM,
+        1TB NVMe). LXCs share the host Linux kernel directly, so we
+        avoid the overhead of full virtual machines.</p>
+        <h2 id="nav-resource-utilization-breakdown">Resource Utilization
+        Breakdown</h2>
+        <table style="width:99%;">
+        <colgroup>
+        <col style="width: 12%" />
+        <col style="width: 26%" />
+        <col style="width: 17%" />
+        <col style="width: 20%" />
+        <col style="width: 22%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;">Metric</th>
+        <th style="text-align: left;">Max Assigned (Matrix Summit)</th>
+        <th style="text-align: left;">Expected Idle / Idle Baseline</th>
+        <th style="text-align: left;">Average Load (Normal Use)</th>
+        <th style="text-align: left;">Peak Load (Transcode / Scanning /
+        Gaming)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>RAM
+        Utilization</strong></td>
+        <td style="text-align: left;"><strong>31.5
+        GB</strong> (Allocated across 13 LXCs)</td>
+        <td style="text-align: left;"><strong>4.5 GB - 6.5
+        GB</strong></td>
+        <td style="text-align: left;"><strong>10 GB - 14
+        GB</strong></td>
+        <td style="text-align: left;"><strong>18 GB - 22
+        GB</strong></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>CPU Threads</strong></td>
+        <td style="text-align: left;"><strong>48
+        vCPUs</strong> (Overprovisioned across 16 threads)</td>
+        <td style="text-align: left;"><strong>2% - 5%</strong></td>
+        <td style="text-align: left;"><strong>10% - 25%</strong></td>
+        <td style="text-align: left;"><strong>60% - 85%</strong></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Root Disk
+        Storage</strong></td>
+        <td style="text-align: left;"><strong>302 GB</strong> (Base OS
+        provisioning)</td>
+        <td style="text-align: left;"><strong>~35 GB</strong> (Clean OS
+        installs)</td>
+        <td style="text-align: left;"><strong>80 GB - 120
+        GB</strong> (Metadata/Caches)</td>
+        <td style="text-align: left;"><strong>200
+        GB+</strong> (Excluding main media/files)</td>
+        </tr>
+        </tbody>
+        </table>
+        <h2 id="nav-storage-analysis-1tb-pcie-nvme-ssd">Storage Analysis
+        (1TB PCIe NVMe SSD)</h2>
+        <ul>
+        <li><p><strong>Base Containers:</strong> The ~302 GB assigned
+        across the LXCs acts as a max capacity ceiling for container
+        operating systems and local application data (e.g., PostgreSQL
+        indices, Paperless database, Immich thumbnails).</p></li>
+        <li><p><strong>Real OS Footprint:</strong> Fresh Debian 12 /
+        Ubuntu 24.04 LXC rootfs templates consume only ~1.5 GB to 2.5 GB
+        of actual space each (~35 GB total upon initial
+        deployment).</p></li>
+        <li><p><strong>Metadata &amp; Cache Drivers:</strong></p>
+        <ul>
+        <li><p><strong>Plex/Jellyfin/Emby:</strong> Metadata, poster
+        art, and preview thumbnails will quickly consume 20 GB to 50 GB.
+        Transcode directories should be pointed to /tmp (RAM-backed
+        tmpfs) rather than the NVMe drive to prevent flash
+        wear.</p></li>
+        <li><p><strong>Immich:</strong> Generates large quantities of
+        compressed image thumbnails and vector embeddings (typically
+        15–30 GB for a moderate family photo collection).</p></li>
+        <li><p><strong>Paperless-ngx:</strong> Stored OCR text indexes
+        and archive documents scale depending on ingestion
+        volume.</p></li>
+        </ul></li>
+        <li><p><strong>Storage Verdict:</strong> The 1TB SSD easily
+        supports the Proxmox hypervisor, LXC root disks, app databases,
+        and local metadata. However, bulk media (Plex/Jellyfin films,
+        torrent downloads, Nextcloud files) must live on an external
+        NAS, DAS, or mounted USB/Samba share.</p></li>
+        </ul>
+        <h2 id="nav-memory-ram-load-profile-32gb-total">Memory (RAM)
+        Load Profile (32GB Total)</h2>
+        <p>LXC RAM limits act as maximum safety boundaries rather than
+        pre-allocated hardware blocks.</p>
+        <ul>
+        <li><p><strong>Idle Load (~5 GB):</strong></p>
+        <ul>
+        <li><p>Proxmox PVE Base OS: ~1.2 GB</p></li>
+        <li><p>PostgreSQL (CT 101): ~500 MB (idle cache pool)</p></li>
+        <li><p>Rust/Alpine apps (Vaultwarden, Audiobookshelf): &lt; 100
+        MB each</p></li>
+        <li><p>Media servers (Plex, Jellyfin, Emby) with no active
+        streams: ~300 MB each</p></li>
+        <li><p>Heavy NodeJS/Python platforms (Immich, Nextcloud,
+        Paperless): 500 MB – 1 GB each</p></li>
+        </ul></li>
+        <li><p><strong>Active Day-to-Day Load (~12 GB - 16
+        GB):</strong></p>
+        <ul>
+        <li>Occasional Nextcloud syncs, torrenting on Deluge, background
+        indexing, and 1–2 media streams.</li>
+        </ul></li>
+        <li><p><strong>Peak Load (~20 GB - 22 GB):</strong></p>
+        <ul>
+        <li>Immich runs face-recognition ML jobs + Paperless OCRs a
+        batch of multi-page PDFs + LinuxGSM hosts an active multiplayer
+        session.</li>
+        </ul></li>
+        <li><p><strong>Memory Verdict:</strong> You remain safely below
+        the 32GB threshold with a healthy 10 GB+ buffer for Linux page
+        caching.</p></li>
+        </ul>
+        <h2 id="nav-cpu-load-profile-10-cores-16-threads">CPU Load
+        Profile (10 Cores / 16 Threads)</h2>
+        <p>Proxmox will use CPU pinning or dynamic cgroup allocation,
+        allowing smooth overprovisioning of thread limits across
+        containers.</p>
+        <ul>
+        <li><p><strong>Nominal Daily Load (10%–25% CPU):</strong></p>
+        <ul>
+        <li>The 4 Efficient cores (E-cores) handle background database
+        routines, Samba file routing, torrenting, and Vaultwarden
+        requests with negligible power draw.</li>
+        </ul></li>
+        <li><p><strong>Burst Operations (50%–85% CPU):</strong></p>
+        <ul>
+        <li><p><strong>Immich &amp; Paperless-ngx:</strong> Machine
+        learning jobs (CLIP image searches, facial recognition, OCR text
+        parsing) will briefly spike CPU usage across Performance cores
+        (P-cores).</p></li>
+        <li><p><strong>Linux GSM:</strong> Game server tick rates scale
+        dynamically based on active player counts.</p></li>
+        </ul></li>
+        <li><p><strong>Transcoding Mitigation (iGPU
+        QuickSync):</strong></p>
+        <ul>
+        <li>Routing video processing through the Intel UHD Graphics
+        device (/dev/dri/renderD128) keeps CPU utilization low during
+        simultaneous 4K/1080p transcodes across Plex, Jellyfin, or
+        Emby.</li>
+        </ul></li>
+        </ul>
+        <h1 id="nav-design-decisions">Design Decisions</h1>
+        <h2 id="nav-running-redis-inside-of-manyfold-lxc">Running Redis
+        inside of Manyfold LxC</h2>
+        <p>Running <strong>Redis inside the Manyfold LXC</strong> is
+        significantly better for your Proxmox homelab setup.</p>
+        <p>Unlike central databases (like PostgreSQL), Redis in this
+        context acts as a ephemeral key-value queue and background job
+        broker (via Sidekiq/Rails) strictly for Manyfold’s internal
+        tasks—such as 3D model parsing, thumbnail extraction, and
+        background library rescans.</p>
+        <h3 id="nav-comparison-summary">Comparison Summary</h3>
+        <table style="width:99%;">
+        <colgroup>
+        <col style="width: 14%" />
+        <col style="width: 46%" />
+        <col style="width: 37%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>Metric</strong></th>
+        <th style="text-align: left;"><strong>Redis Inside Manyfold
+        LXC</strong></th>
+        <th style="text-align: left;"><strong>Standalone Redis
+        LXC</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>Architectural
+        Fit</strong></td>
+        <td style="text-align: left;"><strong>Tight coupling:</strong>
+        Acts as an extension of Manyfold's application worker
+        process.</td>
+        <td style="text-align: left;">Overkill; adds container sprawl
+        for a single-app job queue.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Network
+        Overhead</strong></td>
+        <td style="text-align: left;"><strong>Zero:</strong>
+        Inter-process communication via 127.0.0.1 or unix socket.</td>
+        <td style="text-align: left;">Micro-latency over virtual bridge
+        network (vmbr0).</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Resource
+        Usage</strong></td>
+        <td style="text-align: left;">Negligible (~30–50 MB RAM bundled
+        in CT 111).</td>
+        <td style="text-align: left;">~100–250 MB RAM baseline (LXC base
+        OS overhead + Redis).</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Maintenance &amp;
+        Backup</strong></td>
+        <td style="text-align: left;">Single LXC to back up, snapshot,
+        update, or restore.</td>
+        <td style="text-align: left;">Separate LXC lifecycle management;
+        breaking dependencies if down.</td>
+        </tr>
+        </tbody>
+        </table>
+        <h3 id="nav-key-architectural-reasons">Key Architectural
+        Reasons</h3>
+        <ol type="1">
+        <li><p><strong>Redis Data is Ephemeral for Manyfold</strong></p>
+        <ul>
+        <li><p>Manyfold uses Redis to track active background workers
+        generating 3D previews or indexing .stl/.3mf files.</p></li>
+        <li><p>If Redis crashes or resets, no persistent library
+        metadata is lost (that data sits safely in your central
+        PostgreSQL database on CT 101).</p></li>
+        </ul></li>
+        <li><p><strong>Low-Latency Inter-Process
+        Communication</strong></p>
+        <ul>
+        <li>Running Redis locally (127.0.0.1:6379) gives Manyfold's
+        background tasks the lowest possible latency without generating
+        extra internal network traffic across your Proxmox virtual
+        bridges.</li>
+        </ul></li>
+        <li><p><strong>Prevents "Shared Redis" Data
+        Collisions</strong></p>
+        <ul>
+        <li><p>Shared database instances (like PostgreSQL on CT 101) use
+        logical schemas to separate apps safely.</p></li>
+        <li><p>Shared Redis instances, unless carefully configured with
+        unique key prefixes and separate numeric database indices (/0,
+        /1, /2), carry a risk of key collision across different
+        applications.</p></li>
+        </ul></li>
+        </ol>
+        <h3 id="nav-our-implementation">Our Implementation</h3>
+        <ul>
+        <li><p><strong>In CT 111 (manyfold LXC):</strong> We use a
+        single Docker Compose file that bundles manyfold3d/manyfold and
+        redis:alpine within the same LXC docker container
+        context.</p></li>
+        <li><p><strong>Database Pointer:</strong> Point DATABASE_URL
+        outward to your shared PostgreSQL instance on <strong>CT
+        101</strong> (postgres-db), and point REDIS_URL inward to
+        redis://127.0.0.1:6379.</p></li>
+        </ul>
+        <h2 id="nav-manyfold-database-model">Manyfold Database
+        Model</h2>
+        <ul>
+        <li><strong>PostgreSQL:</strong> Since we already have a shared
+        PostgreSQL database container (postgres-db / CT 101) in your
+        architectural matrix, we create a dedicated manyfold_db database
+        and user on our existing instance.</li>
+        </ul>
+              <div class="download-container">
+                  <details class="collapsible-download-box">
+                      <summary class="box-header">
+                          <span class="folder-icon">📂</span> 1. Prevent Accidental Data Wipes (FLUSHALL Danger)
+                      </summary>
+                      <div class="box-body">
+                          <p>This automated bundle contains the baseline configurations, code layouts, and operational manifests tracked for this module.</p>
+                          
+                          <!-- Internal Preview Block Context -->
+                          <div class="asset-preview-pane">
+                              <h4 class="preview-title">👁️ Internal Asset Preview</h4>
+                              <div class="preview-gallery">
+                                  <!-- Your webpage will display images or file links here -->
+                                  <p class="preview-instructions">All embedded diagrams, schematics, and configurations are packaged below. Click the button to download the full-resolution archive block.</p>
+                              </div>
+                          </div>
+
+                          <a href="../assets/figures/1-prevent-accidental-data-wipes-flushall-danger/1-prevent-accidental-data-wipes-flushall-danger.zip" class="download-btn" download>Download Asset Archive Bundle</a>
+                      </div>
+                  </details>
+              </div>
+            
+        <ul>
+        <li>Paperless-ngx and Manyfold both use Redis via background job
+        processors (Celery and Sidekiq). This will prevent issues if an
+        administrative FLUSHDB or clearing command to reset its job
+        queues</li>
+        </ul>
+        <h3 id="nav-automation-media-pipeline-arr-stack">2. Automation
+        &amp; Media Pipeline ("Arr" Stack)</h3>
+        <ul>
+        <li><strong>Automation Managers (Sonarr / Radarr / Prowlarr /
+        Bazarr):</strong> Deluge is simply a downloader. We are NOT
+        using the Arr stack to download movies and tv shows since that
+        imposes a legal risk.</li>
+        </ul>
+        <h3 id="nav-backup-maintenance-infrastructure">3. Backup &amp;
+        Maintenance Infrastructure</h3>
+        <ul>
+        <li><div class="custom-style-List Paragraph1 List Paragraph1"
+        data-custom-style="List Paragraph1">
+        <p>To handle updates cleanly across our Proxmox stack without
+        breaking core databases, we are using a <strong>hybrid
+        strategy</strong>:</p>
+        </div>
+        <table>
+        <colgroup>
+        <col style="width: 21%" />
+        <col style="width: 16%" />
+        <col style="width: 61%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>Application
+        Type</strong></th>
+        <th style="text-align: left;"><strong>Recommended
+        Tool</strong></th>
+        <th style="text-align: left;"><strong>Why</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>Stateless / Utility
+        Apps</strong> <em>(Vaultwarden, Dashboard, Network
+        Tools)</em></td>
+        <td style="text-align: left;"><strong>Watchtower</strong> (or
+        <strong>WUD / Diun</strong>)</td>
+        <td style="text-align: left;">Runs directly on the Docker host
+        via /var/run/docker.sock. Automatically pulls minor image
+        updates and restarts containers with zero overhead (~20 MB RAM).
+        This runs on both the Compute and Infotainment Modules.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Stateful / Stateful
+        Apps</strong> <em>(PostgreSQL, Nextcloud, Immich,
+        Paperless)</em></td>
+        <td style="text-align: left;"><strong>Manual Upgrades</strong>
+        (or Notification-Only via WUD/Diun)</td>
+        <td style="text-align: left;">Major database or schema changes
+        (e.g., PostgreSQL major versions, Immich breaking changes)
+        should <strong>never</strong> be auto-updated. Review changelogs
+        and update manually after running a Proxmox LXC snapshot.</td>
+        </tr>
+        </tbody>
+        </table></li>
+        </ul>
+        <p>We are running Watchtower inside LXC104 on the Compute Module
+        and VM 113 on the Infotainment Module.</p>
+        <h2 id="nav-operational-design-adjustments-1">Operational &amp;
+        Design Adjustments</h2>
+        <h3
+        id="nav-storage-permissions-uidgid-mapping-unprivileged-lxcs">1.
+        Storage Permissions &amp; UID/GID Mapping (Unprivileged
+        LXCs)</h3>
+        <p>By default, Proxmox unprivileged containers map root (UID 0
+        inside the LXC) to an unprivileged ID (UID 100000 on the
+        host).</p>
+        <p>If Samba, Deluge, Plex, Nextcloud, and Paperless all try to
+        read and write to the same shared bulk media storage via host
+        bind mounts, we will hit severe read/write permission denied
+        errors. To fix this we create a standardized media group (e.g.,
+        GID 10000) on the Proxmox host, apply read/write permissions to
+        our shared storage mounts, and configure UID/GID mapping in
+        /etc/pve/lxc/&lt;CTID&gt;.conf for each container accessing
+        those paths.</p>
+        <h3
+        id="nav-media-server-redundancy-plex-vs.-jellyfin-vs.-emby">2.
+        Media Server Redundancy (Plex vs. Jellyfin vs. Emby)</h3>
+        <p>Running Plex, Jellyfin, and Emby simultaneously on the same
+        hardware creates duplicate disk footprint for metadata, poster
+        art, and database indexes (30 GB–100 GB wasted).</p>
+        <p>To fix this we use Emby as the primary media server. We point
+        the others at the same media library bind mount, but disable
+        automatic media scanning and video preview thumbnail generation
+        to avoid excessive IO. If we need to do updates to the metadata
+        we will run this manually.</p>
+        <h3 id="nav-storage-mount-strategy">3. Storage Mount
+        Strategy</h3>
+        <p>We ensure separate application state from bulk media across
+        all containers:</p>
+        <ul>
+        <li><p><strong>NVMe SSD:</strong> App binaries, PostgreSQL
+        database files (/var/lib/postgresql), search indexes, and
+        caches.</p></li>
+        <li><p><strong>External Bulk Storage (NAS/DAS):</strong>
+        /mnt/media (Plex/Jellyfin), /mnt/documents (Paperless
+        ingest/archive), /mnt/photos (Immich raw library),
+        /mnt/downloads (Deluge staging).</p></li>
+        </ul>
+        <p><strong>Bulk Storage is via USB 3.2 multi-bay DAS drive
+        enclosures attached directly to your Mini PC</strong>, we do
+        <strong>not</strong> need complex network protocols like NFS or
+        SMB between Proxmox and your local containers.</p>
+        <p>We get native <strong>Linux EXT4/ZFS performance</strong> via
+        <strong>direct Proxmox LXC Bind Mounts</strong>. This completely
+        eliminates network latency, permission translation bugs, and
+        protocol overhead.</p>
+        <h4 id="nav-complete-storage-mount-directory-strategy">Complete
+        Storage Mount &amp; Directory Strategy</h4>
+        <table style="width:99%;">
+        <colgroup>
+        <col style="width: 17%" />
+        <col style="width: 10%" />
+        <col style="width: 18%" />
+        <col style="width: 21%" />
+        <col style="width: 30%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>Drive / Folder
+        Path</strong></th>
+        <th style="text-align: left;"><strong>Virtual Size</strong></th>
+        <th style="text-align: left;"><strong>Primary Owner
+        Application</strong></th>
+        <th style="text-align: left;"><strong>Mount Type</strong></th>
+        <th style="text-align: left;"><strong>Windows Access
+        Method</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;">/mnt/usb_storage/media/</td>
+        <td style="text-align: left;"><strong>20 TB</strong></td>
+        <td style="text-align: left;">media-plex / jellyfin / emby</td>
+        <td style="text-align: left;">Proxmox Bind Mount</td>
+        <td style="text-align: left;">Shared via samba-nas (CT 100) for
+        drag-and-drop</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">/mnt/usb_storage/photos/</td>
+        <td style="text-align: left;"><strong>4 TB</strong></td>
+        <td style="text-align: left;">Windows PC (Primary) &amp;
+        immich</td>
+        <td style="text-align: left;">Proxmox Bind Mount (:ro for
+        Immich)</td>
+        <td style="text-align: left;">Shared via samba-nas (CT 100) as
+        Read/Write share</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">/mnt/usb_storage/documents/</td>
+        <td style="text-align: left;"><strong>1 TB</strong></td>
+        <td style="text-align: left;">paperless-ngx</td>
+        <td style="text-align: left;">Proxmox Bind Mount</td>
+        <td style="text-align: left;">Ingest/Consume folder shared via
+        samba-nas</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">/mnt/usb_storage/homes/</td>
+        <td style="text-align: left;"><strong>2 TB</strong></td>
+        <td style="text-align: left;">nextcloud</td>
+        <td style="text-align: left;">Proxmox Bind Mount</td>
+        <td style="text-align: left;">Managed via Nextcloud client/web
+        interface</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">/mnt/usb_storage/downloads/</td>
+        <td style="text-align: left;"><strong>4 TB</strong></td>
+        <td style="text-align: left;">deluge</td>
+        <td style="text-align: left;">Proxmox Bind Mount</td>
+        <td style="text-align: left;">Staging folder shared via
+        samba-nas</td>
+        </tr>
+        </tbody>
+        </table>
+        <h4 id="nav-app-by-app-operational-strategy">App-by-App
+        Operational Strategy</h4>
+              <div class="download-container">
+                  <details class="collapsible-download-box">
+                      <summary class="box-header">
+                          <span class="folder-icon">📂</span> 1. Photos & Immich (Our Windows-First Workflow)
+                      </summary>
+                      <div class="box-body">
+                          <p>This automated bundle contains the baseline configurations, code layouts, and operational manifests tracked for this module.</p>
+                          
+                          <!-- Internal Preview Block Context -->
+                          <div class="asset-preview-pane">
+                              <h4 class="preview-title">👁️ Internal Asset Preview</h4>
+                              <div class="preview-gallery">
+                                  <!-- Your webpage will display images or file links here -->
+                                  <p class="preview-instructions">All embedded diagrams, schematics, and configurations are packaged below. Click the button to download the full-resolution archive block.</p>
+                              </div>
+                          </div>
+
+                          <a href="../assets/figures/1-photos--immich-our-windows-first-workflow/1-photos--immich-our-windows-first-workflow.zip" class="download-btn" download>Download Asset Archive Bundle</a>
+                      </div>
+                  </details>
+              </div>
+            
+        <ul>
+        <li><p><strong>Storage Location:</strong> Direct USB path
+        /mnt/usb_storage/photos.</p></li>
+        <li><p><strong>Windows Management:</strong> Samba (CT 100)
+        exposes /mnt/usb_storage/photos as a mapped network drive (P:\).
+        You create, delete, and organize folders from Windows using
+        native tools.</p></li>
+        <li><p><strong>Immich Integration:</strong> Mounted into CT 107
+        as an <strong>External Library in Read-Only mode</strong>.
+        Immich periodically scans the path, runs facial recognition,
+        extracts EXIF data, and renders thumbnails without touching our
+        original files.</p></li>
+        </ul>
+              <div class="download-container">
+                  <details class="collapsible-download-box">
+                      <summary class="box-header">
+                          <span class="folder-icon">📂</span> 2. Media Stack (Plex / Jellyfin / Emby)
+                      </summary>
+                      <div class="box-body">
+                          <p>This automated bundle contains the baseline configurations, code layouts, and operational manifests tracked for this module.</p>
+                          
+                          <!-- Internal Preview Block Context -->
+                          <div class="asset-preview-pane">
+                              <h4 class="preview-title">👁️ Internal Asset Preview</h4>
+                              <div class="preview-gallery">
+                                  <!-- Your webpage will display images or file links here -->
+                                  <p class="preview-instructions">All embedded diagrams, schematics, and configurations are packaged below. Click the button to download the full-resolution archive block.</p>
+                              </div>
+                          </div>
+
+                          <a href="../assets/figures/2-media-stack-plex--jellyfin--emby/2-media-stack-plex--jellyfin--emby.zip" class="download-btn" download>Download Asset Archive Bundle</a>
+                      </div>
+                  </details>
+              </div>
+            
+        <ul>
+        <li><p><strong>Storage Location:</strong>
+        /mnt/usb_storage/media.</p></li>
+        <li><p><strong>Proxmox Integration:</strong> Direct bind mount
+        into LXCs 102, 103, and 104.</p></li>
+        <li><p><strong>Windows Management:</strong> Samba (CT 100)
+        exposes the path so we can copy movies, TV shows, or audiobooks
+        directly from your desktop.</p></li>
+        </ul>
+              <div class="download-container">
+                  <details class="collapsible-download-box">
+                      <summary class="box-header">
+                          <span class="folder-icon">📂</span> 3. Paperless-ngx (Document Ingestion)
+                      </summary>
+                      <div class="box-body">
+                          <p>This automated bundle contains the baseline configurations, code layouts, and operational manifests tracked for this module.</p>
+                          
+                          <!-- Internal Preview Block Context -->
+                          <div class="asset-preview-pane">
+                              <h4 class="preview-title">👁️ Internal Asset Preview</h4>
+                              <div class="preview-gallery">
+                                  <!-- Your webpage will display images or file links here -->
+                                  <p class="preview-instructions">All embedded diagrams, schematics, and configurations are packaged below. Click the button to download the full-resolution archive block.</p>
+                              </div>
+                          </div>
+
+                          <a href="../assets/figures/3-paperless-ngx-document-ingestion/3-paperless-ngx-document-ingestion.zip" class="download-btn" download>Download Asset Archive Bundle</a>
+                      </div>
+                  </details>
+              </div>
+            
+        <ul>
+        <li><p><strong>Storage Location:</strong>
+        /mnt/usb_storage/documents/.</p></li>
+        <li><p><strong>Proxmox Integration:</strong> Direct bind mount
+        into CT 108.</p></li>
+        <li><p><strong>Ingest Workflow:</strong> Samba exposes an
+        /ingest subfolder on Windows. Any PDF dropped into this share is
+        instantly picked up by Paperless via native Linux inotify file
+        watchers.</p></li>
+        </ul>
+              <div class="download-container">
+                  <details class="collapsible-download-box">
+                      <summary class="box-header">
+                          <span class="folder-icon">📂</span> 4. Nextcloud (Personal Cloud Storage)
+                      </summary>
+                      <div class="box-body">
+                          <p>This automated bundle contains the baseline configurations, code layouts, and operational manifests tracked for this module.</p>
+                          
+                          <!-- Internal Preview Block Context -->
+                          <div class="asset-preview-pane">
+                              <h4 class="preview-title">👁️ Internal Asset Preview</h4>
+                              <div class="preview-gallery">
+                                  <!-- Your webpage will display images or file links here -->
+                                  <p class="preview-instructions">All embedded diagrams, schematics, and configurations are packaged below. Click the button to download the full-resolution archive block.</p>
+                              </div>
+                          </div>
+
+                          <a href="../assets/figures/4-nextcloud-personal-cloud-storage/4-nextcloud-personal-cloud-storage.zip" class="download-btn" download>Download Asset Archive Bundle</a>
+                      </div>
+                  </details>
+              </div>
+            
+        <ul>
+        <li><p><strong>Storage Location:</strong>
+        /mnt/usb_storage/homes/.</p></li>
+        <li><p><strong>Proxmox Integration:</strong> Direct bind mount
+        into CT 106.</p></li>
+        <li><p><strong>Permissions:</strong> Native Linux EXT4
+        filesystem grants www-data user full POSIX control, completely
+        eliminating the permission mismatch bugs caused by network
+        mounts.</p></li>
+        <li><p>Nextcloud <strong>does</strong> write actual files to
+        disk, but it requires <strong>exclusive control</strong> over
+        that directory because it tracks all file movements, edits, and
+        metadata in its database (PostgreSQL on CT 101).</p></li>
+        </ul>
+        <h6 id="nav-how-nextcloud-file-management-works">How Nextcloud
+        File Management Works</h6>
+        <ul>
+        <li><p><strong>Database Tracking (Change Data):</strong> When we
+        upload a file through Nextcloud (web interface, desktop app, or
+        mobile app), Nextcloud saves the file to its storage directory
+        AND logs its metadata, checksums, user ownership, and version
+        history in PostgreSQL.</p></li>
+        <li><p><strong>The Underlying Filesystem:</strong> Nextcloud
+        does <strong>not</strong> hide files in a proprietary blob
+        format; it stores the raw files on the underlying Linux
+        filesystem inside
+        /var/www/html/data/&lt;username&gt;/files/.</p></li>
+        <li><p><strong>Why Direct File Edits Break Nextcloud:</strong>
+        If you drop a file directly into
+        /mnt/usb_storage/homes/&lt;username&gt;/files/ using a Windows
+        SMB share or terminal command <em>outside</em> of Nextcloud,
+        <strong>Nextcloud won’t know it exists</strong>. It won’t appear
+        in the web UI or apps until you manually force a database rescan
+        using occ files:scan. Worse, modifying files out-of-band can
+        desync file locks and cache states.</p></li>
+        </ul>
+        <h6 id="nav-why-we-bind-mount-strategies-with-nextcloud">Why we
+        Bind Mount Strategies with Nextcloud</h6>
+        <ul>
+        <li><p>In our Proxmox design, the bind mount mp0:
+        /mnt/usb_storage/homes, mp=/var/www/html/data is
+        <strong>not</strong> meant for you to access from Windows or
+        other apps. It is NOT shared externally.</p></li>
+        <li><p>It serves two specific technical purposes for CT
+        106:</p></li>
+        <li><p><strong>Offloading Storage:</strong> It ensures
+        Nextcloud’s bulk user uploads (PDFs, sync files, backups) sit on
+        your large USB storage array rather than filling up our fast 1TB
+        host NVMe SSD.</p></li>
+        <li><p><strong>Direct POSIX Performance:</strong> Because it’s a
+        local Linux bind mount (EXT4/ZFS), Nextcloud gets native POSIX
+        file system performance with zero network latency, avoiding the
+        file-locking and performance bugs common when running Nextcloud
+        over SMB/NFS.</p></li>
+        </ul>
+        <h6 id="nav-the-operational-golden-rule-for-nextcloud">The
+        Operational Golden Rule for Nextcloud</h6>
+        <ul>
+        <li><p><strong>For Nextcloud (/mnt/usb_storage/homes):</strong>
+        Let Nextcloud be the <em>only</em> manager of this path.
+        Interact with these files <strong>strictly</strong> through
+        Nextcloud sync clients, web UI, or WebDAV. Do not share this
+        specific folder out via Samba to Windows.</p></li>
+        <li><p><strong>For Photos &amp; Documents
+        (/mnt/usb_storage/photos &amp; documents):</strong> Keep these
+        separate (as configured in your architecture map). Windows
+        manages /photos via Samba, Immich scans it read-only, and
+        Paperless ingests documents via its dedicated /ingest SMB
+        share.</p></li>
+        </ul>
+        <h1 id="nav-ipmac-address-assignment">IP/MAC address
+        assignment</h1>
+        <table style="width:99%;">
+        <caption>Compute Module (192.168.86.250) — Network
+        Table</caption>
+        <colgroup>
+        <col style="width: 8%" />
+        <col style="width: 15%" />
+        <col style="width: 6%" />
+        <col style="width: 15%" />
+        <col style="width: 10%" />
+        <col style="width: 17%" />
+        <col style="width: 22%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>ID</strong></th>
+        <th style="text-align: left;"><strong>Service /
+        Hostname</strong></th>
+        <th style="text-align: left;"><strong>Type</strong></th>
+        <th style="text-align: left;"><strong>Interface /
+        Subnet</strong></th>
+        <th style="text-align: left;"><strong>IP Address</strong></th>
+        <th style="text-align: left;"><strong>Suggested MAC
+        Address</strong></th>
+        <th style="text-align: left;"><strong>Notes / Role</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>Host</strong></td>
+        <td style="text-align: left;">Proxmox VE Compute</td>
+        <td style="text-align: left;">Host</td>
+        <td style="text-align: left;">vmbr0 (Primary)</td>
+        <td style="text-align: left;">192.168.86.250</td>
+        <td style="text-align: left;">BC:24:11:00:00:01</td>
+        <td style="text-align: left;">KAMRUI Hyper H2 (i7-13620H)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>VM 101</strong></td>
+        <td style="text-align: left;">Home Assistant OS</td>
+        <td style="text-align: left;">VM</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.251</td>
+        <td style="text-align: left;">BC:24:11:01:01:00</td>
+        <td style="text-align: left;">Primary HAOS Instance</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"></td>
+        <td style="text-align: left;"></td>
+        <td style="text-align: left;"></td>
+        <td style="text-align: left;">eth1 (vmbr1)</td>
+        <td style="text-align: left;">10.0.10.1</td>
+        <td style="text-align: left;">BC:24:11:01:01:01</td>
+        <td style="text-align: left;">Isolated Backend Network</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 100</strong></td>
+        <td style="text-align: left;">DNSMASQ / Pi-hole</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.254</td>
+        <td style="text-align: left;">BC:24:11:00:01:00</td>
+        <td style="text-align: left;">Temp .249 during testing</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 102</strong></td>
+        <td style="text-align: left;">Nginx Proxy Manager</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.252</td>
+        <td style="text-align: left;">BC:24:11:00:01:02</td>
+        <td style="text-align: left;">Reverse Proxy Gateway</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 103</strong></td>
+        <td style="text-align: left;">Ollama LLM Engine</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.253</td>
+        <td style="text-align: left;">BC:24:11:00:01:03</td>
+        <td style="text-align: left;">Primary API (Port 11434)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"></td>
+        <td style="text-align: left;"></td>
+        <td style="text-align: left;"></td>
+        <td style="text-align: left;">eth1 (vmbr1)</td>
+        <td style="text-align: left;">10.0.10.3</td>
+        <td style="text-align: left;">BC:24:11:00:01:33</td>
+        <td style="text-align: left;">Isolated Backend Network</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 104</strong></td>
+        <td style="text-align: left;">Wyoming &amp; Open-WebUI</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.248</td>
+        <td style="text-align: left;">BC:24:11:00:01:04</td>
+        <td style="text-align: left;">Open-WebUI (3000), Piper,
+        Whisper</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"></td>
+        <td style="text-align: left;"></td>
+        <td style="text-align: left;"></td>
+        <td style="text-align: left;">eth1 (vmbr1)</td>
+        <td style="text-align: left;">10.0.10.4</td>
+        <td style="text-align: left;">BC:24:11:00:01:44</td>
+        <td style="text-align: left;">Isolated Backend Network</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 105</strong></td>
+        <td style="text-align: left;">Twingate Connector</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.247</td>
+        <td style="text-align: left;">BC:24:11:00:01:05</td>
+        <td style="text-align: left;">Secure Remote Access</td>
+        </tr>
+        </tbody>
+        </table>
+        <table style="width:99%;">
+        <caption>Infotainment Module (192.168.86.235) — Network
+        Table</caption>
+        <colgroup>
+        <col style="width: 8%" />
+        <col style="width: 15%" />
+        <col style="width: 6%" />
+        <col style="width: 15%" />
+        <col style="width: 10%" />
+        <col style="width: 16%" />
+        <col style="width: 25%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>ID</strong></th>
+        <th style="text-align: left;"><strong>Service /
+        Hostname</strong></th>
+        <th style="text-align: left;"><strong>Type</strong></th>
+        <th style="text-align: left;"><strong>Interface /
+        Subnet</strong></th>
+        <th style="text-align: left;"><strong>IP Address</strong></th>
+        <th style="text-align: left;"><strong>Suggested MAC
+        Address</strong></th>
+        <th style="text-align: left;"><strong>Notes / Role</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>Host</strong></td>
+        <td style="text-align: left;">Proxmox VE Infotainment</td>
+        <td style="text-align: left;">Host</td>
+        <td style="text-align: left;">vmbr0 (Primary)</td>
+        <td style="text-align: left;">192.168.86.235</td>
+        <td style="text-align: left;">BC:24:22:00:00:01</td>
+        <td style="text-align: left;">Infotainment Host Node</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 100</strong></td>
+        <td style="text-align: left;">Samba-NAS</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.234</td>
+        <td style="text-align: left;">BC:24:22:00:01:00</td>
+        <td style="text-align: left;">Central Storage &amp; SMB/NFS
+        Gateway</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 101</strong></td>
+        <td style="text-align: left;">Postgres-DB</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr1)</td>
+        <td style="text-align: left;">10.0.20.10</td>
+        <td style="text-align: left;">BC:24:22:00:01:01</td>
+        <td style="text-align: left;">Backend DB (No Direct Public
+        IP)</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 102</strong></td>
+        <td style="text-align: left;">Media-Plex</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.236</td>
+        <td style="text-align: left;">BC:24:22:00:01:02</td>
+        <td style="text-align: left;">QuickSync Transcoding</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 103</strong></td>
+        <td style="text-align: left;">Media-Jellyfin</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.237</td>
+        <td style="text-align: left;">BC:24:22:00:01:03</td>
+        <td style="text-align: left;">QuickSync Transcoding</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 104</strong></td>
+        <td style="text-align: left;">Media-Emby</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.238</td>
+        <td style="text-align: left;">BC:24:22:00:01:04</td>
+        <td style="text-align: left;">Secondary Media Streamer</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 105</strong></td>
+        <td style="text-align: left;">Audiobookshelf</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.239</td>
+        <td style="text-align: left;">BC:24:22:00:01:05</td>
+        <td style="text-align: left;">Audiobooks &amp; Podcasts</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 106</strong></td>
+        <td style="text-align: left;">Nextcloud</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.240</td>
+        <td style="text-align: left;">BC:24:22:00:01:06</td>
+        <td style="text-align: left;">Personal Cloud Storage</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 107</strong></td>
+        <td style="text-align: left;">Immich</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.241</td>
+        <td style="text-align: left;">BC:24:22:00:01:07</td>
+        <td style="text-align: left;">Photo / Video Server</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 108</strong></td>
+        <td style="text-align: left;">Paperless-NGX</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.242</td>
+        <td style="text-align: left;">BC:24:22:00:01:08</td>
+        <td style="text-align: left;">Document Indexing</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 109</strong></td>
+        <td style="text-align: left;">Postgres-FE</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.243</td>
+        <td style="text-align: left;">BC:24:22:00:01:09</td>
+        <td style="text-align: left;">DB Frontend Admin / Mgmt</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 110</strong></td>
+        <td style="text-align: left;">Deluge</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.244</td>
+        <td style="text-align: left;">BC:24:22:00:01:10</td>
+        <td style="text-align: left;">VPN-bound Torrent Downloader</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>LXC 112</strong></td>
+        <td style="text-align: left;">Linux-GSM</td>
+        <td style="text-align: left;">LXC</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.245</td>
+        <td style="text-align: left;">BC:24:22:00:01:12</td>
+        <td style="text-align: left;">Game Server Manager</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>VM 113</strong></td>
+        <td style="text-align: left;">Docker Web Stack</td>
+        <td style="text-align: left;">VM</td>
+        <td style="text-align: left;">eth0 (vmbr0)</td>
+        <td style="text-align: left;">192.168.86.233</td>
+        <td style="text-align: left;">BC:24:22:01:01:13</td>
+        <td style="text-align: left;">Hosts Gravity-Sync, Mealie,
+        Netbox, etc.</td>
+        </tr>
+        </tbody>
+        </table>
+        <h1
+        id="nav-issues-to-consider-while-implementing-system-wide">Issues
+        to consider while implementing System Wide</h1>
+        <h2
+        id="nav-critical-architecture-blind-spots-edge-cases">Critical
+        Architecture Blind Spots (Edge Cases)</h2>
+        <p>Here are the critical architectural, security, and networking
+        components missing from the overall design:</p>
+        <h2 id="nav-high-availability-failover-blind-spots">1. High
+        Availability &amp; Failover Blind Spots</h2>
+        <ul>
+        <li><div class="custom-style-Body Text Body Text"
+        data-custom-style="Body Text">
+        <p><strong>DNS Single Point of Failure (SPOF):</strong> If our
+        Compute Module goes down for maintenance or a reboot, LXC 100
+        (Primary Pi-hole/Unbound) goes down with it. Even though VM 113
+        has a backup Pi-hole synced via Gravity-Sync, <strong>our router
+        must be configured with both DNS IPs</strong> (192.168.86.254
+        and 192.168.86.233), otherwise our entire network loses name
+        resolution during Compute node reboots.</p>
+        </div></li>
+        <li><div class="custom-style-Body Text Body Text"
+        data-custom-style="Body Text">
+        <p><strong>HAOS Automation Dependency:</strong> If HAOS (VM 101)
+        triggers scripts or automations that interact with services on
+        the Infotainment node (like Immich or Nextcloud), network drops
+        or host reboots will cause Home Assistant integrations to enter
+        an unrecoverable unavailable state until reloaded. We treat ALL
+        HAOS interactions as Lite Clients to the Infotainment
+        module.</p>
+        </div></li>
+        </ul>
+        <h3 id="nav-network-routing-gaps">2. Network &amp; Routing
+        Gaps</h3>
+        <ul>
+        <li><div class="custom-style-Body Text Body Text"
+        data-custom-style="Body Text">
+        <p><strong>Backend Subnet Routing (vmbr1):</strong> You have
+        isolated backend subnets (10.0.10.0/24 on Compute and
+        10.0.20.0/24 on Infotainment).</p>
+        </div>
+        <ul>
+        <li><div class="custom-style-Body Text Body Text"
+        data-custom-style="Body Text">
+        <p>Our operational concept is to enforce between module
+        communication to only use the local networks and keep the
+        backend networks private.</p>
+        </div></li>
+        </ul></li>
+        <li><div class="custom-style-Body Text Body Text"
+        data-custom-style="Body Text">
+        <p><strong>Reverse Proxy Traffic Loop:</strong> Nginx Proxy
+        Manager (LXC 102) lives on Compute. When a user streams Plex or
+        downloads from Nextcloud on Infotainment via a domain name
+        (e.g., plex.yourdomain.com), traffic flows: <strong>Client →
+        Compute Node (LXC 102) → Infotainment Node (LXC 102/106) →
+        Client</strong>. This hairpins all media traffic through your
+        Compute host's network interface. We configure NGINX to force
+        resolving an IP via DNS when using a web based lookup.</p>
+        </div></li>
+        </ul>
+        <h3 id="nav-backup-disaster-recovery-storage-risks">3. Backup,
+        Disaster Recovery &amp; Storage Risks</h3>
+        <p>We are using lightweight scripts to push application
+        configurations directly into a dedicated, restricted Samba/NFS
+        share on our NAS—and then syncing a cold copy offsite or offline
+        periodically—is one of the cleanest, most efficient backup
+        strategies for a home lab.</p>
+        <p>It strikes a great balance between lightweight, fine-grained
+        control and disaster resilience.</p>
+        <h4 id="nav-this-strategy-works">This Strategy Works</h4>
+        <p><strong>Near-Zero Overhead &amp; Fast Restores:</strong>
+        Proxmox VM/LXC snapshots and full images are large (tens of
+        gigabytes). Config files (<span
+        class="custom-style-HTML Code HTML Code"
+        data-custom-style="HTML Code">.yaml</span>, <span
+        class="custom-style-HTML Code HTML Code"
+        data-custom-style="HTML Code">.env</span>, <span
+        class="custom-style-HTML Code HTML Code"
+        data-custom-style="HTML Code">docker-compose.yml</span>,
+        database dumps) are only a few megabytes. Restoring a broken
+        container by pulling down a raw <span
+        class="custom-style-HTML Code HTML Code"
+        data-custom-style="HTML Code">.yaml</span> config takes seconds
+        compared to rolling back an entire virtual disk.</p>
+        <p><strong>De-Coupled Storage:</strong> If a host OS or Proxmox
+        storage pool corrupts, your configuration state remains intact
+        on your separate Samba NAS volume.</p>
+        <p><strong>Git &amp; Version-Control Friendly:</strong> Because
+        configs are plain text, we will sync it to a private GitHub repo
+        to track configuration drift over time.</p>
+        <h3 id="nav-hardware-monitoring-realities">4. Hardware &amp;
+        Monitoring Realities</h3>
+        <ul>
+        <li><div class="custom-style-Body Text Body Text"
+        data-custom-style="Body Text">
+        <p><strong>HAOS will monitor both Modules and report trending
+        data for future analysis. If hazardous conditions occur, then
+        HAOS automation will perform system level shutdown procedures
+        while reporting the cause of the shutdown.</strong></p>
+        </div></li>
+        </ul>
+        <h2 id="nav-section"></h2>
+      </article>
+    </div>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="/scripts/component-loader.js"></script>
+</body>
+</html>

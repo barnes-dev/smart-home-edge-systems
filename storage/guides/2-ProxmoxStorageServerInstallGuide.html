@@ -1,0 +1,1393 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proxmoxstorageserverinstallguide</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LLK7685ZGC');
+  </script>
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    /* Prevent outer window scrolling and lock viewport bounds */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; 
+    }
+
+    /* Main container takes up the exact remaining window height */
+    main.app-main {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      box-sizing: border-box;
+      padding: 1.5rem 1.5rem;
+      max-width: 100%;
+    }
+
+    /* Doc layout fills whatever vertical space is left below the title banner */
+    .doc-layout {
+      display: grid;
+      grid-template-columns: 450px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      flex: 1;
+      min-height: 0; /* Crucial for grid children to shrink and scroll properly */
+    }
+    
+    [custom-style="TextBlock"], 
+    .TextBlock, 
+    .textblock, 
+    .code, 
+    .Code, 
+    span[data-custom-style="TextBlock"],
+    p[custom-style="TextBlock"] {
+        background: #1e1e1e !important;         
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+        border-left: 4px solid #3182ce !important;             
+        padding: 16px !important;               
+        line-height: 1.1 !important;            
+        display: block !important;              
+        width: 100% !important;                 
+        max-width: 850px !important;            
+        margin: 1.5rem 0 !important;            
+        color: #eaf4ff !important;                   
+        border-radius: 6px !important;          
+    }
+
+    /* Left Column (TOC) Independent Scroll */
+    .sidebar-toc {
+      height: 100%;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
+    }
+    .sidebar-toc ul {
+      list-style: none;
+      padding-left: 1.25rem;
+      margin: 0;
+    }
+    .sidebar-toc > ul {
+      padding-left: 0;
+    }
+    .sidebar-toc li {
+      margin-bottom: 0.5rem;
+    }
+    .sidebar-toc a {
+      color: #bfdbfe;
+      text-decoration: none;
+      transition: color 0.2s;
+      font-size: 0.95rem;
+    }
+    .sidebar-toc a:hover {
+      color: #eaf4ff;
+      text-decoration: underline;
+    }
+
+    /* Right Column (Document Content) Independent Scroll */
+    .document-content {
+      height: 100%;
+      overflow-y: auto;
+      color: #eaf4ff;
+      line-height: 1.7;
+      padding-right: 1rem; 
+      box-sizing: border-box;
+    }
+    .document-content pre {
+      background: #1e1e1e;
+      padding: 1.25rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    .document-content pre code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: #eaf4ff;
+      line-height: 1.5;
+    }
+    .document-content pre[class*="language-"]::before {
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-family: sans-serif;
+    }
+    .document-content pre.language-powershell::before { content: "POWERSHELL"; border-bottom: 1px solid #10b981; }
+    .document-content pre.language-css::before { content: "CSS"; border-bottom: 1px solid #3b82f6; }
+    .document-content pre.language-html::before { content: "HTML"; border-bottom: 1px solid #f97316; }
+    .document-content pre.language-yaml::before { content: "YAML"; border-bottom: 1px solid #a855f7; }
+    .document-content pre.language-plaintext::before { content: "TEXT"; }
+    
+    .document-content pre.language-powershell { border-left: 3px solid #10b981; }
+    .document-content pre.language-css { border-left: 3px solid #3b82f6; }
+    .document-content pre.language-html { border-left: 3px solid #f97316; }
+    .document-content pre.language-yaml { border-left: 3px solid #a855f7; }
+
+    .document-content table {
+      width: auto;
+      max-width: 850px;
+      margin: 1.5rem 0;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      text-align: left;
+    }
+    .document-content th, .document-content td {
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .document-content td {
+      white-space: pre-wrap;
+    }
+    .document-content th {
+      background: rgba(191, 219, 254, 0.1);
+      color: #bfdbfe;
+      font-weight: 600;
+    }
+    .document-content img {
+      display: block;
+      margin-left: 0 !important;
+      margin-right: auto !important;
+      text-align: left;
+    }
+    .document-content p.caption, .document-content .caption, .document-content figcaption {
+      text-align: left !important;
+      margin-left: 0 !important;
+      margin-top: 0.5rem;
+      color: #94a3b8;
+    }
+    .document-content tr:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    /* ========================================================================== */
+    /* # COLLAPSIBLE DOWNLOAD BOX LAYOUT INTEGRATION                              */
+    /* ========================================================================== # */
+    .download-container {
+      margin: 1.5rem 0;
+      max-width: 850px;
+    }
+    .collapsible-download-box {
+      background: #1e1e1e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .collapsible-download-box[open] {
+      border: 1px solid rgba(191, 219, 254, 0.3);
+    }
+    .box-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      color: #bfdbfe;
+      background: rgba(191, 219, 254, 0.05);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .box-header::-webkit-details-marker {
+      display: none;
+    }
+    .box-header:hover {
+      background: rgba(191, 219, 254, 0.12);
+      color: #eaf4ff;
+    }
+    .folder-icon {
+      margin-right: 12px;
+      font-size: 1.1rem;
+    }
+    .box-body {
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.15);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      animation: expandReveal 0.2s ease-out;
+    }
+    .box-body p {
+      margin: 0 0 1rem 0;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+    .download-btn {
+      display: inline-block;
+      background: #3182ce;
+      color: #ffffff !important;
+      padding: 8px 16px;
+      text-decoration: none !important;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      transition: background 0.15s ease;
+    }
+    .download-btn:hover {
+      background: #2b6cb0;
+    }
+    @keyframes expandReveal {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      html, body {
+        overflow: auto; /* Re-enable window scrolling on mobile */
+      }
+      main.app-main {
+        height: auto;
+      }
+      .doc-layout {
+        display: block;
+        height: auto;
+      }
+      .sidebar-toc, .document-content {
+        height: auto;
+        overflow-y: visible;
+      }
+      .document-content table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <main class="app-main">
+    <p style="margin-bottom: 1rem; text-align: left; flex-shrink: 0;">
+      <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">→Home Lab</a>
+      <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+      <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">→Back</a>
+      <span style="color: #64748b; margin: 0 0.75rem;">|</span>
+      <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">→Gateway</a>
+    </p>
+
+    <div class="title-banner" style="text-align: left; margin-bottom: 1.5rem; flex-shrink: 0;">
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Proxmoxstorageserverinstallguide</h1>
+      <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
+      <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
+    </div>
+
+    <div class="doc-layout">
+      <aside class="sidebar-toc">
+        <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
+        <ul>
+        <li><a href="#nav-table-of-contents"
+        id="nav-toc-table-of-contents">Table of Contents</a></li>
+        <li><a href="#nav-infotainment-architecture"
+        id="nav-toc-infotainment-architecture">Infotainment
+        architecture</a></li>
+        <li><a href="#nav-how-to-use-this-guide"
+        id="nav-toc-how-to-use-this-guide">How to use this
+        guide</a></li>
+        <li><a href="#nav-build-variables-and-inventory"
+        id="nav-toc-build-variables-and-inventory">Build variables and
+        inventory</a></li>
+        <li><a href="#nav-step-1-create-the-proxmox-installation-usb"
+        id="nav-toc-step-1-create-the-proxmox-installation-usb">Step 1:
+        Create the Proxmox installation USB</a></li>
+        <li><a href="#nav-step-2-boot-and-install-proxmox-ve"
+        id="nav-toc-step-2-boot-and-install-proxmox-ve">Step 2: Boot and
+        install Proxmox VE</a></li>
+        <li><a href="#nav-step-3-update-and-baseline-the-proxmox-host"
+        id="nav-toc-step-3-update-and-baseline-the-proxmox-host">Step 3:
+        Update and baseline the Proxmox host</a></li>
+        <li><a href="#nav-step-4-partition-and-mount-the-storage-array"
+        id="nav-toc-step-4-partition-and-mount-the-storage-array">Step
+        4: Partition and mount the storage array</a>
+        <ul>
+        <li><a href="#nav-single-ext4-data-disk"
+        id="nav-toc-single-ext4-data-disk">Single ext4 data
+        disk</a></li>
+        </ul></li>
+        <li><a href="#nav-step-5-create-the-host-bridges"
+        id="nav-toc-step-5-create-the-host-bridges">Step 5: Create the
+        host bridges</a></li>
+        <li><a href="#nav-step-6-install-ct-100---samba-nas"
+        id="nav-toc-step-6-install-ct-100---samba-nas">Step 6: Install
+        CT 100 - Samba-NAS</a>
+        <ul>
+        <li><a href="#nav-create-ct-100"
+        id="nav-toc-create-ct-100">Create CT 100</a></li>
+        <li><a href="#nav-configure-ct-100"
+        id="nav-toc-configure-ct-100">Configure CT 100</a></li>
+        <li><a href="#nav-validate-ct-100"
+        id="nav-toc-validate-ct-100">Validate CT 100</a></li>
+        </ul></li>
+        <li><a href="#nav-step-7-install-ct-101---postgresql"
+        id="nav-toc-step-7-install-ct-101---postgresql">Step 7: Install
+        CT 101 - PostgreSQL</a>
+        <ul>
+        <li><a href="#nav-create-ct-101"
+        id="nav-toc-create-ct-101">Create CT 101</a></li>
+        <li><a href="#nav-configure-ct-101"
+        id="nav-toc-configure-ct-101">Configure CT 101</a></li>
+        <li><a href="#nav-validate-ct-101"
+        id="nav-toc-validate-ct-101">Validate CT 101</a></li>
+        </ul></li>
+        <li><a href="#nav-step-8-install-ct-102---plex"
+        id="nav-toc-step-8-install-ct-102---plex">Step 8: Install CT 102
+        - Plex</a></li>
+        <li><a href="#nav-step-9-install-ct-103---jellyfin"
+        id="nav-toc-step-9-install-ct-103---jellyfin">Step 9: Install CT
+        103 - Jellyfin</a></li>
+        <li><a href="#nav-step-10-install-ct-104---emby"
+        id="nav-toc-step-10-install-ct-104---emby">Step 10: Install CT
+        104 - Emby</a></li>
+        <li><a href="#nav-step-11-install-ct-105---audiobookshelf"
+        id="nav-toc-step-11-install-ct-105---audiobookshelf">Step 11:
+        Install CT 105 - Audiobookshelf</a></li>
+        <li><a href="#nav-step-12-install-ct-106---nextcloud"
+        id="nav-toc-step-12-install-ct-106---nextcloud">Step 12: Install
+        CT 106 - Nextcloud</a></li>
+        <li><a href="#nav-step-13-install-ct-107---immich"
+        id="nav-toc-step-13-install-ct-107---immich">Step 13: Install CT
+        107 - Immich</a></li>
+        <li><a href="#nav-step-14-install-ct-108---paperless-ngx"
+        id="nav-toc-step-14-install-ct-108---paperless-ngx">Step 14:
+        Install CT 108 - Paperless-NGX</a></li>
+        <li><a href="#nav-step-15-install-ct-109---postgresql-frontend"
+        id="nav-toc-step-15-install-ct-109---postgresql-frontend">Step
+        15: Install CT 109 - PostgreSQL Frontend</a></li>
+        <li><a href="#nav-step-16-install-ct-110---deluge-vpn"
+        id="nav-toc-step-16-install-ct-110---deluge-vpn">Step 16:
+        Install CT 110 - Deluge VPN</a></li>
+        <li><a href="#nav-step-17-install-ct-112---linux-gsm"
+        id="nav-toc-step-17-install-ct-112---linux-gsm">Step 17: Install
+        CT 112 - Linux-GSM</a></li>
+        <li><a href="#nav-step-18-build-vm-113---docker-web-stack"
+        id="nav-toc-step-18-build-vm-113---docker-web-stack">Step 18:
+        Build VM 113 - Docker Web Stack</a>
+        <ul>
+        <li><a href="#nav-docker-scripts"
+        id="nav-toc-docker-scripts">Docker scripts</a></li>
+        </ul></li>
+        <li><a href="#nav-step-19-configure-vm-113-docker-services"
+        id="nav-toc-step-19-configure-vm-113-docker-services">Step 19:
+        Configure VM 113 Docker services</a>
+        <ul>
+        <li><a href="#nav-pi-hole-backup"
+        id="nav-toc-pi-hole-backup">Pi-hole backup</a></li>
+        <li><a href="#nav-gravity-sync"
+        id="nav-toc-gravity-sync">Gravity-Sync</a></li>
+        <li><a href="#nav-manyfold"
+        id="nav-toc-manyfold">Manyfold</a></li>
+        <li><a href="#nav-homebox" id="nav-toc-homebox">Homebox</a></li>
+        <li><a href="#nav-netbox" id="nav-toc-netbox">NetBox</a></li>
+        <li><a href="#nav-grocy" id="nav-toc-grocy">Grocy</a></li>
+        <li><a href="#nav-mealie" id="nav-toc-mealie">Mealie</a></li>
+        <li><a href="#nav-uptime-kuma" id="nav-toc-uptime-kuma">Uptime
+        Kuma</a></li>
+        <li><a href="#nav-watchtower"
+        id="nav-toc-watchtower">Watchtower</a></li>
+        </ul></li>
+        <li><a href="#nav-step-20-apply-final-lxc-and-vm-configuration"
+        id="nav-toc-step-20-apply-final-lxc-and-vm-configuration">Step
+        20: Apply final LXC and VM configuration</a></li>
+        <li><a href="#nav-step-21-full-validation-and-reboot-test"
+        id="nav-toc-step-21-full-validation-and-reboot-test">Step 21:
+        Full validation and reboot test</a></li>
+        <li><a href="#nav-step-22-backups-and-operating-record"
+        id="nav-toc-step-22-backups-and-operating-record">Step 22:
+        Backups and operating record</a></li>
+        <li><a href="#nav-troubleshooting"
+        id="nav-toc-troubleshooting">Troubleshooting</a></li>
+        </ul>
+      </aside>
+
+      <article class="document-content">
+        <h1 class="TOC-Heading" id="nav-table-of-contents">Table of
+        Contents</h1>
+        <p><a href="#nav-infotainment-architecture"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Infotainment architecture</span>
+        [2](#infotainment-architecture)</a></p>
+        <p><a href="#nav-how-to-use-this-guide"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">How to use this guide</span>
+        [5](#how-to-use-this-guide)</a></p>
+        <p><a href="#nav-build-variables-and-inventory"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Build variables and
+        inventory</span> [5](#build-variables-and-inventory)</a></p>
+        <p><a
+        href="#nav-step-1-create-the-proxmox-installation-usb"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 1: Create the Proxmox
+        installation USB</span>
+        [6](#step-1-create-the-proxmox-installation-usb)</a></p>
+        <p><a href="#nav-step-2-boot-and-install-proxmox-ve"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 2: Boot and install Proxmox
+        VE</span> [6](#step-2-boot-and-install-proxmox-ve)</a></p>
+        <p><a
+        href="#nav-step-3-update-and-baseline-the-proxmox-host"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 3: Update and baseline the
+        Proxmox host</span>
+        [7](#step-3-update-and-baseline-the-proxmox-host)</a></p>
+        <p><a
+        href="#nav-step-4-partition-and-mount-the-storage-array"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 4: Partition and mount the
+        storage array</span>
+        [7](#step-4-partition-and-mount-the-storage-array)</a></p>
+        <p><a href="#nav-single-ext4-data-disk"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Single ext4 data disk</span>
+        [7](#single-ext4-data-disk)</a></p>
+        <p><a href="#nav-step-5-create-the-host-bridges"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 5: Create the host
+        bridges</span> [8](#step-5-create-the-host-bridges)</a></p>
+        <p><a href="#nav-step-6-install-ct-100---samba-nas"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 6: Install CT 100 -
+        Samba-NAS</span> [8](#step-6-install-ct-100—samba-nas)</a></p>
+        <p><a href="#nav-create-ct-100"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Create CT 100</span>
+        [8](#create-ct-100)</a></p>
+        <p><a href="#nav-configure-ct-100"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Configure CT 100</span>
+        [8](#configure-ct-100)</a></p>
+        <p><a href="#nav-validate-ct-100"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Validate CT 100</span>
+        [9](#validate-ct-100)</a></p>
+        <p><a href="#nav-step-7-install-ct-101---postgresql"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 7: Install CT 101 -
+        PostgreSQL</span> [9](#step-7-install-ct-101—postgresql)</a></p>
+        <p><a href="#nav-create-ct-101"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Create CT 101</span>
+        [9](#create-ct-101)</a></p>
+        <p><a href="#nav-configure-ct-101"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Configure CT 101</span>
+        [9](#configure-ct-101)</a></p>
+        <p><a href="#nav-validate-ct-101"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Validate CT 101</span>
+        [10](#validate-ct-101)</a></p>
+        <p><a href="#nav-step-8-install-ct-102---plex"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 8: Install CT 102 -
+        Plex</span> [10](#step-8-install-ct-102—plex)</a></p>
+        <p><a href="#nav-step-9-install-ct-103---jellyfin"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 9: Install CT 103 -
+        Jellyfin</span> [10](#step-9-install-ct-103—jellyfin)</a></p>
+        <p><a href="#nav-step-10-install-ct-104---emby"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 10: Install CT 104 -
+        Emby</span> [11](#step-10-install-ct-104—emby)</a></p>
+        <p><a href="#nav-step-11-install-ct-105---audiobookshelf"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 11: Install CT 105 -
+        Audiobookshelf</span>
+        [11](#step-11-install-ct-105—audiobookshelf)</a></p>
+        <p><a href="#nav-step-12-install-ct-106---nextcloud"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 12: Install CT 106 -
+        Nextcloud</span> [11](#step-12-install-ct-106—nextcloud)</a></p>
+        <p><a href="#nav-step-13-install-ct-107---immich"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 13: Install CT 107 -
+        Immich</span> [12](#step-13-install-ct-107—immich)</a></p>
+        <p><a href="#nav-step-14-install-ct-108---paperless-ngx"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 14: Install CT 108 -
+        Paperless-NGX</span>
+        [12](#step-14-install-ct-108—paperless-ngx)</a></p>
+        <p><a
+        href="#nav-step-15-install-ct-109---postgresql-frontend"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 15: Install CT 109 -
+        PostgreSQL Frontend</span>
+        [13](#step-15-install-ct-109—postgresql-frontend)</a></p>
+        <p><a href="#nav-step-16-install-ct-110---deluge-vpn"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 16: Install CT 110 - Deluge
+        VPN</span> [13](#step-16-install-ct-110—deluge-vpn)</a></p>
+        <p><a href="#nav-step-17-install-ct-112---linux-gsm"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 17: Install CT 112 -
+        Linux-GSM</span> [13](#step-17-install-ct-112—linux-gsm)</a></p>
+        <p><a href="#nav-step-18-build-vm-113---docker-web-stack"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 18: Build VM 113 - Docker Web
+        Stack</span>
+        [14](#step-18-build-vm-113—docker-web-stack)</a></p>
+        <p><a href="#nav-docker-scripts"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Docker scripts</span>
+        [14](#docker-scripts)</a></p>
+        <p><a href="#nav-step-19-configure-vm-113-docker-services"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 19: Configure VM 113 Docker
+        services</span>
+        [15](#step-19-configure-vm-113-docker-services)</a></p>
+        <p><a href="#nav-pi-hole-backup"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Pi-hole backup</span>
+        [15](#pi-hole-backup)</a></p>
+        <p><a href="#nav-gravity-sync"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Gravity-Sync</span>
+        [15](#gravity-sync)</a></p>
+        <p><a href="#nav-manyfold"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Manyfold</span>
+        [15](#manyfold)</a></p>
+        <p><a href="#nav-homebox"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Homebox</span>
+        [15](#homebox)</a></p>
+        <p><a href="#nav-netbox"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">NetBox</span>
+        [15](#netbox)</a></p>
+        <p><a href="#nav-grocy"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Grocy</span> [15](#grocy)</a></p>
+        <p><a href="#nav-mealie"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Mealie</span>
+        [15](#mealie)</a></p>
+        <p><a href="#nav-uptime-kuma"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Uptime Kuma</span>
+        [16](#uptime-kuma)</a></p>
+        <p><a href="#nav-watchtower"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Watchtower</span>
+        [16](#watchtower)</a></p>
+        <p><a
+        href="#nav-step-20-apply-final-lxc-and-vm-configuration"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 20: Apply final LXC and VM
+        configuration</span>
+        [16](#step-20-apply-final-lxc-and-vm-configuration)</a></p>
+        <p><a href="#nav-step-21-full-validation-and-reboot-test"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 21: Full validation and
+        reboot test</span>
+        [16](#step-21-full-validation-and-reboot-test)</a></p>
+        <p><a href="#nav-step-22-backups-and-operating-record"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Step 22: Backups and operating
+        record</span>
+        [17](#step-22-backups-and-operating-record)</a></p>
+        <p><a href="#nav-troubleshooting"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Troubleshooting</span>
+        [18](#troubleshooting)</a></p>
+        <h1 id="nav-infotainment-architecture">Infotainment
+        architecture</h1>
+        <p>The following architecture source is retained at the
+        beginning of this guide exactly as supplied. It is the build
+        target for the installation steps that follow.</p>
+        <pre><code>=========================================================================
+ Barnes Home Lab Configuration
+ * * * * Infotainment Module * * * *
+ PROXMOX VE SYSTEM (10C / 16T | 32GB RAM)
+ Proxmox VE 9.2.3 / Dedicated Ethernet / Intel QuickSync
+ Storage: 1TB NVMe OS / Central Storage Array Mounts
+=========================================================================
+
+ [ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2 Threads for overhead ]
+ │ 192.168.86.235
+ [ Infotainment HOST (NUT Server) ]
+ │    * Monitors UPS hardware over USB
+ │    * Sends status to local/remote clients
+ ├──► [ LXC 100 ] SAMBA-NAS (Central Storage Gateway)
+ │    ├── CPU: 2 Cores (vCPUs)
+ │    ├── RAM: 1 GB (Scalable)
+ │    ├── STO: 16 GB NVMe (OS)
+ │    ├── SHARE EXPORTS (SMB/NFS):
+ │    │   ├── /mnt/storage/media        ---&gt; Shared across Plex, Jellyfin, Emby
+ │    │   ├── /mnt/storage/audiobooks   ---&gt; Exported to Audiobookshelf
+ │    │   ├── /mnt/storage/documents    ---&gt; Exported to Paperless-NGX / Nextcloud
+ │    │   ├── /mnt/storage/photos       ---&gt; Exported to Immich / Nextcloud
+ │    │   ├── /mnt/storage/downloads    ---&gt; Exported to Deluge
+ │    │   ├── /mnt/storage/3d_assets    ---&gt; Exported to Manyfold
+ │    │   └── homelab-backups/configs   ---&gt; Used for Hybrid Backups
+ │    │       ├── compute-node/
+ │    │       │   ├── haos/                  # Automated HA configuration backups
+ │    │       │   ├── open-webui/            # Compose files &amp; volumes
+ │    │       │   └── pihole/                # Teleporter export archives
+ │    │       ├── infotainment-node/
+ │    │       │   ├── postgres-dumps/        # Nightly pg_dump SQL files
+ │    │       │   ├── nginx/                 # Nginx/NPM configuration files
+ │    │       │   └── docker-stacks/         # VM 113 compose files &amp; .env files
+ │    │       └── cold-sync-status.log
+ │    └── 192.168.86.234 - Primary LAN Segment (vmbr0) eth0
+ ├──► [ LXC 101 ] POSTGRES-DB
+ │    ├── CPU: 4 Cores (vCPUs)
+ │    ├── RAM: 4 GB (Dedicated)
+ │    ├── STO: 32 GB NVMe
+ │    ├── BIND MP: mp0: /mnt/pve/db_data,mp=/var/lib/postgresql/data
+ │    └── 10.0.20.10 - Isolated Backend Segment (vmbr1) eth0
+ ├──► [ LXC 102 ] MEDIA-PLEX
+ │    ├── CPU: 6 Cores (vCPUs) ---&gt; (Intel QuickSync Passthrough)
+ │    ├── RAM: 4 GB
+ │    ├── STO: 20 GB NVMe
+ │    ├── BIND MP: mp0: /mnt/pve/shares/media,mp=/data/media,ro=1
+ │    └── 192.168.86.236 - Primary LAN Segment (vmbr0) eth0
+ ├──► [ LXC 103 ] MEDIA-JELLYFIN
+ │    ├── CPU: 6 Cores (vCPUs) ---&gt; (Intel QuickSync Passthrough)
+ │    ├── RAM: 4 GB
+ │    ├── STO: 20 GB NVMe
+ │    ├── BIND MP: mp0: /mnt/pve/shares/media,mp=/data/media,ro=1
+ │    └── 192.168.86.237 - Primary LAN Segment (vmbr0) eth0
+ ├──► [ LXC 104 ] MEDIA-EMBY
+ │    ├── CPU: 4 Cores (vCPUs)
+ │    ├── RAM: 2 GB
+ │    ├── STO: 20 GB NVMe
+ │    ├── BIND MP: mp0: /mnt/pve/shares/media,mp=/data/media,ro=1
+ │    └── 192.168.86.238 - Primary LAN Segment (vmbr0) eth0
+ ├──► [ LXC 105 ] AUDIOBOOKSHELF
+ │    ├── CPU: 2 Cores (vCPUs)
+ │    ├── RAM: 1 GB
+ │    ├── STO: 10 GB NVMe
+ │    ├── BIND MP: /mnt/pve/shares/audiobooks,mp=/data/audiobooks
+ │    └── 192.168.86.239 - Primary LAN Segment (vmbr0) eth0
+ ├──► [ LXC 106 ] NEXTCLOUD
+ │    ├── CPU: 4 Cores (vCPUs)
+ │    ├── RAM: 4 GB
+ │    ├── STO: 32 GB NVMe
+ │    ├── BIND MP: mp0: /mnt/pve/shares/documents,mp=/var/www/html/data
+ │    └── 192.168.86.240 - Primary LAN Segment (vmbr0) eth0
+ ├──► [ LXC 107 ] IMMICH
+ │    ├── CPU: 6 Cores (vCPUs)
+ │    ├── RAM: 6 GB
+ │    ├── STO: 32 GB NVMe
+ │    ├── BIND MP: mp0: /mnt/pve/shares/photos,mp=/usr/src/app/upload
+ │    └── 192.168.86.241 - Primary LAN Segment (vmbr0) eth0
+ ├──► [ LXC 108 ] PAPERLESS-NGX
+ │    ├── CPU: 2 Cores (vCPUs)
+ │    ├── RAM: 2 GB
+ │    ├── STO: 16 GB NVMe
+ │    ├── BIND MP: mp0: /mnt/pve/shares/documents/paperless,mp=/usr/src/paperless/consume
+ │    ├── BIND MP: mp1: /mnt/pve/shares/documents/archive,mp=/usr/src/paperless/media
+ │    └── 192.168.86.242 - Primary LAN Segment (vmbr0) eth0
+ ├──► [ LXC 109 ] POSTGRES-FE
+ │    ├── CPU: 2 Cores (vCPUs)
+ │    ├── RAM: 512 MB
+ │    ├── STO: 8 GB NVMe
+ │    └── 192.168.86.243 - Primary LAN Segment (vmbr0) eth0
+ ├──► [ LXC 110 ] DELUGE (VPN)
+ │    ├── CPU: 2 Cores (vCPUs)
+ │    ├── RAM: 1 GB
+ │    ├── STO: 16 GB NVMe
+ │    ├── BIND MP: mp0: /mnt/pve/shares/downloads,mp=/data/downloads
+ │    └── 192.168.86.244 - Primary LAN Segment (vmbr0) eth0
+ ├──► [ LXC 112 ] LINUX-GSM
+ │    ├── CPU: 8 Cores (vCPUs)
+ │    ├── RAM: 4 GB
+ │    ├── STO: 100 GB NVMe
+ │    ├── BIND MP: mp0: /mnt/pve/shares/game_backups,mp=/home/lgsm/backups
+ │    └── 192.168.86.245 - Primary LAN Segment (vmbr0) eth0
+ └──► [ VM 113 ] DOCKER WEB STACK
+      ├── CPU: 4 Cores (vCPUs)
+      ├── RAM: 4 GB (Dedicated)
+      ├── STO: 32 GB NVMe
+      ├── SMB/NFS VM MOUNTS:
+      │   ├── /mnt/shares/3d_assets ---&gt; Mounted into Manyfold container
+      │   └── /mnt/shares/backups   ---&gt; Mounted for Uptime Kuma/Netbox exports
+      ├── Docker Container: Pi-hole Backup (Port 53 / 80)
+      ├── Docker Container: Gravity-Sync   (Syncs with Compute Pi-hole at 192.168.86.254)
+      ├── Docker Container: Manyfold       (Port 3232:3232 | Volume: /mnt/shares/3d_assets:/libraries)
+      ├── Docker Container: Homebox        (Port 7745:7745)
+      ├── Docker Container: Netbox         (Port 8000:8000)
+      ├── Docker Container: Grocy          (Port 9192:80)
+      ├── Docker Container: Mealie         (Port 9925:9000)
+      ├── Docker Container: Uptime Kuma    (Port 3001:3001)
+      ├── 192.168.86.233 - Primary LAN Segment (vmbr0) eth0
+      └── Watchtower Container #2
+          └── Monitors: Gravity-Sync, Manyfold, Homebox, Netbox, Grocy,
+                        Mealie, Uptime Kuma, Pi-hole Backup</code></pre>
+        <h1 id="nav-how-to-use-this-guide">How to use this guide</h1>
+        <p>Perform the steps in order. Do not create all containers
+        first and tune them later. Each CT has a create, configure,
+        tune, validate, and checkpoint phase. Stop at a failed
+        checkpoint and repair it before continuing.</p>
+        <p>Commands marked <code>DESTRUCTIVE</code> can erase disks or
+        delete containers. Replace values in angle brackets. Run Proxmox
+        host commands on the host, LXC commands inside the named CT, and
+        Docker commands inside VM 113.</p>
+        <h1 id="nav-build-variables-and-inventory">Build variables and
+        inventory</h1>
+        <p>Create an installation worksheet before powering on the
+        host:</p>
+        <table style="width:98%;">
+        <colgroup>
+        <col style="width: 38%" />
+        <col style="width: 59%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;">Variable</th>
+        <th style="text-align: left;">Target value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;">Proxmox hostname</td>
+        <td style="text-align: left;"><code>infotainment</code></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Proxmox management IP</td>
+        <td
+        style="text-align: left;"><code>192.168.86.235/24</code></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Gateway</td>
+        <td
+        style="text-align: left;"><code>&lt;LAN-GATEWAY&gt;</code></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">DNS</td>
+        <td
+        style="text-align: left;"><code>&lt;DNS-1&gt;, &lt;DNS-2&gt;</code></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Primary bridge</td>
+        <td style="text-align: left;"><code>vmbr0</code></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Backend bridge</td>
+        <td style="text-align: left;"><code>vmbr1</code></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Storage disk IDs</td>
+        <td
+        style="text-align: left;"><code>&lt;record by-id paths&gt;</code></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">NVMe storage ID</td>
+        <td
+        style="text-align: left;"><code>&lt;record by-id path&gt;</code></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Backup share</td>
+        <td
+        style="text-align: left;"><code>/mnt/storage/homelab-backups</code></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Proxmox version</td>
+        <td style="text-align: left;"><code>9.2.3</code> target, verify
+        current release before install</td>
+        </tr>
+        </tbody>
+        </table>
+        <p>Record disk model and serial values with:</p>
+        <pre><code>lsblk -o NAME,SIZE,MODEL,SERIAL,FSTYPE,MOUNTPOINTS
+ls -l /dev/disk/by-id/</code></pre>
+        <h1 id="nav-step-1-create-the-proxmox-installation-usb">Step 1:
+        Create the Proxmox installation USB</h1>
+        <ol type="1">
+        <li><p>Download the Proxmox VE ISO from the official Proxmox
+        download page.</p></li>
+        <li><p>Download the SHA-256 checksum from the same release
+        page.</p></li>
+        <li><p>On Windows, open PowerShell and calculate the ISO
+        checksum:</p>
+        <p>Get-FileHash .\proxmox-ve_*.iso -Algorithm SHA256</p></li>
+        <li><p>Compare the result with the published checksum
+        character-for-character.</p></li>
+        <li><p>Insert an 8 GB or larger USB drive and close every
+        Explorer window using it.</p></li>
+        <li><p>In Rufus, select the ISO and the verified USB
+        drive.</p></li>
+        <li><p>Select DD Image mode if Rufus asks which write mode to
+        use.</p></li>
+        <li><p>Write the image, safely eject it, and label it
+        <code>PROXMOX-INSTALL</code>.</p></li>
+        </ol>
+        <p>The Proxmox installer USB is a hybrid ISO. Do not manually
+        partition it first. Writing the ISO replaces the partition table
+        and creates the boot layout required by the release.</p>
+        <p>For a separate provisioning USB, use GPT with a 512 MiB FAT32
+        EFI partition, an 8 GiB or larger exFAT provisioning partition,
+        and a remaining exFAT data partition. Do not store the only
+        credential or backup copy on removable media.</p>
+        <h1 id="nav-step-2-boot-and-install-proxmox-ve">Step 2: Boot and
+        install Proxmox VE</h1>
+        <ol type="1">
+        <li>Connect the installer USB and wired Ethernet.</li>
+        <li>Power on the host and open the UEFI one-time boot menu.</li>
+        <li>Select the USB entry marked UEFI.</li>
+        <li>Choose <strong>Install Proxmox VE</strong>.</li>
+        <li>Select the system NVMe only. Confirm its model and serial.
+        Do not select the bulk storage disk.</li>
+        <li>Select the target filesystem. For this single-node design,
+        use the filesystem chosen in the storage worksheet; do not
+        enable ZFS without a deliberate disk layout and memory
+        budget.</li>
+        <li>Set timezone, keyboard, root password, and administrative
+        email.</li>
+        <li>Set hostname <code>infotainment</code> and management IP
+        <code>192.168.86.235/24</code>, using the real gateway and DNS
+        values.</li>
+        <li>Review the final summary and begin installation.</li>
+        <li>Remove the USB when the installer reboots.</li>
+        <li>Browse to <code>https://192.168.86.235:8006</code> and sign
+        in as root.</li>
+        </ol>
+        <p>Checkpoint: confirm the web interface loads, the hostname
+        resolves, and the physical network link is stable before
+        continuing.</p>
+        <h1 id="nav-step-3-update-and-baseline-the-proxmox-host">Step 3:
+        Update and baseline the Proxmox host</h1>
+        <p>Run on the host:</p>
+        <pre><code>pveversion -v
+hostnamectl
+ip -br addr
+systemctl --failed
+apt update
+apt full-upgrade
+reboot</code></pre>
+        <p>After reboot:</p>
+        <pre><code>pvesm status
+pvesh get /nodes/$(hostname)/storage
+lsblk -o NAME,SIZE,MODEL,SERIAL,FSTYPE,MOUNTPOINTS</code></pre>
+        <p>Enable IOMMU only when GPU or device passthrough is required.
+        Confirm the firmware setting first, then follow the Proxmox
+        release documentation for the correct kernel parameter. Do not
+        enable passthrough on a device still needed by the host.</p>
+        <h1 id="nav-step-4-partition-and-mount-the-storage-array">Step
+        4: Partition and mount the storage array</h1>
+        <p>The system NVMe is for Proxmox, CT operating systems,
+        databases, metadata, and caches. The storage array is for media,
+        photos, documents, downloads, backups, and other bulk data.</p>
+        <h2 id="nav-single-ext4-data-disk">Single ext4 data disk</h2>
+        <p><code>DESTRUCTIVE</code>: replace the device path only after
+        verifying model and serial three times.</p>
+        <pre><code>lsblk -o NAME,SIZE,MODEL,SERIAL
+wipefs -n /dev/disk/by-id/&lt;DATA-DISK-ID&gt;
+parted /dev/disk/by-id/&lt;DATA-DISK-ID&gt; --script mklabel gpt
+parted /dev/disk/by-id/&lt;DATA-DISK-ID&gt; --script mkpart primary ext4 1MiB 100%
+mkfs.ext4 -L bulkdata /dev/disk/by-id/&lt;DATA-DISK-ID&gt;-part1
+mkdir -p /mnt/storage
+blkid /dev/disk/by-id/&lt;DATA-DISK-ID&gt;-part1</code></pre>
+        <p>Add the UUID to <code>/etc/fstab</code>:</p>
+        <pre><code>UUID=&lt;DATA-UUID&gt; /mnt/storage ext4 defaults,noatime 0 2</code></pre>
+        <p>Then mount and create the architecture directories:</p>
+        <pre><code>mount -a
+findmnt /mnt/storage
+mkdir -p /mnt/storage/{media,audiobooks,documents,photos,downloads,3d_assets,game_backups,homelab-backups/configs}
+mkdir -p /mnt/storage/homelab-backups/configs/{compute-node,infotainment-node}</code></pre>
+        <p>For multiple disks, stop and choose ZFS, hardware RAID, or
+        another design before formatting anything. Backups are required
+        regardless of the redundancy choice.</p>
+        <h1 id="nav-step-5-create-the-host-bridges">Step 5: Create the
+        host bridges</h1>
+        <p>Configure <code>vmbr0</code> for the primary LAN and
+        <code>vmbr1</code> for the isolated database/backend segment.
+        Use the Proxmox GUI or the host network configuration, then
+        verify before creating CTs:</p>
+        <pre><code>ip -br link
+ip -br addr
+bridge link
+ping -c 3 &lt;LAN-GATEWAY&gt;</code></pre>
+        <p>The target addresses are:</p>
+        <table style="width:78%;">
+        <colgroup>
+        <col style="width: 13%" />
+        <col style="width: 27%" />
+        <col style="width: 36%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;">Bridge</th>
+        <th style="text-align: left;">Purpose</th>
+        <th style="text-align: left;">Example</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><code>vmbr0</code></td>
+        <td style="text-align: left;">Primary LAN</td>
+        <td style="text-align: left;">CT 100, 102-110, VM 113</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><code>vmbr1</code></td>
+        <td style="text-align: left;">Backend isolation</td>
+        <td style="text-align: left;">CT 101 at
+        <code>10.0.20.10</code></td>
+        </tr>
+        </tbody>
+        </table>
+        <h1 id="nav-step-6-install-ct-100---samba-nas">Step 6: Install
+        CT 100 - Samba-NAS</h1>
+        <h2 id="nav-create-ct-100">Create CT 100</h2>
+        <p>Use the official Community Scripts catalog, inspect the
+        current script, and select an unprivileged Debian LXC. Use CTID
+        100, hostname <code>samba-nas</code>, 2 vCPUs, 1 GiB RAM, 16 GiB
+        NVMe root disk, and a fixed address of
+        <code>192.168.86.234/24</code> on <code>vmbr0</code>.</p>
+        <p>Example command shape; use the exact current catalog URL and
+        script name after review:</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/samba.sh)&quot;</code></pre>
+        <h2 id="nav-configure-ct-100">Configure CT 100</h2>
+        <p>On the host, stop the CT and add the storage bind mount:</p>
+        <pre><code>pct stop 100
+pct set 100 --cores 2 --memory 1024 --swap 512 --onboot 1
+pct set 100 --startup order=10,up=30,down=30
+pct set 100 --mp0 /mnt/storage,mp=/mnt/storage
+pct start 100</code></pre>
+        <p>Inside CT 100:</p>
+        <pre><code>apt update &amp;&amp; apt full-upgrade
+apt install -y samba acl
+smbpasswd -a &lt;SMB-USER&gt;</code></pre>
+        <p>Create shares for <code>media</code>,
+        <code>audiobooks</code>, <code>documents</code>,
+        <code>photos</code>, <code>downloads</code>,
+        <code>3d_assets</code>, and <code>homelab-backups</code>. Do not
+        expose the Nextcloud data directory as a general-purpose share.
+        Apply least-privilege users and groups.</p>
+        <h2 id="nav-validate-ct-100">Validate CT 100</h2>
+        <pre><code>pct exec 100 -- test -d /mnt/storage/media
+pct exec 100 -- systemctl is-active smbd
+smbclient -L //192.168.86.234 -U &lt;SMB-USER&gt;</code></pre>
+        <p>Checkpoint: copy a disposable test file through SMB and
+        confirm it is readable from the host and from the intended
+        application CT.</p>
+        <h1 id="nav-step-7-install-ct-101---postgresql">Step 7: Install
+        CT 101 - PostgreSQL</h1>
+        <h2 id="nav-create-ct-101">Create CT 101</h2>
+        <p>Use a current Debian LXC or the reviewed PostgreSQL Community
+        Script. Set CTID 101, hostname <code>postgres-db</code>, 4
+        vCPUs, 4 GiB RAM, 32 GiB NVMe root disk, and
+        <code>10.0.20.10/24</code> on <code>vmbr1</code>. Restrict the
+        firewall to application clients.</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/postgresql.sh)&quot;</code></pre>
+        <h2 id="nav-configure-ct-101">Configure CT 101</h2>
+        <p>The active PostgreSQL directory is on the fast database
+        storage, not the bulk USB share. If a dedicated host mount is
+        used, stop the CT and add it only after formatting and mounting
+        the host storage:</p>
+        <pre><code>pct stop 101
+pct set 101 --cores 4 --memory 4096 --swap 1024 --onboot 1
+pct set 101 --startup order=20,up=45,down=45
+pct set 101 --mp0 /mnt/pve/db_data,mp=/var/lib/postgresql/data
+pct start 101</code></pre>
+        <p>Inside CT 101, create one database and one least-privilege
+        role per application. Never use the PostgreSQL superuser in
+        application connection strings:</p>
+        <pre><code>sudo -u postgres psql
+CREATE ROLE &lt;APP_USER&gt; LOGIN PASSWORD &#39;&lt;LONG-RANDOM-PASSWORD&gt;&#39;;
+CREATE DATABASE &lt;APP_DB&gt; OWNER &lt;APP_USER&gt;;
+\q</code></pre>
+        <p>Configure <code>pg_hba.conf</code> for only the required
+        backend and application addresses. Configure nightly
+        <code>pg_dump</code> files into
+        <code>/mnt/storage/homelab-backups/configs/infotainment-node/postgres-dumps</code>
+        through a controlled mount or backup job.</p>
+        <h2 id="nav-validate-ct-101">Validate CT 101</h2>
+        <pre><code>pct exec 101 -- systemctl is-active postgresql
+pct exec 101 -- sudo -u postgres psql -c &#39;select version();&#39;
+pg_dump --format=custom --file=/tmp/postgres-check.dump &lt;APP_DB&gt;</code></pre>
+        <h1 id="nav-step-8-install-ct-102---plex">Step 8: Install CT 102
+        - Plex</h1>
+        <p>Create CT 102 with 6 vCPUs, 4 GiB RAM, 20 GiB NVMe, fixed
+        address <code>192.168.86.236/24</code>, and <code>vmbr0</code>.
+        Use the reviewed Community Script:</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/plex.sh)&quot;</code></pre>
+        <p>Tune and mount media:</p>
+        <pre><code>pct stop 102
+pct set 102 --cores 6 --memory 4096 --swap 1024 --onboot 1
+pct set 102 --startup order=40,up=60,down=30
+pct set 102 --mp0 /mnt/storage/media,mp=/data/media,ro=1
+pct start 102</code></pre>
+        <p>If Intel Quick Sync is available, expose
+        <code>/dev/dri</code> only after confirming the host device and
+        required group mapping. Inside the CT, verify
+        <code>/dev/dri</code>, then enable hardware transcoding in Plex.
+        Keep metadata and transcode cache on the NVMe root disk. Disable
+        unnecessary duplicate library analysis while Jellyfin and Emby
+        are being configured.</p>
+        <h1 id="nav-step-9-install-ct-103---jellyfin">Step 9: Install CT
+        103 - Jellyfin</h1>
+        <p>Create CT 103 with 6 vCPUs, 4 GiB RAM, 20 GiB NVMe, fixed
+        address <code>192.168.86.237/24</code>, and
+        <code>vmbr0</code>:</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/jellyfin.sh)&quot;
+pct stop 103
+pct set 103 --cores 6 --memory 4096 --swap 1024 --onboot 1
+pct set 103 --startup order=40,up=60,down=30
+pct set 103 --mp0 /mnt/storage/media,mp=/data/media,ro=1
+pct start 103</code></pre>
+        <p>Set the transcode directory to local NVMe, mount the library
+        read-only, verify <code>/dev/dri</code>, and enable Quick Sync
+        only after a test stream confirms it is actually used.</p>
+        <h1 id="nav-step-10-install-ct-104---emby">Step 10: Install CT
+        104 - Emby</h1>
+        <p>Create CT 104 with 4 vCPUs, 2 GiB RAM, 20 GiB NVMe, fixed
+        address <code>192.168.86.238/24</code>, and
+        <code>vmbr0</code>:</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/emby.sh)&quot;
+pct stop 104
+pct set 104 --cores 4 --memory 2048 --swap 512 --onboot 1
+pct set 104 --startup order=40,up=60,down=30
+pct set 104 --mp0 /mnt/storage/media,mp=/data/media,ro=1
+pct start 104</code></pre>
+        <p>Choose one media server as the primary metadata scanner.
+        Disable preview thumbnails, duplicate scans, and automatic
+        artwork generation in the others until I/O and storage capacity
+        have been measured.</p>
+        <h1 id="nav-step-11-install-ct-105---audiobookshelf">Step 11:
+        Install CT 105 - Audiobookshelf</h1>
+        <p>Create CT 105 with 2 vCPUs, 1 GiB RAM, 10 GiB NVMe, fixed
+        address <code>192.168.86.239/24</code>, and
+        <code>vmbr0</code>:</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/audiobookshelf.sh)&quot;
+pct stop 105
+pct set 105 --cores 2 --memory 1024 --swap 512 --onboot 1
+pct set 105 --startup order=40,up=45,down=30
+pct set 105 --mp0 /mnt/storage/audiobooks,mp=/data/audiobooks,ro=1
+pct start 105</code></pre>
+        <p>Put the application database and cache on NVMe. Add the
+        read-only library in the web UI, scan once, and validate
+        playback before enabling scheduled scans.</p>
+        <h1 id="nav-step-12-install-ct-106---nextcloud">Step 12: Install
+        CT 106 - Nextcloud</h1>
+        <p>Create CT 106 with 4 vCPUs, 4 GiB RAM, 32 GiB NVMe, fixed
+        address <code>192.168.86.240/24</code>, and
+        <code>vmbr0</code>:</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/nextcloud.sh)&quot;
+pct stop 106
+pct set 106 --cores 4 --memory 4096 --swap 1024 --onboot 1
+pct set 106 --startup order=40,up=60,down=45
+pct set 106 --mp0 /mnt/storage/documents,mp=/var/www/html/data
+pct start 106</code></pre>
+        <p>Create the PostgreSQL database and Redis configuration before
+        finishing the Nextcloud wizard. Nextcloud owns its data
+        directory. Do not expose that directory through the general
+        Samba share. Set background jobs to cron and run the maintenance
+        commands as the web user.</p>
+        <p>Validate with a browser upload, desktop sync, and a restore
+        of a test file. Confirm the data directory permissions and
+        database connectivity.</p>
+        <h1 id="nav-step-13-install-ct-107---immich">Step 13: Install CT
+        107 - Immich</h1>
+        <p>Create CT 107 with 6 vCPUs, 6 GiB RAM, 32 GiB NVMe, fixed
+        address <code>192.168.86.241/24</code>, and
+        <code>vmbr0</code>:</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/immich.sh)&quot;
+pct stop 107
+pct set 107 --cores 6 --memory 6144 --swap 1024 --onboot 1
+pct set 107 --startup order=40,up=60,down=45
+pct set 107 --mp0 /mnt/storage/photos,mp=/usr/src/app/upload
+pct start 107</code></pre>
+        <p>Keep Immich database, thumbnails, and machine-learning cache
+        on NVMe. Start with CPU processing. Add supported acceleration
+        only after validating the host device, LXC permissions, and the
+        application release requirements. Import a test photo and
+        confirm the original file remains intact.</p>
+        <h1 id="nav-step-14-install-ct-108---paperless-ngx">Step 14:
+        Install CT 108 - Paperless-NGX</h1>
+        <p>Create CT 108 with 2 vCPUs, 2 GiB RAM, 16 GiB NVMe, fixed
+        address <code>192.168.86.242/24</code>, and
+        <code>vmbr0</code>:</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/paperless-ngx.sh)&quot;
+pct stop 108
+pct set 108 --cores 2 --memory 2048 --swap 512 --onboot 1
+pct set 108 --startup order=40,up=45,down=30
+pct set 108 --mp0 /mnt/storage/documents/paperless,mp=/usr/src/paperless/consume
+pct set 108 --mp1 /mnt/storage/documents/archive,mp=/usr/src/paperless/media
+pct start 108</code></pre>
+        <p>Create the PostgreSQL role and Redis namespace first. Drop a
+        disposable PDF into <code>consume</code>, confirm indexing, and
+        confirm the archive path is not being modified by unrelated SMB
+        users.</p>
+        <h1 id="nav-step-15-install-ct-109---postgresql-frontend">Step
+        15: Install CT 109 - PostgreSQL Frontend</h1>
+        <p>Create CT 109 with 2 vCPUs, 512 MiB RAM, 8 GiB NVMe, fixed
+        address <code>192.168.86.243/24</code>, and <code>vmbr0</code>.
+        Use the reviewed Community Script for the chosen database
+        frontend, or install the frontend manually if the catalog does
+        not support the required product.</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/pgadmin.sh)&quot;
+pct stop 109
+pct set 109 --cores 2 --memory 512 --swap 256 --onboot 1
+pct set 109 --startup order=30,up=30,down=30
+pct start 109</code></pre>
+        <p>Restrict access to administrators. Never put the PostgreSQL
+        password in a public URL, shared document, or world-readable
+        environment file.</p>
+        <h1 id="nav-step-16-install-ct-110---deluge-vpn">Step 16:
+        Install CT 110 - Deluge VPN</h1>
+        <p>Create CT 110 with 2 vCPUs, 1 GiB RAM, 16 GiB NVMe, fixed
+        address <code>192.168.86.244/24</code>, and
+        <code>vmbr0</code>:</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/deluge-vpn.sh)&quot;
+pct stop 110
+pct set 110 --cores 2 --memory 1024 --swap 512 --onboot 1
+pct set 110 --startup order=40,up=45,down=30
+pct set 110 --mp0 /mnt/storage/downloads,mp=/data/downloads
+pct start 110</code></pre>
+        <p>Use this only for content you are authorized to download.
+        Confirm the VPN kill switch, DNS behavior, and that traffic
+        cannot bypass the tunnel. Test a harmless transfer and verify
+        the download path.</p>
+        <h1 id="nav-step-17-install-ct-112---linux-gsm">Step 17: Install
+        CT 112 - Linux-GSM</h1>
+        <p>Create CT 112 with 8 vCPUs, 4 GiB RAM, 100 GiB NVMe, fixed
+        address <code>192.168.86.245/24</code>, and
+        <code>vmbr0</code>:</p>
+        <pre><code>bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/linuxgsm.sh)&quot;
+pct stop 112
+pct set 112 --cores 8 --memory 4096 --swap 1024 --onboot 1
+pct set 112 --startup order=40,up=60,down=45
+pct set 112 --mp0 /mnt/storage/game_backups,mp=/home/lgsm/backups
+pct start 112</code></pre>
+        <p>Install only game servers and files you are licensed to use.
+        Test a server start, stop, update, backup, and restore before
+        opening any port to the LAN.</p>
+        <h1 id="nav-step-18-build-vm-113---docker-web-stack">Step 18:
+        Build VM 113 - Docker Web Stack</h1>
+        <p>Create VM 113 with 4 vCPUs, 4 GiB dedicated RAM, 32 GiB NVMe,
+        fixed address <code>192.168.86.233/24</code>, and
+        <code>vmbr0</code>. Use a supported Debian or Ubuntu cloud
+        image. Install Docker Engine and the Docker Compose plugin from
+        the official Docker documentation. Do not install Docker inside
+        every application LXC; keep this stack together in VM 113.</p>
+        <p>Inside VM 113:</p>
+        <pre><code>sudo apt update
+sudo apt full-upgrade -y
+sudo apt install -y ca-certificates curl git cifs-utils nfs-common
+# Install Docker Engine and the Compose plugin from the official Docker repository.
+docker version
+docker compose version
+sudo mkdir -p /opt/stacks /mnt/shares/3d_assets /mnt/shares/backups</code></pre>
+        <p>Mount the SMB or NFS shares using credentials stored in a
+        root-only file. Test the mounts before starting Manyfold or
+        Uptime Kuma. Store the stack files and <code>.env</code> files
+        in <code>/mnt/shares/backups/docker-stacks</code> after
+        testing.</p>
+        <h2 id="nav-docker-scripts">Docker scripts</h2>
+        <p>The per-service bootstrap scripts are stored in
+        <code>storage/project_scripts/docker/</code>. Copy the scripts
+        to VM 113, review every image tag and environment value, make
+        them executable, and run one service at a time:</p>
+        <pre><code>chmod 700 /root/docker-scripts/*.sh
+/root/docker-scripts/01-pihole-backup.sh
+/root/docker-scripts/02-gravity-sync.sh
+/root/docker-scripts/03-manyfold.sh
+/root/docker-scripts/04-homebox.sh
+/root/docker-scripts/05-netbox.sh
+/root/docker-scripts/06-grocy.sh
+/root/docker-scripts/07-mealie.sh
+/root/docker-scripts/08-uptime-kuma.sh
+/root/docker-scripts/09-watchtower.sh</code></pre>
+        <p>Each script creates an isolated Compose project under
+        <code>/opt/stacks/&lt;service&gt;</code>, writes a starter
+        <code>.env</code> with generated placeholders, and starts only
+        that service. Replace every placeholder secret before exposing
+        the service. NetBox and Manyfold may need additional PostgreSQL
+        or Redis configuration; the scripts deliberately keep those
+        dependencies visible instead of silently creating shared
+        production databases.</p>
+        <h1 id="nav-step-19-configure-vm-113-docker-services">Step 19:
+        Configure VM 113 Docker services</h1>
+        <h2 id="nav-pi-hole-backup">Pi-hole backup</h2>
+        <p>Set the backup instance to a different address or port
+        strategy than the primary Pi-hole at
+        <code>192.168.86.254</code>. Restore a Teleporter archive and
+        verify DNS resolution from a test client.</p>
+        <h2 id="nav-gravity-sync">Gravity-Sync</h2>
+        <p>Set the primary and secondary Pi-hole addresses and a long
+        random synchronization secret. Run a dry run or read-only
+        comparison first. Confirm that the secondary never overwrites
+        the primary unexpectedly.</p>
+        <h2 id="nav-manyfold">Manyfold</h2>
+        <p>Confirm <code>/mnt/shares/3d_assets</code> is mounted and
+        writable by the container user. Configure its database and Redis
+        endpoints after CT 101 is ready. Open only port 3232 on the
+        LAN.</p>
+        <h2 id="nav-homebox">Homebox</h2>
+        <p>Configure the persistent volume and open port 7745 only on
+        the trusted LAN. Create the initial administrator and export a
+        backup.</p>
+        <h2 id="nav-netbox">NetBox</h2>
+        <p>Configure the database, Redis, allowed hosts, and secret key.
+        Open port 8000 only to administrators. Create a database backup
+        before importing inventory.</p>
+        <h2 id="nav-grocy">Grocy</h2>
+        <p>Use port 9192 externally and container port 80 internally.
+        Set the timezone, create the administrator, and export the
+        application backup.</p>
+        <h2 id="nav-mealie">Mealie</h2>
+        <p>Use port 9925 externally and container port 9000 internally.
+        Configure the database according to the supported image
+        defaults, create the administrator, and test a recipe
+        export.</p>
+        <h2 id="nav-uptime-kuma">Uptime Kuma</h2>
+        <p>Use port 3001. Monitor Proxmox, CT 100, CT 101, VM 113, and
+        each published application endpoint. Store exports under
+        <code>/mnt/shares/backups</code>.</p>
+        <h2 id="nav-watchtower">Watchtower</h2>
+        <p>Use notification-only behavior for stateful services.
+        Automatic updates are acceptable only for services whose data
+        and upgrade behavior have been reviewed. Never let an automatic
+        update replace a backup and restore test.</p>
+        <h1 id="nav-step-20-apply-final-lxc-and-vm-configuration">Step
+        20: Apply final LXC and VM configuration</h1>
+        <p>On the Proxmox host, inspect every configuration and compare
+        it to the architecture block:</p>
+        <pre><code>for id in 100 101 102 103 104 105 106 107 108 109 110 112; do
+  echo &quot;===== CT $id =====&quot;
+  pct config &quot;$id&quot;
+done
+qm config 113</code></pre>
+        <p>Confirm every CT has the intended cores, memory, swap,
+        bridge, IP, mount points, and startup order. Confirm media
+        mounts are read-only where specified. Confirm CT 101 is
+        reachable only through the backend segment. Confirm VM 113 has
+        the two required host mounts and the intended LAN address.</p>
+        <p>Do not use <code>pct set</code> to blindly overwrite a
+        complete configuration. Change one property, inspect the result,
+        and test the service:</p>
+        <pre><code>pct set &lt;CTID&gt; --cores &lt;N&gt;
+pct config &lt;CTID&gt;
+pct restart &lt;CTID&gt;
+pct exec &lt;CTID&gt; -- systemctl --failed</code></pre>
+        <h1 id="nav-step-21-full-validation-and-reboot-test">Step 21:
+        Full validation and reboot test</h1>
+        <p>Run host checks:</p>
+        <pre><code>pveversion -v
+pvesm status
+pct list
+qm list
+systemctl --failed
+iostat -xz 1 5
+free -h</code></pre>
+        <p>Run container checks:</p>
+        <pre><code>for id in 100 101 102 103 104 105 106 107 108 109 110 112; do
+  pct exec &quot;$id&quot; -- hostname
+  pct exec &quot;$id&quot; -- ip -br addr
+  pct exec &quot;$id&quot; -- df -hT
+  pct exec &quot;$id&quot; -- free -h
+done</code></pre>
+        <p>Test each workflow: SMB file copy, PostgreSQL backup and
+        restore, media playback and transcoding, audiobook playback,
+        Nextcloud upload and sync, Immich photo import, Paperless
+        document ingestion, Deluge VPN kill switch, game-server backup,
+        and each VM 113 web endpoint.</p>
+        <p>Reboot the host during a maintenance window:</p>
+        <pre><code>reboot</code></pre>
+        <p>After reboot, verify that storage mounts are present before
+        CT 100 starts, CT 101 starts before its dependent services, VM
+        113 mounts its shares, and all health monitors return to
+        green.</p>
+        <h1 id="nav-step-22-backups-and-operating-record">Step 22:
+        Backups and operating record</h1>
+        <p>Create a Proxmox backup schedule to separate storage. Create
+        nightly PostgreSQL logical dumps. Back up Docker Compose files,
+        <code>.env</code> files with secrets protected, application
+        exports, and the host configuration. Test a restore instead of
+        only checking that a backup file exists.</p>
+        <p>Complete this record:</p>
+        <table style="width:54%;">
+        <colgroup>
+        <col style="width: 43%" />
+        <col style="width: 11%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;">Item</th>
+        <th style="text-align: left;">Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;">Proxmox version</td>
+        <td style="text-align: left;"></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Host serial</td>
+        <td style="text-align: left;"></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">System NVMe serial</td>
+        <td style="text-align: left;"></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Data disk serials</td>
+        <td style="text-align: left;"></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Backup target</td>
+        <td style="text-align: left;"></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Last PostgreSQL restore test</td>
+        <td style="text-align: left;"></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Last VM 113 restore test</td>
+        <td style="text-align: left;"></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Last full reboot test</td>
+        <td style="text-align: left;"></td>
+        </tr>
+        <tr>
+        <td style="text-align: left;">Operator and date</td>
+        <td style="text-align: left;"></td>
+        </tr>
+        </tbody>
+        </table>
+        <h1 id="nav-troubleshooting">Troubleshooting</h1>
+        <p><strong>A container cannot write to a bind mount.</strong>
+        Check host ownership, ACLs, unprivileged UID/GID mappings, and
+        the read-only flag. Do not make every CT privileged to hide a
+        permissions problem.</p>
+        <p><strong>A media server cannot transcode.</strong> Check
+        <code>/dev/dri</code>, device permissions, driver support, and
+        the application log. Confirm CPU transcoding works before
+        debugging Quick Sync.</p>
+        <p><strong>PostgreSQL is slow.</strong> Keep active data and WAL
+        on NVMe, inspect <code>iostat</code>, check memory pressure, and
+        confirm that USB bulk storage is not being used for the
+        database.</p>
+        <p><strong>Docker services restart repeatedly.</strong> Run
+        <code>docker compose logs --tail=100</code>, inspect the
+        generated <code>.env</code>, verify mounted paths, and verify
+        database and Redis connectivity. Do not enable restart loops
+        while the root error is unknown.</p>
+        <p><strong>A Community Script fails.</strong> Save the output,
+        review the current script source and prerequisites, and repair
+        or remove the partial CT deliberately. Do not rerun a
+        destructive script repeatedly against the same broken
+        container.</p>
+      </article>
+    </div>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="/scripts/component-loader.js"></script>
+</body>
+</html>
