@@ -268,6 +268,15 @@
       }
     }
   </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LLK7685ZGC');
+</script>
 </head>
 <body>
   <div id="header-placeholder"></div>
@@ -558,97 +567,279 @@ Lab Install Procedure</h1>
         <p>"Please start a clean conversation, flush all buffers and
         caches and then load this config for reference."</p>
         <table>
-        <caption>Code : Barnes Home Lab Configuration</caption>
         <colgroup>
-        <col style="width: 100%" />
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
         <th><div class="custom-style-TextBlock TextBlock"
         data-custom-style="TextBlock">
-        <p>"Please start a clean conversation, flush all buffers and
-        caches and then load this config Code 1: Barnes Home Lab
-        Configuration<br />
-        =========================================================================<br />
-        Barnes Home Lab Configuration<br />
-        KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
-        4.9GHz)<br />
-        Proxmox VE 9.2.3 / Dedicated Ethernet / Intel Core
-        i7-13620H<br />
-        Integrated GPU: Intel UHD Graphics (13th Gen) / 1TB PCIe NVMe
-        SSD<br />
-        =========================================================================<br />
-        <br />
-        [ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2 Threads for
-        overhead ]<br />
-        │ 192.168.86.250<br />
-        ├──► [ VM 101 ] HOME ASSISTANT OS (HAOS)<br />
-        │ ├── CPU: 2 Cores (vCPUs)<br />
-        │ ├── RAM: 4 GB (Dedicated)<br />
-        │ ├── STO: 32 GB - 64 GB NVMe<br />
-        │ ├── 192.168.86.251 - Primary LAN Segment (vmbr0) eth0<br />
-        │ └── 10.0.10.1/24 - Isolated Backend Segment (vmbr1 -<br />
-        │ No Gateway/DNS Emulation) eth1<br />
-        ├──► [ LXC 100 ] DNSMASQ SERVER (PiHole)<br />
-        │ ├── CPU: 1 Core (vCPU)<br />
-        │ ├── RAM: 512 MB (Ultra-lightweight)<br />
-        │ ├── STO: 2 GB NVMe<br />
-        │ └── 192.168.86.254 (Currently .249 until production
-        release)<br />
-        ├──► [ LXC 102 ] NGINX PROXY MANAGER<br />
-        │ ├── CPU: 2 Cores (vCPUs)<br />
-        │ ├── RAM: 1 GB (Scalable)<br />
-        │ ├── STO: 8 GB (OS) + Mount point to external storage for
-        media<br />
-        │ └── 192.168.86.252<br />
-        ├──► [ LXC 103 ] OLLAMA LLM ENGINE<br />
-        │ ├── CPU: 6 Cores (vCPUs) ---&gt; (Uses high-perf Intel
-        P-Cores)<br />
-        │ ├── GPU Passthru: Vulkan0 Intel(R) Graphics (RPL-P)<br />
-        │ type=iGPU total=23.3 GiB Ram<br />
-        │ ├── RAM: 16 GB (Allows up to 8B/11B parameter models)<br />
-        │ ├── STO: 40 GB NVMe --------&gt; (Large capacity for model
-        weights)<br />
-        │ ├── LAM: gemma3:4b ---------&gt; Multimodal (Vision) &amp;
-        128K Context<br />
-        Window<br />
-        │ ├── LAM: phi4-mini:latest --&gt; Logic, Intense Reasoning,
-        &amp; Tool<br />
-        Calling<br />
-        │ ├── LAM: qwen2.5-coder:7b --&gt; Complex Automation
-        Engineering,<br />
-        │ Code Sandbox, &amp; YAML Chat<br />
-        │ ├── LAM: qwen2.5-coder:1.5b -&gt; Inline IDE Autocomplete
-        Engine<br />
-        │ (Fed via Desktop on LAN)<br />
-        │ ├── LAM: nomic-embed-text --&gt; Vector Embeddings &amp;
-        Local<br />
-        │ Document Context Parsing<br />
-        │ ├── 192.168.86.253 - Primary LAN Segment (vmbr0) eth0<br />
-        │ └── 10.0.10.3/24 - Isolated Backend Segment (vmbr1 - No<br />
-        │ Gateway/DNS Emulation) eth1<br />
-        ├──► [ LXC 104 ] WYOMING-DOCKER<br />
-        │ ├── CPU: 2 Cores (vCPUs)<br />
-        │ ├── RAM: 2 GB (Scalable)<br />
-        │ ├── STO: 10 GB (OS) + Mount point to external storage
-        for<br />
-        │ media<br />
-        │ ├── ports: 10200:10200<br />
-        │ ├── volumes: piper-data:/data<br />
-        │ ├── 192.168.86.248 - Primary LAN Segment (vmbr0) eth0<br />
-        │ └── 10.0.10.4/24 - Isolated Backend Segment (vmbr1) eth1<br />
-        └──► [ LXC 105 ] TWINGATE CONNECTOR<br />
-        ├── CPU: 1 Core (vCPU)<br />
-        ├── RAM: 512 MB (Ultra-lightweight)<br />
-        ├── STO: 2 GB NVMe (OS Only)<br />
-        └── 192.168.86.247 - Primary LAN Segment (vmbr0) eth0<br />
-        (Routes 192.168.86.0/24 Securely)</p>
+        <p>=========================================================================</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Barnes Home Lab Configuration</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>* * * * Compute Module * * * *</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
+        4.9GHz)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Proxmox VE 9.2.3 / Dedicated Ethernet / Intel Core
+        i7-13620H</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Integrated GPU: Intel UHD Graphics (13th Gen) / 1TB PCIe NVMe
+        SSD</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>=========================================================================</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>[ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2 Threads for
+        overhead ]</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ 192.168.86.250</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ VM 101 ] HOME ASSISTANT OS (HAOS)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 4 GB (Dedicated)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 32 GB - 64 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── MOUNT: /mnt/haos_backups &lt;--- NFS Mount from
+        Samba-NAS (/shares/backups/haos)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── 192.168.86.251 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 10.0.10.1/24 - Isolated Backend Segment (vmbr1 - No
+        Gateway/DNS Emulation) eth1</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 100 ] DNSMASQ SERVER (PiHole + Unbound)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 1 Core (vCPU)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 512 MB (Ultra-lightweight)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 2 GB NVMe</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── Service: Primary Pi-hole DNS (Port 53 / 80)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── Service: Unbound Local Recursive Resolver (Port
+        5335)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.254 (Currently .249 until production
+        release)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 102 ] NGINX PROXY MANAGER</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 1 GB (Scalable)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 8 GB NVMe (OS)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/shares/certificates,mp=/etc/letsencrypt</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 192.168.86.252</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 103 ] OLLAMA LLM ENGINE</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 6 Cores (vCPUs) ---&gt; (Uses high-perf Intel
+        P-Cores)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── GPU Passthru: Vulkan0 Intel(R) Graphics (RPL-P)
+        type=iGPU total=23.3 GiB Ram</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 16 GB (Allows up to 8B/11B parameter models)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 40 GB NVMe --------&gt; (Large capacity for model
+        weights)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/models,mp=/root/.ollama/models</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── LAM: gemma3:4b ---------&gt; Multimodal (Vision) &amp;
+        128K Context Window</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── LAM: phi4-mini:latest --&gt; Logic, Intense Reasoning,
+        &amp; Tool Calling</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── LAM: qwen2.5-coder:7b --&gt; Complex Automation
+        Engineering, Code Sandbox, &amp; YAML Chat</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── LAM: qwen2.5-coder:1.5b -&gt; Inline IDE Autocomplete
+        Engine (Fed via Desktop on LAN)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── LAM: nomic-embed-text --&gt; Vector Embeddings &amp;
+        Local Document Context Parsing</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── 192.168.86.253 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 10.0.10.3/24 - Isolated Backend Segment (vmbr1 - No
+        Gateway/DNS Emulation) eth1</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├──► [ LXC 104 ] WYOMING-DOCKER &amp; OPEN-WEBUI</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── RAM: 2 GB (Scalable)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── STO: 10 GB NVMe (OS)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp0:
+        /mnt/pve/shares/piper-data,mp=/var/lib/docker/volumes/piper-data</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp1:
+        /mnt/pve/shares/whisper-data,mp=/var/lib/docker/volumes/whisper-data</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── BIND MP: mp2:
+        /mnt/pve/shares/openwebui-data,mp=/var/lib/docker/volumes/openwebui-data</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── Docker Container: Wyoming-Piper (Port 10200:10200)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── Docker Container: Wyoming-Whisper (Port
+        10300:10300)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── Docker Container: Open-WebUI (Port 3000:8080 |
+        OLLAMA_BASE_URL=http://192.168.86.253:11434)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ ├── 192.168.86.248 - Primary LAN Segment (vmbr0) eth0</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ └── 10.0.10.4/24 - Isolated Backend Segment (vmbr1)
+        eth1</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>└──► [ LXC 105 ] TWINGATE CONNECTOR</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── CPU: 1 Core (vCPU)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── RAM: 512 MB (Ultra-lightweight)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>├── STO: 2 GB NVMe (OS Only)</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>└── 192.168.86.247 - Primary LAN Segment (vmbr0) eth0 (Routes
+        192.168.86.0/24 Securely)</p>
         </div></th>
         </tr>
         </thead>
         <tbody>
         </tbody>
         </table>
+        <p>Code : Barnes Home Lab Configuration</p>
         <h1
         id="nav-installing-your-home-lab-on-a-mini-computer">Installing
         your Home Lab on a Mini-Computer</h1>

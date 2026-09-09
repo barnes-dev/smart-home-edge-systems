@@ -3,53 +3,122 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A private, resilient storage foundation for media, documents, photos, backups, and every service in your home lab." />
+    <title>Home Storage | Smart Home Edge Systems</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+    <style>
+        :root { --storage-ink: #edf4f7; --storage-muted: #a9bcc4; --storage-line: rgba(201, 228, 232, 0.16); --storage-panel: rgba(13, 34, 45, 0.86); --storage-blue: #60a5fa; --storage-pale: #bfdbfe; --storage-deep: #07151d; }
+        body { background: var(--storage-deep); color: var(--storage-ink); font-family: Georgia, "Times New Roman", serif; }
+        #header-placeholder { background: #091923; }
+        .storage-page { overflow: hidden; background-color: var(--storage-deep); background-image: linear-gradient(rgba(97, 225, 208, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(97, 225, 208, 0.045) 1px, transparent 1px); background-size: 44px 44px; }
+        .storage-wrap { width: min(1160px, calc(100% - 3rem)); margin: 0 auto; }
+        .storage-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.25rem 0; border-bottom: 1px solid var(--storage-line); font-family: "Segoe UI", sans-serif; }
+        .storage-nav strong { color: var(--storage-blue); font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase; }
+        .storage-nav a { margin-left: 1.3rem; color: var(--storage-muted); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+        .storage-nav a:hover { color: var(--storage-blue); text-decoration: none; }
+        .storage-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr); gap: 4rem; align-items: end; min-height: 600px; padding: 6rem 0 5rem; }
+        .storage-eyebrow, .storage-label { color: var(--storage-pale); font: 700 0.75rem "Segoe UI", sans-serif; letter-spacing: 0.18em; text-transform: uppercase; }
+        .storage-hero h1 { max-width: 760px; margin: 1.2rem 0 1.5rem; font-size: clamp(3.3rem, 7vw, 6.8rem); line-height: 0.91; letter-spacing: -0.04em; }
+        .storage-hero h1 em { color: var(--storage-blue); font-style: normal; }
+        .storage-lead { max-width: 650px; color: var(--storage-muted); font-size: 1.2rem; line-height: 1.65; }
+        .storage-aside { padding-left: 1.4rem; border-left: 2px solid var(--storage-blue); font-family: "Segoe UI", sans-serif; }
+        .storage-aside p { color: var(--storage-ink); font-size: 1.05rem; line-height: 1.55; }
+        .storage-aside small { display: block; color: var(--storage-muted); line-height: 1.5; }
+        .storage-buttons, .storage-links { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+        .storage-button { display: inline-block; padding: 0.82rem 1.1rem; border: 1px solid var(--storage-blue); color: #07111f; background: var(--storage-blue); font: 700 0.78rem "Segoe UI", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+        .storage-button.secondary { border-color: var(--storage-line); color: var(--storage-pale); background: transparent; }
+        .storage-button:hover { color: #07111f; background: #93c5fd; text-decoration: none; }
+        .storage-button.secondary:hover { border-color: var(--storage-blue); }
+        .storage-section { padding: 5.5rem 0; border-top: 1px solid var(--storage-line); }
+        .storage-heading { display: flex; justify-content: space-between; gap: 2rem; align-items: end; margin-bottom: 2.5rem; }
+        .storage-section h2 { max-width: 720px; margin: 0.7rem 0 0; padding: 0; border: 0; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1; }
+        .storage-intro { max-width: 500px; margin: 0; color: var(--storage-muted); line-height: 1.6; }
+        .storage-stats, .storage-feature-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; border: 1px solid var(--storage-line); background: var(--storage-line); }
+        .storage-stat { min-height: 145px; padding: 1.3rem; background: var(--storage-panel); }
+        .storage-stat strong { display: block; color: var(--storage-blue); font-size: 2rem; line-height: 1; }
+        .storage-stat span { display: block; margin-top: 0.8rem; color: var(--storage-muted); font: 0.86rem/1.45 "Segoe UI", sans-serif; }
+        .storage-feature-grid { grid-template-columns: repeat(3, 1fr); margin-top: 1px; }
+        .storage-feature { min-height: 205px; padding: 1.5rem; background: var(--storage-panel); }
+        .storage-feature-number { color: var(--storage-blue); font: 700 0.74rem "Segoe UI", sans-serif; letter-spacing: 0.12em; }
+        .storage-feature h3 { margin: 1.6rem 0 0.5rem; font-size: 1.35rem; }
+        .storage-feature p { margin: 0; color: var(--storage-muted); font: 0.92rem/1.55 "Segoe UI", sans-serif; }
+        .storage-architecture { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 1px; border: 1px solid var(--storage-line); background: var(--storage-line); }
+        .storage-panel { padding: 1.7rem; background: var(--storage-panel); }
+        .storage-panel h3 { margin: 0 0 1.2rem; font-size: 1.35rem; }
+        .storage-list { display: grid; gap: 0.75rem; margin: 0; padding: 0; list-style: none; font: 0.9rem/1.45 "Segoe UI", sans-serif; }
+        .storage-list li { margin: 0; padding-bottom: 0.75rem; border-bottom: 1px solid var(--storage-line); color: var(--storage-muted); }
+        .storage-list strong { color: var(--storage-pale); }
+        .storage-share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--storage-line); }
+        .storage-share { padding: 1.15rem; background: #0a202e; }
+        .storage-share strong { display: block; color: var(--storage-blue); font: 700 0.9rem "Segoe UI", sans-serif; }
+        .storage-share span { display: block; margin-top: 0.4rem; color: var(--storage-muted); font: 0.82rem/1.45 "Segoe UI", sans-serif; }
+        .storage-cta { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; padding: 2.2rem; border: 1px solid var(--storage-blue); background: rgba(29, 78, 216, 0.12); }
+        .storage-cta h2 { margin: 0 0 0.7rem; font-size: clamp(1.8rem, 3vw, 2.7rem); }
+        .storage-cta p { max-width: 700px; margin: 0; color: var(--storage-muted); font: 1rem/1.6 "Segoe UI", sans-serif; }
+        .service-matrix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; border: 1px solid var(--storage-line); background: var(--storage-line); }
+        .service { min-height: 130px; padding: 1.1rem; background: var(--storage-panel); }
+        .service strong { display: block; color: var(--storage-pale); font: 700 0.92rem "Segoe UI", sans-serif; }
+        .service small { display: block; margin-top: 0.35rem; color: var(--storage-blue); font: 700 0.7rem "Segoe UI", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+        .service span { display: block; margin-top: 0.55rem; color: var(--storage-muted); font: 0.8rem/1.4 "Segoe UI", sans-serif; }
+        .database-note { margin-top: 1px; padding: 1.1rem 1.3rem; border-left: 2px solid var(--storage-blue); background: #081a26; color: var(--storage-muted); font: 0.88rem/1.55 "Segoe UI", sans-serif; }
+        .storage-breadcrumbs { display: flex; flex-wrap: wrap; gap: 1.2rem; padding-top: 1.4rem; font: 600 0.9rem "Segoe UI", sans-serif; }
+        .storage-breadcrumbs a { color: var(--storage-pale); }
+        .storage-breadcrumbs a:hover { color: var(--storage-blue); text-decoration: none; }
+        .storage-page-title { margin: 1rem 0 0; color: var(--storage-ink); font-size: 2rem; line-height: 1.2; }
+        @media (max-width: 760px) {
+            .storage-wrap { width: min(100% - 2rem, 1160px); }
+            .storage-nav { align-items: flex-start; }
+            .storage-nav div { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.6rem; }
+            .storage-nav a { margin-left: 0; }
+            .storage-hero, .storage-architecture, .storage-cta { grid-template-columns: 1fr; gap: 2rem; }
+            .storage-hero { min-height: auto; padding: 4rem 0; }
+            .storage-hero h1 { font-size: clamp(3rem, 15vw, 5rem); }
+            .storage-section { padding: 4rem 0; }
+            .storage-heading { display: block; }
+            .storage-intro { margin-top: 1.2rem; }
+            .storage-stats, .storage-feature-grid, .service-matrix { grid-template-columns: 1fr; }
+        }
+        @media print {
+            @page { size: letter; margin: 0.45in; }
+            body { background: #fff; color: #10202a; }
+            #header-placeholder, #footer-placeholder { display: none; }
+            .storage-page { background: #fff; color: #10202a; }
+            .storage-hero { min-height: auto; padding: 1.2rem 0; }
+            .storage-section { padding: 1.1rem 0; }
+            .storage-hero h1 { font-size: 3.4rem; }
+            .storage-heading { margin-bottom: 1rem; }
+            .storage-section h2 { font-size: 2rem; }
+            .storage-feature, .storage-stat, .storage-panel, .service { background: #f2f7fb; }
+            .storage-cta { background: #e8f1fb; }
+            .storage-buttons, .storage-links { display: none; }
+            .storage-architecture, .service-matrix { break-inside: avoid; }
+        }
+    </style>
+</head>
 <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    gtag('config', 'G-LLK7685ZGC');
-    </script>
-    <title>Storage Hub</title>
-      <link rel="stylesheet" href="/styles/global.css">
-
+  gtag('config', 'G-LLK7685ZGC');
+</script>
 <body>
     <div id="header-placeholder"></div>
-    <div id="menu-placeholder"></div>
-
+    <div class="storage-page"><div class="storage-wrap">
+        <div class="storage-breadcrumbs" aria-label="Page navigation"><a href="../index.html">&#8592; Back</a><a href="/index.html">&#8594; Gateway</a></div>
+        <h1 class="storage-page-title">Storage Hub</h1>
+        <nav class="storage-nav" aria-label="Storage page sections"><strong>Home Storage / Private by design</strong><div><a href="#capabilities">Capabilities</a><a href="#architecture">Architecture</a><a href="#applications">Applications</a><a href="#guides">Guides</a></div></nav>
         <main>
-            <p style="margin-bottom: 1rem;"><a href="../index.html" style="color: #bfdbfe; font-weight: 600;">&#8594;Back to Gateway</a></p>
-            <h1 style="color: #eaf4ff; margin-bottom: 1.5rem; font-size: 2rem;">Storage Hub</h1>
-            <div class="grid">
-                <div class="card">
-                    <h3>Storage Overview</h3>
-                    <p>Keep track of your local backup, media, and archive strategy.</p>
-                </div>
-                <div class="card">
-                    <h3>Capacity Planning</h3>
-                    <p>Review drives, redundancy, and growth targets for your setup.</p>
-                </div>
-                <div class="card">
-                    <h3>Backup Goals</h3>
-                    <p>Document your recovery plan, retention policy, and maintenance routines.</p>
-                </div>
-                <div class="card">
-                    <h3>Guides</h3>
-                    <p>Open the section guides and tutorials for this hub.</p>
-                    <a href="guides/index.html">Open Guides &#8594;</a>
-                </div>
-                <div class="card">
-                    <h3>Reference</h3>
-                    <p>View reference resources and documentation for this section.</p>
-                    <a href="reference/index.html">Open Reference &#8594;</a>
-                </div>
-            </div>
+            <section class="storage-hero" aria-labelledby="storage-title"><div><div class="storage-eyebrow">Smart-Home-Edge-Systems.us / Storage hub</div><h1 id="storage-title">Make your data <em>stay home.</em></h1><p class="storage-lead">A calm, dependable storage layer for the files your household actually depends on: films, family photos, documents, audiobooks, 3D assets, downloads, and the backups that keep every service recoverable.</p><div class="storage-buttons"><a class="storage-button" href="#guides">Explore the guides</a><a class="storage-button secondary" href="#architecture">See the architecture</a></div></div><aside class="storage-aside"><p>One central gateway. Many services. A clearer path from raw disks to the things your home uses every day.</p><small>The documented design uses a dedicated Samba/NFS storage container inside Proxmox, with service-specific mounts and a hybrid backup strategy.</small></aside></section>
+            <section class="storage-section" id="capabilities" aria-labelledby="capabilities-title"><div class="storage-heading"><div><div class="storage-label">01 / What it does</div><h2 id="capabilities-title">The household data layer.</h2></div><p class="storage-intro">Local file sharing, private cloud access, and media streaming share one organized storage foundation. Services get the access they need without turning the home into a collection of disconnected disks.</p></div><div class="storage-stats"><div class="storage-stat"><strong>SMB</strong><span>Household file sharing for computers and everyday access.</span></div><div class="storage-stat"><strong>NFS</strong><span>Efficient mounts for Linux services, containers, and VMs.</span></div><div class="storage-stat"><strong>Cloud</strong><span>Nextcloud for private document access and synchronization.</span></div><div class="storage-stat"><strong>Media</strong><span>Plex, Jellyfin, and Emby stream the same managed library.</span></div></div><div class="storage-feature-grid"><article class="storage-feature"><span class="storage-feature-number">01 / Organize</span><h3>Separate by purpose</h3><p>Media, audiobooks, documents, photos, downloads, 3D assets, and backups each have a clear share and ownership boundary.</p></article><article class="storage-feature"><span class="storage-feature-number">02 / Connect</span><h3>Serve every service</h3><p>Read-only media mounts protect the library while Nextcloud, Immich, Paperless-NGX, Deluge, and Manyfold use purpose-built paths.</p></article><article class="storage-feature"><span class="storage-feature-number">03 / Recover</span><h3>Back up what matters</h3><p>Hybrid backups collect Home Assistant exports, compose files, database dumps, proxy settings, and service configuration archives.</p></article></div></section>
+            <section class="storage-section" id="architecture" aria-labelledby="architecture-title"><div class="storage-heading"><div><div class="storage-label">02 / The documented build</div><h2 id="architecture-title">A gateway and a database backbone.</h2></div><p class="storage-intro">LXC 100 presents the shares. PostgreSQL runs separately on the isolated backend network, keeping application data and file storage understandable, portable, and easier to recover.</p></div><div class="storage-architecture"><div class="storage-panel"><h3>LXC 100 / Samba-NAS</h3><ul class="storage-list"><li><strong>Compute</strong> / 2 vCPUs, 1 GB RAM, 16 GB NVMe OS</li><li><strong>Exports</strong> / SMB and NFS on the primary LAN</li><li><strong>Shares</strong> / media, audiobooks, documents, photos, downloads, 3D assets</li><li><strong>Backups</strong> / configs, database dumps, Docker stacks, and cold-sync status</li></ul></div><div class="storage-panel"><h3>Purpose-built shares</h3><div class="storage-share-grid"><div class="storage-share"><strong>/media</strong><span>Plex, Jellyfin, and Emby libraries.</span></div><div class="storage-share"><strong>/audiobooks</strong><span>Audiobookshelf content.</span></div><div class="storage-share"><strong>/documents</strong><span>Nextcloud, Paperless-NGX, and archives.</span></div><div class="storage-share"><strong>/photos</strong><span>Immich and Nextcloud photo libraries.</span></div><div class="storage-share"><strong>/downloads</strong><span>Deluge VPN downloads.</span></div><div class="storage-share"><strong>/3d_assets</strong><span>Manyfold printable-asset library.</span></div><div class="storage-share"><strong>/homelab-backups</strong><span>Automated configuration and SQL recovery files.</span></div><div class="storage-share"><strong>/game_backups</strong><span>LinuxGSM server backups.</span></div></div></div></div><p class="database-note"><strong>Database architecture:</strong> LXC 101 PostgreSQL uses 4 vCPUs, 4 GB RAM, 32 GB NVMe, and a bind mount at <code>/var/lib/postgresql/data</code> on the isolated 10.0.20.10 backend. LXC 109 PostgreSQL-FE provides the 2 vCPU, 512 MB frontend endpoint on the primary LAN.</p></section>
+            <section class="storage-section" id="applications" aria-labelledby="applications-title"><div class="storage-heading"><div><div class="storage-label">03 / Installed application map</div><h2 id="applications-title">Every service has a job.</h2></div><p class="storage-intro">The compact inventory below captures the application layer around the storage gateway, including allocations, storage paths, the reason each service exists, and the benefit it adds to the household system.</p></div><div class="service-matrix"><div class="service"><strong>Plex</strong><small>LXC 102 / 6 vCPU / 4 GB</small><span>Why: provides polished multi-device media playback. Benefit: QuickSync passthrough and read-only /media access deliver efficient streaming without risking the source library.</span></div><div class="service"><strong>Jellyfin</strong><small>LXC 103 / 6 vCPU / 4 GB</small><span>Why: provides an open-source media platform. Benefit: QuickSync passthrough and read-only /media access keep playback local, flexible, and separated from the master files.</span></div><div class="service"><strong>Emby</strong><small>LXC 104 / 4 vCPU / 2 GB</small><span>Why: gives the lab a second commercial media experience to compare. Benefit: the shared read-only /media mount makes service testing possible without duplicating the library.</span></div><div class="service"><strong>Audiobookshelf</strong><small>LXC 105 / 2 vCPU / 1 GB</small><span>Why: manages spoken-word and audiobook collections. Benefit: a dedicated /audiobooks mount keeps metadata and listening access separate from film and television media.</span></div><div class="service"><strong>Nextcloud</strong><small>LXC 106 / 4 vCPU / 4 GB</small><span>Why: supplies private cloud file sharing and synchronization. Benefit: household documents remain accessible across devices while staying on the local storage foundation.</span></div><div class="service"><strong>Immich</strong><small>LXC 107 / 6 vCPU / 6 GB</small><span>Why: organizes and searches personal photos. Benefit: /photos provides a durable local library with enough dedicated memory for indexing and a responsive browsing experience.</span></div><div class="service"><strong>Paperless-NGX</strong><small>LXC 108 / 2 vCPU / 2 GB</small><span>Why: turns scanned paperwork into searchable records. Benefit: separate consume and archive mounts protect the document workflow while keeping records on shared storage.</span></div><div class="service"><strong>Deluge VPN</strong><small>LXC 110 / 2 vCPU / 1 GB</small><span>Why: manages downloads through a VPN-isolated service. Benefit: /downloads contains transient files and separates network-sensitive activity from the permanent media library.</span></div><div class="service"><strong>LinuxGSM</strong><small>LXC 112 / 8 vCPU / 4 GB</small><span>Why: hosts and manages game servers. Benefit: dedicated compute and /game_backups preserve server state without competing with media playback workloads.</span></div><div class="service"><strong>Manyfold</strong><small>VM 113 / Docker / port 3232</small><span>Why: catalogs printable 3D assets. Benefit: the mounted /mnt/shares/3d_assets library makes models searchable and reusable from one managed location.</span></div><div class="service"><strong>Homebox</strong><small>VM 113 / port 7745</small><span>Why: records household equipment and possessions. Benefit: inventory data makes maintenance, replacement planning, and storage decisions easier to manage locally.</span></div><div class="service"><strong>Netbox</strong><small>VM 113 / port 8000</small><span>Why: documents networks, devices, and IP assignments. Benefit: an authoritative source reduces configuration drift and makes the storage architecture easier to troubleshoot.</span></div><div class="service"><strong>Grocy</strong><small>VM 113 / port 9192</small><span>Why: manages household stock and supplies. Benefit: local inventory tracking helps reduce waste and makes everyday planning independent of a cloud subscription.</span></div><div class="service"><strong>Mealie</strong><small>VM 113 / port 9925</small><span>Why: organizes recipes and meal planning. Benefit: shared local data keeps household planning available even when external services are unavailable.</span></div><div class="service"><strong>Pi-hole Backup</strong><small>VM 113 / ports 53, 80</small><span>Why: preserves DNS filtering configuration. Benefit: Teleporter exports provide a recoverable local copy if the primary Pi-hole needs to be rebuilt.</span></div><div class="service"><strong>Gravity-Sync</strong><small>VM 113 / Docker</small><span>Why: synchronizes DNS state with the compute Pi-hole. Benefit: configuration redundancy reduces recovery time and keeps filtering behavior consistent.</span></div><div class="service"><strong>Uptime Kuma</strong><small>VM 113 / port 3001</small><span>Why: monitors service health and availability. Benefit: local alerts expose failures early, while exports stored on backups preserve monitoring configuration.</span></div><div class="service"><strong>Watchtower #2</strong><small>VM 113 / Docker</small><span>Why: watches the web-stack containers for updates. Benefit: centralized container awareness simplifies maintenance while keeping update decisions visible.</span></div></div></section>
+            <section class="storage-section" id="guides" aria-labelledby="guides-title"><div class="storage-cta"><div><div class="storage-label">04 / Build it carefully</div><h2 id="guides-title">Start with the storage guides.</h2><p>Move from architecture to implementation with the documented Proxmox storage server design and installation workflow.</p></div><div class="storage-links"><a class="storage-button" href="guides/1-Proxmox-Storage-Server-Architectural-Document.html">Architecture guide</a><a class="storage-button secondary" href="guides/2-Proxmox-Storage-Server-Install-Guide.html">Install guide</a><a class="storage-button secondary" href="reference/index.html">Reference</a></div></div></section>
         </main>
-
-    <div id="footer-placeholder"></div>
-      <script src="/scripts/component-loader.js"></script>
-
+    </div></div>
+    <div id="footer-placeholder"></div><script src="/scripts/component-loader.js"></script>
+</body>
 </html>
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6-integrating-home-assistant</title>
+  <title>Integrating Home Assistant</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,13 +13,33 @@
   </script>
   <link rel="stylesheet" href="/styles/global.css">
   <style>
+    /* Prevent outer window scrolling and lock viewport bounds */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; 
+    }
+
+    /* Main container takes up the exact remaining window height */
+    main.app-main {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      box-sizing: border-box;
+      padding: 1.5rem 1.5rem;
+      max-width: 100%;
+    }
+
+    /* Doc layout fills whatever vertical space is left below the title banner */
     .doc-layout {
       display: grid;
       grid-template-columns: 450px 1fr;
       gap: 2.5rem;
-      margin-top: 2rem;
       align-items: start;
+      flex: 1;
+      min-height: 0; /* Crucial for grid children to shrink and scroll properly */
     }
+    
     [custom-style="TextBlock"], 
     .TextBlock, 
     .textblock, 
@@ -27,27 +47,28 @@
     .Code, 
     span[data-custom-style="TextBlock"],
     p[custom-style="TextBlock"] {
-        background: #1e1e1e !important;         /* Matches your dark code/box theme */
-        border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Subtle dark-mode border */
-        border-left: 4px solid #3182ce !important;              /* Accent left border (or keep your preferred color) */
-        padding: 16px !important;               /* Creates internal breathing room */
-        line-height: 1.1 !important;           /* Keeps text lines tightly grouped */
-        display: block !important;              /* Forces the inline element to act like a box */
-        width: 100% !important;                 /* Spans the box structure across the viewport */
-        max-width: 850px !important;            /* Restricts maximum box width to look clean */
-        margin: 1.5rem 0 !important;            /* Vertical margins separate it from normal body text */
-        color: #eaf4ff !important;                     /* Matches your light text color */
-        border-radius: 6px !important;          /* Gives the box sleek, rounded corners */
+        background: #1e1e1e !important;         
+        border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+        border-left: 4px solid #3182ce !important;             
+        padding: 16px !important;               
+        line-height: 1.1 !important;            
+        display: block !important;              
+        width: 100% !important;                 
+        max-width: 850px !important;            
+        margin: 1.5rem 0 !important;            
+        color: #eaf4ff !important;                   
+        border-radius: 6px !important;          
     }
+
+    /* Left Column (TOC) Independent Scroll */
     .sidebar-toc {
-      position: sticky;
-      top: 2rem;
-      max-height: calc(100vh - 4rem);
+      height: 100%;
       overflow-y: auto;
       background: rgba(255, 255, 255, 0.05);
       padding: 1.5rem;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
     }
     .sidebar-toc ul {
       list-style: none;
@@ -70,9 +91,15 @@
       color: #eaf4ff;
       text-decoration: underline;
     }
+
+    /* Right Column (Document Content) Independent Scroll */
     .document-content {
+      height: 100%;
+      overflow-y: auto;
       color: #eaf4ff;
       line-height: 1.7;
+      padding-right: 1rem; 
+      box-sizing: border-box;
     }
     .document-content pre {
       background: #1e1e1e;
@@ -220,13 +247,18 @@
     }
 
     @media (max-width: 768px) {
-      .doc-layout {
-        grid-template-columns: 1fr;
+      html, body {
+        overflow: auto; /* Re-enable window scrolling on mobile */
       }
-      .sidebar-toc {
-        position: relative;
-        top: 0;
-        max-height: none;
+      main.app-main {
+        height: auto;
+      }
+      .doc-layout {
+        display: block;
+        height: auto;
+      }
+      .sidebar-toc, .document-content {
+        height: auto;
         overflow-y: visible;
       }
       .document-content table {
@@ -236,11 +268,20 @@
       }
     }
   </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LLK7685ZGC');
+</script>
 </head>
 <body>
   <div id="header-placeholder"></div>
-  <main style="padding: 2rem 1.5rem; max-width: 100%; margin: 1rem 0;">
-    <p style="margin-bottom: 1.5rem; text-align: left;">
+  <main class="app-main">
+    <p style="margin-bottom: 1rem; text-align: left; flex-shrink: 0;">
       <a href="../index.html" style="color: #bfdbfe; font-weight: 600;">→Home Lab</a>
       <span style="color: #64748b; margin: 0 0.75rem;">|</span>
       <a href="./index.html" style="color: #bfdbfe; font-weight: 600;">→Back</a>
@@ -248,8 +289,9 @@
       <a href="/index.html" style="color: #bfdbfe; font-weight: 600;">→Gateway</a>
     </p>
 
-    <div class="title-banner" style="text-align: left; margin-bottom: 2rem;">
-      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">6-integrating-home-assistant</h1>
+    <div class="title-banner" style="text-align: left; margin-bottom: 1.5rem; flex-shrink: 0;">
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Integrating
+Home Assistant</h1>
       <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
       <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
     </div>
@@ -485,527 +527,240 @@
         <p>Integrating Home Assistant</p>
         <p>Smart Home Edge Systems</p>
         <p>(smart-home-edge-systems.us)</p>
-        <div class="custom-style-caption caption"
-        data-custom-style="caption">
         <p>: They are watching you!</p>
-        </div>
         <p>Barnes Home Lab</p>
         <h1 class="TOC-Heading" id="nav-table-of-contents">Table of
         Contents</h1>
-        <div class="custom-style-toc 1 toc 1" data-custom-style="toc 1">
         <p><a href="#nav-introduction"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Introduction</span>
         [5](#introduction)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-why-build-a-home-lab"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Why Build a Home Lab?</span>
         [5](#why-build-a-home-lab)</a></p>
-        </div>
-        <div class="custom-style-toc 1 toc 1" data-custom-style="toc 1">
         <p><a href="#nav-recommended-design-architecture"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Recommended Design
         Architecture</span>
         [6](#recommended-design-architecture)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-basic-home-lab-configuration"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Basic Home Lab
         Configuration</span> [6](#basic-home-lab-configuration)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a
         href="#nav-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer."><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">A Home Lab self-contained in an
         inexpensive single mini-computer.</span>
         [6](#a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.)</a></p>
-        </div>
-        <div class="custom-style-toc 1 toc 1" data-custom-style="toc 1">
         <p><a href="#nav-_Toc233265840"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Installing your Home Lab on a
         Mini-Computer</span> [8](#_Toc233265840)</a></p>
-        </div>
-        <div class="custom-style-toc 1 toc 1" data-custom-style="toc 1">
         <p><a href="#nav-step-by-step-instructions"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Step by Step instructions</span>
         [8](#step-by-step-instructions)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265842"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Proxmox VE base layer</span>
         [8](#_Toc233265842)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265843"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Step-by-Step Deployment
         Guide</span> [8](#_Toc233265843)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265844"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">PiHole (LXC 100)</span>
         [10](#_Toc233265844)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265845"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Home Assistant OS (LXC 101 - HAOS
         VM)</span> [11](#_Toc233265845)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265846"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Deluge (LXC 102):</span>
         [12](#_Toc233265846)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265847"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Ollama AI Engine (LXC 103)</span>
         [12](#_Toc233265847)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265848"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Load the Agents</span>
         [13](#_Toc233265848)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265849"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">How to Connect Ollama to Home
         Assistant</span> [14](#_Toc233265849)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265850"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Wyoming Docker Installation
         (LXC104 - Docker)</span> [15](#_Toc233265850)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265851"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Step 1: Create a Docker LXC in
         Proxmox</span> [15](#_Toc233265851)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265852"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Step 2: Set Up Wyoming Docker
         Services</span> [16](#_Toc233265852)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265853"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Step 3: Connect to Home
         Assistant</span> [17](#_Toc233265853)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265854"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Portainer/Docker changes</span>
         [18](#_Toc233265854)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265855"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Twingate Connector (LXC
         105)</span> [18](#_Toc233265855)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265856"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Post Install Scripts</span>
         [20](#_Toc233265856)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265857"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Proxmox Scripts:</span>
         [20](#_Toc233265857)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265858"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Twingate Connector</span>
         [21](#_Toc233265858)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265859"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Phase 1: Verify Your Current
         Setup</span> [21](#_Toc233265859)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265860"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Phase 2: Modify the SSH
         Configuration File</span> [21](#_Toc233265860)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265861"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">2. Post-Script Configuration
         Injection</span> [22](#_Toc233265861)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265862"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">1. For Home Assistant OS (VM
         101)</span> [22](#_Toc233265862)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265863"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">2. For Deluge (LXC 102) &amp;
         Pi-Hole (LXC 100)</span> [22](#_Toc233265863)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265864"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink"># Pi-Hole Limits (Ensuring it uses
         the temporary staging IP)</span> [23](#_Toc233265864)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265865"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Deluge Drive Mounting</span>
         [23](#_Toc233265865)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265866"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Step 2: Mount the Drive to the
         Proxmox Host</span> [23](#_Toc233265866)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265867"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Step 3: Link the Storage to Deluge
         (LXC 102)</span> [24](#_Toc233265867)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265868"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Step 4: Fix Permissions
         (Crucial)</span> [24](#_Toc233265868)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265869"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">3. For Ollama LLM Engine (LXC
         103)</span> [25](#_Toc233265869)</a></p>
-        </div>
-        <div class="custom-style-toc 3 toc 3" data-custom-style="toc 3">
         <p><a href="#nav-_Toc233265870"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">4. For Wyoming Docker (LXC
         104)</span> [27](#_Toc233265870)</a></p>
-        </div>
-        <div class="custom-style-toc 1 toc 1" data-custom-style="toc 1">
         <p><a href="#nav-_Toc233265871"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Disaster Recovery:</span>
         [28](#_Toc233265871)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265872"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Text Configuration Backup
         Script</span> [28](#_Toc233265872)</a></p>
-        </div>
-        <div class="custom-style-toc 1 toc 1" data-custom-style="toc 1">
         <p><a href="#nav-_Toc233265873"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Tools to verify Installation and
         functionality</span> [30](#_Toc233265873)</a></p>
-        </div>
-        <div class="custom-style-toc 2 toc 2" data-custom-style="toc 2">
         <p><a href="#nav-_Toc233265874"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">How to Quickly Verify Promox
         Container Configurations:</span> [30](#_Toc233265874)</a></p>
-        </div>
-        <div class="custom-style-toc 1 toc 1" data-custom-style="toc 1">
         <p><a href="#nav-step-1-create-a-home-assistant-group"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">References</span>
         [32](#step-1-create-a-home-assistant-group)</a></p>
-        </div>
-        <div class="custom-style-toc 1 toc 1" data-custom-style="toc 1">
         <p><a href="#nav-table-of-authorities"><span
         class="custom-style-Hyperlink Hyperlink"
         data-custom-style="Hyperlink">Table of Authorities</span>
         [33](#table-of-authorities)</a></p>
-        </div>
         <h1 class="TOC-Heading" id="nav-index-of-source-code-blocks">🛠️
         Index of Source Code Blocks<span
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span></h1>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         Barnes Home Lab Configuration <a
+        <p>Code 1: Barnes Home Lab Configuration <a
         href="#nav-_Ref232848286">7</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         PiHoleInstallCommand.sh <a
+        <p>Code 2: PiHoleInstallCommand.sh <a
         href="#nav-_Toc233265878">10</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p><em>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         PiHole Install Parameters and Response</em> <a
+        <p><em>Code 3: PiHole Install Parameters and Response</em> <a
         href="#nav-_Toc233265879">11</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         HAOSInstallCommand.sh <a
+        <p>Code 4: HAOSInstallCommand.sh <a
         href="#nav-_Toc233265880">11</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p><em>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         HAOS Install Parameters and Response</em> <a
+        <p><em>Code 5: HAOS Install Parameters and Response</em> <a
         href="#nav-_Toc233265881">12</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         DelugeInstallCommand.sh <a
+        <p>Code 6: DelugeInstallCommand.sh <a
         href="#nav-_Toc233265882">12</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p><em>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         Deluge Install Parameters and Response</em> <a
+        <p><em>Code 7: Deluge Install Parameters and Response</em> <a
         href="#nav-_Toc233265883">12</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         OllamaInstallCommand.sh <a
+        <p>Code 8: OllamaInstallCommand.sh <a
         href="#nav-_Toc233265884">13</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p><em>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         Ollama Install Parameters and Response</em> <a
+        <p><em>Code 9: Ollama Install Parameters and Response</em> <a
         href="#nav-_Toc233265885">13</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         DockerInstallCommand.sh <a
+        <p>Code 10: DockerInstallCommand.sh <a
         href="#nav-_Toc233265886">15</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p><em>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         Wyoming Docker Install Parameters and
+        <p><em>Code 11: Wyoming Docker Install Parameters and
         Response</em> <a href="#nav-_Toc233265887">16</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         WyomingDockerCompose.sh <a
+        <p>Code 12: WyomingDockerCompose.sh <a
         href="#nav-_Toc233265888">17</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         DockerCompose.sh <a
+        <p>Code 13: DockerCompose.sh <a
         href="#nav-_Toc233265889">17</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         Wyoming-Docker Portainer Stack <a
+        <p>Code 14: Wyoming-Docker Portainer Stack <a
         href="#nav-_Toc233265890">17</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         DockerCompose.sh <a
+        <p>Code 15: DockerCompose.sh <a
         href="#nav-_Toc233265891">17</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         HAOS-Wyoming Integrations <a
+        <p>Code 16: HAOS-Wyoming Integrations <a
         href="#nav-_Toc233265892">18</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         TwingateConnectorInstallCommand.sh <a
+        <p>Code 17: TwingateConnectorInstallCommand.sh <a
         href="#nav-_Toc233265893">19</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         Twingate Connector Install Parameters <a
+        <p>Code 18: Twingate Connector Install Parameters <a
         href="#nav-_Toc233265894">19</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         SetVIasDefault.sh <a
+        <p>Code 19: SetVIasDefault.sh <a
         href="#nav-_Toc233265895">20</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         ExportVIasDefault.sh <a
+        <p>Code 20: ExportVIasDefault.sh <a
         href="#nav-_Toc233265896">21</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         backup_all_configs.sh <a
+        <p>Code 24: backup_all_configs.sh <a
         href="#nav-_Toc233265897">29</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         QuickSystemTest.sh <a
+        <p>Code 25: QuickSystemTest.sh <a
         href="#nav-_Toc233265898">30</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         Quick System Test Response <a
+        <p>Code 26: Quick System Test Response <a
         href="#nav-_Toc233265899">32</a></p>
-        </div>
         <hr />
         <h1 class="TOC-Heading" id="nav-index-of-pictures">📸 Index of
         Pictures<span
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span></h1>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $FigureIndex++
-
-            "Figure ${FigureIndex}:"
-         They are watching you! <a
+        <p>Figure 1: They are watching you! <a
         href="#nav-_Toc233266141">1</a></p>
-        </div>
-        <div class="custom-style-table of figures table of figures"
-        data-custom-style="table of figures">
-        <p>
-
-            $FigureIndex++
-
-            "Figure ${FigureIndex}:"
-         Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
+        <p>Figure 2: Proxmox VE 9.2.3 / Minicomputer Architecture &amp;
         Network Diagram <a href="#nav-_Toc233266142">6</a></p>
-        </div>
         <p>**</p>
         <h1 id="nav-introduction">Introduction</h1>
         <h2 id="nav-why-build-a-home-lab">Why Build a Home Lab<span
@@ -1055,13 +810,10 @@
         id="nav-a-home-lab-self-contained-in-an-inexpensive-single-mini-computer.">A
         Home Lab self-contained in an inexpensive single
         mini-computer.</h3>
-        <div class="custom-style-caption caption"
-        data-custom-style="caption">
         <p>: Proxmox VE 9.2.3 / Minicomputer Architecture &amp; Network
         Diagram<span
         class="custom-style-annotation reference annotation reference"
         data-custom-style="annotation reference"></span></p>
-        </div>
         <p>Note: If you want to use this information in an AI window –
         select this section into your chat window to reference the
         entire configuration<span
@@ -1076,12 +828,8 @@
         caches and then load this config for reference."</p>
         </blockquote>
         <table>
-        <caption><span id="nav-_Ref232848286" class="anchor"></span>
-
-            $CodeIndex++
-
-            "Code ${CodeIndex}:"
-         Barnes Home Lab Configuration</caption>
+        <caption><span id="nav-_Ref232848286" class="anchor"></span>Code
+        : Barnes Home Lab Configuration</caption>
         <colgroup>
         <col style="width: 101%" />
         </colgroup>
@@ -1463,8 +1211,7 @@
         immediately and save it safely.</h1>
         <p>haos</p>
         <p>20945008-0b29-4453-8d1b-cbda92e7f26b</p>
-        <p><img
-        src="../assets/figures/6-integrating-home-assistant/media/image1.png"
+        <p><img src="6-integrating-home-assistant/media/image1.png"
         style="width:3.84429in;height:5.43826in" /></p>
         <p><strong>1. Fix the Username Format</strong></p>
         <p>When you use an <strong>API Token</strong>, Home Assistant
@@ -1596,64 +1343,33 @@
         https://www.youtube.com/watch?v=OkY30sh-vRM</p>
         </blockquote>
         <h1 id="nav-table-of-authorities">Table of Authorities</h1>
-        <div class="custom-style-toa heading toa heading"
-        data-custom-style="toa heading">
         <p>Other Authorities</p>
-        </div>
-        <div
-        class="custom-style-table of authorities table of authorities"
-        data-custom-style="table of authorities">
         <p>DigitalOcean. (2021). Hardening SSH access on Ubuntu 20.04.
         DigitalOcean Community.
         https://www.digitalocean.com/community/tutorials/hardening-ssh-fail2ban
         20</p>
-        </div>
-        <div
-        class="custom-style-table of authorities table of authorities"
-        data-custom-style="table of authorities">
         <p>E2E Networks. (n.d.). How to enable/disable password-based
         authentication. E2E Networks Documentation.
         https://docs.e2enetworks.com/docs/myaccount/security/enable_disable_passwordbased/
         20</p>
-        </div>
-        <div
-        class="custom-style-table of authorities table of authorities"
-        data-custom-style="table of authorities">
         <p>Fiala, J. (2020, March 24). Integrating Fedora Toolbox into
         VS Code (with the help of SSH). Function Over Form.
         https://jurf.github.io/2020/03/24/vscode-toolbox/ 19</p>
-        </div>
-        <div
-        class="custom-style-table of authorities table of authorities"
-        data-custom-style="table of authorities">
         <p>Project X. (n.d.). Security (Level 0, Chapter 4). XTLS.
         https://xtls.github.io/en/document/level-0/ch04-security.html
         20</p>
-        </div>
-        <div
-        class="custom-style-table of authorities table of authorities"
-        data-custom-style="table of authorities">
         <p>Rackspace. (n.d.). Linux server security best practices.
         Rackspace Documentation.
         https://docs.rackspace.com/docs/linux-server-security-best-practices
         20</p>
-        </div>
-        <div
-        class="custom-style-table of authorities table of authorities"
-        data-custom-style="table of authorities">
         <p>SecureBits. (n.d.). Linux SSH absichern [Linux SSH
         hardening]. SecureBits.
         https://secure-bits.org/en/posts/linux/linux-ssh-absichern/
         20</p>
-        </div>
-        <div
-        class="custom-style-table of authorities table of authorities"
-        data-custom-style="table of authorities">
         <p>SyncBricks. (2024, December). How to Generate and Deploy SSH
         Keys for Proxmox Cluster Login (Passwordless SSH Access)
         [Video]. YouTube. https://www.youtube.com/watch?v=OkY30sh-vRM
         8</p>
-        </div>
       </article>
     </div>
   </main>
@@ -1661,4 +1377,3 @@
   <script src="/scripts/component-loader.js"></script>
 </body>
 </html>
-

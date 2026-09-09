@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title> Proxmox Storage Server V2</title>
+  <title>Proxmox Storage Server Architectural Document</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -268,6 +268,15 @@
       }
     }
   </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LLK7685ZGC');
+</script>
 </head>
 <body>
   <div id="header-placeholder"></div>
@@ -281,8 +290,8 @@
     </p>
 
     <div class="title-banner" style="text-align: left; margin-bottom: 1.5rem; flex-shrink: 0;">
-      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
-Proxmox Storage Server V2</h1>
+      <h1 style="color: #eaf4ff; margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Proxmox
+Storage Server Architectural Document</h1>
       <h2 style="color: #bfdbfe; margin: 0 0.25rem 0; font-size: 1.35rem; font-weight: 500;">Smart Home Edge Systems</h2>
       <p style="color: #94a3b8; margin: 0; font-size: 1.1rem; font-weight: 400;">(smart-home-edge-systems.us)</p>
     </div>
@@ -417,13 +426,20 @@ Proxmox Storage Server V2</h1>
         id="nav-toc-hardware-monitoring-realities">4. Hardware &amp;
         Monitoring Realities</a></li>
         </ul></li>
+        </ul></li>
+        <li><a href="#nav-references-and-authoritative-resources"
+        id="nav-toc-references-and-authoritative-resources">References
+        and Authoritative Resources</a></li>
+        <li><a href="#nav-further-reading"
+        id="nav-toc-further-reading">Further Reading</a>
+        <ul>
         <li><a href="#nav-section" id="nav-toc-section"></a></li>
         </ul></li>
         </ul>
       </aside>
 
       <article class="document-content">
-        <p><img src="1 - Proxmox Storage Server v2/media/image1.jpeg"
+        <p><img src="1-Proxmox-Storage-Server-Architectural-Document/media/image1.jpeg"
         style="width:5.83333in;height:2.56597in" /></p>
         <p>I wrote this analysis and design document for my Proxmox VE
         9.2.3 media and I/O mini-computer architecture. I’m using it to
@@ -497,7 +513,7 @@ Proxmox Storage Server V2</h1>
         system due to maintenance. This will allow users to replace hard
         drives without powering off the device. This feature enhances
         convenience and efficiency in data transfer processes.</p>
-        <p><img src="1 - Proxmox Storage Server v2/media/image2.jpg"
+        <p><img src="1-Proxmox-Storage-Server-Architectural-Document/media/image2.jpg"
         style="width:5.83333in;height:3.88889in" /></p>
         <p>The minicomputer I’m using is the Proxmox server with the
         following HW characteristics:</p>
@@ -523,7 +539,7 @@ Proxmox Storage Server V2</h1>
         workstation with 3 monitors. This is not part of the overall
         system but is worth mentioning.</p>
         <table>
-        <caption>Code 1: Infotainment Architecture</caption>
+        <caption>Code : Infotainment Architecture</caption>
         <colgroup>
         <col style="width: 101%" />
         </colgroup>
@@ -531,438 +547,152 @@ Proxmox Storage Server V2</h1>
         <tr>
         <th><div class="custom-style-TextBlock TextBlock"
         data-custom-style="TextBlock">
-        <p>=========================================================================</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>Barnes Home Lab Configuration</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>* * * * Infotainment Module * * * *</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>PROXMOX VE SYSTEM (10C / 16T | 32GB RAM)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>Proxmox VE 9.2.3 / Dedicated Ethernet / Intel QuickSync</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>Storage: 1TB NVMe OS / Central Storage Array Mounts</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>=========================================================================</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>[ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2 Threads for
-        overhead ]</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ 192.168.86.235</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 100 ] SAMBA-NAS (Central Storage Gateway)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 1 GB (Scalable)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 16 GB NVMe (OS)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── SHARE EXPORTS (SMB/NFS):</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ │ ├── /mnt/storage/media ---&gt; Shared across Plex,
-        Jellyfin, Emby</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ │ ├── /mnt/storage/audiobooks ---&gt; Exported to
-        Audiobookshelf</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ │ ├── /mnt/storage/documents ---&gt; Exported to
-        Paperless-NGX / Nextcloud</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ │ ├── /mnt/storage/photos ---&gt; Exported to Immich /
-        Nextcloud</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ │ ├── /mnt/storage/downloads ---&gt; Exported to Deluge</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ │ └── /mnt/storage/3d_assets ---&gt; Exported to
-        Manyfold</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 192.168.86.234 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 101 ] POSTGRES-DB</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 4 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 4 GB (Dedicated)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 32 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── BIND MP: mp0:
-        /mnt/pve/db_data,mp=/var/lib/postgresql/data</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 10.0.20.10 - Isolated Backend Segment (vmbr1) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 102 ] MEDIA-PLEX</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 6 Cores (vCPUs) ---&gt; (Intel QuickSync
-        Passthrough)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 4 GB</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 20 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── BIND MP: mp0:
-        /mnt/pve/shares/media,mp=/data/media,ro=1</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 192.168.86.236 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 103 ] MEDIA-JELLYFIN</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 6 Cores (vCPUs) ---&gt; (Intel QuickSync
-        Passthrough)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 4 GB</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 20 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── BIND MP: mp0:
-        /mnt/pve/shares/media,mp=/data/media,ro=1</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 192.168.86.237 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 104 ] MEDIA-EMBY</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 4 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 2 GB</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 20 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── BIND MP: mp0:
-        /mnt/pve/shares/media,mp=/data/media,ro=1</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 192.168.86.238 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 105 ] AUDIOBOOKSHELF</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 1 GB</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 10 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── BIND MP: mp0:
-        /mnt/pve/shares/audiobooks,mp=/data/audiobooks</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 192.168.86.239 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 106 ] NEXTCLOUD</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 4 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 4 GB</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 32 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── BIND MP: mp0:
-        /mnt/pve/shares/documents,mp=/var/www/html/data</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 192.168.86.240 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 107 ] IMMICH</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 6 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 6 GB</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 32 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── BIND MP: mp0:
-        /mnt/pve/shares/photos,mp=/usr/src/app/upload</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 192.168.86.241 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 108 ] PAPERLESS-NGX</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 2 GB</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 16 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── BIND MP: mp0:
-        /mnt/pve/shares/documents/paperless,mp=/usr/src/paperless/consume</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── BIND MP: mp1:
-        /mnt/pve/shares/documents/archive,mp=/usr/src/paperless/media</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 192.168.86.242 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 109 ] POSTGRES-FE</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 512 MB</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 8 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 192.168.86.243 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 110 ] DELUGE (VPN)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 2 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 1 GB</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 16 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── BIND MP: mp0:
-        /mnt/pve/shares/downloads,mp=/data/downloads</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 192.168.86.244 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├──► [ LXC 112 ] LINUX-GSM</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── CPU: 8 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── RAM: 4 GB</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── STO: 100 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── BIND MP: mp0:
-        /mnt/pve/shares/game_backups,mp=/home/lgsm/backups</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── 192.168.86.245 - Primary LAN Segment (vmbr0) eth0</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>└──► [ VM 113 ] DOCKER WEB STACK</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── CPU: 4 Cores (vCPUs)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── RAM: 4 GB (Dedicated)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── STO: 32 GB NVMe</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── SMB/NFS VM MOUNTS:</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ ├── /mnt/shares/3d_assets ---&gt; Mounted into Manyfold
-        container</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>│ └── /mnt/shares/backups ---&gt; Mounted for Uptime
-        Kuma/Netbox exports</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── Docker Container: Pi-hole Backup (Port 53 / 80)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── Docker Container: Gravity-Sync (Syncs with Compute
-        Pi-hole at 192.168.86.254)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── Docker Container: Manyfold (Port 3232:3232 | Volume:
-        /mnt/shares/3d_assets:/libraries)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── Docker Container: Homebox (Port 7745:7745)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── Docker Container: Netbox (Port 8000:8000)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── Docker Container: Grocy (Port 9192:80)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── Docker Container: Mealie (Port 9925:9000)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>├── Docker Container: Uptime Kuma (Port 3001:3001)</p>
-        </div>
-        <div class="custom-style-TextBlock TextBlock"
-        data-custom-style="TextBlock">
-        <p>└── 192.168.86.233 - Primary LAN Segment (vmbr0) eth0</p>
+        <p>=========================================================================<br />
+        Barnes Home Lab Configuration<br />
+        * * * * Infotainment Module * * * *<br />
+        PROXMOX VE SYSTEM (10C / 16T | 32GB RAM)<br />
+        Proxmox VE 9.2.3 / Dedicated Ethernet / Intel QuickSync<br />
+        Storage: 1TB NVMe OS / Central Storage Array Mounts<br />
+        =========================================================================<br />
+        <br />
+        [ PROXMOX VE HOST ] --------- Reserve 2GB RAM / 2 Threads for
+        overhead ]<br />
+        │ 192.168.86.235<br />
+        [ Infotainment HOST (NUT Server) ]<br />
+        │ * Monitors UPS hardware over USB<br />
+        │ * Sends status to local/remote clients<br />
+        ├──► [ LXC 100 ] SAMBA-NAS (Central Storage Gateway)<br />
+        │ ├── CPU: 2 Cores (vCPUs)<br />
+        │ ├── RAM: 1 GB (Scalable)<br />
+        │ ├── STO: 16 GB NVMe (OS)<br />
+        │ ├── SHARE EXPORTS (SMB/NFS):<br />
+        │ │ ├── /mnt/storage/media ---&gt; Shared across Plex, Jellyfin,
+        Emby<br />
+        │ │ ├── /mnt/storage/audiobooks ---&gt; Exported to
+        Audiobookshelf<br />
+        │ │ ├── /mnt/storage/documents ---&gt; Exported to Paperless-NGX
+        / Nextcloud<br />
+        │ │ ├── /mnt/storage/photos ---&gt; Exported to Immich /
+        Nextcloud<br />
+        │ │ ├── /mnt/storage/downloads ---&gt; Exported to Deluge<br />
+        │ │ ├── /mnt/storage/3d_assets ---&gt; Exported to
+        Manyfold<br />
+        │ │ └── homelab-backups/configs ---&gt; Used for Hybrid
+        Backups<br />
+        │ │ ├── compute-node/<br />
+        │ │ │ ├── haos/ # Automated HA configuration backups<br />
+        │ │ │ ├── open-webui/ # Compose files &amp; volumes<br />
+        │ │ │ └── pihole/ # Teleporter export archives<br />
+        │ │ ├── infotainment-node/<br />
+        │ │ │ ├── postgres-dumps/ # Nightly pg_dump SQL files<br />
+        │ │ │ ├── nginx/ # Nginx/NPM configuration files<br />
+        │ │ │ └── docker-stacks/ # VM 113 compose files &amp; .env
+        files<br />
+        │ │ └── cold-sync-status.log<br />
+        │ └── 192.168.86.234 - Primary LAN Segment (vmbr0) eth0<br />
+        ├──► [ LXC 101 ] POSTGRES-DB<br />
+        │ ├── CPU: 4 Cores (vCPUs)<br />
+        │ ├── RAM: 4 GB (Dedicated)<br />
+        │ ├── STO: 32 GB NVMe<br />
+        │ ├── BIND MP: mp0:
+        /mnt/pve/db_data,mp=/var/lib/postgresql/data<br />
+        │ └── 10.0.20.10 - Isolated Backend Segment (vmbr1) eth0<br />
+        ├──► [ LXC 102 ] MEDIA-PLEX<br />
+        │ ├── CPU: 6 Cores (vCPUs) ---&gt; (Intel QuickSync
+        Passthrough)<br />
+        │ ├── RAM: 4 GB<br />
+        │ ├── STO: 20 GB NVMe<br />
+        │ ├── BIND MP: mp0:
+        /mnt/pve/shares/media,mp=/data/media,ro=1<br />
+        │ └── 192.168.86.236 - Primary LAN Segment (vmbr0) eth0<br />
+        ├──► [ LXC 103 ] MEDIA-JELLYFIN<br />
+        │ ├── CPU: 6 Cores (vCPUs) ---&gt; (Intel QuickSync
+        Passthrough)<br />
+        │ ├── RAM: 4 GB<br />
+        │ ├── STO: 20 GB NVMe<br />
+        │ ├── BIND MP: mp0:
+        /mnt/pve/shares/media,mp=/data/media,ro=1<br />
+        │ └── 192.168.86.237 - Primary LAN Segment (vmbr0) eth0<br />
+        ├──► [ LXC 104 ] MEDIA-EMBY<br />
+        │ ├── CPU: 4 Cores (vCPUs)<br />
+        │ ├── RAM: 2 GB<br />
+        │ ├── STO: 20 GB NVMe<br />
+        │ ├── BIND MP: mp0:
+        /mnt/pve/shares/media,mp=/data/media,ro=1<br />
+        │ └── 192.168.86.238 - Primary LAN Segment (vmbr0) eth0<br />
+        ├──► [ LXC 105 ] AUDIOBOOKSHELF<br />
+        │ ├── CPU: 2 Cores (vCPUs)<br />
+        │ ├── RAM: 1 GB<br />
+        │ ├── STO: 10 GB NVMe<br />
+        │ ├── BIND MP: mp0:
+        /mnt/pve/shares/audiobooks,mp=/data/audiobooks<br />
+        │ └── 192.168.86.239 - Primary LAN Segment (vmbr0) eth0<br />
+        ├──► [ LXC 106 ] NEXTCLOUD<br />
+        │ ├── CPU: 4 Cores (vCPUs)<br />
+        │ ├── RAM: 4 GB<br />
+        │ ├── STO: 32 GB NVMe<br />
+        │ ├── BIND MP: mp0:
+        /mnt/pve/shares/documents,mp=/var/www/html/data<br />
+        │ └── 192.168.86.240 - Primary LAN Segment (vmbr0) eth0<br />
+        ├──► [ LXC 107 ] IMMICH<br />
+        │ ├── CPU: 6 Cores (vCPUs)<br />
+        │ ├── RAM: 6 GB<br />
+        │ ├── STO: 32 GB NVMe<br />
+        │ ├── BIND MP: mp0:
+        /mnt/pve/shares/photos,mp=/usr/src/app/upload<br />
+        │ └── 192.168.86.241 - Primary LAN Segment (vmbr0) eth0<br />
+        ├──► [ LXC 108 ] PAPERLESS-NGX<br />
+        │ ├── CPU: 2 Cores (vCPUs)<br />
+        │ ├── RAM: 2 GB<br />
+        │ ├── STO: 16 GB NVMe<br />
+        │ ├── BIND MP: mp0:
+        /mnt/pve/shares/documents/paperless,mp=/usr/src/paperless/consume<br />
+        │ ├── BIND MP: mp1:
+        /mnt/pve/shares/documents/archive,mp=/usr/src/paperless/media<br />
+        │ └── 192.168.86.242 - Primary LAN Segment (vmbr0) eth0<br />
+        ├──► [ LXC 109 ] POSTGRES-FE<br />
+        │ ├── CPU: 2 Cores (vCPUs)<br />
+        │ ├── RAM: 512 MB<br />
+        │ ├── STO: 8 GB NVMe<br />
+        │ └── 192.168.86.243 - Primary LAN Segment (vmbr0) eth0<br />
+        ├──► [ LXC 110 ] DELUGE (VPN)<br />
+        │ ├── CPU: 2 Cores (vCPUs)<br />
+        │ ├── RAM: 1 GB<br />
+        │ ├── STO: 16 GB NVMe<br />
+        │ ├── BIND MP: mp0:
+        /mnt/pve/shares/downloads,mp=/data/downloads<br />
+        │ └── 192.168.86.244 - Primary LAN Segment (vmbr0) eth0<br />
+        ├──► [ LXC 112 ] LINUX-GSM<br />
+        │ ├── CPU: 8 Cores (vCPUs)<br />
+        │ ├── RAM: 4 GB<br />
+        │ ├── STO: 100 GB NVMe<br />
+        │ ├── BIND MP: mp0:
+        /mnt/pve/shares/game_backups,mp=/home/lgsm/backups<br />
+        │ └── 192.168.86.245 - Primary LAN Segment (vmbr0) eth0<br />
+        └──► [ VM 113 ] DOCKER WEB STACK<br />
+        ├── CPU: 4 Cores (vCPUs)<br />
+        ├── RAM: 4 GB (Dedicated)<br />
+        ├── STO: 32 GB NVMe<br />
+        ├── SMB/NFS VM MOUNTS:<br />
+        │ ├── /mnt/shares/3d_assets ---&gt; Mounted into Manyfold
+        container<br />
+        │ └── /mnt/shares/backups ---&gt; Mounted for Uptime Kuma/Netbox
+        exports<br />
+        ├── Docker Container: Pi-hole Backup (Port 53 / 80)<br />
+        ├── Docker Container: Gravity-Sync (Syncs with Compute Pi-hole
+        at 192.168.86.254)<br />
+        ├── Docker Container: Manyfold (Port 3232:3232 | Volume:
+        /mnt/shares/3d_assets:/libraries)<br />
+        ├── Docker Container: Homebox (Port 7745:7745)<br />
+        ├── Docker Container: Netbox (Port 8000:8000)<br />
+        ├── Docker Container: Grocy (Port 9192:80)<br />
+        ├── Docker Container: Mealie (Port 9925:9000)<br />
+        ├── Docker Container: Uptime Kuma (Port 3001:3001)<br />
+        ├── 192.168.86.233 - Primary LAN Segment (vmbr0) eth0<br />
+        └── Watchtower Container #2<br />
+        └── Monitors: Gravity-Sync, Manyfold, Homebox, Netbox,
+        Grocy,<br />
+        Mealie, Uptime Kuma, Pi-hole Backup</p>
         </div></th>
         </tr>
         </thead>
@@ -2390,6 +2120,261 @@ Proxmox Storage Server V2</h1>
         HAOS automation will perform system level shutdown procedures
         while reporting the cause of the shutdown.</strong></p>
         </div></li>
+        </ul>
+        <h1 id="nav-references-and-authoritative-resources">References
+        and Authoritative Resources</h1>
+        <ul>
+        <li><p><a
+        href="https://pve.proxmox.com/pve-docs/pve-admin-guide.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Proxmox VE Storage</span></a> —
+        Proxmox Server Solutions GmbH. Storage backends, local storage,
+        directory storage, NFS, CIFS, ZFS, and storage
+        configuration.</p></li>
+        <li><p><a
+        href="https://pve.proxmox.com/pve-docs/pve-admin-guide.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Proxmox VE Administration
+        Guide</span></a> — Proxmox Server Solutions GmbH. Storage
+        administration, virtual machines, containers, networking,
+        backups, and cluster operations.</p></li>
+        <li><p><a
+        href="https://pve.proxmox.com/pve-docs/pve-container.1.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Proxmox VE Container
+        Documentation</span></a> — Proxmox Server Solutions GmbH. LXC
+        container configuration, mount points, resource allocation, and
+        container behavior.</p></li>
+        <li><p><a
+        href="https://pve.proxmox.com/pve-docs/pve-admin-guide.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Proxmox VE Storage Plugin
+        Documentation</span></a> — Proxmox Server Solutions GmbH.
+        Supported storage plugins and backend configuration.</p></li>
+        <li><p><a
+        href="https://docs.kernel.org/driver-api/usb/storage.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Linux Kernel USB Storage
+        Documentation</span></a> — Linux kernel documentation. USB
+        mass-storage behavior and device handling.</p></li>
+        <li><p><a
+        href="https://docs.kernel.org/filesystems/index.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Linux Filesystem
+        Documentation</span></a> — Linux kernel documentation.
+        Filesystem architecture and filesystem-specific
+        guidance.</p></li>
+        <li><p><a href="https://openzfs.github.io/openzfs-docs/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">OpenZFS Documentation</span></a> —
+        OpenZFS Project. ZFS administration, datasets, pools, snapshots,
+        checksums, and data integrity.</p></li>
+        <li><p><a href="https://www.samba.org/samba/docs/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Samba Documentation</span></a> —
+        Samba Team. SMB file sharing, server configuration, permissions,
+        authentication, and client access.</p></li>
+        <li><p><a
+        href="https://www.samba.org/samba/docs/current/man-html/smb.conf.5.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">smb.conf Manual Page</span></a> —
+        Samba Team. Detailed Samba server configuration
+        reference.</p></li>
+        <li><p><a href="https://docs.nginx.com/nginx/admin-guide/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">NGINX Admin Guide</span></a> — F5
+        NGINX. Reverse proxying, HTTP routing, TLS, WebSockets, and
+        request handling.</p></li>
+        <li><p><a href="https://www.twingate.com/docs"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Twingate Documentation</span></a>
+        — Twingate. Zero Trust remote access, connectors, remote
+        networks, and resource routing.</p></li>
+        <li><p><a
+        href="https://docs.docker.com/engine/storage/bind-mounts/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Docker Bind Mounts</span></a> —
+        Docker. Bind mounts, host paths, permissions, and container
+        storage behavior.</p></li>
+        <li><p><a
+        href="https://immich.app/docs/overview/introduction"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Immich Documentation</span></a> —
+        Immich Project. Self-hosted photo and video management, storage,
+        machine learning, and external libraries.</p></li>
+        <li><p><a
+        href="https://immich.app/docs/guides/external-library"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Immich External
+        Libraries</span></a> — Immich Project. External library mounts,
+        scanning, read-only workflows, and indexing.</p></li>
+        <li><p><a href="https://docs.paperless-ngx.com/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Paperless-ngx
+        Documentation</span></a> — Paperless-ngx Project. Document
+        ingestion, OCR, storage, search, and deployment
+        requirements.</p></li>
+        <li><p><a
+        href="https://docs.nextcloud.com/server/latest/admin_manual/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Nextcloud Administrator
+        Manual</span></a> — Nextcloud GmbH. File synchronization,
+        storage, database configuration, maintenance, and
+        administration.</p></li>
+        <li><p><a
+        href="https://github.com/dani-garcia/vaultwarden/wiki"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Vaultwarden Wiki</span></a> —
+        Vaultwarden Project. Self-hosted Bitwarden-compatible server
+        deployment, configuration, and maintenance.</p></li>
+        <li><p><a href="https://www.postgresql.org/docs/current/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">PostgreSQL
+        Documentation</span></a> — PostgreSQL Global Development Group.
+        Roles, databases, schemas, backups, extensions, and
+        administration.</p></li>
+        <li><p><a href="https://github.com/pgvector/pgvector"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">pgvector Documentation</span></a>
+        — pgvector Project. Vector similarity search and PostgreSQL
+        extension installation.</p></li>
+        <li><p><a href="https://redis.io/docs/latest/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Redis Documentation</span></a> —
+        Redis Ltd. Redis configuration, persistence, queues, security,
+        and operational behavior.</p></li>
+        <li><p><a href="https://jellyfin.org/docs/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Jellyfin Documentation</span></a>
+        — Jellyfin Project. Self-hosted media server installation,
+        libraries, clients, and hardware acceleration.</p></li>
+        <li><p><a href="https://support.plex.tv/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Plex Support</span></a> — Plex.
+        Media server setup, libraries, remote access, and playback
+        configuration.</p></li>
+        <li><p><a href="https://support.emby.media/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Emby Support</span></a> — Emby.
+        Media server configuration, libraries, clients, and
+        administration.</p></li>
+        <li><p><a href="https://www.audiobookshelf.org/docs"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Audiobookshelf
+        Documentation</span></a> — Audiobookshelf Project. Audiobook and
+        podcast server deployment and library management.</p></li>
+        <li><p><a href="https://deluge.readthedocs.io/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Deluge Documentation</span></a> —
+        Deluge Project. BitTorrent client configuration, daemon
+        operation, and web interface.</p></li>
+        <li><p><a href="https://manyfold.app/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Manyfold Documentation</span></a>
+        — Manyfold Project. Self-hosted 3D model library management and
+        indexing.</p></li>
+        <li><p><a href="https://docs.github.com/en/issues"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">GitHub Issues
+        Documentation</span></a> — GitHub. Issue tracking, project
+        planning, labels, milestones, and collaboration.</p></li>
+        <li><p><a href="https://networkupstools.org/docs/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">NUT Documentation</span></a> —
+        Network UPS Tools Project. UPS monitoring, clients, servers, and
+        power-failure handling.</p></li>
+        </ul>
+        <h1 id="nav-further-reading">Further Reading</h1>
+        <ul>
+        <li><p><a href="https://pbs.proxmox.com/docs/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Proxmox Backup Server
+        Documentation</span></a> — Proxmox Server Solutions GmbH. Backup
+        design, deduplication, verification, pruning, and recovery
+        planning.</p></li>
+        <li><p><a
+        href="https://pve.proxmox.com/pve-docs/pve-admin-guide.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Proxmox VE Storage
+        Configuration</span></a> — Proxmox Server Solutions GmbH. Read
+        the storage and mount-point sections alongside the container
+        configuration guidance.</p></li>
+        <li><p><a
+        href="https://www.freedesktop.org/software/systemd/man/latest/systemd.mount.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">systemd Mount Units</span></a> —
+        freedesktop.org. Persistent mounts, boot ordering, dependencies,
+        and mount failure behavior.</p></li>
+        <li><p><a
+        href="https://www.smartmontools.org/wiki/Documentation"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">smartmontools
+        Documentation</span></a> — smartmontools Project. SMART health
+        monitoring for SATA, USB, and attached storage devices.</p></li>
+        <li><p><a
+        href="https://openzfs.github.io/openzfs-docs/Basic%20Concepts/index.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">OpenZFS Storage
+        Administration</span></a> — OpenZFS Project. Pools, datasets,
+        checksums, snapshots, and storage design decisions.</p></li>
+        <li><p><a href="https://www.truenas.com/docs/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">TrueNAS Documentation</span></a> —
+        iXsystems. Additional reference material for ZFS, SMB shares,
+        datasets, permissions, and storage reliability.</p></li>
+        <li><p><a href="https://docs.openmediavault.org/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">OpenMediaVault
+        Documentation</span></a> — OpenMediaVault Project. Debian-based
+        NAS administration, SMB/CIFS, NFS, permissions, and storage
+        services.</p></li>
+        <li><p><a
+        href="https://www.samba.org/samba/docs/Samba-HOWTO-Collection/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Samba HOWTO Collection</span></a>
+        — Samba Team. Practical background for designing and
+        troubleshooting SMB file services.</p></li>
+        <li><p><a
+        href="https://docs.kernel.org/filesystems/nfs/index.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Linux NFS Documentation</span></a>
+        — Linux kernel documentation. NFS client/server behavior and
+        filesystem considerations.</p></li>
+        <li><p><a
+        href="https://www.postgresql.org/docs/current/backup.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">PostgreSQL Backup and
+        Restore</span></a> — PostgreSQL Global Development Group. Backup
+        methods, recovery, and operational safeguards for databases used
+        by home services.</p></li>
+        <li><p><a
+        href="https://immich.app/docs/install/requirements"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Immich Hardware
+        Requirements</span></a> — Immich Project. Resource planning for
+        photo indexing, machine learning, storage, and database
+        services.</p></li>
+        <li><p><a
+        href="https://docs.paperless-ngx.com/administration/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Paperless-ngx
+        Administration</span></a> — Paperless-ngx Project. OCR workers,
+        storage, indexing, maintenance, and operational tuning.</p></li>
+        <li><p><a
+        href="https://docs.nextcloud.com/server/latest/admin_manual/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Nextcloud Server
+        Administration</span></a> — Nextcloud GmbH. Storage backends,
+        database planning, file locking, background jobs, and
+        maintenance.</p></li>
+        <li><p><a
+        href="https://bitwarden.com/help/self-host-an-organization/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">Bitwarden Self-Hosting
+        Documentation</span></a> — Bitwarden. Useful comparison material
+        for password-manager hosting, security, backups, and
+        administration. ## AI-versus-Human Authorship
+        Assessment</p></li>
         </ul>
         <h2 id="nav-section"></h2>
       </article>
