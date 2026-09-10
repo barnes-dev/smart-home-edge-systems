@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Edwin Barnes - systems architect specializing in deterministic networks, local AI, privacy-first smart home infrastructure, and safety-critical engineering." />
+  <title>Edwin Barnes | Systems Architect</title>
+  <link rel="stylesheet" href="/styles/global.css" />
+  <style>
+    :root {
+      --resume-ink: #edf4f7;
+      --resume-muted: #a9bcc4;
+      --resume-line: rgba(201, 228, 232, 0.16);
+      --resume-panel: rgba(13, 34, 45, 0.84);
+      --resume-blue: #60a5fa;
+      --resume-pale: #bfdbfe;
+      --resume-deep: #07151d;
+    }
+
+    body { background: var(--resume-deep); color: var(--resume-ink); font-family: Georgia, "Times New Roman", serif; }
+    #header-placeholder { background: #091923; }
+    .resume-page { min-height: 100vh; overflow: hidden; background-color: var(--resume-deep); background-image: linear-gradient(rgba(97, 225, 208, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(97, 225, 208, 0.045) 1px, transparent 1px); background-size: 44px 44px; }
+    .resume-wrap { width: min(1160px, calc(100% - 3rem)); margin: 0 auto; }
+    .resume-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.25rem 0; border-bottom: 1px solid var(--resume-line); font-family: "Segoe UI", sans-serif; }
+    .resume-nav strong, .eyebrow, .section-label { color: var(--resume-blue); font: 700 0.75rem "Segoe UI", sans-serif; letter-spacing: 0.16em; text-transform: uppercase; }
+    .resume-nav a { margin-left: 1.2rem; color: var(--resume-muted); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .resume-nav a:hover { color: var(--resume-blue); text-decoration: none; }
+    .resume-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr); gap: 4rem; align-items: end; padding: 5.5rem 0 4.5rem; }
+    .resume-hero h1 { margin: 0.9rem 0 0.8rem; color: var(--resume-ink); font-size: clamp(3.5rem, 8vw, 7rem); line-height: 0.88; letter-spacing: -0.05em; }
+    .resume-hero h1 span { color: var(--resume-blue); }
+    .resume-role { margin: 0; color: var(--resume-pale); font: 700 1rem "Segoe UI", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+    .resume-intro { max-width: 680px; margin: 1.5rem 0 0; color: var(--resume-muted); font-size: 1.15rem; line-height: 1.7; }
+    .resume-aside { padding-left: 1.4rem; border-left: 2px solid var(--resume-blue); font-family: "Segoe UI", sans-serif; }
+    .resume-aside p { color: var(--resume-ink); font-size: 1.05rem; line-height: 1.55; }
+    .resume-aside small { display: block; color: var(--resume-muted); line-height: 1.6; }
+    .contact-list { display: grid; gap: 0.55rem; margin: 1.2rem 0 0; padding: 0; list-style: none; font-size: 0.84rem; }
+    .contact-list li { margin: 0; color: var(--resume-muted); overflow-wrap: anywhere; }
+    .contact-list strong { display: inline-block; width: 1.6rem; color: var(--resume-blue); }
+    .contact-list a { color: var(--resume-pale); }
+    .resume-section { padding: 4.5rem 0; border-top: 1px solid var(--resume-line); }
+    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 2rem; }
+    .resume-section h2 { max-width: 720px; margin: 0.6rem 0 0; border: 0; padding: 0; font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1; }
+    .section-intro { max-width: 500px; margin: 0; color: var(--resume-muted); line-height: 1.6; }
+    .summary { max-width: 900px; color: var(--resume-muted); font: 1.05rem/1.8 "Segoe UI", sans-serif; }
+    .competency-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; border: 1px solid var(--resume-line); background: var(--resume-line); }
+    .competency { padding: 1.45rem; background: var(--resume-panel); }
+    .competency strong { display: block; color: var(--resume-pale); font: 700 0.86rem "Segoe UI", sans-serif; }
+    .competency p { margin: 0.55rem 0 0; color: var(--resume-muted); font: 0.9rem/1.55 "Segoe UI", sans-serif; }
+    .experience { display: grid; grid-template-columns: 0.35fr 1fr; gap: 2rem; padding: 1.7rem 0; border-top: 1px solid var(--resume-line); }
+    .experience:first-of-type { border-top: 0; }
+    .experience-date { color: var(--resume-blue); font: 700 0.8rem/1.5 "Segoe UI", sans-serif; letter-spacing: 0.1em; text-transform: uppercase; }
+    .experience h3 { margin: 0; color: var(--resume-ink); font-size: 1.45rem; }
+    .experience-company { margin: 0.35rem 0 0.8rem; color: var(--resume-pale); font: 700 0.88rem "Segoe UI", sans-serif; }
+    .experience p { margin: 0 0 0.9rem; color: var(--resume-muted); font: 0.96rem/1.7 "Segoe UI", sans-serif; }
+    .experience ul { margin: 0; padding-left: 1.2rem; color: var(--resume-muted); font: 0.92rem/1.65 "Segoe UI", sans-serif; }
+    .experience li { margin-bottom: 0.45rem; }
+    .resume-note { margin-top: 1.5rem; padding: 1rem 1.2rem; border-left: 2px solid var(--resume-blue); background: #081a26; color: var(--resume-muted); font: 0.82rem/1.5 "Segoe UI", sans-serif; }
+    .resume-footer-cta { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; padding: 2rem; border: 1px solid var(--resume-blue); background: rgba(29, 78, 216, 0.12); }
+    .resume-footer-cta h2 { margin: 0 0 0.6rem; font-size: 2rem; }
+    .resume-footer-cta p { max-width: 680px; margin: 0; color: var(--resume-muted); font: 0.95rem/1.6 "Segoe UI", sans-serif; }
+    .resume-button { display: inline-block; padding: 0.8rem 1rem; border: 1px solid var(--resume-blue); color: #07111f; background: var(--resume-blue); font: 700 0.76rem "Segoe UI", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+    .resume-button:hover { color: #07111f; background: #93c5fd; text-decoration: none; }
+    @media (max-width: 760px) {
+      .resume-wrap { width: min(100% - 2rem, 1160px); }
+      .resume-nav { align-items: flex-start; }
+      .resume-nav div { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.6rem; }
+      .resume-nav a { margin-left: 0; }
+      .resume-hero, .resume-footer-cta { grid-template-columns: 1fr; gap: 2rem; }
+      .resume-hero { padding: 4rem 0; }
+      .resume-section { padding: 3.5rem 0; }
+      .section-heading { display: block; }
+      .section-intro { margin-top: 1rem; }
+      .competency-grid { grid-template-columns: 1fr; }
+      .experience { grid-template-columns: 1fr; gap: 0.6rem; }
+    }
+    @media print {
+      @page { size: letter; margin: 0.55in; }
+      body { background: #fff; color: #17212b; }
+      #header-placeholder, #footer-placeholder { display: none; }
+      .resume-page { background: #fff; color: #17212b; }
+      .resume-hero { padding: 1rem 0 1.5rem; }
+      .resume-section { padding: 1.35rem 0; }
+      .resume-hero h1 { font-size: 3.8rem; }
+      .resume-hero h1 span, .resume-role, .section-label, .eyebrow, .experience-date, .contact-list strong { color: #1d4ed8; }
+      .resume-aside, .competency, .resume-footer-cta { background: #eef5fc; }
+      .resume-buttons, .resume-nav div { display: none; }
+      .experience, .competency-grid { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <div class="resume-page">
+    <div class="resume-wrap">
+      <nav class="resume-nav" aria-label="Resume sections">
+        <strong>Authors / Edwin Barnes</strong>
+        <div><a href="#summary">Profile</a><a href="#competencies">Expertise</a><a href="#experience">Experience</a></div>
+      </nav>
+
+      <main>
+        <section class="resume-hero" aria-labelledby="resume-title">
+          <div>
+            <div class="eyebrow">Smart Home Edge Systems / Professional profile</div>
+            <h1 id="resume-title">Edwin <span>Barnes.</span></h1>
+            <p class="resume-role">Entrepreneur / Principal Systems Architect / Subject Matter Expert</p>
+            <p class="resume-intro">Systems architect specializing in deterministic networks, privacy-first local compute, edge AI, and resilient smart-home infrastructure.</p>
+          </div>
+          <aside class="resume-aside">
+            <p>Engineering discipline shaped by safety-critical aerospace work, applied to private, local-first technology for the home.</p>
+            <small>Founder and technical creator focused on moving high-latency cloud architectures into secure, understandable, in-home systems.</small>
+            <ul class="contact-list" aria-label="Contact details">
+              <li><strong>L</strong><a href="https://linkedin.com/in/edwin-barnes-1356a430" target="_blank" rel="noopener">linkedin.com/in/edwin-barnes-1356a430</a></li>
+              <li><strong>E</strong><a href="mailto:Edwin.M.Barnes@gmail.com">Edwin.M.Barnes@gmail.com</a></li>
+              <li><strong>R</strong>Reddit / Scientist314</li>
+              <li><strong>W</strong><a href="https://smart-home-edge-systems.us" target="_blank" rel="noopener">smart-home-edge-systems.us</a></li>
+              <li><strong>Y</strong>YouTube channel link TBD</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section class="resume-section" id="summary" aria-labelledby="summary-title">
+          <div class="section-heading"><div><div class="section-label">01 / Professional summary</div><h2 id="summary-title">Aerospace rigor at the edge.</h2></div><p class="section-intro">A long view of reliability, translated into practical local infrastructure.</p></div>
+          <p class="summary">Distinguished Systems Architect and Subject Matter Expert in deterministic networks and privacy-first, local-compute smart-home ecosystems. Founder of a developing engineering firm dedicated to migrating obsolete, high-latency cloud architectures into secure, enterprise-grade, in-home local AI solutions. Brings more than 30 years of safety-critical aerospace engineering experience, including work on the NASA Orion Program, to high-availability, zero-cloud voice assistant networks using Proxmox VE, Home Assistant, and Ollama edge computing.</p>
+        </section>
+
+        <section class="resume-section" id="competencies" aria-labelledby="competencies-title">
+          <div class="section-heading"><div><div class="section-label">02 / Core competencies</div><h2 id="competencies-title">The systems thinking behind the work.</h2></div><p class="section-intro">From cloud migration to hardware fabrication, the focus is on connected systems that can be explained and maintained.</p></div>
+          <div class="competency-grid">
+            <article class="competency"><strong>Cloud-to-local migration</strong><p>Deconstructing cloud-dependent consumer architectures and converting fragmented IoT setups into centralized, firewalled, local-first environments.</p></article>
+            <article class="competency"><strong>Edge AI infrastructure</strong><p>Deploying local LLMs through Ollama, with intent and tool-calling optimization and model work for home automation pipelines.</p></article>
+            <article class="competency"><strong>Virtualization and pass-through</strong><p>Proxmox VE clustering, high-performance LXC containerization, Faster-Whisper, Piper TTS, and hardware acceleration on mini PCs.</p></article>
+            <article class="competency"><strong>High-reliability networking</strong><p>Deterministic networking principles, file-based DHCP, localized DNS through Pi-hole and dnsmasq, and air-gapped security configurations.</p></article>
+            <article class="competency"><strong>Hardware engineering</strong><p>Embedded software interfaces, ESP32-S3 and Wio-S3 microcontrollers, custom hardware design, and additive manufacturing with Prusa 3D printing configurations.</p></article>
+          </div>
+        </section>
+
+        <section class="resume-section" id="experience" aria-labelledby="experience-title">
+          <div class="section-heading"><div><div class="section-label">03 / Professional experience</div><h2 id="experience-title">Building systems that hold together.</h2></div><p class="section-intro">A career spanning aerospace networks, local AI infrastructure, and technical education.</p></div>
+          <article class="experience">
+            <div class="experience-date">2026 - Present</div>
+            <div><h3>Founder and Principal Systems Architect</h3><p class="experience-company">[Your LLC Name Here]</p><p>Established a specialized consulting firm to design, engineer, and deploy fully local, privacy-centric smart-home and local AI networks for private clients.</p><ul><li>Architected multi-tier local environments using a Proxmox VE foundation, dedicated Home Assistant VMs, and optimized LXC containers.</li><li>Engineered a low-latency, air-gapped local voice environment using ESP32-S3 hardware endpoints, openWakeWord, and local speech-to-text engines.</li><li>Deployed and system-prompted lightweight local LLMs through Ollama for localized intent matching and physical device control.</li></ul></div>
+          </article>
+          <article class="experience">
+            <div class="experience-date">2026 - Present</div>
+            <div><h3>Producer</h3><p class="experience-company">[Your YouTube Channel Name TBD]</p><p>Produce advanced, data-driven video tutorials, configuration manifests, and technical breakdowns focused on cloud-to-local migration strategies.</p><p>Educate a growing community of homelab engineers on integrating hardware, software, and local AI networks, creating technical content that supports client acquisition and business development.</p></div>
+          </article>
+          <article class="experience">
+            <div class="experience-date">1980 - 2019</div>
+            <div><h3>Subject Matter Expert, Deterministic Networks and Certified Product Engineer</h3><p class="experience-company">Lockheed Martin Space Systems</p><ul><li><strong>Orion Human Space Flight Program:</strong> Directed the architecture, implementation, and security of onboard and utility data networks for NASA spacecraft, including safety-critical SAE6802 Time-Triggered Ethernet functionality.</li><li><strong>Systems integration:</strong> Defined strict data-parsing pipelines from program databases into active flight software configuration files, supporting network interoperability and deterministic security.</li><li><strong>Standards and curriculum:</strong> Represented the company globally to author and release the SAE-6802 standard and created technical training packages for NASA, international partners, and internal engineering teams.</li><li><strong>Business impact:</strong> Applies aerospace-grade fail-safe engineering, rigorous validation testing, and structural documentation practices to consumer and light-commercial smart infrastructure.</li></ul></div>
+          </article>
+          <p class="resume-note">Several organization and channel names remain placeholders in the source resume and are intentionally displayed as provided.</p>
+        </section>
+
+        <section class="resume-section" aria-label="Profile navigation"><div class="resume-footer-cta"><div><h2>Explore the work behind the profile.</h2><p>Edwin Barnes is the director and lead tester behind Smart Home Edge Systems, an open documentation project for private, local-first home infrastructure.</p></div><a class="resume-button" href="../index.html">Return to gateway</a></div></section>
+      </main>
+    </div>
+  </div>
+  <div id="footer-placeholder"></div>
+  <script src="/scripts/component-loader.js"></script>
+</body>
+</html>

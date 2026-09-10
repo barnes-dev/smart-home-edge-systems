@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLK7685ZGC"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -12,43 +12,72 @@
 
     gtag('config', 'G-LLK7685ZGC');
     </script>
-    <title>Home Assistant Hub</title>
-      <link rel="stylesheet" href="/styles/global.css">
-
+    <title>Home Assistant Hub | Smart Home Edge Systems</title>
+    <link rel="stylesheet" href="/styles/global.css">
+    <style>
+        :root { --ha-ink: #edf4f7; --ha-muted: #a9bcc4; --ha-line: rgba(201, 228, 232, 0.16); --ha-panel: rgba(13, 34, 45, 0.88); --ha-blue: #60a5fa; --ha-pale: #bfdbfe; --ha-deep: #07151d; }
+        body { background: var(--ha-deep); color: var(--ha-ink); font-family: Georgia, "Times New Roman", serif; }
+        #header-placeholder { background: #091923; }
+        .ha-page { min-height: 100vh; overflow: hidden; background-color: var(--ha-deep); background-image: linear-gradient(rgba(97, 225, 208, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(97, 225, 208, 0.045) 1px, transparent 1px); background-size: 44px 44px; }
+        .ha-wrap { width: min(1180px, calc(100% - 3rem)); margin: 0 auto; }
+        .ha-breadcrumbs { display: flex; flex-wrap: wrap; gap: 1.3rem; padding: 1.4rem 0 0; font: 600 0.88rem "Segoe UI", sans-serif; }
+        .ha-breadcrumbs a, .ha-links a { color: var(--ha-pale); }
+        .ha-breadcrumbs a:hover, .ha-links a:hover { color: var(--ha-blue); text-decoration: none; }
+        .ha-title { margin: 1rem 0 0; font-size: 2rem; }
+        .ha-nav { display: flex; justify-content: space-between; gap: 1rem; align-items: center; padding: 1.2rem 0; border-bottom: 1px solid var(--ha-line); font-family: "Segoe UI", sans-serif; }
+        .ha-nav strong, .eyebrow, .section-label { color: var(--ha-blue); font: 700 0.75rem "Segoe UI", sans-serif; letter-spacing: 0.15em; text-transform: uppercase; }
+        .ha-nav a { margin-left: 1.2rem; color: var(--ha-muted); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+        .ha-nav a:hover { color: var(--ha-blue); text-decoration: none; }
+        .ha-hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr); gap: 3rem; align-items: end; padding: 5.5rem 0 4.5rem; }
+        .ha-hero-card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr); gap: 2rem; align-items: stretch; padding: 1.5rem; background: linear-gradient(135deg, rgba(29, 78, 216, 0.2), rgba(15, 23, 42, 0.9)); border: 1px solid rgba(147, 197, 253, 0.24); border-radius: 10px; }
+        .ha-hero-card .ha-hero { display: block; min-height: 0; padding: 1rem 0; }
+        .ha-hero-image { align-self: center; margin: 0; padding: 0.8rem; border: 1px solid rgba(191, 219, 254, 0.14); border-radius: 6px; background: rgba(7, 17, 31, 0.55); }
+        .ha-hero-image img { width: 100%; max-height: 270px; display: block; border-radius: 4px; object-fit: cover; }
+        .ha-hero-image figcaption { display: block; margin-top: 0.7rem; color: var(--ha-pale); font: 0.76rem/1.45 "Segoe UI", sans-serif; }
+        .ha-hero-image-note { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--ha-line); font-family: "Segoe UI", sans-serif; }
+        .ha-hero-image-note p { margin: 0; color: var(--ha-ink); font-size: 0.95rem; line-height: 1.5; }
+        .ha-hero-image-note small { display: block; margin-top: 0.45rem; color: var(--ha-muted); line-height: 1.5; }
+        .ha-hero h1 { max-width: 800px; margin: 0.8rem 0 1.3rem; font-size: clamp(3rem, 7vw, 6.5rem); line-height: 0.92; letter-spacing: -0.04em; }
+        .ha-hero h1 span { color: var(--ha-blue); }
+        .ha-lead { max-width: 690px; color: var(--ha-muted); font-size: 1.15rem; line-height: 1.7; }
+        .ha-aside { padding-left: 1.4rem; border-left: 2px solid var(--ha-blue); font-family: "Segoe UI", sans-serif; }
+        .ha-aside p { color: var(--ha-ink); line-height: 1.6; }
+        .ha-aside small { color: var(--ha-muted); line-height: 1.5; }
+        .ha-section { padding: 4.5rem 0; border-top: 1px solid var(--ha-line); }
+        .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 1.6rem; }
+        .section-heading h2 { margin: 0.5rem 0 0; border: 0; padding: 0; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1; }
+        .section-heading p { max-width: 520px; margin: 0; color: var(--ha-muted); line-height: 1.6; }
+        .ha-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; border: 1px solid var(--ha-line); background: var(--ha-line); }
+        .ha-card { min-height: 170px; padding: 1.35rem; background: var(--ha-panel); }
+        .ha-card h3 { margin: 0.7rem 0 0.5rem; color: var(--ha-ink); font-size: 1.2rem; }
+        .ha-card p { margin: 0; color: var(--ha-muted); font: 0.9rem/1.55 "Segoe UI", sans-serif; }
+        .ha-card a { display: inline-block; margin-top: 1rem; color: var(--ha-pale); font: 700 0.78rem "Segoe UI", sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
+        .ha-card a:hover { color: var(--ha-blue); text-decoration: none; }
+        .ha-architecture { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; border: 1px solid var(--ha-line); background: var(--ha-line); }
+        .ha-node { padding: 1.4rem; background: var(--ha-panel); }
+        .ha-node strong { color: var(--ha-blue); font: 700 0.74rem "Segoe UI", sans-serif; letter-spacing: 0.12em; text-transform: uppercase; }
+        .ha-node h3 { margin: 0.55rem 0; font-size: 1.2rem; }
+        .ha-node p { margin: 0; color: var(--ha-muted); font: 0.9rem/1.55 "Segoe UI", sans-serif; }
+        .ha-node ul { margin: 0.9rem 0 0; padding-left: 1.1rem; color: var(--ha-pale); font: 0.8rem/1.55 "Segoe UI", sans-serif; }
+        .ha-callout { margin-top: 1px; padding: 1.4rem; border-left: 2px solid var(--ha-blue); background: #081a26; color: var(--ha-muted); font: 0.92rem/1.6 "Segoe UI", sans-serif; }
+        .ha-links { display: flex; flex-wrap: wrap; gap: 1rem 1.4rem; font: 600 0.9rem "Segoe UI", sans-serif; }
+        @media (max-width: 760px) { .ha-wrap { width: min(100% - 2rem, 1180px); } .ha-nav { align-items: flex-start; } .ha-nav div { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.6rem; } .ha-nav a { margin-left: 0; } .ha-hero, .ha-hero-card, .ha-architecture { grid-template-columns: 1fr; gap: 2rem; } .ha-hero { padding: 4rem 0; } .ha-hero-card { padding: 1rem; } .ha-hero-card .ha-hero { padding: 0; } .ha-section { padding: 3.5rem 0; } .section-heading { display: block; } .section-heading p { margin-top: 1rem; } .ha-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
 <body>
     <div id="header-placeholder"></div>
-    <div id="menu-placeholder"></div>
-
+    <div class="ha-page"><div class="ha-wrap">
+        <div class="ha-breadcrumbs" aria-label="Gateway navigation"><a href="../index.html">&#8592; Back</a><a href="/index.html">&#8594; Gateway</a></div>
+        <h1 class="ha-title">Home Assistant Hub</h1>
+        <nav class="ha-nav" aria-label="Home Assistant page sections"><strong>Local automation / human-centered control</strong><div><a href="#architecture">Architecture</a><a href="#guides">Guides</a><a href="#gateway">Gateway</a></div></nav>
         <main>
-            <h1 style="color: #eaf4ff; margin-bottom: 1.5rem; font-size: 2rem;">Home Assistant Hub</h1>
-            <div class="grid">
-                <div class="card">
-                    <h3>Automation Overview</h3>
-                    <p>Track your local automations, dashboards, and device health from one place.</p>
-                </div>
-                <div class="card">
-                    <h3>Current Focus</h3>
-                    <p>Use this space for Zigbee, sensors, dashboards, and your preferred automations.</p>
-                </div>
-                <div class="card">
-                    <h3>Helpful Guide</h3>
-                    <p><a href="guides/proxmox-ha-node.html">Open the Proxmox Home Assistant setup guide</a></p>
-                </div>
-                <div class="card">
-                    <h3>Guides</h3>
-                    <p>Open the section guides and tutorials for this hub.</p>
-                    <a href="guides/index.html">Open Guides &#8594;</a>
-                </div>
-                <div class="card">
-                    <h3>Reference</h3>
-                    <p>View reference resources and documentation for this section.</p>
-                    <a href="reference/index.html">Open Reference &#8594;</a>
-                </div>
-            </div>
+            <section class="ha-hero-card" aria-labelledby="hero-title"><div class="ha-hero"><div class="eyebrow">Smart-Home-Edge-Systems.us / Home Assistant architecture</div><h1 id="hero-title">Make the home <span>understand itself.</span></h1><p class="ha-lead">Home Assistant is the automation and experience layer of the Barnes Home Lab: a local system for connecting devices, presenting useful state, coordinating services, and turning infrastructure into something a household can actually use.</p><p class="ha-lead">The architecture is designed to be demonstrated, documented, and communicated clearly: a practical foundation for private smart-home control that can grow into a trustworthy, marketable local-first solution.</p></div><figure class="ha-hero-image"><img src="assets/hassio.jpg" alt="Home Assistant system interface for the Smart Home Edge Systems architecture" loading="eager"><figcaption>Home Assistant system interface used in the Smart Home Edge Systems architecture.</figcaption><div class="ha-hero-image-note"><p>Independent field testing for the next generation of local-first home automation.</p><small>Hardware and software partners are invited to place real products in a transparent, community-facing evaluation environment.</small></div></figure></section>
+            <section class="ha-section" id="architecture" aria-labelledby="architecture-title"><div class="section-heading"><div><div class="section-label">01 / System architecture</div><h2 id="architecture-title">A local control plane for the home.</h2></div><p>Home Assistant sits inside a wider Proxmox design where compute, voice, storage, networking, and recovery services have clear responsibilities.</p></div><div class="ha-architecture"><article class="ha-node"><strong>VM 101 / Home Assistant OS</strong><h3>The automation host</h3><p>The documented HAOS node uses 2 vCPUs, 4 GB RAM, and 32-64 GB NVMe storage. It has a primary LAN address of 192.168.86.251 and an isolated backend address of 10.0.10.1.</p><ul><li>NFS backup mount: /mnt/haos_backups</li><li>Backup source: Samba-NAS shares/backups/haos</li><li>Role: integrations, dashboards, devices, and automation</li></ul></article><article class="ha-node"><strong>Compute services / local dependencies</strong><h3>Supporting the experience</h3><p>The compute node provides the services Home Assistant can coordinate or depend on while keeping the system locally operated.</p><ul><li>Pi-hole and Unbound for DNS</li><li>Nginx Proxy Manager for service routing</li><li>Ollama for local AI workloads</li><li>Wyoming Piper, Whisper, and Open WebUI</li><li>Twingate Connector for secure remote access</li></ul></article><article class="ha-node"><strong>Storage and recovery / shared foundation</strong><h3>Keep the system recoverable</h3><p>The storage architecture provides the central file layer and preserves HAOS backups alongside configuration exports, database dumps, and service records.</p><ul><li>SMB/NFS gateway at LXC 100</li><li>HAOS backup share under homelab-backups</li><li>Cold-sync status retained with recovery records</li></ul></article><article class="ha-node"><strong>Architecture areas / planned documentation</strong><h3>Services to document</h3><p>The file structure reserves guides for the Home Assistant system, integrations, front end, media, network, Proxmox, security, climate, utilities, alerts, and resilience.</p><ul><li>Matter Server and Mosquitto Broker</li><li>Duck DNS, ESPHome Builder, and go2rtc</li><li>Node-RED and rtlamr2mqtt</li></ul></article></div><div class="ha-callout"><strong>Voice and edge devices:</strong> the Satellite and ESPHome designs are discussed in <a href="../voice/index.html">smart-home-edge-systems/voice/index.html</a>. That page will be updated later with the dedicated voice and edge-device documentation.</div></section>
+            <section class="ha-section" id="guides" aria-labelledby="guides-title"><div class="section-heading"><div><div class="section-label">02 / Documentation library</div><h2 id="guides-title">A guide for every layer.</h2></div><p>Each entry now represents one documentation hub, making the Home Assistant roadmap easier to scan, maintain, and expand independently.</p></div><div class="ha-grid"><article class="ha-card"><div class="section-label">01 / Architecture</div><h3>Architectural Design</h3><p>Defines the Home Assistant boundary and its supporting local services.</p><a href="guides/01-hassio-architectural-design-document.html">Open architecture guide</a></article><article class="ha-card"><div class="section-label">02 / Configuration</div><h3>System Configuration</h3><p>Organizes the configuration items that make the HAOS environment repeatable.</p><a href="guides/02-hassio-configuration.html">Open configuration guide</a></article><article class="ha-card"><div class="section-label">03 / Integrations</div><h3>Devices and Entities</h3><p>Maps integrations, devices, and entities into a coherent automation model.</p><a href="guides/03-hassio-integrations-devices-entities.html">Open integration guide</a></article><article class="ha-card"><div class="section-label">04 / Interface</div><h3>Front End</h3><p>Documents the basic web interface and practical presentation standards.</p><a href="guides/04-hassio-FrontEnd.html">Open front-end guide</a></article><article class="ha-card"><div class="section-label">05 / Devices</div><h3>Fans, Outlets, and Lighting</h3><p>Provides the planned control and display model for common household devices.</p><a href="guides/05-hassio-FE-Fans-Outlets.html">Open device guide</a></article><article class="ha-card"><div class="section-label">06 / Media</div><h3>Media</h3><p>Connects Home Assistant media controls to the local household media services.</p><a href="guides/06-hassio-FE-Media.html">Open media guide</a></article><article class="ha-card"><div class="section-label">07 / Network</div><h3>Network</h3><p>Documents network devices, service dependencies, and availability state.</p><a href="guides/07-hassio-FE-Network.html">Open network guide</a></article><article class="ha-card"><div class="section-label">08 / Infrastructure</div><h3>Proxmox</h3><p>Defines how the virtualization host and workloads can be presented in Home Assistant.</p><a href="guides/08-hassio-FE-Proxmox.html">Open Proxmox guide</a></article><article class="ha-card"><div class="section-label">09 / Fabrication</div><h3>Printers</h3><p>Creates a documentation home for printers and 3D printer entities.</p><a href="guides/09-hassio-FE-Printers.html">Open printer guide</a></article><article class="ha-card"><div class="section-label">10 / Protection</div><h3>Security</h3><p>Organizes security devices, states, and alerting considerations.</p><a href="guides/10-hassio-FE-Security.html">Open security guide</a></article><article class="ha-card"><div class="section-label">11 / Water</div><h3>Water and Sprinklers</h3><p>Provides a future home for sprinkler, water-use, and Rachio documentation.</p><a href="guides/11-hassio-FE-Water.html">Open water guide</a></article><article class="ha-card"><div class="section-label">12 / Climate</div><h3>Climate and Thermostats</h3><p>Documents indoor climate controls, thermostat entities, and safe states.</p><a href="guides/12-hassio-FE-Climate.html">Open climate guide</a></article><article class="ha-card"><div class="section-label">13 / Weather</div><h3>Weather Gauges</h3><p>Organizes environmental measurements, units, history, and thresholds.</p><a href="guides/13-hassio-FE-Guages.html">Open weather guide</a></article><article class="ha-card"><div class="section-label">14 / Awareness</div><h3>Alerts</h3><p>Defines how important home, service, network, and device changes are surfaced.</p><a href="guides/14-hassio-FE-Alerts.html">Open alerts guide</a></article><article class="ha-card"><div class="section-label">15 / Resilience</div><h3>UPS and Backup</h3><p>Connects NUT monitoring, HAOS backups, and recovery status to the interface.</p><a href="guides/15-hassio-FE-UPS.html">Open UPS guide</a></article><article class="ha-card"><div class="section-label">16 / Utilities</div><h3>Energy and Utilities</h3><p>Creates the documentation path for power, water, gas, solar, and energy reporting.</p><a href="guides/16-hassio-FE-Energy.html">Open energy guide</a></article><article class="ha-card"><div class="section-label">Directory</div><h3>All Home Assistant Guides</h3><p>Browse the complete guide directory as the working documentation expands.</p><a href="guides/index.html">Open guide directory</a></article><article class="ha-card"><div class="section-label">Reference</div><h3>Supporting Material</h3><p>Review stable facts, links, and future implementation notes for this hub.</p><a href="reference/index.html">Open reference directory</a></article></div></section>
+            <section class="ha-section" id="gateway" aria-labelledby="gateway-title"><div class="section-heading"><div><div class="section-label">03 / The wider system</div><h2 id="gateway-title">One home, many useful edges.</h2></div><p>Home Assistant is one part of a larger local-first platform. The gateway pages make those relationships visible to technical readers, partners, and future customers.</p></div><div class="ha-links"><a href="../home-lab/index.html">Home Lab / compute and virtualization</a><a href="../storage/index.html">Storage / shared data and recovery</a><a href="../voice/index.html">Voice / satellites and ESPHome</a><a href="../media/index.html">Media / household content services</a><a href="../surveillance/index.html">Surveillance / local security</a><a href="../index.html">Top-level gateway</a></div></section>
         </main>
-
-    <div id="footer-placeholder"></div>
-      <script src="/scripts/component-loader.js"></script>
-
+    </div></div>
+    <div id="footer-placeholder"></div><script src="/scripts/component-loader.js"></script>
+</body>
 </html>
 
