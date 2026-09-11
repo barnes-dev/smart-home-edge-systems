@@ -1207,6 +1207,283 @@ Your Own Webpage</h1>
         Functionality</h3>
         <p>Here is a description of the functionality embedded in this
         tool.</p>
+        <table>
+        <caption>Code 10: web tools build flow</caption>
+        <colgroup>
+        <col style="width: 101%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>For IndexMode DocxToHtml:</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>index.docx</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>↓</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Pandoc</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>↓</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>template.html</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>↓</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>index.html</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>The template already supplies GTM, so there is no second GTM
+        injection.</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>For IndexMode HtmlToDocx:</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>index.html</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>↓</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Pandoc</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>↓</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>index.docx</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>No template is needed for the reverse conversion.</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>The important TextBlock flow</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>DOCX</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>▼</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Pandoc DOCX → Markdown</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ TextBlock custom-style markers PRESERVED</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>▼</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Normalize-MarkdownMedia</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│ TextBlock detected here</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>▼</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>TextBlock → Markdown table</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>▼</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Markdown → HTML</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Index flow</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>-IndexMode Skip</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>▼</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Indexes untouched</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>-IndexMode DocxToHtml</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>▼</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>index.docx ───────► Pandoc ───────► index.html</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>▼</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>template.html</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>-IndexMode HtmlToDocx</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>▼</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>index.html ───────► Pandoc ───────► index.docx</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>NORMAL DOCUMENTS</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>─────────────────────────────────────</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>guide.docx</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>reference.docx</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>▼</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>DOCX → Markdown → TextBlock/media</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>→ HTML → deployment</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>while indexes use:</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>INDEX MODE</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>─────────────────────────────────────</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>index.docx</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>▼</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Pandoc</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>│</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>▼</p>
+        </div>
+        <div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>index.html</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
         <h4 id="nav-end-to-end-pipeline-flow">End-to-End Pipeline
         Flow</h4>
         <p>Your publishing toolchain operates as a synchronized bridge

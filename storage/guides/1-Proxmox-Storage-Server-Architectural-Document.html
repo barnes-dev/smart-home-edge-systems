@@ -439,8 +439,11 @@ Storage Server Architectural Document</h1>
       </aside>
 
       <article class="document-content">
-        <p><img src="1-Proxmox-Storage-Server-Architectural-Document/media/image1.jpeg"
-        style="width:5.83333in;height:2.56597in" /></p>
+        <figure>
+        <img src="1-Proxmox-Storage-Server-Architectural-Document/media/image1.jpeg"
+        style="width:5.83333in;height:2.56597in" alt="Figure 1: ::" />
+        <figcaption aria-hidden="true">Figure 1: ::</figcaption>
+        </figure>
         <p>I wrote this analysis and design document for my Proxmox VE
         9.2.3 media and I/O mini-computer architecture. I’m using it to
         prove the concept and start the first development cycle.</p>
@@ -513,8 +516,11 @@ Storage Server Architectural Document</h1>
         system due to maintenance. This will allow users to replace hard
         drives without powering off the device. This feature enhances
         convenience and efficiency in data transfer processes.</p>
-        <p><img src="1-Proxmox-Storage-Server-Architectural-Document/media/image2.jpg"
-        style="width:5.83333in;height:3.88889in" /></p>
+        <figure>
+        <img src="1-Proxmox-Storage-Server-Architectural-Document/media/image2.jpg"
+        style="width:5.83333in;height:3.88889in" alt="Figure 2: ::" />
+        <figcaption aria-hidden="true">Figure 2: ::</figcaption>
+        </figure>
         <p>The minicomputer I’m using is the Proxmox server with the
         following HW characteristics:</p>
         <p>KAMRUI HYPER H2 MINI PC (10C / 16T | 32GB RAM / up to
@@ -1387,7 +1393,6 @@ Storage Server Architectural Document</h1>
         <p>To handle updates cleanly across our Proxmox stack without
         breaking core databases, we are using a <strong>hybrid
         strategy</strong>:</p>
-        </div>
         <table>
         <colgroup>
         <col style="width: 21%" />
@@ -1427,7 +1432,8 @@ Storage Server Architectural Document</h1>
         and update manually after running a Proxmox LXC snapshot.</td>
         </tr>
         </tbody>
-        </table></li>
+        </table>
+        </div></li>
         </ul>
         <p>We are running Watchtower inside LXC104 on the Compute Module
         and VM 113 on the Infotainment Module.</p>
@@ -2059,7 +2065,6 @@ Storage Server Architectural Document</h1>
         <p><strong>Backend Subnet Routing (vmbr1):</strong> You have
         isolated backend subnets (10.0.10.0/24 on Compute and
         10.0.20.0/24 on Infotainment).</p>
-        </div>
         <ul>
         <li><div class="custom-style-Body Text Body Text"
         data-custom-style="Body Text">
@@ -2067,7 +2072,8 @@ Storage Server Architectural Document</h1>
         communication to only use the local networks and keep the
         backend networks private.</p>
         </div></li>
-        </ul></li>
+        </ul>
+        </div></li>
         <li><div class="custom-style-Body Text Body Text"
         data-custom-style="Body Text">
         <p><strong>Reverse Proxy Traffic Loop:</strong> Nginx Proxy
@@ -2090,20 +2096,14 @@ Storage Server Architectural Document</h1>
         <p>It strikes a great balance between lightweight, fine-grained
         control and disaster resilience.</p>
         <h4 id="nav-this-strategy-works">This Strategy Works</h4>
+        <blockquote>
         <p><strong>Near-Zero Overhead &amp; Fast Restores:</strong>
         Proxmox VM/LXC snapshots and full images are large (tens of
-        gigabytes). Config files (<span
-        class="custom-style-HTML Code HTML Code"
-        data-custom-style="HTML Code">.yaml</span>, <span
-        class="custom-style-HTML Code HTML Code"
-        data-custom-style="HTML Code">.env</span>, <span
-        class="custom-style-HTML Code HTML Code"
-        data-custom-style="HTML Code">docker-compose.yml</span>,
+        gigabytes). Config files(.yaml, .env,.docker-compose.yml,
         database dumps) are only a few megabytes. Restoring a broken
-        container by pulling down a raw <span
-        class="custom-style-HTML Code HTML Code"
-        data-custom-style="HTML Code">.yaml</span> config takes seconds
+        container by pulling down a raw .yaml config takes seconds
         compared to rolling back an entire virtual disk.</p>
+        </blockquote>
         <p><strong>De-Coupled Storage:</strong> If a host OS or Proxmox
         storage pool corrupts, your configuration state remains intact
         on your separate Samba NAS volume.</p>
