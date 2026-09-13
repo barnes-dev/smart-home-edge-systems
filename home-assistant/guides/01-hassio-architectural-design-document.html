@@ -299,16 +299,494 @@ Architectural Design Document</h1>
     <div class="doc-layout">
       <aside class="sidebar-toc">
         <h2 style="color: #eaf4ff; font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;">Contents</h2>
-        
+        <ul>
+        <li><a href="#nav-purpose" id="nav-toc-purpose">Purpose</a>
+        <ul>
+        <li><a href="#nav-architectural-design-goals"
+        id="nav-toc-architectural-design-goals">Architectural Design
+        Goals</a></li>
+        <li><a href="#nav-dependencies"
+        id="nav-toc-dependencies">Dependencies</a>
+        <ul>
+        <li><a
+        href="#nav-provide-a-centralized-automation-and-orchestration-platform-for-the-home."
+        id="nav-toc-provide-a-centralized-automation-and-orchestration-platform-for-the-home.">Provide
+        a centralized automation and orchestration platform for the
+        home.</a></li>
+        <li><a
+        href="#nav-prefer-locally-hosted-and-cloudless-services-whenever-practical."
+        id="nav-toc-prefer-locally-hosted-and-cloudless-services-whenever-practical.">Prefer
+        locally hosted and cloudless services whenever
+        practical.</a></li>
+        <li><a
+        href="#nav-minimize-unnecessary-dependence-on-external-cloud-services."
+        id="nav-toc-minimize-unnecessary-dependence-on-external-cloud-services.">Minimize
+        unnecessary dependence on external cloud services.</a></li>
+        <li><a
+        href="#nav-maintain-recoverable-home-assistant-configuration-backups."
+        id="nav-toc-maintain-recoverable-home-assistant-configuration-backups.">Maintain
+        recoverable Home Assistant configuration backups.</a></li>
+        <li><a
+        href="#nav-store-home-assistant-backups-will-go-to-the-infotainment-modules-centralized-backup-storage."
+        id="nav-toc-store-home-assistant-backups-will-go-to-the-infotainment-modules-centralized-backup-storage.">Store
+        Home Assistant backups will go to the Infotainment Module's
+        centralized backup storage.</a></li>
+        <li><a
+        href="#nav-all-network-connections-thru-the-home-router-will-originate-from-within-the-home-network.-no-connections-are-allowed-to-originate-from-the-outside-network---all-outside-ports-shall-be-closed-for-external-access."
+        id="nav-toc-all-network-connections-thru-the-home-router-will-originate-from-within-the-home-network.-no-connections-are-allowed-to-originate-from-the-outside-network---all-outside-ports-shall-be-closed-for-external-access.">All
+        network connections thru the Home Router will originate from
+        within the Home Network. No connections are allowed to originate
+        from the outside network - All outside ports shall be closed for
+        external access.</a></li>
+        <li><a
+        href="#nav-home-assistant-cloud-services-will-be-used-for-remote-access-and-client-connectivity."
+        id="nav-toc-home-assistant-cloud-services-will-be-used-for-remote-access-and-client-connectivity.">Home
+        Assistant Cloud Services will be used for remote access and
+        client connectivity.</a></li>
+        <li><a
+        href="#nav-ai-automation-monitoring-and-voice-foundations"
+        id="nav-toc-ai-automation-monitoring-and-voice-foundations">AI,
+        Automation, monitoring and Voice Foundations</a>
+        <ul>
+        <li><a
+        href="#nav-provide-a-centralized-local-monitoring-and-automation-of-the-home-environment-using-local-ai-models."
+        id="nav-toc-provide-a-centralized-local-monitoring-and-automation-of-the-home-environment-using-local-ai-models.">Provide
+        a centralized local monitoring and automation of the home
+        environment using local AI models.</a></li>
+        <li><a
+        href="#nav-provide-a-foundation-for-local-ai-and-local-voice-processing."
+        id="nav-toc-provide-a-foundation-for-local-ai-and-local-voice-processing.">Provide
+        a foundation for local AI and local voice processing.</a></li>
+        <li><a
+        href="#nav-provide-a-controlled-migration-path-from-google-home-voice-control-to-home-assistant-voice-control."
+        id="nav-toc-provide-a-controlled-migration-path-from-google-home-voice-control-to-home-assistant-voice-control.">Provide
+        a controlled migration path from Google Home voice control to
+        Home Assistant voice control.</a></li>
+        </ul></li>
+        <li><a href="#nav-configurations"
+        id="nav-toc-configurations">Configurations</a>
+        <ul>
+        <li><a
+        href="#nav-passwords-used-in-home-assistant-shall-be-located-in-a-separate-secrets-file-and-referenced-internally-through-that-file."
+        id="nav-toc-passwords-used-in-home-assistant-shall-be-located-in-a-separate-secrets-file-and-referenced-internally-through-that-file.">Passwords
+        used in Home Assistant shall be located in a separate secrets
+        file and referenced internally through that file.</a></li>
+        <li><a
+        href="#nav-blocks-of-text-in-the-configuration.yaml-file-shall-be-commented-based-on-their-grouping"
+        id="nav-toc-blocks-of-text-in-the-configuration.yaml-file-shall-be-commented-based-on-their-grouping">Blocks
+        of text in the "configuration.yaml" file shall be commented
+        based on their grouping</a></li>
+        <li><a
+        href="#nav-configurations-shall-be-grouped-into-separate-files-when-it-makes-sense."
+        id="nav-toc-configurations-shall-be-grouped-into-separate-files-when-it-makes-sense.">Configurations
+        shall be grouped into separate files when it makes
+        sense.</a></li>
+        </ul></li>
+        <li><a href="#nav-integrations"
+        id="nav-toc-integrations">Integrations</a>
+        <ul>
+        <li><a
+        href="#nav-maintain-interoperability-with-existing-smart-home-ecosystems."
+        id="nav-toc-maintain-interoperability-with-existing-smart-home-ecosystems.">Maintain
+        interoperability with existing smart-home ecosystems.</a></li>
+        <li><a
+        href="#nav-integrate-smartthings-devices-and-capabilities-into-home-assistant."
+        id="nav-toc-integrate-smartthings-devices-and-capabilities-into-home-assistant.">Integrate
+        SmartThings devices and capabilities into Home
+        Assistant.</a></li>
+        <li><a
+        href="#nav-provide-local-esphome-services-through-the-home-assistant-environment."
+        id="nav-toc-provide-local-esphome-services-through-the-home-assistant-environment.">Provide
+        local ESPHome services through the Home Assistant
+        environment.</a></li>
+        <li><a
+        href="#nav-new-satellites-will-use-esphome-services-when-possible."
+        id="nav-toc-new-satellites-will-use-esphome-services-when-possible.">New
+        satellites will use ESPHome services when possible.</a></li>
+        <li><a
+        href="#nav-provide-local-mqtt-services-through-the-home-assistant-environment."
+        id="nav-toc-provide-local-mqtt-services-through-the-home-assistant-environment.">Provide
+        local MQTT services through the Home Assistant
+        environment.</a></li>
+        <li><a
+        href="#nav-provide-matter-support-through-the-home-assistant-environment."
+        id="nav-toc-provide-matter-support-through-the-home-assistant-environment.">Provide
+        Matter support through the Home Assistant environment.</a></li>
+        <li><a
+        href="#nav-provide-connectivity-for-network-connected-ethernet-wi-fi-2.5-and-5ghz-bluetooth-and-radio-based-devices."
+        id="nav-toc-provide-connectivity-for-network-connected-ethernet-wi-fi-2.5-and-5ghz-bluetooth-and-radio-based-devices.">Provide
+        connectivity for network-connected, Ethernet, Wi-Fi (2.5 and
+        5GHZ) , Bluetooth, and radio-based devices.</a></li>
+        </ul></li>
+        <li><a href="#nav-local-first-design"
+        id="nav-toc-local-first-design">Local-First Design</a>
+        <ul>
+        <li><a
+        href="#nav-the-preferred-architecture-is-to-process-and-control-devices-within-the-home-first-whenever-a-reliable-local-alternative-exists."
+        id="nav-toc-the-preferred-architecture-is-to-process-and-control-devices-within-the-home-first-whenever-a-reliable-local-alternative-exists.">The
+        preferred architecture is to process and control devices within
+        the home first whenever a reliable local alternative
+        exists.</a></li>
+        <li><a
+        href="#nav-cloud-services-may-still-be-used-when-required-or-when-their-capabilities-provide-significant-value."
+        id="nav-toc-cloud-services-may-still-be-used-when-required-or-when-their-capabilities-provide-significant-value.">Cloud
+        services may still be used when required or when their
+        capabilities provide significant value.</a></li>
+        </ul></li>
+        <li><a
+        href="#nav-home-assistant-as-the-central-automation-platform"
+        id="nav-toc-home-assistant-as-the-central-automation-platform">Home
+        Assistant as the Central Automation Platform</a>
+        <ul>
+        <li><a
+        href="#nav-home-assistant-is-the-central-automation-and-integration-layer."
+        id="nav-toc-home-assistant-is-the-central-automation-and-integration-layer.">Home
+        Assistant is the central automation and integration
+        layer.</a></li>
+        <li><a
+        href="#nav-all-devices-will-use-home-assistant-integrations-if-possible."
+        id="nav-toc-all-devices-will-use-home-assistant-integrations-if-possible.">All
+        devices will use Home Assistant Integrations if
+        possible.</a></li>
+        <li><a
+        href="#nav-devices-that-are-permanently-installed-in-the-home-will-connect-via-smartthings-first."
+        id="nav-toc-devices-that-are-permanently-installed-in-the-home-will-connect-via-smartthings-first.">Devices
+        that are permanently installed in the home will connect via
+        SmartThings first.</a></li>
+        <li><a
+        href="#nav-there-will-be-2-smartthings-hub-a-primary-and-a-backup."
+        id="nav-toc-there-will-be-2-smartthings-hub-a-primary-and-a-backup.">There
+        will be 2 SmartThings hub a primary and a backup.</a></li>
+        </ul></li>
+        <li><a href="#nav-dashboards"
+        id="nav-toc-dashboards">Dashboards</a>
+        <ul>
+        <li><a
+        href="#nav-all-pages-using-kiosk-mode-will-have-a-fixed-size-and-use-grid-templates-to-lock-the-size-and-locations-of-each-cell."
+        id="nav-toc-all-pages-using-kiosk-mode-will-have-a-fixed-size-and-use-grid-templates-to-lock-the-size-and-locations-of-each-cell.">All
+        pages using kiosk mode will have a fixed size and use grid
+        templates to lock the size and locations of each cell.</a></li>
+        <li><a
+        href="#nav-common-reusable-templates-will-be-used-whenever-possible."
+        id="nav-toc-common-reusable-templates-will-be-used-whenever-possible.">Common
+        reusable Templates will be used whenever possible.</a></li>
+        </ul></li>
+        <li><a href="#nav-non-kiosk-dashboards"
+        id="nav-toc-non-kiosk-dashboards">Non kiosk dashboards</a>
+        <ul>
+        <li><a
+        href="#nav-non-kiosk-dashboards-are-used-for-experimental-development-testing-and-are-only-constrained-to-the-themes-provided-by-the-system-level-templates.-blue-based-dark-mode"
+        id="nav-toc-non-kiosk-dashboards-are-used-for-experimental-development-testing-and-are-only-constrained-to-the-themes-provided-by-the-system-level-templates.-blue-based-dark-mode">Non
+        kiosk dashboards are used for experimental, development, testing
+        and are only constrained to the themes provided by the system
+        level templates. (Blue based dark mode)</a></li>
+        <li><a
+        href="#nav-unused-dashboards-should-be-cleaned-up-when-no-longer-needed-or-published-as-a-kiosk-dashboard."
+        id="nav-toc-unused-dashboards-should-be-cleaned-up-when-no-longer-needed-or-published-as-a-kiosk-dashboard.">Unused
+        dashboards should be cleaned up when no longer needed or
+        published as a Kiosk Dashboard.</a></li>
+        <li><a
+        href="#nav-some-default-dashboards-are-for-home-assistant-management-and-cannot-be-removed."
+        id="nav-toc-some-default-dashboards-are-for-home-assistant-management-and-cannot-be-removed.">Some
+        default dashboards are for Home Assistant management and cannot
+        be removed.</a></li>
+        </ul></li>
+        <li><a href="#nav-disk-layout-for-dashboards"
+        id="nav-toc-disk-layout-for-dashboards">Disk Layout for
+        Dashboards</a>
+        <ul>
+        <li><a href="#nav-common-panels-directory"
+        id="nav-toc-common-panels-directory">Common Panels
+        Directory</a></li>
+        <li><a href="#nav-common-cards-directory"
+        id="nav-toc-common-cards-directory">Common Cards
+        directory</a></li>
+        </ul></li>
+        <li><a href="#nav-gradual-migration"
+        id="nav-toc-gradual-migration">Gradual Migration</a></li>
+        <li><a href="#nav-preserve-existing-ecosystem-compatibility"
+        id="nav-toc-preserve-existing-ecosystem-compatibility">Preserve
+        Existing Ecosystem Compatibility</a></li>
+        <li><a href="#nav-physical-and-virtual-architecture"
+        id="nav-toc-physical-and-virtual-architecture">4. Physical and
+        Virtual Architecture</a></li>
+        <li><a href="#nav-local-ai-architecture"
+        id="nav-toc-local-ai-architecture">Local AI
+        Architecture</a></li>
+        <li><a href="#nav-home-assistant-network-architecture"
+        id="nav-toc-home-assistant-network-architecture">5. Home
+        Assistant Network Architecture</a>
+        <ul>
+        <li><a href="#nav-primary-lan" id="nav-toc-primary-lan">5.1
+        Primary LAN</a></li>
+        <li><a href="#nav-isolated-backend-network"
+        id="nav-toc-isolated-backend-network">5.2 Isolated Backend
+        Network</a></li>
+        </ul></li>
+        <li><a href="#nav-home-assistant-concepts-and-terminology"
+        id="nav-toc-home-assistant-concepts-and-terminology">Home
+        Assistant Concepts and Terminology</a>
+        <ul>
+        <li><a href="#nav-integrations-1"
+        id="nav-toc-integrations-1">Integrations</a></li>
+        <li><a href="#nav-devices" id="nav-toc-devices">Devices</a></li>
+        <li><a href="#nav-entities"
+        id="nav-toc-entities">Entities</a></li>
+        <li><a href="#nav-areas" id="nav-toc-areas">Areas</a></li>
+        <li><a href="#nav-automations"
+        id="nav-toc-automations">Automations</a></li>
+        <li><a href="#nav-scripts" id="nav-toc-scripts">Scripts</a></li>
+        <li><a href="#nav-scenes" id="nav-toc-scenes">Scenes</a></li>
+        <li><a href="#nav-apps" id="nav-toc-apps">Apps</a></li>
+        </ul></li>
+        <li><a href="#nav-home-assistant-service-responsibilities"
+        id="nav-toc-home-assistant-service-responsibilities">Home
+        Assistant Service Responsibilities</a></li>
+        <li><a href="#nav-ecosystem-integrations"
+        id="nav-toc-ecosystem-integrations">Ecosystem Integrations</a>
+        <ul>
+        <li><a href="#nav-home-assistant-core-interface"
+        id="nav-toc-home-assistant-core-interface">Home Assistant Core
+        &amp; Interface</a></li>
+        <li><a href="#nav-smart-home-protocols-device-connectivity"
+        id="nav-toc-smart-home-protocols-device-connectivity">Smart Home
+        Protocols &amp; Device Connectivity</a></li>
+        <li><a href="#nav-media-entertainment-home-theater"
+        id="nav-toc-media-entertainment-home-theater">Media,
+        Entertainment &amp; Home Theater</a></li>
+        <li><a href="#nav-smartthings" id="nav-toc-smartthings">7.1
+        SmartThings</a></li>
+        <li><a href="#nav-google-home" id="nav-toc-google-home">7.2
+        Google Home</a></li>
+        </ul></li>
+        <li><a href="#nav-local-voice-architecture"
+        id="nav-toc-local-voice-architecture">Local Voice
+        Architecture</a></li>
+        <li><a href="#nav-matter-architecture"
+        id="nav-toc-matter-architecture">Matter Architecture</a></li>
+        <li><a href="#nav-mqtt-architecture"
+        id="nav-toc-mqtt-architecture">MQTT Architecture</a></li>
+        <li><a href="#nav-esp-home-architecture"
+        id="nav-toc-esp-home-architecture">ESP Home
+        Architecture</a></li>
+        <li><a href="#nav-envisalink-dsc-architecture"
+        id="nav-toc-envisalink-dsc-architecture">Envisalink (DSC)
+        Architecture</a></li>
+        <li><a href="#nav-local-tuya-strategy"
+        id="nav-toc-local-tuya-strategy">Local Tuya Strategy</a></li>
+        <li><a href="#nav-camera-and-surveillance-boundary"
+        id="nav-toc-camera-and-surveillance-boundary">Camera and
+        Surveillance Boundary</a></li>
+        <li><a href="#nav-storage-and-backup-architecture"
+        id="nav-toc-storage-and-backup-architecture">Storage and Backup
+        Architecture</a></li>
+        <li><a href="#nav-relationship-to-the-infotainment-module"
+        id="nav-toc-relationship-to-the-infotainment-module">Relationship
+        to the Infotainment Module</a>
+        <ul>
+        <li><a href="#nav-this-creates-a-two-node-architecture"
+        id="nav-toc-this-creates-a-two-node-architecture">This creates a
+        two-node architecture:</a></li>
+        </ul></li>
+        <li><a href="#nav-cloud-dependency-strategy"
+        id="nav-toc-cloud-dependency-strategy">Cloud Dependency
+        Strategy</a>
+        <ul>
+        <li><a href="#nav-local-device-control."
+        id="nav-toc-local-device-control.">Local device
+        control.</a></li>
+        <li><a href="#nav-local-home-assistant-integration."
+        id="nav-toc-local-home-assistant-integration.">Local Home
+        Assistant integration.</a></li>
+        <li><a href="#nav-local-supporting-service."
+        id="nav-toc-local-supporting-service.">Local supporting
+        service.</a></li>
+        <li><a href="#nav-local-aivoice-processing."
+        id="nav-toc-local-aivoice-processing.">Local AI/voice
+        processing.</a></li>
+        <li><a href="#nav-whether-local-control-exists"
+        id="nav-toc-whether-local-control-exists">whether local control
+        exists;</a></li>
+        <li><a href="#nav-whether-cloud-access-is-required"
+        id="nav-toc-whether-cloud-access-is-required">whether cloud
+        access is required;</a></li>
+        <li><a href="#nav-what-functionality-is-lost-without-the-cloud"
+        id="nav-toc-what-functionality-is-lost-without-the-cloud">what
+        functionality is lost without the cloud;</a></li>
+        <li><a
+        href="#nav-whether-the-integration-can-continue-during-an-internet-outage-and"
+        id="nav-toc-whether-the-integration-can-continue-during-an-internet-outage-and">whether
+        the integration can continue during an Internet outage;
+        and</a></li>
+        <li><a
+        href="#nav-whether-a-future-local-replacement-is-practical."
+        id="nav-toc-whether-a-future-local-replacement-is-practical.">whether
+        a future local replacement is practical.</a></li>
+        </ul></li>
+        <li><a
+        href="#nav-review-of-benefits-gained-by-using-the-home-assistant-architecture-in-our-smart-home"
+        id="nav-toc-review-of-benefits-gained-by-using-the-home-assistant-architecture-in-our-smart-home">Review
+        of Benefits gained by using the Home Assistant Architecture in
+        our Smart Home</a>
+        <ul>
+        <li><a href="#nav-privacy-and-local-control"
+        id="nav-toc-privacy-and-local-control">1. Privacy and Local
+        Control</a></li>
+        <li><a href="#nav-complete-vendor-independence"
+        id="nav-toc-complete-vendor-independence">2. Complete Vendor
+        Independence</a></li>
+        <li><a href="#nav-hyper-advanced-automations"
+        id="nav-toc-hyper-advanced-automations">3. Hyper-Advanced
+        Automations</a></li>
+        <li><a href="#nav-customization-and-community"
+        id="nav-toc-customization-and-community">4. Customization and
+        Community</a></li>
+        </ul></li>
+        <li><a href="#nav-resilience-and-failure-boundaries"
+        id="nav-toc-resilience-and-failure-boundaries">Resilience and
+        Failure Boundaries</a>
+        <ul>
+        <li><a href="#nav-home-assistant-failure"
+        id="nav-toc-home-assistant-failure">Home Assistant
+        failure</a></li>
+        <li><a href="#nav-internet-failure"
+        id="nav-toc-internet-failure">Internet failure</a></li>
+        <li><a href="#nav-infotainment-module-failure"
+        id="nav-toc-infotainment-module-failure">Infotainment Module
+        failure</a></li>
+        <li><a href="#nav-compute-module-failure"
+        id="nav-toc-compute-module-failure">Compute Module
+        failure</a></li>
+        </ul></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-references-and-authoritative-resources"
+        id="nav-toc-references-and-authoritative-resources">References
+        and Authoritative Resources</a>
+        <ul>
+        <li><a href="#nav-home-assistant-core-architecture-components"
+        id="nav-toc-home-assistant-core-architecture-components">Home
+        Assistant Core Architecture &amp; Components</a>
+        <ul>
+        <li><a href="#nav-home-assistant-architecture-overview"
+        id="nav-toc-home-assistant-architecture-overview">Home Assistant
+        Architecture Overview</a></li>
+        <li><a href="#nav-home-assistant-supervisor"
+        id="nav-toc-home-assistant-supervisor">Home Assistant
+        Supervisor</a></li>
+        <li><a href="#nav-home-assistant-operating-system"
+        id="nav-toc-home-assistant-operating-system">Home Assistant
+        Operating System</a></li>
+        </ul></li>
+        <li><a href="#nav-hass.io-docker-containerization"
+        id="nav-toc-hass.io-docker-containerization">Hass.io &amp;
+        Docker Containerization</a>
+        <ul>
+        <li><a href="#nav-hass.io-add-on-store"
+        id="nav-toc-hass.io-add-on-store">Hass.io Add-on Store</a></li>
+        <li><a href="#nav-docker-container-management"
+        id="nav-toc-docker-container-management">Docker Container
+        Management</a></li>
+        <li><a href="#nav-container-orchestration-with-supervisor"
+        id="nav-toc-container-orchestration-with-supervisor">Container
+        Orchestration with Supervisor</a></li>
+        </ul></li>
+        <li><a href="#nav-smart-home-integration-protocols"
+        id="nav-toc-smart-home-integration-protocols">Smart Home
+        Integration &amp; Protocols</a>
+        <ul>
+        <li><a href="#nav-matter-smart-home-standard"
+        id="nav-toc-matter-smart-home-standard">Matter Smart Home
+        Standard</a></li>
+        <li><a href="#nav-zigbee-integration-documentation"
+        id="nav-toc-zigbee-integration-documentation">Zigbee Integration
+        Documentation</a></li>
+        <li><a href="#nav-z-wave-integration"
+        id="nav-toc-z-wave-integration">Z-Wave Integration</a></li>
+        </ul></li>
+        <li><a href="#nav-voice-assistants-ai-integration"
+        id="nav-toc-voice-assistants-ai-integration">Voice Assistants
+        &amp; AI Integration</a>
+        <ul>
+        <li><a href="#nav-home-assistant-voice-integration"
+        id="nav-toc-home-assistant-voice-integration">Home Assistant
+        Voice Integration</a></li>
+        <li><a href="#nav-google-assistant-integration"
+        id="nav-toc-google-assistant-integration">Google Assistant
+        Integration</a></li>
+        <li><a href="#nav-amazon-alexa-integration"
+        id="nav-toc-amazon-alexa-integration">Amazon Alexa
+        Integration</a></li>
+        </ul></li>
+        <li><a href="#nav-security-network-architecture"
+        id="nav-toc-security-network-architecture">Security &amp;
+        Network Architecture</a>
+        <ul>
+        <li><a href="#nav-home-assistant-security-best-practices"
+        id="nav-toc-home-assistant-security-best-practices">Home
+        Assistant Security Best Practices</a></li>
+        <li><a href="#nav-tlsssl-configuration"
+        id="nav-toc-tlsssl-configuration">TLS/SSL Configuration</a></li>
+        <li><a href="#nav-network-segmentation-for-iot"
+        id="nav-toc-network-segmentation-for-iot">Network Segmentation
+        for IoT</a></li>
+        </ul></li>
+        <li><a href="#nav-scalability-performance"
+        id="nav-toc-scalability-performance">Scalability &amp;
+        Performance</a>
+        <ul>
+        <li><a href="#nav-home-assistant-performance-tuning"
+        id="nav-toc-home-assistant-performance-tuning">Home Assistant
+        Performance Tuning</a></li>
+        <li><a href="#nav-database-optimization-mariadbpostgresql"
+        id="nav-toc-database-optimization-mariadbpostgresql">Database
+        Optimization (MariaDB/PostgreSQL)</a></li>
+        <li><a href="#nav-high-availability-configuration"
+        id="nav-toc-high-availability-configuration">High Availability
+        Configuration</a></li>
+        </ul></li>
+        <li><a href="#nav-industrial-enterprise-iot"
+        id="nav-toc-industrial-enterprise-iot">Industrial &amp;
+        Enterprise IoT</a>
+        <ul>
+        <li><a href="#nav-industrial-iot-architecture"
+        id="nav-toc-industrial-iot-architecture">Industrial IoT
+        Architecture</a></li>
+        <li><a href="#nav-smart-home-interoperability"
+        id="nav-toc-smart-home-interoperability">Smart Home
+        Interoperability</a></li>
+        <li><a href="#nav-matter-device-certification"
+        id="nav-toc-matter-device-certification">Matter Device
+        Certification</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#nav-additional-resources"
+        id="nav-toc-additional-resources">Additional Resources</a>
+        <ul>
+        <li><a href="#nav-home-assistant-community-forums"
+        id="nav-toc-home-assistant-community-forums">Home Assistant
+        Community Forums</a></li>
+        <li><a href="#nav-smart-home-device-security"
+        id="nav-toc-smart-home-device-security">Smart Home Device
+        Security</a></li>
+        <li><a href="#nav-iot-device-management"
+        id="nav-toc-iot-device-management">IoT Device
+        Management</a></li>
+        </ul></li>
+        </ul>
       </aside>
 
       <article class="document-content">
-        <p>Home Assistant Architectural Design</p>
-        <p>Purpose</p>
-        <p>This document defines the architecture, responsibilities,
-        dependencies, interfaces, supporting services, network
-        boundaries, storage relationships, and operational design
-        surrounding the Home Assistant installation.</p>
+        <p><span class="custom-style-Title Char Title Char"
+        data-custom-style="Title Char">Home Assistant Architectural
+        Design Document (HA ADD)</span> <img src="01-hassio-architectural-design-document/media/image1.png"
+        style="width:6.49091in;height:6.49091in"
+        alt="Figure 1: :: {custom-style=“caption”} Figure 1: A Home Assistant Smart Home Integration :::" /></p>
+        <h1 id="nav-purpose">Purpose</h1>
+        <p>This document defines the architecture, requirements,
+        responsibilities, dependencies, interfaces, supporting services,
+        network boundaries, storage relationships, and operational
+        design surrounding the Home Assistant installation.</p>
         <p>The Home Assistant installation is implemented as a Home
         Assistant OS (HAOS) virtual machine hosted on the Home Lab
         Compute Module running Proxmox VE 9.2.3.</p>
@@ -321,53 +799,120 @@ Architectural Design Document</h1>
         where they provide required functionality, device compatibility,
         ecosystem integration, or capabilities that cannot reasonably be
         reproduced locally.</p>
-        <p>1. Current Status</p>
-        <p>Status: Active implementation / architecture documentation in
-        progress.</p>
-        <p>The Home Assistant architecture is operational and is being
-        progressively documented as the central automation and
-        integration platform for the home.</p>
-        <p>The current implementation uses Home Assistant OS as the
-        primary automation environment and integrates with several
-        external ecosystems and local services.</p>
-        <p>Google Home currently remains the primary voice-control
-        interface. A deliberate migration toward Home Assistant-based
-        local voice control is underway.</p>
-        <p>The architecture therefore represents a hybrid current state
-        with a local-first target state.</p>
-        <p>2. Architectural Goals</p>
+        <h2 id="nav-architectural-design-goals">Architectural Design
+        Goals</h2>
         <p>The Home Assistant architecture has the following primary
         goals:</p>
-        <p>Provide a central automation and orchestration platform for
-        the home.</p>
-        <p>Prefer locally hosted and cloudless services whenever
-        practical.</p>
-        <p>Minimize unnecessary dependence on external cloud
-        services.</p>
-        <p>Maintain interoperability with existing smart-home
-        ecosystems.</p>
-        <p>Provide a controlled migration path from Google Home voice
-        control to Home Assistant voice control.</p>
-        <p>Integrate SmartThings devices and capabilities into Home
-        Assistant.</p>
-        <p>Provide local MQTT and ESPHome services.</p>
-        <p>Provide Matter support through the Home Assistant
-        environment.</p>
-        <p>Maintain compatibility with existing network-connected,
-        Ethernet, Wi-Fi, and radio-based devices.</p>
-        <p>Provide centralized monitoring and automation of the home
-        environment.</p>
-        <p>Maintain recoverable Home Assistant configuration
-        backups.</p>
-        <p>Store Home Assistant backups on the Infotainment Module's
-        centralized backup storage.</p>
-        <p>Provide a foundation for local AI and local voice
-        processing.</p>
-        <p>3. Design Principles</p>
-        <p>3.1 Local-First</p>
-        <p>The preferred architecture is to process and control devices
-        locally whenever a reliable local alternative exists.</p>
-        <p>Local processing is preferred because it can provide:</p>
+        <h2 id="nav-dependencies">Dependencies</h2>
+        <h4
+        id="nav-provide-a-centralized-automation-and-orchestration-platform-for-the-home.">Provide
+        a centralized automation and orchestration platform for the
+        home.</h4>
+        <h4
+        id="nav-prefer-locally-hosted-and-cloudless-services-whenever-practical.">Prefer
+        locally hosted and cloudless services whenever practical.</h4>
+        <h4
+        id="nav-minimize-unnecessary-dependence-on-external-cloud-services.">Minimize
+        unnecessary dependence on external cloud services.</h4>
+        <h4
+        id="nav-maintain-recoverable-home-assistant-configuration-backups.">Maintain
+        recoverable Home Assistant configuration backups.</h4>
+        <h4
+        id="nav-store-home-assistant-backups-will-go-to-the-infotainment-modules-centralized-backup-storage.">Store
+        Home Assistant backups will go to the Infotainment Module's
+        centralized backup storage.</h4>
+        <h4
+        id="nav-all-network-connections-thru-the-home-router-will-originate-from-within-the-home-network.-no-connections-are-allowed-to-originate-from-the-outside-network---all-outside-ports-shall-be-closed-for-external-access.">All
+        network connections thru the Home Router will originate from
+        within the Home Network. No connections are allowed to originate
+        from the outside network - All outside ports shall be closed for
+        external access.</h4>
+        <h4
+        id="nav-home-assistant-cloud-services-will-be-used-for-remote-access-and-client-connectivity.">Home
+        Assistant Cloud Services will be used for remote access and
+        client connectivity.</h4>
+        <h3 id="nav-ai-automation-monitoring-and-voice-foundations">AI,
+        Automation, monitoring and Voice Foundations</h3>
+        <h4
+        id="nav-provide-a-centralized-local-monitoring-and-automation-of-the-home-environment-using-local-ai-models.">Provide
+        a centralized local monitoring and automation of the home
+        environment using local AI models.</h4>
+        <h4
+        id="nav-provide-a-foundation-for-local-ai-and-local-voice-processing.">Provide
+        a foundation for local AI and local voice processing.</h4>
+        <h4
+        id="nav-provide-a-controlled-migration-path-from-google-home-voice-control-to-home-assistant-voice-control.">Provide
+        a controlled migration path from Google Home voice control to
+        Home Assistant voice control.</h4>
+        <h3 id="nav-configurations">Configurations</h3>
+        <h4
+        id="nav-passwords-used-in-home-assistant-shall-be-located-in-a-separate-secrets-file-and-referenced-internally-through-that-file.">Passwords
+        used in Home Assistant shall be located in a separate secrets
+        file and referenced internally through that file.</h4>
+        <h4
+        id="nav-blocks-of-text-in-the-configuration.yaml-file-shall-be-commented-based-on-their-grouping">Blocks
+        of text in the "configuration.yaml" file shall be commented
+        based on their grouping</h4>
+        <p>Example:</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>#spotify:</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>client_id: !secret Spotify-Client_ID</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>client_secret: !secret Spotify-OAuth</p>
+        </div></li>
+        </ul>
+        <h4
+        id="nav-configurations-shall-be-grouped-into-separate-files-when-it-makes-sense.">Configurations
+        shall be grouped into separate files when it makes sense.</h4>
+        <p>This is to ensure a cleaner "configuration.yaml file" and
+        maintain a mechanism to disable a complete set of configurations
+        with a single comment in the main file.</p>
+        <p>Example:</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>script: !include scripts.yaml</p>
+        </div></li>
+        </ul>
+        <h3 id="nav-integrations">Integrations</h3>
+        <h4
+        id="nav-maintain-interoperability-with-existing-smart-home-ecosystems.">Maintain
+        interoperability with existing smart-home ecosystems.</h4>
+        <h4
+        id="nav-integrate-smartthings-devices-and-capabilities-into-home-assistant.">Integrate
+        SmartThings devices and capabilities into Home Assistant.</h4>
+        <h4
+        id="nav-provide-local-esphome-services-through-the-home-assistant-environment.">Provide
+        local ESPHome services through the Home Assistant
+        environment.</h4>
+        <h4
+        id="nav-new-satellites-will-use-esphome-services-when-possible.">New
+        satellites will use ESPHome services when possible.</h4>
+        <h4
+        id="nav-provide-local-mqtt-services-through-the-home-assistant-environment.">Provide
+        local MQTT services through the Home Assistant environment.</h4>
+        <h4
+        id="nav-provide-matter-support-through-the-home-assistant-environment.">Provide
+        Matter support through the Home Assistant environment.</h4>
+        <h4
+        id="nav-provide-connectivity-for-network-connected-ethernet-wi-fi-2.5-and-5ghz-bluetooth-and-radio-based-devices.">Provide
+        connectivity for network-connected, Ethernet, Wi-Fi (2.5 and
+        5GHZ) , Bluetooth, and radio-based devices.</h4>
+        <h3 id="nav-local-first-design">Local-First Design</h3>
+        <h4
+        id="nav-the-preferred-architecture-is-to-process-and-control-devices-within-the-home-first-whenever-a-reliable-local-alternative-exists.">The
+        preferred architecture is to process and control devices within
+        the home first whenever a reliable local alternative
+        exists.</h4>
+        <p>Rationale: Local processing is preferred because it can
+        provide:</p>
         <p>reduced Internet dependency;</p>
         <p>improved privacy;</p>
         <p>reduced cloud-service dependency;</p>
@@ -375,282 +920,941 @@ Architectural Design Document</h1>
         <p>reduced dependence on vendor APIs;</p>
         <p>predictable local network behavior; and</p>
         <p>greater control over system configuration and lifecycle.</p>
-        <p>Cloud services may still be used when required or when their
-        capabilities provide significant value.</p>
-        <p>3.2 Home Assistant as the Central Automation Platform</p>
-        <p>Home Assistant is the central automation and integration
-        layer.</p>
-        <p>Rather than requiring each device ecosystem to operate
-        independently, Home Assistant provides a common control and
-        automation environment.</p>
-        <p>External ecosystems such as SmartThings and Google Home are
-        therefore treated as integrations surrounding the Home Assistant
-        core rather than as the architectural center of the system.</p>
-        <p>3.3 Gradual Migration</p>
-        <p>The architecture intentionally supports incremental migration
-        rather than requiring a single replacement event.</p>
-        <p>Google Home is currently the primary voice controller.</p>
-        <p>The target architecture is to progressively move voice
-        interaction toward Home Assistant and locally hosted voice
-        services.</p>
-        <p>This permits existing Google Home functionality to remain
-        operational while local voice capabilities are developed and
-        validated.</p>
-        <p>3.4 Preserve Existing Ecosystem Compatibility</p>
-        <p>Existing devices and ecosystems are not required to be
-        replaced simply because a local alternative is preferred.</p>
-        <p>SmartThings remains an important integration source,
-        including its existing Z-Wave capability.</p>
-        <p>Home Assistant integrates with SmartThings while providing a
-        common automation and control layer.</p>
-        <p>4. Physical and Virtual Architecture</p>
-        <p>Home Assistant runs on the Home Lab Compute Module.</p>
-        <p>The Compute Module is a KAMRUI HYPER H2 Mini PC containing an
-        Intel Core i7-13620H, 32 GB RAM, Intel UHD integrated graphics,
-        and a 1 TB PCIe NVMe SSD. The host runs Proxmox VE 9.2.3.</p>
-        <p>The Home Assistant workload is implemented as:</p>
-        <p>VM 101 — Home Assistant OS</p>
-        <table style="width:60%;">
+        <h4
+        id="nav-cloud-services-may-still-be-used-when-required-or-when-their-capabilities-provide-significant-value.">Cloud
+        services may still be used when required or when their
+        capabilities provide significant value.</h4>
+        <h3
+        id="nav-home-assistant-as-the-central-automation-platform">Home
+        Assistant as the Central Automation Platform</h3>
+        <h4
+        id="nav-home-assistant-is-the-central-automation-and-integration-layer.">Home
+        Assistant is the central automation and integration layer.</h4>
+        <p>Rationale: Rather than requiring each device ecosystem to
+        operate independently, Home Assistant provides a common control
+        and automation environment.</p>
+        <p>External ecosystems such as SmartThings, HomeKit and Google
+        Home are therefore treated as integrations surrounding the Home
+        Assistant core rather than as the architectural center of the
+        system.</p>
+        <h4
+        id="nav-all-devices-will-use-home-assistant-integrations-if-possible.">All
+        devices will use Home Assistant Integrations if possible.</h4>
+        <p>Rationale: These Integrations may be shared back to Google
+        Home when necessary for current voice integration.</p>
+        <h4
+        id="nav-devices-that-are-permanently-installed-in-the-home-will-connect-via-smartthings-first.">Devices
+        that are permanently installed in the home will connect via
+        SmartThings first.</h4>
+        <p>Rationale: Smart Things is the current Sterling Ranch Smart
+        Home Platform. Because of this any device that is part of the
+        home will connect to SmartThings first and then be shared with
+        Home Assistant and Google thru the perspective SmartThings
+        Integrations. These are usually Z-Wave connected devices like
+        wall switches, motor control switches, and Wi-Fi connected
+        Doorknobs.</p>
+        <h4
+        id="nav-there-will-be-2-smartthings-hub-a-primary-and-a-backup.">There
+        will be 2 SmartThings hub a primary and a backup.</h4>
+        <p>Rationale: Sterling Ranch provides a single AoTech
+        (SmartThings compatible) hub that stays with the house. Due to
+        stability with the Lumiere integration we will maintain a
+        primary SmartThings hub and the AoTech will be used as a
+        backup.</p>
+        <h3 id="nav-dashboards">Dashboards</h3>
+        <p>Dashboards will be designed using common Open Source
+        designs.</p>
+        <p>Support for Kiosk mode Wall Panels is required for
+        interaction with Home Assistant via wall panels. The following
+        are my recommendations for our Home Lab. Yours may differ by
+        preference.</p>
+        <p>Dashboards will have a dark, blue color scheme.</p>
+        <p>All pages using kiosk mode will have a top section that
+        displays the date and time.</p>
+        <p>All pages using kiosk mode will have a bottom section that
+        has buttons that take you to additional subpages.</p>
+        <p>The bottom buttons will use a grid layout for distributing
+        the buttons across the bottom of the screen.</p>
+        <p>The bottom buttons will show an active theme (white text,
+        white icon light blue).</p>
+        <p>The bottom buttons will show an inactive theme (white text,
+        gray icon, on Dark Blue).</p>
+        <p>The bottom buttons may show an error theme (white text, gray
+        icon on a black background) if the device is in an error
+        state.</p>
+        <p>There is a possibility (if memory dictates) that in an alert
+        condition may be used (the icon and text will flash Red at a 1
+        second interval with a black background) indicating an alert
+        status.</p>
+        <p>The bottom buttons will have a Title at the bottom with an
+        Icon at the top.</p>
+        <p>Just under the Title block will be a single line that
+        explains what is active with a counter of how many items are in
+        active. For example: "7 On" may indicate there are "7" lights in
+        the "On" state.</p>
+        <p>All pages using kiosk mode will have a middle section that
+        the functionality of that page. For example: the home page will
+        show a calendar at the right with 3 blocks on the left that
+        displays the weather conditions.</p>
+        <h4
+        id="nav-all-pages-using-kiosk-mode-will-have-a-fixed-size-and-use-grid-templates-to-lock-the-size-and-locations-of-each-cell.">All
+        pages using kiosk mode will have a fixed size and use grid
+        templates to lock the size and locations of each cell.</h4>
+        <table>
+        <caption>Code 1: KIOSK Mode Template -Example</caption>
         <colgroup>
-        <col style="width: 25%" />
-        <col style="width: 34%" />
+        <col style="width: 101%" />
         </colgroup>
         <thead>
         <tr>
-        <th style="text-align: left;">Resource</th>
-        <th style="text-align: left;">Current implementation</th>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>grid-template-columns: 50px 1240px 45px<br />
+        grid-template-rows: 70px 580px 20px<br />
+        grid-template-areas: '"header header header" "left main1 right"
+        "buttons buttons buttons"'</p>
+        </div></th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-        <td style="text-align: left;">Platform</td>
-        <td style="text-align: left;">Home Assistant OS</td>
-        </tr>
-        <tr>
-        <td style="text-align: left;">Hypervisor</td>
-        <td style="text-align: left;">Proxmox VE</td>
-        </tr>
-        <tr>
-        <td style="text-align: left;">VM ID</td>
-        <td style="text-align: left;">101</td>
-        </tr>
-        <tr>
-        <td style="text-align: left;">vCPU</td>
-        <td style="text-align: left;">2</td>
-        </tr>
-        <tr>
-        <td style="text-align: left;">RAM</td>
-        <td style="text-align: left;">4 GB</td>
-        </tr>
-        <tr>
-        <td style="text-align: left;">Storage</td>
-        <td style="text-align: left;">32–64 GB NVMe</td>
-        </tr>
-        <tr>
-        <td style="text-align: left;">Primary network</td>
-        <td style="text-align: left;">192.168.86.251</td>
-        </tr>
-        <tr>
-        <td style="text-align: left;">Primary bridge</td>
-        <td style="text-align: left;">vmbr0</td>
-        </tr>
-        <tr>
-        <td style="text-align: left;">Backend network</td>
-        <td style="text-align: left;">10.0.10.1/24</td>
-        </tr>
-        <tr>
-        <td style="text-align: left;">Backend bridge</td>
-        <td style="text-align: left;">vmbr1</td>
-        </tr>
         </tbody>
         </table>
-        <p>The HAOS VM has both a primary LAN interface and an isolated
-        backend interface. The backend network does not provide gateway
-        or DNS emulation.</p>
-        <p>5. Home Assistant Network Architecture</p>
-        <p>Home Assistant participates in two network segments.</p>
-        <p>5.1 Primary LAN</p>
-        <p>Network: 192.168.86.0/24</p>
-        <p>Home Assistant: 192.168.86.251</p>
-        <p>The primary LAN provides Home Assistant connectivity to the
-        majority of the home network and its Ethernet- and
-        Wi-Fi-connected devices.</p>
-        <p>The primary LAN is the normal communication environment for
-        device integrations and services requiring access to the broader
-        home network.</p>
-        <p>5.2 Isolated Backend Network</p>
-        <p>Network: 10.0.10.0/24</p>
-        <p>Home Assistant: 10.0.10.1</p>
-        <p>The backend network is implemented through Proxmox vmbr1.</p>
-        <p>The documented architecture specifies that this segment has
-        no gateway/DNS emulation.</p>
-        <p>The purpose of this network is to provide an isolated backend
-        communication path for selected infrastructure and services.</p>
-        <p>The Compute Module's Ollama and Wyoming/Open-WebUI
-        environments also participate in this backend network, creating
-        a local service fabric for AI and voice processing.</p>
-        <p>6. Home Assistant Service Responsibilities</p>
-        <p>Home Assistant is responsible for central automation,
-        integration, device state aggregation, and orchestration.</p>
-        <p>The current architecture includes or references the following
-        service areas:</p>
-        <p>Home Assistant automation;</p>
-        <p>scripts;</p>
-        <p>scenes;</p>
-        <p>template sensors;</p>
-        <p>command-line integrations;</p>
-        <p>media-player integrations;</p>
-        <p>Google Assistant integration;</p>
-        <p>REST commands;</p>
-        <p>utility meters;</p>
-        <p>MQTT;</p>
-        <p>Matter Server;</p>
-        <p>ESPHome;</p>
-        <p>local device integrations;</p>
-        <p>SmartThings integration;</p>
-        <p>Google Home integration;</p>
-        <p>Envisalink integration;</p>
-        <p>network/device monitoring; and</p>
-        <p>local AI/voice service integration.</p>
-        <p>The exact configuration of these services is maintained
-        within the Home Assistant configuration and supporting
-        configuration files.</p>
-        <p>7. External Ecosystem Integrations</p>
-        <p>7.1 SmartThings</p>
-        <p>SmartThings is an external smart-home ecosystem integrated
-        with Home Assistant.</p>
-        <p>SmartThings currently provides access to devices and
-        capabilities that remain within the SmartThings ecosystem.</p>
-        <p>SmartThings also contains the existing Z-Wave
-        infrastructure.</p>
-        <p>The architectural objective is not necessarily immediate
-        removal of SmartThings. Instead, Home Assistant provides a
-        central integration and automation layer while existing
-        SmartThings infrastructure remains useful.</p>
-        <p>Future migration of individual devices should be evaluated on
-        a device-by-device basis according to reliability, local-control
-        capability, compatibility, and migration effort.</p>
-        <p>7.2 Google Home</p>
-        <p>Google Home is currently the primary voice-control
-        system.</p>
-        <p>Home Assistant integrates with the Google Home ecosystem and
-        receives/coordinates information associated with the existing
-        Google environment.</p>
-        <p>The architectural direction is to progressively migrate voice
-        control toward Home Assistant.</p>
-        <p>The migration should therefore be considered a transition
-        architecture rather than a replacement event.</p>
-        <p>Current state</p>
-        <p>Google Home → Primary voice controller</p>
-        <p>Target state</p>
-        <p>Home Assistant + local voice services → Primary voice
-        controller</p>
-        <p>Google Home may remain available as an interoperability or
-        secondary voice interface where useful.</p>
-        <p>8. Local Voice Architecture</p>
-        <p>The Compute Module provides local voice-processing services
-        through the Wyoming/Open-WebUI environment.</p>
-        <p>The voice architecture includes:</p>
-        <p>Wyoming-Piper;</p>
-        <p>Wyoming-Whisper; and</p>
-        <p>Open-WebUI.</p>
-        <p>The Wyoming services are hosted within LXC 104, which has 2
-        vCPUs, 2 GB RAM, and access to persistent Piper, Whisper, and
-        Open-WebUI data through centralized storage mounts.</p>
-        <p>The current architecture therefore provides a foundation for
-        moving voice processing away from Google Home and toward locally
-        hosted services.</p>
-        <p>9. Local AI Architecture</p>
+        <h4
+        id="nav-common-reusable-templates-will-be-used-whenever-possible.">Common
+        reusable Templates will be used whenever possible.</h4>
+        <h3 id="nav-non-kiosk-dashboards">Non kiosk dashboards</h3>
+        <h4
+        id="nav-non-kiosk-dashboards-are-used-for-experimental-development-testing-and-are-only-constrained-to-the-themes-provided-by-the-system-level-templates.-blue-based-dark-mode">Non
+        kiosk dashboards are used for experimental, development, testing
+        and are only constrained to the themes provided by the system
+        level templates. (Blue based dark mode)</h4>
+        <h4
+        id="nav-unused-dashboards-should-be-cleaned-up-when-no-longer-needed-or-published-as-a-kiosk-dashboard.">Unused
+        dashboards should be cleaned up when no longer needed or
+        published as a Kiosk Dashboard.</h4>
+        <h4
+        id="nav-some-default-dashboards-are-for-home-assistant-management-and-cannot-be-removed.">Some
+        default dashboards are for Home Assistant management and cannot
+        be removed.</h4>
+        <p>Rationale: Overview, Energy, Activity, History, ESP Home
+        Builder, HACs, File editor, Matter Server, Node-Red, Settings,
+        Notifications are reserved for System Maintenance and
+        Administration and cannot be removed.</p>
+        <h3 id="nav-disk-layout-for-dashboards">Disk Layout for
+        Dashboards</h3>
+        <p>In order to maintain a standards-based design we will use a
+        predefined disk layout to contain the dashboards and other
+        configuration files used by Home Assistant. These folders are
+        located under the Home Assistant configuration folder on the
+        disk.</p>
+        <p>Here is the layout that I recommend for the file system. This
+        layout will provide an easy path for migration, maintenance, and
+        design:</p>
+        <table>
+        <caption>Code 2: Dashboard Directory</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>/Dashboards</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p>Contains main dashboard.yaml, and a directory for each custom
+        dashboard, directory is prefixed with "dash-", with a single
+        dashboard file, located inside (for example
+        (dash-water/water.yaml).</p>
+        <p>This custom dashboard file will include the following files
+        using a grid layout.</p>
+        <table>
+        <caption>Code 3: Dashboard Water Template Example</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>layout: !include ../common/panels/main/layout.yaml<br />
+        cards:<br />
+        - !include ../common/panels/main/header.yaml<br />
+        - !include ../common/panels/main/buttons.yaml<br />
+        - !include ../common/panels/main/water.yaml</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p>From this you can see the pointers to a common template, and
+        a common header and footer.</p>
+        <h4 id="nav-common-panels-directory">Common Panels
+        Directory</h4>
+        <p>The panels are used for inclusion in the grid-template-areas
+        mentioned above.</p>
+        <p>The "common/panels" folder represents the generic reusable
+        set of desktops.</p>
+        <p>In addition, it points to the specific page in the common
+        area (in this case it was called "/common/panels/main/water".
+        The Water dashboard is a simple design and stops at the Panel
+        level.</p>
+        <h4 id="nav-common-cards-directory">Common Cards directory</h4>
+        <p>The "common/cards" area is reserved for sub-pages used within
+        the grid-template-areas. These cards will also be placed within
+        sub level grid areas. This allows for reusability and also helps
+        in design and releases implementation phases.</p>
+        <table>
+        <caption>Code 4: Dashboard Water fs example</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>+---dash-water<br />
+        +---common<br />
+        │ └───panels<br />
+        │ ├───main<br />
+        │ └───water.yaml</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p>Water Directory Layout</p>
+        <p>For most pages we will use the more complex sub
+        grid-template-areas or stack layouts as follows:</p>
+        <p>Looking at the dashboard for lights.</p>
+        <table>
+        <caption>Code 5: Dashboard Light fs Example</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>+---dash-lights<br />
+        +---common<br />
+        │ ├───cards<br />
+        │ │ ├───accents<br />
+        │ │ │ ├───lights<br />
+        │ │ │ └───local_lights<br />
+        │ └───panels<br />
+        │ ├───lights<br />
+        │ ├──accents.yaml<br />
+        │ ├──workshop.yaml<br />
+        │ ├──outside.yaml<br />
+        │ ├──inside.yaml<br />
+        │ ├. . .</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p>Inside the accents yaml file we see that we have broken this
+        down and a bunch of vertical rows. Each row is further broken
+        down as a horizontal row of cells.</p>
+        <table>
+        <caption>Code 6: Dashboard Stack Template Example</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>type: vertical-stack<br />
+        cards:<br />
+        - type: horizontal-stack</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p>We also see that when we fill the horizontal stack with
+        objects we will use the include_dir_list entry</p>
+        <p>Inside the accents.yaml we call the following line:</p>
+        <table>
+        <caption>Code 7: KIOSK Mode Accents Example</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>!include_dir_list ../../cards/accents/lights</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p>This line does a directory listing of the cards accent/lights
+        folder and includes all the yaml files in that directory.</p>
+        <p>In this directory each device contains its own yaml file that
+        is called from this single include line. If we change the line
+        in the accent.yaml file to local_lights we will use the local
+        only connections. This makes migration much simpler. The theory
+        behind this structure is that during page layouts you will find
+        yourself rearranging and reusing things a lot until you get the
+        final production look you want. Instead of editing files to move
+        things you just change the location on the disk.</p>
+        <figure>
+        <img src="01-hassio-architectural-design-document/media/image2.png"
+        style="width:6.40833in;height:3.13227in"
+        alt="Figure 2: A Lights Panel Example Using grids and stacks" />
+        <figcaption aria-hidden="true">Figure 2: A Lights Panel Example
+        Using grids and stacks</figcaption>
+        </figure>
+        <p>This is an example of what the final integrated lights panel
+        may look like when using this level of modular design.</p>
+        <p>By using various levels of integrations like this you can
+        build a set of desktops that carry a similar theme.</p>
+        <h3 id="nav-gradual-migration">Gradual Migration</h3>
+        <p>While the dashboard recommendations above provide a
+        foundation for a basic Dashboard - you should search the web to
+        find the styles that you want in your Dashboards. These were
+        recommendations to maintain your designs while not restricting
+        you to a specific design.</p>
+        <p>This architecture intentionally supports incremental
+        migration rather than requiring a single replacement event.</p>
+        <p>Google Home is currently the primary voice controller, but
+        the target architecture is to progressively move voice
+        interaction toward Home Assistant and locally hosted voice
+        services. This permits existing Google Home functionality to
+        remain operational while local voice capabilities are developed
+        and validated. We do not use Alexa or Apple Home services even
+        though they are possible. We maintain the hub for apple home buy
+        just sync everything to it with a few apple only devices.</p>
+        <h3 id="nav-preserve-existing-ecosystem-compatibility">Preserve
+        Existing Ecosystem Compatibility</h3>
+        <p>Existing devices and ecosystems are not required to be
+        replaced simply because a local alternative is preferred. But
+        speed and performance will play a role when migrating. The
+        desire is to become completely home based. The Test Lab design
+        will allow you to test various desktops side by side to see how
+        things operate together. For example, you may build a local
+        lights desktop and a cloud-based lights desktop. Using cloud
+        based when the internet is avail and using the local based one
+        when the internet is down.</p>
+        <p>SmartThings remains an important integration source, because
+        it includes its existing Z-Wave capability. Our home came with
+        the SmartThings integration but over the years it has migrated.
+        The initial design used Home Seer. This became obsolete due to
+        the subscription fees and the complexity for integration into
+        the home. Our provider decided to migrate from Home Seer to
+        Smart things about a year ago. This modular Home Assistant
+        design provided a smooth transition to the smart things
+        design.</p>
+        <p>Home Assistant integrates with SmartThings while providing a
+        common automation and control layer.</p>
+        <p>We will see more detailed implementation designs and how
+        devices and entities are integrated further into these
+        dashboards.</p>
+        <h3 id="nav-physical-and-virtual-architecture">4. Physical and
+        Virtual Architecture</h3>
+        <p>Home Assistant runs locally on the Home Lab Compute
+        Module.</p>
+        <figure>
+        <img src="01-hassio-architectural-design-document/media/image3.png"
+        style="width:6.5in;height:3.54861in"
+        alt="Figure 3: Proxmox VE 9.2.3 / Minicomputer Architecture &amp; Network Diagram" />
+        <figcaption aria-hidden="true">Figure 3: Proxmox VE 9.2.3 /
+        Minicomputer Architecture &amp; Network Diagram<span
+        class="custom-style-annotation reference annotation reference"
+        data-custom-style="annotation reference"></span></figcaption>
+        </figure>
+        <p>This design allows the main functions of the Home Lab to be
+        easily integrated into Home Assistant for monitoring, Control
+        and for interacting with the voice AI models.</p>
+        <h3 id="nav-local-ai-architecture">Local AI Architecture</h3>
         <p>Ollama is hosted in LXC 103 on the Compute Module.</p>
         <p>The service has 6 vCPUs, 16 GB RAM, 40 GB NVMe storage, and
         Intel integrated GPU passthrough.</p>
         <p>The currently documented local models include:</p>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Gemma 3 4B — multimodal/vision;</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Phi-4 Mini — reasoning and tool calling;</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Qwen 2.5 Coder 7B — automation engineering and code/YAML
         assistance;</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Qwen 2.5 Coder 1.5B — lightweight/local development
         assistance; and</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>Nomic Embed Text — vector embeddings and document-context
         processing.</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
         <p>The architecture is designed to keep AI processing local
         whenever practical.</p>
-        <p>10. Matter Architecture</p>
-        <p>Home Assistant provides the Matter Server environment.</p>
-        <p>Matter devices are therefore intended to communicate through
-        the Home Assistant architecture rather than requiring an
-        independent cloud automation platform.</p>
-        <p>The exact Matter/Thread radio hardware and Thread
-        border-router topology remain an architecture detail to be
-        documented.</p>
-        <p>11. MQTT Architecture</p>
-        <p>Home Assistant provides the MQTT server/broker
-        environment.</p>
-        <p>MQTT is treated as a local messaging infrastructure component
-        supporting devices and services that communicate through
-        MQTT.</p>
-        <p>The detailed broker configuration, authentication model,
-        retained-message policy, persistence configuration, and client
-        inventory should be documented separately as the MQTT
-        architecture is finalized.</p>
-        <p>12. ESPHome Architecture</p>
-        <p>Home Assistant serves as the ESPHome environment for locally
-        managed ESP-based devices.</p>
-        <p>ESPHome is consistent with the local-first architectural
-        strategy because device firmware and device communication can
-        remain under local control.</p>
-        <p>ESPHome devices should therefore be preferred where they
-        provide an appropriate local alternative to cloud-dependent
-        vendor devices.</p>
-        <p>13. Envisalink Architecture</p>
-        <p>Envisalink is implemented as a Home Assistant
-        integration.</p>
-        <p>It is therefore considered an integration endpoint rather
-        than an independent Home Assistant server or infrastructure
-        node.</p>
-        <p>The integration provides Home Assistant access to the
-        associated alarm/security system state.</p>
-        <p>14. Local Tuya Strategy</p>
-        <p>Local Tuya is part of the local-first strategy.</p>
-        <p>Where compatible Tuya devices can be controlled locally,
-        local communication is preferred over unnecessary reliance on
-        the Tuya cloud.</p>
-        <p>Device-by-device compatibility must be validated before
+        </div></li>
+        </ul>
+        <h3 id="nav-home-assistant-network-architecture">5. Home
+        Assistant Network Architecture</h3>
+        <p>Home Assistant participates in two network segments.</p>
+        <h4 id="nav-primary-lan">5.1 Primary LAN</h4>
+        <p>The primary LAN provides Home Assistant connectivity to most
+        of the home network and its Ethernet and Wi-Fi-connected
+        devices. Additionally, it connects to the Smart Things hub via
+        ethernet for interacting with the Z-Wave devices.</p>
+        <p>The primary LAN is the normal communication environment for
+        device integrations and services requiring access to the broader
+        home network.</p>
+        <p>This network is an EERO based Network cloud consisting of 2
+        EEROs that control most of the network. This Network Cloud
+        supports Dual Band 2.5 and 5Ghz (with 160 MHz channel support in
+        5 GHz). We used the EERO 6+ due to its availability when we
+        designed this network. It supports speeds up to 1Gbps using
+        100MHz channel support. Our Primary WAN speed is 1Gbps as well.
+        It supports connections up to Wi-Fi 6.</p>
+        <p>Our home came with EERO Pro 1<sup>st</sup> Generation. This
+        modem could not handle the workload of our home, and we
+        immediately upgraded to Google Nest. We had issues with Google
+        Nest since it wanted to control the network and would not allow
+        proper integration with our recommended DNS and DHCP
+        architecture. This drove us to the EERO system and have been
+        happy ever since. We use DHCP from PiHole on the Compute Module.
+        This provides capabilities that remove our in-home management
+        from our provider and place this admin function in our hands. We
+        had issues with failing ISP provided routers and modems that
+        required a complete command line rebuild on replacement. This
+        became a huge hassle, so we integrated with EERO to solve these
+        problems.</p>
+        <p>We still have 1 simple problem in that some older wifi
+        devices will not connect to Wi-Fi 6. To solve this, we added a
+        single EERO that is not part of the cloud but still a member of
+        the home network. This EERO module is configured to only support
+        2.5 speeds and a single channel. When these dumb devices try to
+        connect, they try this router 1<sup>st</sup>. The connection
+        works and they join the network without issues. We still
+        maintain the IPS provided Wi-Fi server as a part of the network,
+        but it is configured as a bridge to the main EERO network just
+        like the separate EERO 2.5 device.</p>
+        <p>Today, we maintain our current IPS provided smart home design
+        (Wi-Fi Router, and Smart Things Hub) while we integrate all of
+        this safely into our Home Assistant and Home Lab
+        Architecture.</p>
+        <h4 id="nav-isolated-backend-network">5.2 Isolated Backend
+        Network</h4>
+        <p>In addition to this home Network Cloud, the compute module
+        has an internal backend network for fast communication
+        implemented through Proxmox vmbr1 and communicates without the
+        overhead of the external network.</p>
+        <p>The backbone network has no gateway/DNS emulation, and its
+        purpose is to provide an isolated backend communication path for
+        selected infrastructure and services.</p>
+        <p>The Compute Module's Ollama and Wyoming/Open-WebUI
+        environments also participate in this backend network, creating
+        a local service fabric for extremely fast AI and voice
+        processing. The entire compute module can be monitored and
+        controlled via Home Assistant via this backend network without
+        accessing the EERO cloud based network.</p>
+        <h3 id="nav-home-assistant-concepts-and-terminology">Home
+        Assistant Concepts and Terminology</h3>
+        <p>Now that we are discussing Home Assistant, let’s look at the
+        most important concepts. Home Assistant is built around a small
+        set of building blocks: integrations, devices, entities, areas,
+        and automations. Once you understand how they fit together, the
+        rest of the platform falls into place.</p>
+        <h4 id="nav-integrations-1">Integrations</h4>
+        <p>Integrations are pieces of software that allow Home Assistant
+        to connect to other software and platforms. For example, a
+        product by Philips called Hue would use the Philips Hue
+        integration and allow Home Assistant to talk to the hardware
+        controller Hue Bridge. Any Home Assistant compatible devices
+        connected to the Hue Bridge would appear in Home Assistant as
+        devices.</p>
+        <h4 id="nav-devices">Devices</h4>
+        <p>Devices are a logical grouping for one or more entities. A
+        device may represent a physical device, which can have one or
+        more sensors. The sensors appear as entities associated with the
+        device. For example, a motion sensor is represented as a device.
+        It may provide motion detection, temperature, and light levels
+        as entities. Entities have states such as detected when motion
+        is detected and clear when there is no motion.</p>
+        <p>Devices and entities are used throughout Home Assistant. To
+        name a few examples:</p>
+        <p>Dashboards can show a state of an entity. For example, if a
+        light is on or off.</p>
+        <p>An automation can be triggered from a state change on an
+        entity. For example, a motion sensor entity detects motion and
+        triggers a light to turn on.</p>
+        <p>A predefined color and brightness setting for a light can be
+        saved as a scene.</p>
+        <h4 id="nav-entities">Entities</h4>
+        <p>Entities are the basic building blocks to hold data in Home
+        Assistant. An entity represents a sensor, actor, or function in
+        Home Assistant. Entities are used to monitor physical properties
+        or to control other entities. An entity is usually part of a
+        device or a service. Entities have states.</p>
+        <h4 id="nav-areas">Areas</h4>
+        <p>An area in Home Assistant is a logical grouping of devices
+        and entities that are meant to match areas (or rooms) in the
+        physical world: your home. For example, the living room area
+        groups devices and entities in your living room. Areas allow you
+        to target actions at an entire group of devices. For example,
+        turning off all the lights in the living room. These are
+        locations within your home, such as the living room or the dance
+        floor. Areas can be assigned to floors. Areas can also be used
+        for automatically generated cards, such as the Area card.</p>
+        <h4 id="nav-automations">Automations</h4>
+        <p>A set of repeatable actions that can be set up to run
+        automatically. Automations are made of three key components:</p>
+        <p>Triggers - events that start an automation. For example, when
+        the sun sets or a motion sensor is activated.</p>
+        <p>Conditions - optional tests that must be met before an action
+        can be run. For example, if someone is home.</p>
+        <p>Actions - interact with devices such as turn on a light.</p>
+        <h4 id="nav-scripts">Scripts</h4>
+        <p>Similar to automations, scripts are repeatable actions that
+        can be run. The difference between scripts and automations is
+        that scripts do not have triggers. This means that scripts
+        cannot automatically run unless they are used in
+        automationsAutomations in Home Assistant allow you to
+        automatically respond to things that happen in and around your
+        home. [Learn more]. Scripts are particularly useful if you
+        perform the same actions in different automations or trigger
+        them from a dashboard. For information on how to create scripts,
+        refer to the scripts documentation.</p>
+        <h4 id="nav-scenes">Scenes</h4>
+        <p>Scenes allow you to create predefined settings for your
+        devices. Similar to a driving mode on phones, or driver profiles
+        in cars, it can change an environment to suit you. For example,
+        your watching films scene may dim the lighting, switch on the TV
+        and increase its volume. This can be saved as a scene and used
+        without having to set individual devices every time.</p>
+        <h4 id="nav-apps">Apps</h4>
+        <p>Apps are third-party applications that provide additional
+        functionality in Home Assistant. Apps run directly alongside
+        Home Assistant, whereas integrations connect Home Assistant to
+        other apps. Apps are only supported when using Home Assistant
+        Operating System.</p>
+        <p>Apps are installed from the app store under Settings &gt;
+        Apps. If you are curious now and feel like installing every app
+        that looks interesting: beware that apps can use quite a bit of
+        resources in terms of disk space, memory, and additional load on
+        the processor.</p>
+        <h3 id="nav-home-assistant-service-responsibilities">Home
+        Assistant Service Responsibilities</h3>
+        <p>Home Assistant acts as a centralized, open-source brain for
+        the smart home. Unlike big-tech ecosystems like Google Home,
+        Smart Things, Home Seer, Amazon Alexa, or Apple HomeKit, Home
+        Assistant unifies completely different brands, offers unmatched
+        automation capabilities, and keeps user data entirely
+        private.</p>
+        <p>As we can see from previous sections, Home Assistant can
+        provide Tailored interfaces that use Drag-and-drop dashboards
+        that allow users to design unique views for mobile phones,
+        wall-mounted tablets, or less-technical household members.</p>
+        <p>Home Assistant uses the Open-source community to integrate
+        with a vast global developer community that is continuously
+        creating free updates, fixes bugs, and designing new
+        integrations. This section focuses on how we integrate with this
+        community using Open-Source Applications.</p>
+        <figure>
+        <img src="01-hassio-architectural-design-document/media/image4.png"
+        style="width:6.73636in;height:4.49091in"
+        alt="Figure 4: Application Ecosystem" />
+        <figcaption aria-hidden="true">Figure 4: Application
+        Ecosystem</figcaption>
+        </figure>
+        <p>The current architecture includes or references the following
+        applications:</p>
+        <table>
+        <caption>Code 8: Services Example</caption>
+        <colgroup>
+        <col style="width: 100%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th><div class="custom-style-TextBlock TextBlock"
+        data-custom-style="TextBlock">
+        <p>Home Assistant automation<br />
+        scripts<br />
+        scenes<br />
+        template sensors<br />
+        command-line integrations<br />
+        media-player integrations<br />
+        Google Assistant integration<br />
+        REST commands<br />
+        utility meters<br />
+        MQTT<br />
+        Matter Server<br />
+        ESPHome<br />
+        local device integrations<br />
+        SmartThings integration<br />
+        Google Home integration<br />
+        Envisalink integration<br />
+        network/device monitoring<br />
+        local AI/voice service integration</p>
+        </div></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        <p>The exact configuration of these services is maintained
+        within the Home Assistant configuration and supporting
+        configuration files.</p>
+        <h3 id="nav-ecosystem-integrations">Ecosystem Integrations</h3>
+        <h4 id="nav-home-assistant-core-interface">Home Assistant Core
+        &amp; Interface</h4>
+        <p>These are the integrations and components that provide Home
+        Assistant's core operating environment, user interface,
+        dashboards, and general system functions.</p>
+        <table style="width:99%;">
+        <colgroup>
+        <col style="width: 17%" />
+        <col style="width: 81%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>Integration</strong></th>
+        <th style="text-align: left;"><strong>Description</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>Home Assistant
+        Supervisor</strong></td>
+        <td style="text-align: left;">Manages the Home Assistant
+        operating environment, including add-ons, updates, backups,
+        system health, and core services when running Home Assistant
+        OS.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>HACS</strong></td>
+        <td style="text-align: left;">Home Assistant Community Store.
+        Provides access to community-developed integrations, frontend
+        cards, themes, dashboards, and other custom components.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Lovelace Gen</strong></td>
+        <td style="text-align: left;">Provides tools or functionality
+        for generating/managing Lovelace dashboard configuration and UI
+        elements.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Mobile App</strong></td>
+        <td style="text-align: left;">Connects Android and iOS devices
+        to Home Assistant, providing sensors, device tracking,
+        notifications, actionable notifications, and remote
+        control.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Browser Mod</strong></td>
+        <td style="text-align: left;">Extends Home Assistant's
+        browser-based frontend with browser-specific controls, pop-ups,
+        services, navigation, and device-level functionality.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Fully Kiosk
+        Browser</strong></td>
+        <td style="text-align: left;">Integrates Android kiosk
+        devices/tablets with Home Assistant, allowing Home Assistant
+        dashboards to operate as dedicated wall-mounted control
+        panels.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Android TV
+        Remote</strong></td>
+        <td style="text-align: left;">Provides remote-control
+        functionality for compatible Android/Google TV devices.</td>
+        </tr>
+        </tbody>
+        </table>
+        <hr />
+        <h4 id="nav-smart-home-protocols-device-connectivity">Smart Home
+        Protocols &amp; Device Connectivity</h4>
+        <p>These form the <strong>device communication layer</strong> of
+        the Home Assistant system.</p>
+        <table style="width:99%;">
+        <colgroup>
+        <col style="width: 10%" />
+        <col style="width: 88%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>Integration</strong></th>
+        <th style="text-align: left;"><strong>Description</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>MQTT</strong></td>
+        <td style="text-align: left;">Lightweight publish/subscribe
+        messaging protocol commonly used to connect sensors, devices,
+        automation systems, and other services to Home Assistant.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Matter</strong></td>
+        <td style="text-align: left;">Modern standardized smart-home
+        protocol designed for interoperability between manufacturers and
+        platforms.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Thread</strong></td>
+        <td style="text-align: left;">Low-power IPv6 mesh networking
+        technology used by Matter and other smart-home devices.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Bluetooth</strong></td>
+        <td style="text-align: left;">Allows Home Assistant to discover
+        and communicate with nearby Bluetooth devices, sensors, beacons,
+        and accessories.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>ESPHome</strong></td>
+        <td style="text-align: left;">Connects ESP32/ESP8266-based
+        devices programmed with ESPHome, allowing custom sensors,
+        switches, displays, relays, and other hardware to become native
+        Home Assistant devices.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>iBeacon
+        Tracker</strong></td>
+        <td style="text-align: left;">Detects Bluetooth iBeacon
+        transmitters and uses their presence/location information within
+        Home Assistant.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Local Tuya</strong></td>
+        <td style="text-align: left;">Provides local control of
+        compatible Tuya devices without relying exclusively on Tuya's
+        cloud infrastructure.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>SmartThings</strong></td>
+        <td style="text-align: left;">Connects Samsung SmartThings
+        devices and ecosystems to Home Assistant.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>VeSync</strong></td>
+        <td style="text-align: left;">Connects compatible VeSync
+        smart-home products such as outlets, appliances, air-quality
+        devices, and other IoT equipment.</td>
+        </tr>
+        </tbody>
+        </table>
+        <h4 id="nav-media-entertainment-home-theater">Media,
+        Entertainment &amp; Home Theater</h4>
+        <p>These integrations control entertainment systems and media
+        playback.</p>
+        <table style="width:99%;">
+        <colgroup>
+        <col style="width: 20%" />
+        <col style="width: 78%" />
+        </colgroup>
+        <thead>
+        <tr>
+        <th style="text-align: left;"><strong>Integration</strong></th>
+        <th style="text-align: left;"><strong>Description</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="text-align: left;"><strong>Apple TV</strong></td>
+        <td style="text-align: left;">Controls Apple TV devices and
+        exposes media playback information and controls to Home
+        Assistant.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Emby</strong></td>
+        <td style="text-align: left;">Connects Home Assistant to an Emby
+        media server and provides information about media playback and
+        server activity.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Denon AVR Network
+        Receivers</strong></td>
+        <td style="text-align: left;">Controls compatible Denon
+        network-connected AV receivers, including power, volume, source
+        selection, and other receiver functions.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Denon HEOS</strong></td>
+        <td style="text-align: left;">Connects Home Assistant to the
+        HEOS multi-room audio platform for controlling speakers,
+        receivers, playback, and audio zones.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Google Cast</strong></td>
+        <td style="text-align: left;">Allows Home Assistant to control
+        Chromecast and Google Cast-compatible devices and media
+        players.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Samsung Smart
+        TV</strong></td>
+        <td style="text-align: left;">Controls compatible Samsung
+        televisions and provides media/player information.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>VIZIO
+        SmartCast</strong></td>
+        <td style="text-align: left;">Provides control and status
+        information for compatible VIZIO SmartCast televisions.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Ring</strong></td>
+        <td style="text-align: left;">Provides access to Ring cameras,
+        doorbells, sensors, and related security information.</td>
+        </tr>
+        <tr>
+        <td style="text-align: left;"><strong>Roborock</strong></td>
+        <td style="text-align: left;">Connects Roborock robot vacuums to
+        Home Assistant for control, status, cleaning commands, maps, and
+        sensors.</td>
+        </tr>
+        </tbody>
+        </table>
+        <h4 id="nav-smartthings">7.1 SmartThings</h4>
+        <p>SmartThings is an external smart-home ecosystem integrated
+        with Home Assistant that currently provides access to devices
+        and capabilities that remain within the SmartThings ecosystem.
+        It also contains access to the existing Z-Wave
+        infrastructure.</p>
+        <h4 id="nav-google-home">7.2 Google Home</h4>
+        <p>Google Home is currently the primary voice-control system and
+        Home Assistant integrates with the Google Home ecosystem and
+        receives/coordinates information associated with the existing
+        Google environment.</p>
+        <p>The architectural direction is to progressively migrate voice
+        control toward Home Assistant. It is possible to have both
+        implementations run simultaneously since the key activation
+        words are different. It is possible to have the two voice
+        systems interact with each other to migrate some functionality
+        to a single voice system.</p>
+        <h3 id="nav-local-voice-architecture">Local Voice
+        Architecture</h3>
+        <p>The Compute Module provides local voice-processing services
+        through the Wyoming/Open-WebUI environment.</p>
+        <blockquote>
+        <p>The voice architecture includes:</p>
+        </blockquote>
+        <ul>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Wyoming-Piper;</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Wyoming-Whisper; and</p>
+        </div></li>
+        <li><div class="custom-style-List Paragraph List Paragraph"
+        data-custom-style="List Paragraph">
+        <p>Open-WebUI.</p>
+        </div></li>
+        </ul>
+        <p>The Wyoming services are hosted within LXC 104, which has 2
+        vCPUs, 2 GB RAM, and access to persistent Piper, Whisper, and
+        Open-Web UI data through centralized storage mounts. These
+        services are available to Home Assistant via the backend network
+        for speed and performance reasons.</p>
+        <h3 id="nav-matter-architecture">Matter Architecture</h3>
+        <p>Home Assistant provides capabilities to access the Matter
+        Server environment. Matter devices are intended to communicate
+        through the Home Assistant architecture rather than requiring an
+        independent cloud automation platform. The exact Matter/Thread
+        radio hardware and Thread border-router topology remain an
+        architecture detail to be documented in the integration
+        guide.</p>
+        <h3 id="nav-mqtt-architecture">MQTT Architecture</h3>
+        <p>Home Assistant provides access to the MQTT server/broker
+        environment. MQTT is treated as a local messaging infrastructure
+        component supporting devices and services that communicate
+        through MQTT. The detailed broker configuration, authentication
+        model, retained-message policy, persistence configuration, and
+        client inventory should be documented separately as the MQTT
+        architecture is finalized in the integration guide.</p>
+        <h3 id="nav-esp-home-architecture">ESP Home Architecture</h3>
+        <p>Home Assistant serves as the ESP Home environment for locally
+        managed ESP-based devices. ESP Home is consistent with the
+        local-first architectural strategy because device firmware and
+        device communication can remain under local control. ESP Home
+        devices should therefore be preferred where they provide an
+        appropriate local alternative to cloud-dependent vendor devices
+        and a Off-The-Shelf device is not available. Some Off-The-Shelf
+        devices like Garage Door Openers require a monthly subscription.
+        This is a perfect example where an ESP Home solution is
+        preferred.</p>
+        <h3 id="nav-envisalink-dsc-architecture">Envisalink (DSC)
+        Architecture</h3>
+        <p>Envisalink is implemented as a Home Assistant integration. It
+        is therefore considered an integration endpoint rather than an
+        independent Home Assistant server or infrastructure node. The
+        integration provides Home Assistant access to the associated
+        alarm/security system state.</p>
+        <p>DSC services are provided in out home and this Application
+        provides a capability to integrate these services within Home
+        Assistant. EnvisaLink works in conjunction with Eyes-On Hardware
+        to communicate with the DSC Panel.</p>
+        <h3 id="nav-local-tuya-strategy">Local Tuya Strategy</h3>
+        <p>Local Tuya is part of the local-first strategy where
+        compatible Tuya devices can be controlled locally. Local
+        communication is preferred over unnecessary reliance on the Tuya
+        cloud. Device-by-device compatibility must be validated before
         migration because not every Tuya device necessarily provides
-        equivalent local functionality.</p>
-        <p>15. Camera and Surveillance Boundary</p>
+        equivalent local functionality. Some light are limited to what
+        the local integration provides but more functionality is coming
+        out every day.</p>
+        <h3 id="nav-camera-and-surveillance-boundary">Camera and
+        Surveillance Boundary</h3>
         <p>The surveillance architecture is intentionally separate from
-        Home Assistant's primary recording infrastructure.</p>
-        <p>Cameras are connected through two 8-port PoE Ethernet
-        switches to the Synology surveillance system.</p>
-        <p>The Synology system is responsible for the primary
-        surveillance/camera-management function.</p>
-        <p>Home Assistant may consume camera state, streams, or events
-        where required, but the surveillance system itself is not
-        dependent on Home Assistant for its primary recording
-        function.</p>
-        <p>This separation reduces the impact of a Home Assistant outage
-        on surveillance recording.</p>
-        <p>16. Storage and Backup Architecture</p>
-        <p>Home Assistant requires persistent configuration backups.</p>
-        <p>The designated centralized backup destination is the
-        Infotainment Module.</p>
-        <p>The Infotainment Module provides an LXC 100 Samba-NAS storage
-        gateway.</p>
-        <p>Its backup hierarchy includes:</p>
-        <p>homelab-backups/configs/compute-node/haos/</p>
+        Home Assistant's primary infrastructure and is discussed in
+        detail in a different hub. Cameras are directly connected
+        through two 8-port PoE Ethernet switches to a Synology
+        surveillance system. The Synology system is responsible for the
+        primary surveillance/camera-management function.</p>
+        <p>Home Assistant consumes camera state, streams, or events
+        where required, and the surveillance system itself is not
+        dependent on Home Assistant for its primary recording function.
+        This separation reduces the impact of a Home Assistant outage on
+        surveillance recording.</p>
+        <h3 id="nav-storage-and-backup-architecture">Storage and Backup
+        Architecture</h3>
+        <p>Home Assistant requires persistent configuration backups. The
+        designated centralized backup destination is located on the
+        Infotainment Module. The Infotainment Module provides an LXC 100
+        Samba-NAS storage gateway. Its backup hierarchy includes "home
+        lab-backups/configs/compute-node/haos/". This mount is not
+        persistent, which means that an outage of either system will not
+        cause the other system to fail. If the Infotainment system is
+        rebooted the Home Assistant and the Compute nodes will remain
+        totally functionable.</p>
         <p>This location is specifically designated for automated Home
-        Assistant configuration backups.</p>
-        <p>The broader backup structure also includes configuration
-        backups for Open-WebUI and Pi-hole, while the Infotainment node
-        maintains database dumps, NGINX configuration, and Docker stack
-        configuration.</p>
-        <p>The architectural model is therefore:</p>
-        <p>Home Assistant → Infotainment Samba/NAS → Centralized Home
-        Lab Backup Storage</p>
-        <p>This separates application operation from backup storage and
-        provides a centralized recovery location.</p>
-        <p>17. Relationship to the Infotainment Module</p>
+        Assistant configuration backups. The broader backup structure
+        also includes configuration backups for Open-Web UI and Pi-hole,
+        while the Infotainment node maintains database dumps, NGINX
+        configuration, and Docker stack configuration.</p>
+        <h3
+        id="nav-relationship-to-the-infotainment-module">Relationship to
+        the Infotainment Module</h3>
         <p>Home Assistant is hosted on the Compute Module, while
         centralized persistent storage and backup services are hosted on
         the separate Infotainment Module.</p>
@@ -658,72 +1862,353 @@ Architectural Design Document</h1>
         environment and provides centralized storage through Samba-NAS
         LXC 100. It also hosts media, document, photo, database,
         download, and other application services.</p>
-        <p>This creates a two-node architecture:</p>
+        <h4 id="nav-this-creates-a-two-node-architecture">This creates a
+        two-node architecture:</h4>
         <p>Compute Module</p>
         <p>Home automation, AI, voice, DNS, reverse proxy, and
         remote-access services.</p>
         <p>Infotainment Module</p>
         <p>Centralized storage, media, documents, photos, databases,
         backups, and supporting applications.</p>
-        <p>18. Cloud Dependency Strategy</p>
+        <h3 id="nav-cloud-dependency-strategy">Cloud Dependency
+        Strategy</h3>
         <p>Cloud services are permitted but are not the preferred
         architectural dependency.</p>
         <p>The preferred hierarchy is:</p>
-        <p>Local device control.</p>
-        <p>Local Home Assistant integration.</p>
-        <p>Local supporting service.</p>
-        <p>Local AI/voice processing.</p>
+        <h4 id="nav-local-device-control.">Local device control.</h4>
+        <h4 id="nav-local-home-assistant-integration.">Local Home
+        Assistant integration.</h4>
+        <h4 id="nav-local-supporting-service.">Local supporting
+        service.</h4>
+        <h4 id="nav-local-aivoice-processing.">Local AI/voice
+        processing.</h4>
         <p>Cloud integration where local operation is unavailable or
         impractical.</p>
         <p>Cloud services should therefore be treated as explicit
         architectural dependencies rather than invisible
         assumptions.</p>
-        <p>For every major integration, the ADD should eventually
+        <p>For every major integration, the designer should eventually
         identify:</p>
-        <p>whether local control exists;</p>
-        <p>whether cloud access is required;</p>
-        <p>what functionality is lost without the cloud;</p>
-        <p>whether the integration can continue during an Internet
-        outage; and</p>
-        <p>whether a future local replacement is practical.</p>
-        <p>19. Resilience and Failure Boundaries</p>
+        <h4 id="nav-whether-local-control-exists">whether local control
+        exists;</h4>
+        <h4 id="nav-whether-cloud-access-is-required">whether cloud
+        access is required;</h4>
+        <h4 id="nav-what-functionality-is-lost-without-the-cloud">what
+        functionality is lost without the cloud;</h4>
+        <h4
+        id="nav-whether-the-integration-can-continue-during-an-internet-outage-and">whether
+        the integration can continue during an Internet outage; and</h4>
+        <h4
+        id="nav-whether-a-future-local-replacement-is-practical.">whether
+        a future local replacement is practical.</h4>
+        <h3
+        id="nav-review-of-benefits-gained-by-using-the-home-assistant-architecture-in-our-smart-home">Review
+        of Benefits gained by using the Home Assistant Architecture in
+        our Smart Home</h3>
+        <h4 id="nav-privacy-and-local-control">1. Privacy and Local
+        Control</h4>
+        <ul>
+        <li><p><strong>Data ownership:</strong> It stores all history,
+        logs, and device configurations locally on the user's hardware
+        rather than uploading them to external cloud servers.</p></li>
+        <li><p><strong>Offline reliability:</strong> Smart homes
+        continue running automations and taking commands even if the
+        internet goes down.</p></li>
+        <li><p><strong>No forced obsolescence:</strong> Users avoid the
+        risk of a manufacturer suddenly shutting down its cloud service
+        and bricking working hardware. [<a
+        href="https://www.home-assistant.io/faq/who-is-it-for/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">1</span></a>, <a
+        href="https://www.reddit.com/r/homeassistant/comments/rrqtvu/why_do_you_use_home_assistant/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">2</span></a>, <a
+        href="https://www.youtube.com/watch?v=eSjGyE8HCfk&amp;t=573"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">3</span></a>, <a
+        href="https://www.youtube.com/watch?v=nI5ddPmHg18&amp;t=54"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">4</span></a>]</p></li>
+        </ul>
+        <h4 id="nav-complete-vendor-independence">2. Complete Vendor
+        Independence</h4>
+        <ul>
+        <li><p><strong>Massive integration library:</strong> It supports
+        thousands of different smart home devices and online
+        services.</p></li>
+        <li><p><strong>Unified dashboard:</strong> Users can eliminate a
+        dozen different brand-specific apps and control everything—from
+        Philips Hue lights and Sonos speakers to solar panel
+        invertors—under a single interface.</p></li>
+        <li><p><strong>Hardware bridging:</strong> It allows non-Matter
+        or older legacy devices to interact seamlessly with newer
+        protocols. [<a
+        href="https://www.youtube.com/watch?v=dzdWBId8fCI&amp;vl=en"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">1</span></a>, <a
+        href="https://www.youtube.com/watch?v=eSjGyE8HCfk&amp;t=573"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">2</span></a>, <a
+        href="https://www.home-assistant.io/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">3</span></a>, <a
+        href="https://www.loopwerk.io/articles/2025/home-assistant-review/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">4</span></a>, <a
+        href="https://www.drzzs.com/home-automation/homeassistant-101/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">5</span></a>]</p></li>
+        </ul>
+        <h4 id="nav-hyper-advanced-automations">3. Hyper-Advanced
+        Automations</h4>
+        <ul>
+        <li><p><strong>Complex logic:</strong> Users can build intricate
+        conditions that outclass off-the-shelf apps. For example, a
+        house can automatically unlock doors and turn on specific lights
+        only when a shared calendar indicates a house cleaner is
+        scheduled. [<a
+        href="https://www.reddit.com/r/homeassistant/comments/1oe7d79/on_the_fence_about_home_assistant_is_the/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">1</span></a>, <a
+        href="https://www.youtube.com/watch?v=eSjGyE8HCfk&amp;t=573"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">2</span></a>]</p></li>
+        <li><p><strong>Diverse triggers:</strong> It can trigger
+        routines based on power drops (like a washing machine finishing
+        its cycle), geolocation, weather changes, or time of day. [<a
+        href="https://www.loopwerk.io/articles/2025/home-assistant-review/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">1</span></a>, <a
+        href="https://www.youtube.com/watch?v=eSjGyE8HCfk&amp;t=573"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">2</span></a>]</p></li>
+        </ul>
+        <h4 id="nav-customization-and-community">4. Customization and
+        Community</h4>
+        <ul>
+        <li><p><strong>Tailored interfaces:</strong> Drag-and-drop
+        dashboards allow users to design unique views for mobile phones,
+        wall-mounted tablets, or less-technical household
+        members.</p></li>
+        <li><p><strong>Open-source community:</strong> A vast global
+        developer community continuously creates free updates, fixes
+        bugs, and designs new integrations. [<a
+        href="https://www.youtube.com/watch?v=hMlkzt-2qgk"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">1</span></a>, <a
+        href="https://www.home-assistant.io/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">2</span></a>, <a
+        href="https://www.youtube.com/watch?v=eSjGyE8HCfk&amp;t=573"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">3</span></a>]</p></li>
+        </ul>
+        <h3 id="nav-resilience-and-failure-boundaries">Resilience and
+        Failure Boundaries</h3>
         <p>The architecture intentionally separates several
         functions.</p>
-        <p>Home Assistant failure</p>
-        <p>Automation and HA-dependent integrations may become
+        <h4 id="nav-home-assistant-failure">Home Assistant failure</h4>
+        <p>Some Automation and HA-dependent integrations may become
         unavailable, but independent services such as Synology
         surveillance should continue operating.</p>
-        <p>Internet failure</p>
+        <h4 id="nav-internet-failure">Internet failure</h4>
         <p>Local Home Assistant services should remain available where
         the underlying devices and integrations support local
         operation.</p>
         <p>Cloud-dependent integrations may become unavailable.</p>
-        <p>Infotainment Module failure</p>
+        <h4 id="nav-infotainment-module-failure">Infotainment Module
+        failure</h4>
         <p>Centralized storage and backup destinations become
         unavailable.</p>
         <p>Home Assistant's local operation should not be unnecessarily
         dependent on the Infotainment Module for its core runtime.</p>
-        <p>Compute Module failure</p>
+        <h4 id="nav-compute-module-failure">Compute Module failure</h4>
         <p>Home Assistant, local AI, local voice, DNS, reverse proxy,
         and other Compute Module services become unavailable.</p>
         <p>The backup architecture is intentionally located on the
         separate Infotainment Module to reduce the risk of losing
-        backups with the failed compute host.</p>
-        <p>20. Future-State Architecture</p>
-        <p>The target architecture progressively moves the home
-        toward:</p>
-        <p>Home Assistant as the central automation and voice
-        platform</p>
-        <p>with:</p>
-        <p>local device control;</p>
-        <p>local MQTT;</p>
-        <p>local Matter;</p>
-        <p>local ESPHome;</p>
-        <p>local AI;</p>
-        <p>local speech recognition;</p>
-        <p>local text-to-speech;</p>
-        <p>local automation;</p>
-        <p>centralized bac</p>
+        backups with the failed compute host and may be used to provide
+        recovery methods from the saved backups.</p>
+        <h1 id="nav-references-and-authoritative-resources">References
+        and Authoritative Resources</h1>
+        <h2 id="nav-home-assistant-core-architecture-components">Home
+        Assistant Core Architecture &amp; Components</h2>
+        <h3 id="nav-home-assistant-architecture-overview">Home Assistant
+        Architecture Overview</h3>
+        <p>Publisher: Home Assistant Project</p>
+        <p>URL: <a
+        href="https://www.home-assistant.io/introduction/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.home-assistant.io/introduction/</span></a></p>
+        <h3 id="nav-home-assistant-supervisor">Home Assistant
+        Supervisor</h3>
+        <p>Publisher: Home Assistant Project</p>
+        <p>URL: <a
+        href="https://www.home-assistant.io/integration/supervisor/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.home-assistant.io/integration/supervisor/</span></a></p>
+        <h3 id="nav-home-assistant-operating-system">Home Assistant
+        Operating System</h3>
+        <p>Publisher: Home Assistant Project</p>
+        <p>URL: <a
+        href="https://www.home-assistant.io/installation/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.home-assistant.io/installation/</span></a></p>
+        <h2 id="nav-hass.io-docker-containerization">Hass.io &amp;
+        Docker Containerization</h2>
+        <h3 id="nav-hass.io-add-on-store">Hass.io Add-on Store</h3>
+        <p>Publisher: Home Assistant Project</p>
+        <p>URL: <a href="https://www.home-assistant.io/add-ons/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.home-assistant.io/add-ons/</span></a></p>
+        <h3 id="nav-docker-container-management">Docker Container
+        Management</h3>
+        <p>Publisher: Docker Documentation</p>
+        <p>URL: <a
+        href="https://docs.docker.com/engine/reference/run/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://docs.docker.com/engine/reference/run/</span></a></p>
+        <h3 id="nav-container-orchestration-with-supervisor">Container
+        Orchestration with Supervisor</h3>
+        <p>Publisher: Home Assistant Community</p>
+        <p>URL: <a
+        href="https://developers.home-assistant.io/docs/add-ons/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://developers.home-assistant.io/docs/add-ons/</span></a></p>
+        <h2 id="nav-smart-home-integration-protocols">Smart Home
+        Integration &amp; Protocols</h2>
+        <h3 id="nav-matter-smart-home-standard">Matter Smart Home
+        Standard</h3>
+        <p>Publisher: Connectivity Standards Alliance</p>
+        <p>URL: <a
+        href="https://csa-iot.org/all-solutions/matter/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://csa-iot.org/all-solutions/matter/</span></a></p>
+        <h3 id="nav-zigbee-integration-documentation">Zigbee Integration
+        Documentation</h3>
+        <p>Publisher: Zigbee Alliance</p>
+        <p>URL: <a href="https://www.zigbee.org/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.zigbee.org/</span></a></p>
+        <h3 id="nav-z-wave-integration">Z-Wave Integration</h3>
+        <p>Publisher: Z-Wave Alliance</p>
+        <p>URL: <a href="https://zwavealliance.org/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://zwavealliance.org/</span></a></p>
+        <h2 id="nav-voice-assistants-ai-integration">Voice Assistants
+        &amp; AI Integration</h2>
+        <h3 id="nav-home-assistant-voice-integration">Home Assistant
+        Voice Integration</h3>
+        <p>Publisher: Home Assistant Project</p>
+        <p>URL: <a
+        href="https://www.home-assistant.io/integrations/voice/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.home-assistant.io/integrations/voice/</span></a></p>
+        <h3 id="nav-google-assistant-integration">Google Assistant
+        Integration</h3>
+        <p>Publisher: Google Developers</p>
+        <p>URL: <a href="https://developers.google.com/assistant/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://developers.google.com/assistant/</span></a></p>
+        <h3 id="nav-amazon-alexa-integration">Amazon Alexa
+        Integration</h3>
+        <p>Publisher: Amazon Developer</p>
+        <p>URL: <a
+        href="https://developer.amazon.com/docs/alexa/understanding-amazon-alexa-skills.html"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://developer.amazon.com/docs/alexa/understanding-amazon-alexa-skills.html</span></a></p>
+        <h2 id="nav-security-network-architecture">Security &amp;
+        Network Architecture</h2>
+        <h3 id="nav-home-assistant-security-best-practices">Home
+        Assistant Security Best Practices</h3>
+        <p>Publisher: Home Assistant Project</p>
+        <p>URL: <a
+        href="https://www.home-assistant.io/docs/security/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.home-assistant.io/docs/security/</span></a></p>
+        <h3 id="nav-tlsssl-configuration">TLS/SSL Configuration</h3>
+        <p>Publisher: Mozilla SSL Configuration Generator</p>
+        <p>URL: <a href="https://ssl-config.mozilla.org/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://ssl-config.mozilla.org/</span></a></p>
+        <h3 id="nav-network-segmentation-for-iot">Network Segmentation
+        for IoT</h3>
+        <p>Publisher: Cisco Networking Academy</p>
+        <p>URL: <a
+        href="https://www.netacad.com/courses/iot-security"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.netacad.com/courses/iot-security</span></a></p>
+        <h2 id="nav-scalability-performance">Scalability &amp;
+        Performance</h2>
+        <h3 id="nav-home-assistant-performance-tuning">Home Assistant
+        Performance Tuning</h3>
+        <p>Publisher: Home Assistant Project</p>
+        <p>URL: <a
+        href="https://www.home-assistant.io/docs/performance/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.home-assistant.io/docs/performance/</span></a></p>
+        <h3 id="nav-database-optimization-mariadbpostgresql">Database
+        Optimization (MariaDB/PostgreSQL)</h3>
+        <p>Publisher: MariaDB Foundation</p>
+        <p>URL: <a href="https://mariadb.org/kb/optimization/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://mariadb.org/kb/optimization/</span></a></p>
+        <h3 id="nav-high-availability-configuration">High Availability
+        Configuration</h3>
+        <p>Publisher: Home Assistant Project</p>
+        <p>URL: <a
+        href="https://www.home-assistant.io/docs/configuration/ha/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.home-assistant.io/docs/configuration/ha/</span></a></p>
+        <h2 id="nav-industrial-enterprise-iot">Industrial &amp;
+        Enterprise IoT</h2>
+        <h3 id="nav-industrial-iot-architecture">Industrial IoT
+        Architecture</h3>
+        <p>Publisher: IoT Analytics</p>
+        <p>URL: <a
+        href="https://www.iot-analytics.com/industrial-iot/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.iot-analytics.com/industrial-iot/</span></a></p>
+        <h3 id="nav-smart-home-interoperability">Smart Home
+        Interoperability</h3>
+        <p>Publisher: Apple Developer Documentation</p>
+        <p>URL: <a href="https://developer.apple.com/homekit/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://developer.apple.com/homekit/</span></a></p>
+        <h3 id="nav-matter-device-certification">Matter Device
+        Certification</h3>
+        <p>Publisher: Connectivity Standards Alliance</p>
+        <p>URL: <a href="https://csa-iot.org/certification/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://csa-iot.org/certification/</span></a></p>
+        <h1 id="nav-additional-resources">Additional Resources</h1>
+        <h2 id="nav-home-assistant-community-forums">Home Assistant
+        Community Forums</h2>
+        <p>Publisher: Home Assistant Community</p>
+        <p>URL: <a href="https://community.home-assistant.io/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://community.home-assistant.io/</span></a></p>
+        <p>Home Assistant Blog</p>
+        <p>Publisher: Home Assistant Project</p>
+        <p>URL: <a href="https://www.home-assistant.io/blog/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.home-assistant.io/blog/</span></a></p>
+        <p>Home Assistant Discord</p>
+        <p>Publisher: Home Assistant Community</p>
+        <p>URL: <a href="https://discord.gg/homeassistant"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://discord.gg/homeassistant</span></a></p>
+        <h2 id="nav-smart-home-device-security">Smart Home Device
+        Security</h2>
+        <p>Publisher: NIST Cybersecurity Framework</p>
+        <p>URL: <a href="https://www.nist.gov/cyberframework"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.nist.gov/cyberframework</span></a></p>
+        <h2 id="nav-iot-device-management">IoT Device Management</h2>
+        <p>Publisher: Linux Foundation (EdgeX Foundry)</p>
+        <p>URL: <a href="https://www.edgexfoundry.org/"><span
+        class="custom-style-Hyperlink Hyperlink"
+        data-custom-style="Hyperlink">https://www.edgexfoundry.org/</span></a></p>
       </article>
     </div>
   </main>
